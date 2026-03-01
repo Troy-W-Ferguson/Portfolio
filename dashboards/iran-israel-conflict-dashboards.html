@@ -496,6 +496,109 @@
     .sidebar { grid-column: 1; }
   }
 </style>
+
+<style>
+  /* ── LIVE BADGE & UPDATE BOX ── */
+  .tab-btn[data-tab="epicfury"] .tab-date {
+    color: var(--iran);
+    opacity: 1;
+  }
+  .tab-btn[data-tab="epicfury"].active .tab-date {
+    color: var(--iran);
+    opacity: 0.85;
+  }
+  .live-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--iran);
+    margin-right: 6px;
+    animation: pulse-live 1.5s ease-in-out infinite;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+  @keyframes pulse-live {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,80,80,0.6); }
+    50% { opacity: 0.6; box-shadow: 0 0 0 4px rgba(255,80,80,0); }
+  }
+  .update-box {
+    position: absolute;
+    top: 28px;
+    right: 60px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    z-index: 10;
+  }
+  .update-box .update-label {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .update-box .update-time {
+    color: var(--text);
+    font-size: 11px;
+  }
+  .update-box .update-note {
+    display: block;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-style: italic;
+  }
+  .source-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    text-decoration: none;
+    opacity: 0.7;
+    border-bottom: 1px solid rgba(200,169,110,0.3);
+    transition: opacity 0.15s;
+  }
+  .source-link:hover { opacity: 1; }
+  .tl-sources {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .tl-sources-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--border);
+  }
+  .badge-ongoing {
+    background: rgba(255,80,80,0.12);
+    color: var(--iran);
+    border: 1px solid rgba(255,80,80,0.3);
+    animation: none;
+  }
+  .warning-box {
+    background: rgba(255,80,80,0.07);
+    border: 1px solid rgba(255,80,80,0.2);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: #c08080;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+  .warning-box strong { color: var(--iran); font-weight: 500; }
+</style>
 </head>
 <body>
 
@@ -961,6 +1064,50 @@
       </div>
     </div>
 
+    <!-- ── IRANIAN MISSILES LAUNCHED PER DAY — Apr 2024
+         Operation True Promise I was a single overnight wave (Apr 13–14).
+         Iran fired all 355 projectiles in one ~5-hour window.
+         The Apr 19 Israeli counterstrike was deliberately minimal.
+    ── -->
+    <div class="bar-chart-card">
+      <div class="section-title">Iranian missiles / drones launched per day — Apr 2024</div>
+      <!-- Single overnight wave: 170 UAVs + 30 cruise + ~120 ballistic + ~35 other -->
+      <div class="bar-row">
+        <div class="bar-label">Apr 13–14</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--iran)"></div></div>
+        <div class="bar-val" style="color:var(--iran);">~355</div>
+      </div>
+      <div style="font-size:9px;color:var(--muted);margin-top:8px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;line-height:1.6;">
+        170 Shahed-136/238 UAVs · 30 Paveh cruise missiles · 120 ballistic missiles<br>
+        All launched in a single ~5-hour window (overnight Apr 13–14)<br>
+        No further Iranian launches — both sides accepted de-escalation after Apr 19
+      </div>
+    </div>
+
+    <!-- ── ISRAELI STRIKES LAUNCHED PER DAY — Apr 2024
+         Israel's only kinetic response was the Apr 19 precision counterstrike:
+         3 missiles, one S-300 radar destroyed at Isfahan AB.
+         All other Israeli activity was defensive interception.
+    ── -->
+    <div class="bar-chart-card">
+      <div class="section-title">Israeli strikes launched per day — Apr 2024</div>
+      <div class="bar-row">
+        <div class="bar-label">Apr 13–18</div>
+        <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--israel)"></div></div>
+        <div class="bar-val" style="color:var(--muted);">0 offensive</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Apr 19</div>
+        <div class="bar-track"><div class="bar-fill" style="width:2%;background:var(--israel)"></div></div>
+        <div class="bar-val" style="color:var(--israel);">3</div>
+      </div>
+      <div style="font-size:9px;color:var(--muted);margin-top:8px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;line-height:1.6;">
+        Apr 19: 3 precision missiles → 1 S-300 radar destroyed at Isfahan AB<br>
+        Deliberately minimal — under US/G7 pressure to avoid escalation<br>
+        Intended to demonstrate reach without triggering a second Iranian wave
+      </div>
+    </div>
+
     <div class="context-card">
       <div class="section-title">Strategic context</div>
       <div class="context-item"><strong>First direct attack:</strong> True Promise was the first time in the 45-year history of the Islamic Republic that Iran directly attacked Israeli territory from Iranian soil — a historic escalation crossing a longstanding red line.</div>
@@ -1227,15 +1374,150 @@
       </div>
     </div>
 
+    <!-- Intercepts by platform for the Twelve-Day War.
+         Sources: IDF spokesperson, ACLED, CFR, Brookings.
+         The Twelve-Day War saw a sustained 12-day campaign vs
+         True Promise I's single overnight attack — volumes are
+         much higher here and the US role shifted from Red Sea
+         interceptions to direct GBU-57 strikes on nuclear sites. -->
     <div class="bar-chart-card">
-      <div class="section-title">Iranian missiles fired — by day</div>
-      <div class="bar-row"><div class="bar-label">Jun 13</div><div class="bar-track"><div class="bar-fill" style="width:33%;background:var(--iran)"></div></div><div class="bar-val">~50</div></div>
-      <div class="bar-row"><div class="bar-label">Jun 15</div><div class="bar-track"><div class="bar-fill" style="width:73%;background:var(--iran)"></div></div><div class="bar-val">~111</div></div>
-      <div class="bar-row"><div class="bar-label">Jun 16</div><div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--iran)"></div></div><div class="bar-val">~35</div></div>
-      <div class="bar-row"><div class="bar-label">Jun 18</div><div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--iran)"></div></div><div class="bar-val">~20</div></div>
-      <div class="bar-row"><div class="bar-label">Jun 19</div><div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--iran)"></div></div><div class="bar-val">~28</div></div>
-      <div class="bar-row"><div class="bar-label">Jun 22</div><div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--iran)"></div></div><div class="bar-val">~27</div></div>
-      <div class="bar-row"><div class="bar-label">Jun 23</div><div class="bar-track"><div class="bar-fill" style="width:10%;background:var(--iran)"></div></div><div class="bar-val">~14</div></div>
+      <div class="section-title">Intercepts by platform — Jun 2025</div>
+      <div class="bar-row">
+        <div class="bar-label">Iron Dome</div>
+        <div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--israel)"></div></div>
+        <div class="bar-val">~250</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">David's Sling</div>
+        <div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--israel)"></div></div>
+        <div class="bar-val">~140</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Arrow-3 / Arrow-2</div>
+        <div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--israel)"></div></div>
+        <div class="bar-val">~115</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Barak-8 (naval)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:8%;background:var(--israel)"></div></div>
+        <div class="bar-val">~35</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">US Patriot / THAAD</div>
+        <div class="bar-track"><div class="bar-fill" style="width:5%;background:var(--us)"></div></div>
+        <div class="bar-val">~20</div>
+      </div>
+      <div style="font-size:9px;color:var(--muted);margin-top:10px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;line-height:1.6;">
+        Total intercepted: ~560 of ~1,550 munitions fired<br>
+        Overall intercept rate: ~90% (IDF est.)<br>
+        Iran hit-rate improved 8%→16% by Jun 18–19<br>
+        Interceptor stockpiles significantly strained by conflict's end<br>
+        <span style="color:var(--border);">Current Opern source IDF figures </span>
+      </div>
+    </div>
+
+    <!-- ── IRANIAN MISSILES / DRONES LAUNCHED PER DAY — Jun 2025
+         Data drawn from ACLED, IDF daily briefings, Al Jazeera, FDD.
+         Jun 15 was the deadliest day — cluster missiles hit 7 cities simultaneously.
+         Iran's hit rate improved from 8% to 16% by Jun 18–19 as tactics varied.
+    ── -->
+    <div class="bar-chart-card">
+      <div class="section-title">Iranian missiles / drones launched per day — Jun 2025</div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 13</div>
+        <div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--iran)"></div></div>
+        <div class="bar-val" style="color:var(--iran);">~50</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 14</div>
+        <div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--iran)"></div></div>
+        <div class="bar-val" style="color:var(--iran);">~20</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 15 ★</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--iran)"></div></div>
+        <div class="bar-val" style="color:var(--iran);">~111</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 16</div>
+        <div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--iran)"></div></div>
+        <div class="bar-val" style="color:var(--iran);">~35</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 18</div>
+        <div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--iran)"></div></div>
+        <div class="bar-val" style="color:var(--iran);">~20</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 19</div>
+        <div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--iran)"></div></div>
+        <div class="bar-val" style="color:var(--iran);">~28</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 22</div>
+        <div class="bar-track"><div class="bar-fill" style="width:24%;background:var(--iran)"></div></div>
+        <div class="bar-val" style="color:var(--iran);">~27</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 23</div>
+        <div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--iran)"></div></div>
+        <div class="bar-val" style="color:var(--iran);">~14</div>
+      </div>
+      <div style="font-size:9px;color:var(--muted);margin-top:8px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;line-height:1.6;">
+        ★ Jun 15: deadliest day — cluster missiles hit 7 cities simultaneously<br>
+        550+ total missiles · 1,000+ drones over 12 days<br>
+        Hit rate: 8% (Jun 13) → 16% (Jun 18–19) as Iran varied tactics
+      </div>
+    </div>
+
+    <!-- ── ISRAELI STRIKES LAUNCHED PER DAY — Jun 2025
+         Israel launched 508+ total strikes across 12 days.
+         The Jun 13 opening wave was the largest single-day strike in IAF history.
+         Jun 21–22 saw US B-2 strikes on nuclear sites (Op. Midnight Hammer).
+         Jun 23 was the final major Israeli strike before ceasefire.
+    ── -->
+    <div class="bar-chart-card">
+      <div class="section-title">Israeli strikes launched per day — Jun 2025</div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 13 ★</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--israel)"></div></div>
+        <div class="bar-val" style="color:var(--israel);">~200+</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 14</div>
+        <div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--israel)"></div></div>
+        <div class="bar-val" style="color:var(--israel);">~50</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 15–16</div>
+        <div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--israel)"></div></div>
+        <div class="bar-val" style="color:var(--israel);">~70</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 18–19</div>
+        <div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--israel)"></div></div>
+        <div class="bar-val" style="color:var(--israel);">~60</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 21 (US B-2)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--us)"></div></div>
+        <div class="bar-val" style="color:var(--us);">US strikes</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 22</div>
+        <div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--israel)"></div></div>
+        <div class="bar-val" style="color:var(--israel);">~60</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun 23</div>
+        <div class="bar-track"><div class="bar-fill" style="width:34%;background:var(--israel)"></div></div>
+        <div class="bar-val" style="color:var(--israel);">~68</div>
+      </div>
+      <div style="font-size:9px;color:var(--muted);margin-top:8px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;line-height:1.6;">
+        ★ Jun 13: 200+ jets · 330+ munitions · ~100 targets — largest IAF strike ever (at the time)<br>
+        508+ total Israeli strikes over 12 days · Evin Prison struck Jun 23 (79+ killed)<br>
+        US B-2 / GBU-57 strikes on Fordow, Natanz, Isfahan Jun 21–22 (Op. Midnight Hammer)
+      </div>
     </div>
 
     <div class="context-card">
@@ -1254,200 +1536,6 @@
 </footer>
 
 </div><!-- /panel-twelveday -->
-
-<script>
-  /*
-    ═══════════════════════════════════════════════
-    TAB SWITCHER
-    Reads data-tab from the clicked button, hides all
-    .panel divs, then shows the matching #panel-{tab}.
-    Also scrolls back to top so the header is visible.
-    ═══════════════════════════════════════════════
-  */
-  // ── Tab switching
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const panels = document.querySelectorAll('.panel');
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.tab;
-      tabBtns.forEach(b => b.classList.remove('active'));
-      panels.forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('panel-' + target).classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  });
-
-  // ── Filter: April 2024
-  document.querySelectorAll('[data-filter-april]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('[data-filter-april]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filterApril;
-      document.querySelectorAll('#timeline-april .tl-entry').forEach(entry => {
-        if (filter === 'all' || entry.dataset.april === filter) {
-          entry.classList.remove('hidden');
-        } else {
-          entry.classList.add('hidden');
-        }
-      });
-      document.querySelectorAll('#timeline-april .phase-divider').forEach(div => {
-        div.style.display = filter === 'all' ? '' : 'none';
-      });
-    });
-  });
-
-  // ── Filter: Twelve Day War
-  document.querySelectorAll('[data-filter-twelve]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('[data-filter-twelve]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filterTwelve;
-      document.querySelectorAll('#timeline-twelve .tl-entry').forEach(entry => {
-        if (filter === 'all' || entry.dataset.twelve === filter) {
-          entry.classList.remove('hidden');
-        } else {
-          entry.classList.add('hidden');
-        }
-      });
-      document.querySelectorAll('#timeline-twelve .phase-divider').forEach(div => {
-        div.style.display = filter === 'all' ? '' : 'none';
-      });
-    });
-  });
-
-  /*
-    EPIC FURY FILTER
-    Same pattern as the other two tabs but uses
-    data-filter-fury / data-fury attributes.
-    Four categories: us-israel · iran · regional · diplomatic
-    Phase dividers are hidden when a filter is active
-    since they only make sense with all events visible.
-  */
-  // ── Filter: Epic Fury
-  document.querySelectorAll('[data-filter-fury]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('[data-filter-fury]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filterFury;
-      document.querySelectorAll('#timeline-fury .tl-entry').forEach(entry => {
-        if (filter === 'all' || entry.dataset.fury === filter) {
-          entry.classList.remove('hidden');
-        } else {
-          entry.classList.add('hidden');
-        }
-      });
-      document.querySelectorAll('#timeline-fury .phase-divider').forEach(div => {
-        div.style.display = filter === 'all' ? '' : 'none';
-      });
-    });
-  });
-</script>
-
-<style>
-  /* ── LIVE BADGE & UPDATE BOX ── */
-  .tab-btn[data-tab="epicfury"] .tab-date {
-    color: var(--iran);
-    opacity: 1;
-  }
-  .tab-btn[data-tab="epicfury"].active .tab-date {
-    color: var(--iran);
-    opacity: 0.85;
-  }
-  .live-dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--iran);
-    margin-right: 6px;
-    animation: pulse-live 1.5s ease-in-out infinite;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-  }
-  @keyframes pulse-live {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,80,80,0.6); }
-    50% { opacity: 0.6; box-shadow: 0 0 0 4px rgba(255,80,80,0); }
-  }
-  .update-box {
-    position: absolute;
-    top: 28px;
-    right: 60px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 10px 16px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    z-index: 10;
-  }
-  .update-box .update-label {
-    display: block;
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 4px;
-  }
-  .update-box .update-time {
-    color: var(--text);
-    font-size: 11px;
-  }
-  .update-box .update-note {
-    display: block;
-    font-size: 9px;
-    color: var(--muted);
-    margin-top: 3px;
-    font-style: italic;
-  }
-  .source-link {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: var(--accent);
-    text-decoration: none;
-    opacity: 0.7;
-    border-bottom: 1px solid rgba(200,169,110,0.3);
-    transition: opacity 0.15s;
-  }
-  .source-link:hover { opacity: 1; }
-  .tl-sources {
-    display: flex;
-    gap: 12px;
-    margin-top: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .tl-sources-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--border);
-  }
-  .badge-ongoing {
-    background: rgba(255,80,80,0.12);
-    color: var(--iran);
-    border: 1px solid rgba(255,80,80,0.3);
-    animation: none;
-  }
-  .warning-box {
-    background: rgba(255,80,80,0.07);
-    border: 1px solid rgba(255,80,80,0.2);
-    border-radius: 4px;
-    padding: 12px 16px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: #c08080;
-    letter-spacing: 0.5px;
-    margin-bottom: 24px;
-    line-height: 1.7;
-  }
-  .warning-box strong { color: var(--iran); font-weight: 500; }
-</style>
-
 <!-- ══════════════════════════════════════════════
      PANEL 3 — OPERATIONS EPIC FURY / ROARING LION
      This is the "live" tab. It follows the same
@@ -1804,6 +1892,128 @@
       </div>
     </div>
 
+    <!-- Intercepts by platform for Epic Fury — Feb 28 / Mar 1 2026.
+         NOTE: Per-system breakdowns for Israeli air defense (Arrow/David's Sling/Iron Dome)
+         are not yet publicly available with the same granularity as True Promise I.
+         Gulf-state intercept totals are confirmed; Israeli system-level data is pending.
+         This chart will be updated as IDF releases figures. -->
+    <div class="bar-chart-card">
+      <div class="section-title">Intercepts by country/system — Feb 28 · Preliminary
+        <span style="display:block;font-size:9px;color:var(--iran);letter-spacing:1px;margin-top:3px;">⚠ INCOMPLETE · Per-system IDF data not yet released</span>
+      </div>
+      <!-- Gulf states: confirmed figures from defence ministries -->
+      <div class="bar-row">
+        <div class="bar-label">Kuwait (all systems)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--jordan)"></div></div>
+        <div class="bar-val">380</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">UAE (all systems)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--jordan)"></div></div>
+        <div class="bar-val">346</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jordan (all systems)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--jordan)"></div></div>
+        <div class="bar-val">49</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Bahrain (all systems)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:14%;background:var(--jordan)"></div></div>
+        <div class="bar-val">54</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Qatar (all systems)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:17%;background:var(--jordan)"></div></div>
+        <div class="bar-val">66</div>
+      </div>
+      <!-- US: SM-3/SM-6 from Arleigh Burke destroyers; THAAD/PAC-3 at bases -->
+      <div class="bar-row">
+        <div class="bar-label">US Aegis (SM-3/SM-6)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--us)"></div></div>
+        <div class="bar-val">est. "several hundred" (CENTCOM)</div>
+      </div>
+      <!-- Israel: Iron Dome, David's Sling, Arrow — system-level TBD -->
+      <div class="bar-row">
+        <div class="bar-label">Israel (Iron Dome / Arrow / DS)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--israel);opacity:0.45;"></div></div>
+        <div class="bar-val" style="color:var(--muted);">TBD</div>
+      </div>
+      <div style="font-size:9px;color:var(--muted);margin-top:10px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;line-height:1.7;">
+        Overall est. intercept rate: 85–95% (officials) · some impacts confirmed<br>
+        Kuwait: 97 ballistic missiles + 283 drones downed<br>
+        UAE: 137 missiles + 209 drones downed (Day 1)<br>
+        Iran's AD failed to intercept a single US/Israeli munition<br>
+        <span style="color:var(--border);">Per-system IDF figures will be added when released · Update this block</span>
+      </div>
+    </div>
+
+    <!-- ── IRANIAN MISSILES / DRONES LAUNCHED PER DAY — Feb–Mar 2026
+         Data: day 1 (Feb 28) confirmed regional totals from Gulf state defence ministries.
+         Day 2 (Mar 1) figures are still being tallied — marked as preliminary.
+         These are Iran's RETALIATORY launches only (Iran was not the first to strike).
+         Update this chart daily as new figures are released.
+    ── -->
+    <div class="bar-chart-card">
+      <div class="section-title">Iranian missiles / drones launched per day — Feb–Mar 2026
+        <span style="display:block;font-size:9px;color:var(--iran);letter-spacing:1px;margin-top:3px;">⚠ PRELIMINARY · Update daily</span>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Feb 28 (Day 1)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--iran)"></div></div>
+        <div class="bar-val" style="color:var(--iran);">900+</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Mar 1 (Day 2)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:40%;background:var(--iran);opacity:0.6;"></div></div>
+        <div class="bar-val" style="color:var(--muted);">est. 350+ (ongoing)</div>
+      </div>
+      <div style="font-size:9px;color:var(--muted);margin-top:8px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;line-height:1.6;">
+        Day 1 est: UAE alone received 165 ballistic + 541 drones + 2 cruise (UAE MoD)<br>
+        Bahrain: 45 missiles + 9 drones · Kuwait: 97 ballistic + 283 drones · Qatar: 66 missiles<br>
+        Jordan: 49 total · Israel: multiple waves ballistic + UAVs (totals pending IDF release)<br>
+        <span style="color:var(--border);">Total daily tallies will be updated as confirmed · figures across all theatres</span>
+      </div>
+    </div>
+
+    <!-- ── US / ISRAELI STRIKES LAUNCHED PER DAY — Feb–Mar 2026
+         Day 1 (Feb 28): ~200 IAF jets + 550+ munitions (Israel, Op. Roaring Lion);
+         US Tomahawks + B-2 strikes + LUCAS drones (Op. Epic Fury) — US totals not yet broken out.
+         Day 2 (Mar 1): Israel strikes 30+ targets in "heart of Tehran"; US B-2s continue.
+         Update this chart daily. US strikes are shown in gold per the color system.
+    ── -->
+    <div class="bar-chart-card">
+      <div class="section-title">US &amp; Israeli strikes launched per day — Feb–Mar 2026
+        <span style="display:block;font-size:9px;color:var(--iran);letter-spacing:1px;margin-top:3px;">⚠ PRELIMINARY · Update daily</span>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Feb 28 — IAF ★</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--israel)"></div></div>
+        <div class="bar-val" style="color:var(--israel);">550+ munitions</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Feb 28 — US</div>
+        <div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--us)"></div></div>
+        <div class="bar-val" style="color:var(--us);">Tomahawks + B-2 + LUCAS</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Mar 1 — IAF</div>
+        <div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--israel);opacity:0.7;"></div></div>
+        <div class="bar-val" style="color:var(--muted);">30+ targets (ongoing)</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Mar 1 — US B-2</div>
+        <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--us);opacity:0.7;"></div></div>
+        <div class="bar-val" style="color:var(--muted);">Continued (overnight)</div>
+      </div>
+      <div style="font-size:9px;color:var(--muted);margin-top:8px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.5px;line-height:1.6;">
+        ★ Feb 28 IAF: ~200 jets · 550+ munitions · ~500 targets — largest IAF sortie in history<br>
+        US Tomahawks: ship-launched + B-2 from Whiteman AFB, Mo. · LUCAS drones first combat use<br>
+        US total strike count not yet publicly broken out by day · update when CENTCOM releases<br>
+        <span style="color:var(--border);">IAF/US daily figures will be updated as ops continue · this is a live conflict</span>
+      </div>
+    </div>
+
     <!-- Key assassinations -->
     <div class="context-card">
       <div class="section-title">Confirmed leadership killed</div>
@@ -1864,5 +2074,96 @@
 </footer>
 
 </div><!-- /panel-epicfury -->
+
+
+<script>
+  /*
+    ═══════════════════════════════════════════════
+    TAB SWITCHER
+    Reads data-tab from the clicked button, hides all
+    .panel divs, then shows the matching #panel-{tab}.
+    Also scrolls back to top so the header is visible.
+    ═══════════════════════════════════════════════
+  */
+  // ── Tab switching
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + target).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // ── Filter: April 2024
+  document.querySelectorAll('[data-filter-april]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-april]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filterApril;
+      document.querySelectorAll('#timeline-april .tl-entry').forEach(entry => {
+        if (filter === 'all' || entry.dataset.april === filter) {
+          entry.classList.remove('hidden');
+        } else {
+          entry.classList.add('hidden');
+        }
+      });
+      document.querySelectorAll('#timeline-april .phase-divider').forEach(div => {
+        div.style.display = filter === 'all' ? '' : 'none';
+      });
+    });
+  });
+
+  // ── Filter: Twelve Day War
+  document.querySelectorAll('[data-filter-twelve]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-twelve]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filterTwelve;
+      document.querySelectorAll('#timeline-twelve .tl-entry').forEach(entry => {
+        if (filter === 'all' || entry.dataset.twelve === filter) {
+          entry.classList.remove('hidden');
+        } else {
+          entry.classList.add('hidden');
+        }
+      });
+      document.querySelectorAll('#timeline-twelve .phase-divider').forEach(div => {
+        div.style.display = filter === 'all' ? '' : 'none';
+      });
+    });
+  });
+
+  /*
+    EPIC FURY FILTER
+    Same pattern as the other two tabs but uses
+    data-filter-fury / data-fury attributes.
+    Four categories: us-israel · iran · regional · diplomatic
+    Phase dividers are hidden when a filter is active
+    since they only make sense with all events visible.
+  */
+  // ── Filter: Epic Fury
+  document.querySelectorAll('[data-filter-fury]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-fury]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filterFury;
+      document.querySelectorAll('#timeline-fury .tl-entry').forEach(entry => {
+        if (filter === 'all' || entry.dataset.fury === filter) {
+          entry.classList.remove('hidden');
+        } else {
+          entry.classList.add('hidden');
+        }
+      });
+      document.querySelectorAll('#timeline-fury .phase-divider').forEach(div => {
+        div.style.display = filter === 'all' ? '' : 'none';
+      });
+    });
+  });
+</script>
 </body>
 </html>
