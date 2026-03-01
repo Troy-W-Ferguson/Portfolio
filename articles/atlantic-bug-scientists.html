@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bug Scientists Who Saved America — and Might Not Be Around Next Time - The Atlantic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --atlantic-red: #EC1B24;
+            --text-black: #1A1A1A;
+            --text-gray: #6B6B6B;
+            --text-light: #999;
+            --bg: #FFFFFF;
+            --rule-color: #E0E0E0;
+            --link-color: #B4262A;
+            --section-font: 'Instrument Sans', 'Helvetica Neue', sans-serif;
+            --body-font: 'EB Garamond', Georgia, 'Times New Roman', serif;
+            --max-width: 680px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* === UNPUBLISHED BANNER === */
+        .writing-sample-banner {
+            background: var(--atlantic-red);
+            color: #fff;
+            text-align: center;
+            padding: 10px 20px;
+            font-family: var(--section-font);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* === SITE HEADER === */
+        .site-header {
+            border-bottom: 1px solid var(--rule-color);
+            padding: 16px 0;
+            text-align: center;
+        }
+        .site-header .logo {
+            font-family: var(--section-font);
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--text-black);
+            text-decoration: none;
+        }
+
+        body {
+            font-family: var(--body-font);
+            background: var(--bg);
+            color: var(--text-black);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* === ARTICLE HEADER === */
+        .article-header {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 48px 20px 0;
+        }
+        .section-label {
+            font-family: var(--section-font);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--atlantic-red);
+            margin-bottom: 16px;
+            display: block;
+        }
+        .article-title {
+            font-family: var(--body-font);
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--text-black);
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+        .article-dek {
+            font-family: var(--body-font);
+            font-size: 22px;
+            font-weight: 400;
+            line-height: 1.45;
+            color: var(--text-gray);
+            margin-bottom: 28px;
+        }
+        .article-byline {
+            font-family: var(--section-font);
+            font-size: 14px;
+            color: var(--text-gray);
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--rule-color);
+        }
+        .article-byline .author {
+            color: var(--text-black);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* === HERO IMAGE === */
+        .hero-image {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 20px 0;
+        }
+        .hero-image img {
+            width: 100%;
+            display: block;
+        }
+        .hero-image figcaption {
+            font-family: var(--section-font);
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 8px;
+            line-height: 1.5;
+            max-width: var(--max-width);
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-image figcaption a {
+            color: var(--text-light);
+        }
+
+        /* === ARTICLE BODY === */
+        .article-body {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 32px 20px 80px;
+        }
+        .article-body p {
+            font-size: 20px;
+            line-height: 1.75;
+            margin-bottom: 24px;
+            color: var(--text-black);
+        }
+        .article-body p.drop-cap::first-letter {
+            font-size: 68px;
+            float: left;
+            line-height: 0.85;
+            margin-right: 8px;
+            margin-top: 6px;
+            font-weight: 600;
+            color: var(--text-black);
+        }
+        .article-body a {
+            color: var(--link-color);
+            text-decoration: underline;
+            text-decoration-color: rgba(180, 38, 42, 0.3);
+            text-underline-offset: 2px;
+            transition: text-decoration-color 0.2s;
+        }
+        .article-body a:hover {
+            text-decoration-color: var(--link-color);
+        }
+
+        /* Inline source citations */
+        .source-num {
+            font-family: var(--section-font);
+            font-size: 12px;
+            color: var(--link-color);
+            text-decoration: none;
+            vertical-align: super;
+            line-height: 0;
+            margin-left: 1px;
+        }
+        .source-num:hover {
+            text-decoration: underline;
+        }
+
+        /* === SECTION HEADERS === */
+        .article-body h2 {
+            font-family: var(--body-font);
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-top: 48px;
+            margin-bottom: 24px;
+            color: var(--text-black);
+        }
+
+        /* === SECTION DIVIDER === */
+        .section-divider {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 24px;
+            color: var(--text-light);
+            letter-spacing: 12px;
+        }
+
+        /* === TABLE === */
+        .plague-table {
+            width: 100%;
+            margin: 32px 0 40px;
+            border-collapse: collapse;
+            font-size: 16px;
+            line-height: 1.55;
+        }
+        .plague-table caption {
+            font-family: var(--section-font);
+            font-size: 15px;
+            font-weight: 600;
+            text-align: left;
+            margin-bottom: 12px;
+            color: var(--text-black);
+        }
+        .plague-table th {
+            font-family: var(--section-font);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--text-black);
+            color: var(--text-black);
+        }
+        .plague-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--rule-color);
+            vertical-align: top;
+        }
+        .plague-table td:first-child {
+            white-space: nowrap;
+            font-weight: 500;
+            width: 110px;
+        }
+        .plague-table td:nth-child(2) {
+            width: 140px;
+            font-style: italic;
+        }
+        .plague-table .table-sources {
+            font-family: var(--section-font);
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+        .plague-table .table-sources a {
+            color: var(--text-light);
+            text-decoration: underline;
+        }
+
+        /* === INLINE IMAGE === */
+        .inline-figure {
+            margin: 36px 0;
+        }
+        .inline-figure img {
+            width: 100%;
+            display: block;
+        }
+        .inline-figure figcaption {
+            font-family: var(--section-font);
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+        .inline-figure figcaption a {
+            color: var(--text-light);
+        }
+
+        /* === ARTICLE FOOTER === */
+        .article-footer {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px 60px;
+            border-top: 1px solid var(--rule-color);
+        }
+        .article-footer p {
+            font-family: var(--section-font);
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 16px;
+            line-height: 1.5;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .article-title { font-size: 32px; }
+            .article-dek { font-size: 19px; }
+            .article-body p { font-size: 18px; }
+            .article-body h2 { font-size: 24px; }
+            .plague-table { font-size: 14px; }
+            .plague-table td:first-child { white-space: normal; }
+        }
+
+        @media (max-width: 480px) {
+            .article-title { font-size: 28px; }
+            .article-dek { font-size: 17px; }
+            .site-header .logo { font-size: 22px; letter-spacing: 4px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- UNPUBLISHED BANNER -->
+<div class="writing-sample-banner">
+    Unpublished Writing Sample
+</div>
+
+<!-- SITE HEADER -->
+<header class="site-header">
+    <span class="logo">The Atlantic</span>
+</header>
+
+<!-- ARTICLE HEADER -->
+<div class="article-header">
+    <span class="section-label">Planet</span>
+    <h1 class="article-title">The Bug Scientists Who Saved America&mdash;and Might Not Be Around Next Time</h1>
+    <p class="article-dek">America eliminated its worst agricultural pest by accident. It may now be eliminating the scientists who could stop the next one on purpose.</p>
+    <div class="article-byline">
+        By <span class="author">Troy Ferguson</span>
+    </div>
+</div>
+
+<!-- HERO IMAGE -->
+<figure class="hero-image">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7f/1912_Entomological_Congress_Key.jpg" alt="1912 Entomological Congress">
+    <figcaption>The 1912 Entomological Congress. <a href="https://commons.wikimedia.org/wiki/Category:Entomologists#/media/File:1912_Entomological_Congress_Key.jpg">Wikimedia Commons</a></figcaption>
+</figure>
+
+<!-- ARTICLE BODY -->
+<div class="article-body">
+
+    <p class="drop-cap">The Entomological Society of America does not sound like the sort of organization that saves civilizations. Founded in 1889 and headquartered in Annapolis, Maryland, it describes itself as serving &ldquo;the professional and scientific needs of entomologists and people in related disciplines.&rdquo;<a href="https://www.entsoc.org/" class="source-num">&thinsp;1</a> Its nearly 7,000 members study the creatures most people swat away at barbecues. The society publishes peer-reviewed journals with titles that would clear a room at a cocktail party. It holds annual meetings where grown adults present research on mite genitalia and the chemical ecology of bark beetles. Its position statements address such white-knuckle topics as &ldquo;Integrated Pest Management&rdquo; and &ldquo;Entomological Collections.&rdquo;</p>
+
+    <p>If you were designing a front for a secret society of world-savers, something out of <em>A Series of Unfortunate Events</em> where brilliant operatives hide behind the dullest possible institutional cover, you could hardly do better. In Lemony Snicket&rsquo;s novels, the Volunteer Fire Department was not really about fighting fires. Contrarily, the Entomological Society of America is really, genuinely about bugs. But the work those bugs do, and the work the people who study them do, is as close to quietly saving the world as any profession gets.</p>
+
+    <p>This unassuming guild is among the most consequential organizations in American agriculture. Its members helped eradicate the northern giant hornet, the nightmare insect the media dubbed the &ldquo;murder hornet,&rdquo; from U.S. soil. They develop the pest management strategies that protect billions of dollars in crops annually. They track invasive species, study pollinator collapse, and build the early-warning systems that stand between a healthy harvest and a devastated one. They are, in a very real sense, the invisible infrastructure between the American breadbasket and catastrophe.</p>
+
+    <p>What they protect is staggering in scale. The United States has 876 million acres of farmland, and in 2024 crop receipts alone totaled $244.9 billion, with corn and soybeans from the Midwest heartland accounting for nearly half.<a href="https://www.ers.usda.gov/data-products/ag-and-food-statistics-charting-the-essentials/farming-and-farm-income" class="source-num">&thinsp;2</a> This is not an industry that can be offshored. You cannot move the soil of Iowa or the aquifers beneath the Great Plains to a country with cheaper labor. The pests that threaten those fields are here, on this land, evolving in this climate, and only scientists working this ground can stay ahead of them. Entomology is one of the few disciplines where the work is as rooted to American soil as the crops it defends.</p>
+
+    <p>Now that infrastructure is being dismantled. And the timing could not be worse.</p>
+
+    <h2>The Accidental Extinction</h2>
+
+    <p>To understand what America stands to lose, it helps to remember what it once destroyed, entirely by accident.</p>
+
+    <p><em>In the summer of 1875, a cloud descended on the Great Plains. It was not weather.</em> It was the Rocky Mountain locust, <em>Melanoplus spretus</em>, arriving in a swarm so vast it defied comprehension: an estimated 198,000 square miles in area, weighing 27.5 million tons, and comprising roughly 12.5 trillion individual insects, the greatest concentration of animals ever recorded, according to Guinness World Records.<a href="https://en.wikipedia.org/wiki/Rocky_Mountain_locust" class="source-num">&thinsp;3</a> The swarm was larger than the state of California. Settlers reported that it blotted out the sun and turned rivers black with drowned bodies. The locusts ate crops, clothing, leather harnesses, and wool straight off the sheep. As one homesteader put it, they &ldquo;ate everything but the mortgage.&rdquo;<a href="https://www.missoulabutterflyhouse.org/notes-from-the-lab-the-rocky-mountain-locust/" class="source-num">&thinsp;4</a></p>
+
+    <p>The United States government feared the plagues would end westward expansion entirely. Nebraska passed a law requiring every able-bodied person between sixteen and sixty to spend two days killing locusts or face a ten-dollar fine.<a href="https://legendsofkansas.com/grasshopper-plague/" class="source-num">&thinsp;5</a> Settlers built horse-drawn contraptions called &ldquo;hopperdozers&rdquo; to scoop the insects from fields. Nothing worked. The locusts kept coming.</p>
+
+    <p>Then, within thirty years, they were gone.</p>
+
+    <p>The last confirmed specimen was collected in 1902 in Manitoba, Canada. The Rocky Mountain locust, once the most abundant animal on the continent, was extinct.<a href="https://en.wikipedia.org/wiki/Rocky_Mountain_locust" class="source-num">&thinsp;6</a> Jeffrey Lockwood, an entomologist at the University of Wyoming, eventually solved the mystery. The locust&rsquo;s permanent breeding grounds were restricted to sandy soils near streams and rivers in the Rocky Mountains, an area that may have been as small as a few thousand square miles. These happened to be the same fertile river valleys settlers were converting into farms. By plowing the soil, diverting streams for irrigation, and allowing cattle to trample riparian areas, homesteaders unknowingly crushed millions of buried egg cases.<a href="https://www.hcn.org/issues/issue-243/the-death-of-the-super-hopper/" class="source-num">&thinsp;7</a> Lockwood and Larry Debrey described it as possibly the only documented case of a pest species going extinct in the history of agriculture.<a href="https://www.species-extinction.com/rocky-mountain-locust/" class="source-num">&thinsp;8</a></p>
+
+    <p>It was an accident&mdash;a piece of blind ecological luck. The settlers had no idea they were doing it. And it was irreversible. Scientists formally declared <em>Melanoplus spretus</em> extinct in 2014.<a href="https://en.wikipedia.org/wiki/Rocky_Mountain_locust" class="source-num">&thinsp;9</a></p>
+
+    <p>But America&rsquo;s accidental deliverance was just that: American. Across the rest of the world, the locusts never stopped coming.</p>
+
+    <!-- PLAGUE TABLE -->
+    <table class="plague-table">
+        <caption>A Partial History of Locust Plagues</caption>
+        <thead>
+            <tr><th>Year(s)</th><th>Region</th><th>Impact</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>~1300 BCE</td><td>Egypt (biblical)</td><td>Eighth plague of Exodus; Pharaoh&rsquo;s servants begged him to free the Israelites.</td></tr>
+            <tr><td>1874&ndash;1877</td><td>U.S. Great Plains</td><td>12.5 trillion locusts caused $200 million in damage; nearly ended American westward expansion.</td></tr>
+            <tr><td>1889</td><td>South Africa</td><td>Swarms darkened skies for weeks; stripped crops, bark, thatch, and leather from settlements.</td></tr>
+            <tr><td>1915&ndash;1916</td><td>Ottoman Palestine/Syria</td><td>Locusts stripped all vegetation; resulting famine killed an estimated 100,000&ndash;200,000 people.</td></tr>
+            <tr><td>1926&ndash;1934</td><td>North Africa/Middle East</td><td>Multi-year desert locust plague across Saharan Africa; prompted first international pest control cooperation.</td></tr>
+            <tr><td>1931</td><td>U.S. Great Plains</td><td>Migratory Grasshopper (<em>Melanoplus sanguinipes</em>) swarms covering millions of acres compounded Dust Bowl misery; drove mass migration westward.</td></tr>
+            <tr><td>1937</td><td>Colorado, U.S.</td><td>National Guard deployed flamethrowers from trains and dynamite; neither method stopped the swarms.</td></tr>
+            <tr><td>1954</td><td>North Africa to Britain</td><td>Desert locust swarm flew from northwest Africa to Great Britain, crossing 2,000 miles of open ocean.</td></tr>
+            <tr><td>1986&ndash;1989</td><td>Africa (30 nations)</td><td>Worst African locust in decades; $250 million in aid and three million litres of insecticide deployed.</td></tr>
+            <tr><td>2003&ndash;2005</td><td>West Africa</td><td>Largest infestation in fifteen years; destroyed $2.5 billion in crops across the Sahel region.</td></tr>
+            <tr><td>2019&ndash;2021</td><td>East Africa/South Asia</td><td>Worst global outbreak in seventy years; swarms three times Manhattan&rsquo;s size threatened 13 million people.</td></tr>
+            <tr><td>2019&ndash;2022</td><td>Sardinia, Italy</td><td>Worst locust invasion in Italy in 30 years, exacerbated by wheat and corn shortages triggered by the war in Ukraine.</td></tr>
+        </tbody>
+    </table>
+    <p class="plague-table table-sources" style="font-family: var(--section-font); font-size: 12px; color: var(--text-light); margin-top: -24px; margin-bottom: 36px;">Sources: <a href="https://en.wikipedia.org/wiki/Desert_locust">Desert Locust, Wikipedia</a>; <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7480617/">PMC/Frontiers</a>; <a href="https://www.concern.org.uk/news/seven-alarming-facts-about-desert-locusts">Concern Worldwide</a>; <a href="https://en.wikipedia.org/wiki/Locust_Plague_of_1874">Locust Plague of 1874, Wikipedia</a>; <a href="https://www.nationalguard.mil/News/Article-View/Article/575751/in-1937-colorado-guard-used-flamethrowers-and-explosives-against-plague-of-locu/">National Guard</a>; <a href="https://insideclimatenews.org/news/22032020/locust-swarms-climate-change/">Inside Climate News</a>; <a href="https://earth.org/worst-locust-invasion-italy/">Earth.org</a></p>
+
+    <p>The pattern is predictable: drought followed by rain, population surge, swarming, famine. The interval between major outbreaks has not lengthened. Climate change is making it shorter. The difference between America and everywhere else is that America had its accident. The rest of the world needs science.</p>
+
+    <h2>The Pheromone That Makes an Army</h2>
+
+    <p>The Rocky Mountain locust is gone, but the phenomenon that produced it is not. Across Africa, the Middle East, Central Asia, and parts of South America, locust species continue to swarm with devastating regularity. And in the past five years, scientists have made breakthroughs that could, for the first time in human history, give us the ability to prevent locust plagues rather than merely endure them.</p>
+
+    <p>A locust is not a separate species from a grasshopper. It is a grasshopper that has undergone a dramatic behavioral and physical transformation triggered by crowding. When grasshopper populations reach a critical density, usually after drought gives way to rain and food becomes abundant, the insects begin to change. They shift from a solitary phase, in which they avoid one another, to a gregarious phase, in which they actively seek each other out, forming the devastating swarms that can strip a landscape bare. The transformation affects everything: color, body shape, metabolism, brain chemistry, and behavior.<a href="https://www.nsf.gov/news/controlling-destructive-locusts-manipulating-their" class="source-num">&thinsp;10</a></p>
+
+    <p>The trait is reversible. Reduce the density, and within a generation the locusts revert to their solitary, harmless form. The question that has obsessed entomologists for decades is: What is the molecular trigger? What chemical signal tells a grasshopper to become a locust?</p>
+
+    <p>In 2020, Le Kang at the Chinese Academy of Sciences identified the specific chemical that orchestrates this transformation: 4-vinylanisole (4VA), a volatile compound released by locusts themselves that functions as an aggregation pheromone. When grasshopper populations increase, 4VA concentrations rise, attracting more individuals and accelerating the phase transition into swarming. The findings, published in <em>Nature</em>, identified the olfactory receptor (OR35) that detects 4VA and demonstrated that even a single locust produces the compound.<a href="https://www.nature.com/articles/s41586-020-2610-4" class="source-num">&thinsp;11</a><a href="https://www.pnas.org/doi/10.1073/pnas.2306659120" class="source-num">&thinsp;12</a></p>
+
+    <p>By June 2025, Kang&rsquo;s team and collaborators at Peking University had mapped the complete biosynthesis pathway of 4VA, identifying the specific enzymes (4VPMT1 and 4VPMT2) responsible for its production. They also discovered that 4-nitrophenol, a common industrial chemical, could effectively suppress 4VA production and prevent gregarious behavior. A <em>Nature</em> paper published that month described the work as opening the door to &ldquo;targeted and sustainable locust-control strategies&rdquo; that could replace broad-spectrum pesticide spraying with precise molecular interventions.<a href="https://www.nature.com/articles/s41586-025-09110-y" class="source-num">&thinsp;13</a><a href="https://cen.acs.org/biological-chemistry/chemical-communication/break-locust-party-Disrupt-pheromones/103/web/2025/06" class="source-num">&thinsp;14</a></p>
+
+    <p>This is the frontier of a potential revolution in pest control, one that could replace the hundreds of millions of dollars and millions of litres of insecticide currently deployed during locust emergencies with cheap, targeted chemical interventions. But such interventions require ongoing research, field testing, regulatory development, and the kind of sustained scientific infrastructure that takes decades to build.<a href="https://www.nature.com/articles/s41586-025-09110-y" class="source-num">&thinsp;15</a></p>
+
+    <p>American entomologists are part of this effort. The National Science Foundation funded Hojun Song at the University of Central Florida with a $787,000 grant to study the genetic mechanisms underlying locust phase polyphenism, the very research that connects to Kang&rsquo;s pheromone work.<a href="https://www.nsf.gov/news/controlling-destructive-locusts-manipulating-their" class="source-num">&thinsp;16</a></p>
+
+    <p>That was before the cuts.</p>
+
+    <h2>The War on Bug Science</h2>
+
+    <p>In February 2025, the Entomological Society of America issued an extraordinary public statement, the kind of document that scientific societies produce only when they believe something fundamental is under threat. &ldquo;ESA has watched with growing alarm,&rdquo; it read, &ldquo;as successive policy actions have undermined support for the scientific enterprise upon which our members, our disciplines, and the nation depend.&rdquo;<a href="https://www.entsoc.org/news/press-releases/statement-growing-threat-scientific-progress" class="source-num">&thinsp;17</a></p>
+
+    <p>What followed made the alarm look understated. Over the course of 2025, more than 7,800 grants from the National Institutes of Health and the National Science Foundation were cancelled, suspended, or frozen.<a href="https://www.nature.com/immersive/d41586-026-00088-9/index.html" class="source-num">&thinsp;18</a> The proposed FY2026 budget would cut NSF funding by 57 percent. If enacted, that would reduce the NSF&rsquo;s grant success rate from roughly 26 percent to as low as 7 percent, the lowest in the agency&rsquo;s history.<a href="https://www.science.org/content/article/despite-trump-chaos-nsf-avoided-feared-dip-research-financing" class="source-num">&thinsp;19</a> At the USDA&rsquo;s Agricultural Research Service, scientists were dismissed and pest management programs eliminated. &ldquo;Low priority,&rdquo; the administration called them.<a href="https://www.nature.com/immersive/d41586-026-00088-9/index.html" class="source-num">&thinsp;20</a></p>
+
+    <p>A comprehensive survey of nearly 1,400 scientists across ecology, evolution, and marine science, including entomologists, found that 37 percent reported cancellations, reductions, or freezing of research funds. Of those affected, 72 percent reported curtailing fieldwork, and more than half reported laying off staff. About 45 percent said their current work may not be completed. The damage extended beyond laboratories: 66 percent of affected scientists reported negative impacts on their personal health and well-being.<a href="https://esajournals.onlinelibrary.wiley.com/doi/10.1002/fee.2889" class="source-num">&thinsp;21</a><a href="https://www.sciencedirect.com/science/article/pii/S0006320725003465" class="source-num">&thinsp;22</a></p>
+
+    <p>The ESA&rsquo;s executive director, Chris Stelzig, framed the stakes in agricultural terms that should resonate with any American who eats: &ldquo;Entomological research is critical to food security, public health, and environmental sustainability.&rdquo;<a href="https://www.entsoc.org/news/press-releases/statement-growing-threat-scientific-progress" class="source-num">&thinsp;23</a></p>
+
+    <h2>The Dust Bowl With Wings</h2>
+
+    <p>There is an irony here that transcends ordinary policy disagreement, and it is worth stating plainly. The current administration has positioned itself as the champion of the American farmer. Its rhetoric is saturated with appeals to rural values, agricultural self-sufficiency, and the defense of heartland livelihoods.</p>
+
+    <p>And yet the funding cuts his administration has imposed fall most heavily on the very science that keeps American agriculture viable. The entomologists being defunded are not studying abstractions. They are studying the organisms that, if left unchecked, would destroy the crops that feed the nation and underpin a $244.9 billion industry.<a href="https://www.ers.usda.gov/data-products/ag-and-food-statistics-charting-the-essentials/farming-and-farm-income" class="source-num">&thinsp;24</a></p>
+
+    <p>The historical parallel is uncomfortable but precise. In the 1930s, decades of aggressive plowing and overgrazing turned the Great Plains into the Dust Bowl, the most devastating ecological disaster in American agricultural history. The farmers who caused it were not malicious. They were responding to market incentives and government encouragement to put more land under the plow. The science that could have warned them was not yet established. The institutional infrastructure that would eventually heal the land, the Soil Conservation Service, the shelterbelts, the crop rotation regimes, had to be built from scratch after the damage was done.</p>
+
+    <p>What most people have forgotten is that the Dust Bowl was not only wind and soil&mdash;it was also wings. In 1931, as drought tightened its grip on the Great Plains, migratory grasshopper swarms descended on fields already weakened by dust storms, compounding the misery and accelerating the exodus westward. Six years later, in 1937, the Colorado National Guard was called in to fight a locust plague of its own. They mounted flamethrowers on railway cars and detonated dynamite in the fields. Neither worked. What eventually controlled the outbreak was not military force but entomological ingenuity: sawdust laced with poison bait, distributed by scientists who understood the insects&rsquo; feeding behavior.<a href="https://www.nationalguard.mil/News/Article-View/Article/575751/in-1937-colorado-guard-used-flamethrowers-and-explosives-against-plague-of-locu/" class="source-num">&thinsp;25</a></p>
+
+    <p>The locust plagues of the 1870s were a similar inflection point. What stopped them was not policy or military intervention but an accident of agricultural expansion that happened to destroy the locusts&rsquo; breeding habitat. America was lucky once. The science of entomology exists to ensure it doesn&rsquo;t have to be lucky again.</p>
+
+    <!-- INLINE IMAGE -->
+    <figure class="inline-figure">
+        <img src="https://static01.nyt.com/images/2020/05/02/us/02xp-hornets-promo/02xp-hornets-promo-superJumbo.jpg" alt="Entomologist Chris Looney setting makeshift traps for northern giant hornets in Washington State, 2020" onerror="this.style.display='none'; this.parentElement.style.display='none';">
+        <figcaption>Entomologist Chris Looney setting makeshift traps for hornets in Washington State, 2020. <a href="https://www.nytimes.com/2020/05/02/us/asian-giant-hornet-washington.html">The New York Times</a></figcaption>
+    </figure>
+
+    <p>Consider the murder hornet. In December 2024, the Washington State Department of Agriculture and the USDA jointly declared that the northern giant hornet (<em>Vespa mandarinia</em>) had been successfully eradicated from the United States, the first time an established population of an invasive insect has been fully eliminated from the country.<a href="https://www.cnn.com/2024/12/13/science/murder-hornets-eradicated-us/index.html" class="source-num">&thinsp;26</a><a href="https://agr.wa.gov/hornets" class="source-num">&thinsp;27</a></p>
+
+    <p>The hornets posed a direct threat to the honeybees that pollinate more than $15 billion worth of American crops annually. A single hornet can kill a honeybee in seconds. A group of thirty can destroy a hive of 30,000 in hours. WSDA entomologists tracked the hornets to their nests using radio transmitters tied to individual insects with dental floss, a technique that sounds improvised because it was. It also worked. The eradication took years of painstaking fieldwork by scientists with deep institutional knowledge and stable funding.<a href="https://agr.wa.gov/hornets" class="source-num">&thinsp;28</a></p>
+
+    <p>That eradication succeeded because the institutional infrastructure existed. The question is what happens when the next threat arrives and it doesn&rsquo;t.</p>
+
+    <p>The 19th-century settlers who accidentally killed off the Rocky Mountain locust did not plan the extinction. They were simply farming. But their plows happened to destroy a breeding ground, and a biblical plague ended. Today, we face the inverse scenario. The science that could prevent the next plague, from pheromone disruption to genetic phase-change intervention to integrated pest management&mdash;is being defunded not by accident, but by policy choice. Not by farmers who didn&rsquo;t know what they were destroying, but by legislators who know better.</p>
+
+    <h2>A Land of Bounty, for Now</h2>
+
+    <p>The Great Plains that the Rocky Mountain locust once darkened are today among the most productive agricultural regions on Earth. America feeds itself and much of the world, producing roughly 40 percent of the global corn supply and a quarter of the wheat. That abundance is not an accident of geography alone. It is maintained by a web of scientific infrastructure so effective it has become invisible. We do not notice entomologists the way we do not notice dams&mdash;until the flood.</p>
+
+    <p>Climate change is already shifting the ranges and behaviors of pest species in ways that should alarm anyone who eats. Warming temperatures are expanding the habitable zones for crop-destroying insects, extending breeding seasons, and creating conditions that favor outbreaks. Shannon Murphy, a biological sciences professor at the University of Denver who studies how insects respond to rising temperatures, has watched her NSF funding, roughly 67 percent of her total research budget, get eaten away by White House cuts. She typically hires a dozen students to work in her lab over the summer. She expects she will not be able to fund any next year.<a href="https://www.rmpbs.org/blogs/science-environment/funding-cuts-nih-nsh-colorado" class="source-num">&thinsp;29</a> &ldquo;For all these students that aren&rsquo;t getting hired,&rdquo; Murphy told Rocky Mountain PBS, &ldquo;it also makes me worry because these are the future scientists. We&rsquo;re losing a small generation of people who would become the scientists in the future.&rdquo;</p>
+
+    <p>The same research apparatus now facing catastrophic funding cuts is the one tasked with understanding and responding to these shifts. The pipeline is being severed at both ends: established scientists losing grants, and students losing the mentorship that would make them the next generation of defenders, disrupting our current swarm of researchers at the pupil stage.</p>
+
+    <p>The Rocky Mountain locust went extinct because settlers, in their ignorance, destroyed its breeding grounds. It was a lucky accident for American agriculture, one that cannot be repeated and should not be counted on. Somewhere in the grasslands of Central Asia, or the Sahel, or for that matter the warming American West, the conditions are assembling for the next great swarm. Scientists now understand the molecule that triggers it, the receptor that detects it, and the enzyme that produces it. They are closer than any generation in human history to breaking the logic of the locust plague.</p>
+
+    <p>Whether they will be funded to finish the job is another question entirely.</p>
+
+    <p>In the Book of Exodus, the locusts arrived as the eighth plague&mdash;a punishment so devastating that Pharaoh&rsquo;s own servants begged him to relent before the land was destroyed. Moses needed only a staff and the will of God to call them forth. Stopping them required something more difficult: a change of heart by the people in power. The American entomologists who could spare us from the next plague are not asking for divine intervention. They are asking for grant renewals. It remains unclear which is harder to obtain.</p>
+
+</div>
+
+<!-- ARTICLE FOOTER -->
+<div class="article-footer">
+    <p><em>Sources are linked inline throughout. All URLs verified as of February 2026.</em></p>
+</div>
+
+</body>
+</html>

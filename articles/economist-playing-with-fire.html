@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playing with Fire | The Economist style</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --econ-red: #E3120B;
+            --econ-dark: #1D1D1B;
+            --econ-gray: #5C5C5C;
+            --econ-light: #A8A8A8;
+            --econ-rule: #DBDBDB;
+            --econ-bg: #FFFFFF;
+            --body-font: Georgia, 'Times New Roman', serif;
+            --ui-font: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+            --max-w: 600px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--body-font); background: var(--econ-bg); color: var(--econ-dark); -webkit-font-smoothing: antialiased; }
+
+        /* === WRITING SAMPLE BANNER === */
+        .sample-banner { background: var(--econ-red); color: #fff; text-align: center; padding: 10px 20px; font-family: var(--ui-font); font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; position: sticky; top: 0; z-index: 1000; }
+
+        /* === MASTHEAD === */
+        .masthead { border-bottom: 3px solid var(--econ-red); padding: 14px 0; text-align: center; }
+        .masthead-logo { font-family: var(--ui-font); font-size: 15px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: var(--econ-dark); }
+
+        /* === ARTICLE === */
+        .article-wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 20px; }
+
+        /* Section rubric */
+        .rubric { font-family: var(--ui-font); font-size: 14px; font-weight: 700; color: var(--econ-red); text-transform: uppercase; letter-spacing: 1px; margin-top: 36px; margin-bottom: 8px; }
+
+        /* Headline */
+        .headline { font-family: var(--body-font); font-size: 36px; font-weight: 700; line-height: 1.15; color: var(--econ-dark); margin-bottom: 8px; }
+
+        /* Subheadline / rubric line */
+        .subheadline { font-family: var(--body-font); font-size: 19px; font-weight: 400; font-style: italic; line-height: 1.4; color: var(--econ-gray); margin-bottom: 20px; }
+
+        /* Dateline bar */
+        .dateline-bar { border-top: 1px solid var(--econ-rule); border-bottom: 1px solid var(--econ-rule); padding: 8px 0; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: center; }
+        .dateline { font-family: var(--ui-font); font-size: 12px; color: var(--econ-light); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Body */
+        .article-body p { font-size: 18px; line-height: 1.72; margin-bottom: 20px; color: var(--econ-dark); }
+        .article-body p:first-of-type::first-letter { font-size: 52px; float: left; line-height: 0.85; margin-right: 6px; margin-top: 5px; font-weight: 700; color: var(--econ-red); }
+
+        /* Bold subheads within article (Economist style) */
+        .article-body h3 { font-family: var(--body-font); font-size: 22px; font-weight: 700; margin-top: 32px; margin-bottom: 16px; color: var(--econ-dark); }
+
+        /* Links */
+        .article-body a { color: var(--econ-red); text-decoration: none; border-bottom: 1px solid rgba(227,18,11,0.25); transition: border-color 0.2s; }
+        .article-body a:hover { border-color: var(--econ-red); }
+
+        /* Source numbers */
+        .src { font-family: var(--ui-font); font-size: 11px; color: var(--econ-red); vertical-align: super; line-height: 0; text-decoration: none; margin-left: 1px; }
+
+        /* End mark */
+        .end-mark { color: var(--econ-red); font-size: 16px; font-weight: 700; }
+
+        /* Sources section */
+        .sources-section { max-width: var(--max-w); margin: 0 auto; padding: 32px 20px 60px; border-top: 1px solid var(--econ-rule); }
+        .sources-section h4 { font-family: var(--ui-font); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--econ-gray); margin-bottom: 12px; }
+        .sources-section p { font-family: var(--ui-font); font-size: 13px; line-height: 1.6; color: var(--econ-gray); margin-bottom: 6px; }
+        .sources-section a { color: var(--econ-red); text-decoration: none; word-break: break-all; }
+        .sources-section a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .headline { font-size: 28px; }
+            .subheadline { font-size: 17px; }
+            .article-body p { font-size: 17px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sample-banner">Unpublished Writing Sample</div>
+    <header class="masthead"><span class="masthead-logo">The Economist</span></header>
+    <article class="article-wrap">
+        <p class="rubric">Finance &amp; Economics</p>
+        <h1 class="headline">Playing with Fire</h1>
+        <p class="subheadline">From the Great Chicago Fire to data-centre meltdowns, insurers still grapple with risks they cannot model</p>
+        <div class="dateline-bar">
+            <span class="dateline">Writing Sample</span>
+        </div>
+        <div class="article-body">
+            
+<p>When the Great Chicago Fire of 1871 swept through the city, 58 of 202 insurance companies facing claims went bankrupt&mdash;catastrophic events overwhelmed risk models built on predictable patterns.<span class="src">1</span> On November 28th 2025, temperatures inside CME Group&rsquo;s data centre outside Chicago soared past 38&deg;C after cooling systems failed, forcing a ten-hour shutdown of global trading in stock futures, commodities and crude oil&mdash;contracts worth over $11trn daily.<span class="src">2</span> Unlike equity markets distributed across exchanges, CME&rsquo;s concentrated operations created a single point of failure.<span class="src">3</span></p>
+
+<p>Insurers say historical models no longer predict the future. Under layers of actuarial data lies an uncomfortable truth: they never did. The AI systems replacing them are not fixing the problem. They are automating the delusion at scale.</p>
+
+<h3>The fiction of historical certainty</h3>
+
+<p>The industry increasingly describes disasters as &ldquo;unprecedented&rdquo; that are depressingly precedented. The Great Mississippi Flood has been a &ldquo;1,000-year event&rdquo; in 1927, 1993, 2011 and 2019. Each time, models failed. In 2024, as warming exceeded 1.5&deg;C, insured losses surpassed $140bn&mdash;the fifth consecutive year above $100bn.<span class="src">8</span> Climate models indicate losses will worsen, yet insurers treat each hurricane season as a surprise.<span class="src">9</span> Munich Re warns of &ldquo;a growing number of properties becoming uninsurable, unsaleable and ultimately unusable.&rdquo;<span class="src">17</span></p>
+
+<h3>The exchange that could not hedge itself</h3>
+
+<p>The CME outage crystallises the broader failure. The exchange facilitates derivatives trading that helps businesses hedge uncertainty&mdash;yet faced a risk it could neither price nor prevent. CyrusOne, which physically manages the data centre, had reported cooling problems at 4:19am, twelve hours before markets opened.<span class="src">18</span> CME possessed a disaster-recovery plan to switch to its back-up centre in New York but chose not to, expecting a brief outage.<span class="src">2</span></p>
+
+<p>The Insurer termed it &ldquo;a critical vulnerability involving financial markets&rsquo; reliance on outsourced infrastructure and the insurance blind spots that come with it.&rdquo;<span class="src">19</span> Analysts noted the failure was &ldquo;not a black swan&rdquo; but a predictable pattern rooted in cooling-system physics&mdash;the very definition of insurable risk.<span class="src">20</span> AWS, Cloudflare and nuclear-plant security systems all suffered cooling outages in 2025 alone. Yet CME&rsquo;s 2016 sale of its data centre to CyrusOne for $130m, followed by a 15-year leaseback, created what managers termed a &ldquo;novel risk structure&rdquo;&mdash;the sort of outsourced dependency that models struggle to price.<span class="src">21</span> Outsourcing critical operations is ancient commerce. Calling it &ldquo;novel&rdquo; rendered it invisible to actuarial analysis.</p>
+
+<h3>The automation that isn&rsquo;t</h3>
+
+<p>The AI transformation in insurance looks impressive on paper. Some 90% of surveyed insurance organisations now use AI tools, with 44% in full production.<span class="src">15</span> Lemonade, an insurtech darling, processes 55% of claims with zero human intervention; Ping An&rsquo;s AI handles 1.29bn annual customer interactions.<span class="src">16</span></p>
+
+<p>But look at what AI actually automates. Lemonade excels at renters insurance: small, undisputed claims averaging under $1,000, the kind that rarely test a model&rsquo;s assumptions. The hard part remains untouched. Hurricanes Helene and Ian caused $6bn and $60bn in losses respectively&mdash;catastrophic events demanding human judgment at precisely the moment policyholders are most desperate and insurers most exposed.</p>
+
+<p>The result is a two-tier system. Private insurers, armed with AI, hoover up profitable low-risk policies and automate their way to margins. Catastrophic risk migrates to public backstops ill-equipped to absorb it. Florida&rsquo;s Citizens Insurance, the insurer of last resort, peaked at 1.4m policies as private firms retreated from hurricane-prone areas.<span class="src">12, 13</span> The National Flood Insurance Program carries $22.5bn in debt.<span class="src">14</span> AI is not solving the insurance crisis. It is sorting risk&mdash;keeping the easy bets on insurers&rsquo; books and offloading the hard ones onto taxpayers.</p>
+
+<h3>Three crises, one delusion</h3>
+
+<p>Climate volatility, technological fragility, AI&rsquo;s limitations&mdash;these are not separate crises but manifestations of the same problem. Insurance has always required pricing the unpriceable. In 1871, insurers possessed 50 years of fire data; 58 still collapsed. In 2025, CME possessed decades of cooling-failure data; trading still went dark. Complicated models and AI automation are not inferior substitutes for actuarial tables&mdash;they are more honest versions of what insurance has always been: sophisticated betting on unknowables. When risk traders described CME&rsquo;s outage as &ldquo;flying blind,&rdquo; they captured insurance&rsquo;s perpetual condition. The crisis is not unprecedented risk. It is the collapse of a comfortable lie. <span class="end-mark">&#9632;</span></p>
+
+        </div>
+    </article>
+    <div class="sources-section">
+        <h4>Sources Cited</h4>
+        
+<p>(1) Curtis Wright Maps, "The Herald's Pocket Fire Insurance Chart for 1874" <a href="https://curtiswrightmaps.com/product/the-heralds-pocket-fire-insurance-chart-for-1874/">Link</a></p>
+<p>(2) Fortune, "Worldwide markets roiled by data-center snafu in Chicago" (Nov. 2025) <a href="https://fortune.com/2025/11/30/cme-outage-financial-markets-data-center-cyrusone-aurora-illinois/">Link</a></p>
+<p>(3) AInvest, "Infrastructure Risk in Financial Markets" (Nov. 2025) <a href="https://www.ainvest.com/news/infrastructure-risk-financial-markets-lessons-cme-data-center-outage-2511/">Link</a></p>
+<p>(8) WTW, "With 2024 the first year to exceed 1.5°C warming" (Jan. 2025) <a href="https://www.wtwco.com/en-us/news/2025/01/with-2024-the-first-year-to-exceed-1-point-5-degree-celcius-warming-the-insurance-protection-gap">Link</a></p>
+<p>(9) NCBI, "The state of the art and future of climate risk insurance modeling" (Nov. 2024) <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11580769/">Link</a></p>
+<p>(12) Orlando Weekly, "Citizens, Florida's insurer of last resort" (Apr. 2024) <a href="https://www.orlandoweekly.com/news/citizens-floridas-insurer-of-last-resort-on-path-to-hit-17-million-policies-by-2024-34621161/">Link</a></p>
+<p>(13) News4JAX, "Citizens Insurance no longer Florida's largest" (Nov. 2025) <a href="https://www.news4jax.com/news/local/2025/11/14/citizens-insurance-no-longer-floridas-largest-property-insurer-after-major-policy-drop/">Link</a></p>
+<p>(14) Congress.gov CRS, "A Brief Introduction to the National Flood Insurance Program" (2025) <a href="https://www.congress.gov/crs-product/IF10988">Link</a></p>
+<p>(15) Astute Analytica, "Generative AI in Insurance Market" (Jan. 2026) <a href="https://www.globenewswire.com/news-release/2026/01/21/3222926/0/en/Generative-AI-in-Insurance-Market-Projected-to-Reach-US-14-35-Billion-by-2035-Supported-by-Expanding-Enterprise-Adoption-Says-Astute-Analytica.html">Link</a></p>
+<p>(16) Claims Journal, "Lemonade Embraced AI in Claims From Inception" (Mar. 2025) <a href="https://www.claimsjournal.com/news/national/2025/03/07/327670.htm">Link</a></p>
+<p>(17) IMD, "Climate change — The emergence of uninsurable areas" (Aug. 2025) <a href="https://www.imd.org/ibyimd/sustainability/climate-change-the-emergence-of-uninsurable-areas-businesses-must-act-now-or-pay-later/">Link</a></p>
+<p>(18) Bloomberg, "CME Data Center Woes Started 12 Hours Before Markets Opened" (Dec. 2025) <a href="https://www.bloomberg.com/news/articles/2025-12-09/cme-data-center-woes-started-12-hours-before-the-market-opened">Link</a></p>
+<p>(19) The Insurer, "CME outage turns local data centre error into global insurance question" (Dec. 2025) <a href="https://www.theinsurer.com/ti/news/cme-outage-turns-local-data-centre-error-into-global-insurance-question-2025-12-22/">Link</a></p>
+<p>(20) Network World, "Cooling crisis at CME: A wakeup call" (Dec. 2025) <a href="https://www.networkworld.com/article/4099088/cooling-crisis-at-cme-a-wakeup-call-for-modern-infrastructure-governance.html">Link</a></p>
+<p>(21) Bloomberg, "The Private Equity-Owned Data Center Behind Giant CME Outage" (Nov. 2025) <a href="https://www.bloomberg.com/news/articles/2025-11-28/the-private-equity-owned-data-center-behind-cme-s-massive-outage">Link</a></p>
+
+    </div>
+</body>
+</html>

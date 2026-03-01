@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Unprofitable Plot | The Economist style</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --econ-red: #E3120B;
+            --econ-dark: #1D1D1B;
+            --econ-gray: #5C5C5C;
+            --econ-light: #A8A8A8;
+            --econ-rule: #DBDBDB;
+            --econ-bg: #FFFFFF;
+            --body-font: Georgia, 'Times New Roman', serif;
+            --ui-font: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+            --max-w: 600px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--body-font); background: var(--econ-bg); color: var(--econ-dark); -webkit-font-smoothing: antialiased; }
+
+        /* === WRITING SAMPLE BANNER === */
+        .sample-banner { background: var(--econ-red); color: #fff; text-align: center; padding: 10px 20px; font-family: var(--ui-font); font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; position: sticky; top: 0; z-index: 1000; }
+
+        /* === MASTHEAD === */
+        .masthead { border-bottom: 3px solid var(--econ-red); padding: 14px 0; text-align: center; }
+        .masthead-logo { font-family: var(--ui-font); font-size: 15px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: var(--econ-dark); }
+
+        /* === ARTICLE === */
+        .article-wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 20px; }
+
+        /* Section rubric */
+        .rubric { font-family: var(--ui-font); font-size: 14px; font-weight: 700; color: var(--econ-red); text-transform: uppercase; letter-spacing: 1px; margin-top: 36px; margin-bottom: 8px; }
+
+        /* Headline */
+        .headline { font-family: var(--body-font); font-size: 36px; font-weight: 700; line-height: 1.15; color: var(--econ-dark); margin-bottom: 8px; }
+
+        /* Subheadline / rubric line */
+        .subheadline { font-family: var(--body-font); font-size: 19px; font-weight: 400; font-style: italic; line-height: 1.4; color: var(--econ-gray); margin-bottom: 20px; }
+
+        /* Dateline bar */
+        .dateline-bar { border-top: 1px solid var(--econ-rule); border-bottom: 1px solid var(--econ-rule); padding: 8px 0; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: center; }
+        .dateline { font-family: var(--ui-font); font-size: 12px; color: var(--econ-light); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Body */
+        .article-body p { font-size: 18px; line-height: 1.72; margin-bottom: 20px; color: var(--econ-dark); }
+        .article-body p:first-of-type::first-letter { font-size: 52px; float: left; line-height: 0.85; margin-right: 6px; margin-top: 5px; font-weight: 700; color: var(--econ-red); }
+
+        /* Bold subheads within article (Economist style) */
+        .article-body h3 { font-family: var(--body-font); font-size: 22px; font-weight: 700; margin-top: 32px; margin-bottom: 16px; color: var(--econ-dark); }
+
+        /* Links */
+        .article-body a { color: var(--econ-red); text-decoration: none; border-bottom: 1px solid rgba(227,18,11,0.25); transition: border-color 0.2s; }
+        .article-body a:hover { border-color: var(--econ-red); }
+
+        /* Source numbers */
+        .src { font-family: var(--ui-font); font-size: 11px; color: var(--econ-red); vertical-align: super; line-height: 0; text-decoration: none; margin-left: 1px; }
+
+        /* End mark */
+        .end-mark { color: var(--econ-red); font-size: 16px; font-weight: 700; }
+
+        /* Sources section */
+        .sources-section { max-width: var(--max-w); margin: 0 auto; padding: 32px 20px 60px; border-top: 1px solid var(--econ-rule); }
+        .sources-section h4 { font-family: var(--ui-font); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--econ-gray); margin-bottom: 12px; }
+        .sources-section p { font-family: var(--ui-font); font-size: 13px; line-height: 1.6; color: var(--econ-gray); margin-bottom: 6px; }
+        .sources-section a { color: var(--econ-red); text-decoration: none; word-break: break-all; }
+        .sources-section a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .headline { font-size: 28px; }
+            .subheadline { font-size: 17px; }
+            .article-body p { font-size: 17px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sample-banner">Unpublished Writing Sample</div>
+    <header class="masthead"><span class="masthead-logo">The Economist</span></header>
+    <article class="article-wrap">
+        <p class="rubric">Business</p>
+        <h1 class="headline">The Unprofitable Plot</h1>
+        <p class="subheadline">For American bosses, the true value of Davos lies in its failures</p>
+        <div class="dateline-bar">
+            <span class="dateline">Writing Sample</span>
+        </div>
+        <div class="article-body">
+            
+<p>For the chief executive of a Fortune 500 firm, the trip to Davos is a line item that can easily top half a million dollars once membership fees, travel, and security are tallied.<span class="src">1</span> Justifying that expense to a board fixated on quarterly returns requires a better answer than &ldquo;improving the state of the world.&rdquo; The official justification often rests on the promise of high-level networking and discreet dealmaking on the sidelines. But as the gap between the forum&rsquo;s grand pronouncements and global reality widens, a shrewder, more contrarian case for attendance emerges. The true return on investment comes not from the deals made, but from observing the deals that inevitably fall apart.</p>
+
+<p>The conventional wisdom, popular on both the left and the right, is that Davos is a conspiracy&mdash;either of plutocrats cementing their power or of globalists plotting a &ldquo;Great Reset.&rdquo;<span class="src">2</span> Both views flatter the attendees by assuming their competence. The reality is that the World Economic Forum is better understood as an annual, real-world demonstration of the limits of centralised planning.<span class="src">3</span> For American business, this lesson is invaluable.</p>
+
+<p>Consider the challenge of a chief executive trying to build a five-year strategy. No leadership team, however data-driven, can perfectly predict the chaotic interplay of consumer tastes, supply-chain shocks, and regulatory whims. Davos is a macro-version of this corporate reality. It gathers the world&rsquo;s most powerful actors to forge consensus on issues like artificial intelligence (AI) or climate policy, and their public failure to do so is the most valuable piece of market intelligence a boss can acquire.</p>
+
+<p>Take AI regulation. An American tech executive might arrive hoping for a clear global framework. What they witness instead is the profound divergence between Europe&rsquo;s rights-based approach, China&rsquo;s state-controlled model, and America&rsquo;s market-first stance.<span class="src">7</span> The &ldquo;failure&rdquo; of Davos to produce a single standard reveals a crucial truth: the future of AI will be a messy, fragmented, and competitive regulatory landscape.</p>
+
+<p>The strategic takeaway is not to wait for harmony, but to prepare the firm to navigate discord. Similarly, listening to heads of state talk past each other on trade is a clearer signal of future geopolitical risk than any consultant&rsquo;s report.</p>
+
+<p>This perspective reframes Davos from a talking shop into a high-stakes stress test of globalisation itself. It provides a rare, unvarnished look at the friction points in the global system&mdash;the very points where a multinational&rsquo;s strategy is most likely to break. Seeing a European regulator and an American senator disagree in person over a panel discussion on carbon pricing offers more texture and foresight than a dozen briefing notes.</p>
+
+<p>For example, at Davos 2024, the Forum&rsquo;s theme was &ldquo;Rebuilding Trust&rdquo; with an emphasis on following through on climate promises, but few concrete climate pledges emerged from the week&rsquo;s sessions.<span class="src">9</span> Global CO<sub>2</sub> emissions hit a record 37.4 billion tonnes that year&mdash;the highest ever recorded.<span class="src">10</span> A WEF-commissioned report found just 10% of companies were making meaningful progress on their own climate commitments, undermining Davos as a would-be crucible to form the world&rsquo;s future order.<span class="src">12</span></p>
+
+<p>Of course, the trip is not without peril. As the political winds in America blow ever more populist, the reputational risk of being branded a &ldquo;Davos Man&rdquo;&mdash;out of touch with domestic concerns and partial to &ldquo;woke capitalism&rdquo;&mdash;is growing.<span class="src">4, 6</span> This sentiment has even manifested in legislative proposals like the &ldquo;Defund Davos Act&rdquo; in the United States.<span class="src">5</span> The optics of discussing inequality and climate change from behind a cordon of Swiss security while breathing the CO<sub>2</sub> fumes of nearly 1,500 private jets are, to put it mildly, unhelpful.<span class="src">8</span></p>
+
+<p>For now, American bosses can still justify the junket as an efficient, if expensive, exercise in lobbying and strategic intelligence gathering. The core thesis holds: its value lies in observing the limits of elite ambition. But they should be wary. As the cost of being seen as a globalist rises in their most important market, executives may find that the most valuable insight from Davos is deciding not to go at all. <span class="end-mark">&#9632;</span></p>
+
+        </div>
+    </article>
+    <div class="sources-section">
+        <h4>Sources Cited</h4>
+        
+<p>(1) Fortune, "Inside Davos' pricey power club" (Jan. 2024) <a href="https://fortune.com/2026/01/20/how-much-does-it-cost-to-go-to-davos-world-economic-forum/">Link</a></p>
+<p>(2) World Economic Forum &amp; BBC News on "The Great Reset" <a href="https://www.bbc.com/news/blogs-trending-57532368">Link</a></p>
+<p>(3) Stanford Encyclopedia of Philosophy, "Friedrich Hayek" <a href="https://plato.stanford.edu/entries/hayek/">Link</a></p>
+<p>(4) Samuel P. Huntington, "Dead Souls," The National Interest (2004) <a href="https://nationalinterest.org/legacy/dead-souls-the-denationalization-of-the-american-elite-620">Link</a></p>
+<p>(5) U.S. Rep. Scott Perry, "Defund Davos Act" <a href="https://perry.house.gov/news/documentsingle.aspx?DocumentID=402586">Link</a></p>
+<p>(6) The Economist, "What is 'woke capitalism'?" (July 2022) <a href="https://www.economist.com/special-report/2022/07/21/a-broken-system-needs-urgent-repairs">Link</a></p>
+<p>(7) NCSL, "Approaches to Regulating Artificial Intelligence" (July 2024) <a href="https://www.ncsl.org/technology-and-communication/approaches-to-regulating-artificial-intelligence-a-primer">Link</a></p>
+<p>(8) Greenpeace / The Guardian, Private jet emissions at Davos <a href="https://www.theguardian.com/environment/2023/jan/13/private-jet-emissions-quadrupled-davos-2022">Link</a></p>
+<p>(9) Devex, "Davos short on climate pledges" (Jan. 2024) <a href="https://www.devex.com/news/davos-short-on-climate-pledges-but-sparks-talks-on-tech-soil-health-106963">Link</a></p>
+<p>(10) Global Carbon Project, "Fossil fuel CO2 emissions increase again in 2024" <a href="https://globalcarbonbudget.org/fossil-fuel-co2-emissions-increase-again-in-2024/">Link</a></p>
+<p>(12) WEF / PIK / CDP, "Nature and climate at Davos 2025" (Feb. 2025) <a href="https://www.weforum.org/stories/2025/02/nature-and-climate-at-davos-2025-key-takeaways/">Link</a></p>
+
+    </div>
+</body>
+</html>

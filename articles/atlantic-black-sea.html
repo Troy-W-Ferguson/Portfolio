@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Dead Sea That Feeds the World — The Atlantic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --atlantic-red: #EC1B24;
+            --text-black: #1A1A1A;
+            --text-gray: #6B6B6B;
+            --text-light: #999;
+            --bg: #FFFFFF;
+            --rule-color: #E0E0E0;
+            --link-color: #B4262A;
+            --section-font: 'Instrument Sans', 'Helvetica Neue', sans-serif;
+            --body-font: 'EB Garamond', Georgia, 'Times New Roman', serif;
+            --max-width: 680px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        .writing-sample-banner {
+            background: var(--atlantic-red); color: #fff; text-align: center;
+            padding: 10px 20px; font-family: var(--section-font); font-size: 13px;
+            font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .site-header {
+            border-bottom: 1px solid var(--rule-color); padding: 16px 0; text-align: center;
+        }
+        .site-header .logo {
+            font-family: var(--section-font); font-size: 28px; font-weight: 700;
+            letter-spacing: 6px; text-transform: uppercase; color: var(--text-black);
+        }
+        body {
+            font-family: var(--body-font); background: var(--bg); color: var(--text-black);
+            line-height: 1.7; -webkit-font-smoothing: antialiased;
+        }
+
+        .article-header { max-width: var(--max-width); margin: 0 auto; padding: 48px 20px 0; }
+        .section-label {
+            font-family: var(--section-font); font-size: 14px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase; color: var(--atlantic-red);
+            margin-bottom: 16px;
+        }
+        .article-title {
+            font-size: 42px; font-weight: 700; line-height: 1.1; letter-spacing: -0.5px;
+            color: var(--text-black); margin-bottom: 12px;
+        }
+        .article-dek {
+            font-size: 22px; line-height: 1.45; color: var(--text-gray); font-style: italic;
+            margin-bottom: 24px;
+        }
+        .byline-bar {
+            border-top: 1px solid var(--rule-color); border-bottom: 1px solid var(--rule-color);
+            padding: 12px 0; margin-bottom: 32px;
+            font-family: var(--section-font); font-size: 14px; color: var(--text-gray);
+        }
+        .byline-bar .author { font-weight: 600; color: var(--text-black); }
+
+        .article-body { max-width: var(--max-width); margin: 0 auto; padding: 0 20px 80px; }
+        .article-body p { font-size: 20px; line-height: 1.75; margin-bottom: 24px; }
+        .article-body p:first-of-type::first-letter {
+            font-size: 68px; float: left; line-height: 0.8; margin-right: 8px;
+            margin-top: 6px; font-weight: 700; color: var(--atlantic-red);
+        }
+        .article-body h2 {
+            font-size: 28px; font-weight: 700; margin: 48px 0 20px; line-height: 1.25;
+            color: var(--text-black);
+        }
+        .article-body hr {
+            border: none; border-top: 1px solid var(--rule-color); margin: 40px 0;
+        }
+        .article-body a { color: var(--link-color); text-decoration: none; border-bottom: 1px solid rgba(180,38,42,0.25); }
+        .article-body a:hover { border-color: var(--link-color); }
+
+        /* Source citations */
+        .src { font-family: var(--section-font); font-size: 12px; color: var(--atlantic-red);
+            vertical-align: super; line-height: 0; text-decoration: none; margin-left: 1px; }
+        .src:hover { text-decoration: underline; }
+
+        /* Tables */
+        .data-table-wrap { margin: 36px 0; overflow-x: auto; }
+        .data-table-wrap .table-title {
+            font-family: var(--section-font); font-size: 16px; font-weight: 700;
+            color: var(--text-black); margin-bottom: 4px;
+        }
+        .data-table-wrap .table-subtitle {
+            font-family: var(--section-font); font-size: 13px; color: var(--text-gray);
+            margin-bottom: 12px;
+        }
+        .data-table {
+            width: 100%; border-collapse: collapse; font-family: var(--section-font); font-size: 14px;
+        }
+        .data-table thead th {
+            font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+            border-bottom: 2px solid var(--text-black); padding: 8px 12px 8px 0;
+            text-align: left; color: var(--text-gray);
+        }
+        .data-table tbody td {
+            padding: 10px 12px 10px 0; border-bottom: 1px solid var(--rule-color);
+            font-variant-numeric: tabular-nums;
+        }
+        .data-table tbody tr.annualized td {
+            background: #F7F2EC; font-weight: 600;
+        }
+        .data-table tbody tr:last-child td { border-bottom: 2px solid var(--text-black); }
+        .data-table .num { text-align: right; font-weight: 600; }
+        .data-table .neg { color: var(--atlantic-red); }
+        .table-source {
+            font-family: var(--section-font); font-size: 11px; color: var(--text-light);
+            margin-top: 6px;
+        }
+
+        /* Bar charts */
+        .chart-wrap { margin: 36px 0; }
+        .chart-wrap .chart-title {
+            font-family: var(--section-font); font-size: 16px; font-weight: 700;
+            color: var(--text-black); margin-bottom: 4px;
+        }
+        .chart-wrap .chart-subtitle {
+            font-family: var(--section-font); font-size: 13px; color: var(--text-gray);
+            margin-bottom: 16px;
+        }
+        .bar-row {
+            display: flex; align-items: center; margin-bottom: 6px;
+            font-family: var(--section-font); font-size: 13px;
+        }
+        .bar-label { width: 70px; text-align: right; padding-right: 10px; color: var(--text-gray); font-weight: 600; }
+        .bar-track { flex: 1; background: #f0f0f0; height: 28px; border-radius: 2px; position: relative; }
+        .bar-fill { height: 100%; border-radius: 2px; display: flex; align-items: center; padding-left: 8px;
+            color: #fff; font-weight: 600; font-size: 12px; min-width: 40px; }
+        .bar-fill.prewar { background: #4A7C59; }
+        .bar-fill.war { background: var(--atlantic-red); }
+        .bar-fill.recovery { background: #D4883A; }
+
+        .dolphin-bar { height: 100%; border-radius: 2px; display: flex; align-items: center;
+            padding-left: 8px; color: #fff; font-weight: 600; font-size: 12px; min-width: 30px; }
+        .dolphin-bar.baseline { background: #4A7C59; }
+        .dolphin-bar.elevated { background: #D4883A; }
+        .dolphin-bar.crisis { background: var(--atlantic-red); }
+
+        .chart-legend { display: flex; gap: 16px; margin-top: 10px; font-family: var(--section-font); font-size: 11px; color: var(--text-gray); }
+        .legend-swatch { width: 12px; height: 12px; border-radius: 2px; display: inline-block; margin-right: 4px; vertical-align: middle; }
+        .chart-source { font-family: var(--section-font); font-size: 11px; color: var(--text-light); margin-top: 8px; }
+
+        /* Sources section */
+        .sources-section {
+            max-width: var(--max-width); margin: 0 auto; padding: 0 20px 60px;
+            border-top: 1px solid var(--rule-color); padding-top: 32px;
+        }
+        .sources-section h3 {
+            font-family: var(--section-font); font-size: 14px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-gray);
+            margin-bottom: 16px;
+        }
+        .sources-section p {
+            font-family: var(--section-font); font-size: 13px; line-height: 1.6;
+            color: var(--text-gray); margin-bottom: 8px;
+        }
+        .sources-section a { color: var(--link-color); text-decoration: none; word-break: break-all; }
+        .sources-section a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .article-title { font-size: 32px; }
+            .article-dek { font-size: 19px; }
+            .article-body p { font-size: 18px; }
+        }
+        @media (max-width: 480px) {
+            .article-title { font-size: 28px; }
+            .article-dek { font-size: 17px; }
+            .site-header .logo { font-size: 22px; letter-spacing: 4px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="writing-sample-banner">Unpublished Writing Sample</div>
+<header class="site-header"><span class="logo">The Atlantic</span></header>
+
+<div class="article-header">
+    <span class="section-label">Planet</span>
+    <h1 class="article-title">The Dead Sea That Feeds the World</h1>
+    <p class="article-dek">How the war in Ukraine is killing the Black Sea, starving the Global South, and raising the price of bread in America</p>
+    <div class="byline-bar"><span class="author">By Troy Ferguson</span></div>
+</div>
+
+<div class="article-body">
+
+<p>In the fishing village of Rumelifeneri, perched on the rocks where the Bosphorus meets the Black Sea at the northern edge of Istanbul, a forty-two-year-old fisherman named Şefki Deniz sat idle in the spring of 2022 and watched his livelihood drift away. Three sea mines had washed up along the Turkish coast in the space of two weeks. One was spotted by a fisherman floating like half a barrel in the current. Turkish navy divers detonated it. Two more followed. Ninety percent of the fishermen Deniz knew had stopped going out. &ldquo;Across from us, there is Ukraine, Russia,&rdquo; said Şaban Uçar, a thirty-two-year-old fishing captain in the same port. &ldquo;If the wind blows violently from the north, it&rsquo;s only a question of time&rdquo; before the mines arrive.<a class="src" href="https://www.hurriyetdailynews.com/turkish-fishermen-in-black-sea-closely-watch-navy-boats-172860">1</a></p>
+
+<p>Şahin Afsüt, who fishes for whiting, red mullet, and anchovies from a small trawler, fears something worse than lost income. &ldquo;If you hit one,&rdquo; he said of the mines, &ldquo;you&rsquo;re finished.&rdquo;<a class="src" href="https://www.hurriyetdailynews.com/turkish-fishermen-in-black-sea-closely-watch-navy-boats-172860">1</a></p>
+
+<p>The mines are Russian, or Ukrainian, or both. Moscow claimed 420 mines had been placed by Ukraine to defend its coastline and that around ten had broken free. Kyiv dismissed this, accusing the Russian navy of letting them drift to discredit Ukraine. The Turkish navy warned of the risk five days before the first was found.<a class="src" href="https://www.hurriyetdailynews.com/turkish-fishermen-in-black-sea-closely-watch-navy-boats-172860">1</a> The truth hardly matters to the fishermen. The Black Sea, for centuries the engine of their trade, has become a minefield. And the mines are only the most visible danger in a body of water under siege from every direction at once.</p>
+
+<hr>
+
+<p>The Black Sea is the most important body of water most Americans have never thought about. It is also, by volume, the largest mass of lifeless water on earth.</p>
+
+<p>Nearly ninety percent of the Black Sea is anoxic. Below roughly 150 meters, oxygen vanishes and hydrogen sulphide takes over, produced by bacteria that have been decomposing organic matter in the dark for more than seven thousand years, ever since the Mediterranean broke through the Bosphorus and flooded what had been a freshwater lake.<a class="src" href="https://link.springer.com/chapter/10.1007/1-4020-4297-3_04">2</a> The hydrogen sulphide inventory is approximately 4,600 teragrams. It is, in the most literal sense, a dead sea. The diversity of everything we associate with marine life, from anchovy shoals to dolphins, is compressed into a thin oxygenated skin across the surface. And that skin is shrinking. Research from the University of Li&egrave;ge found that the oxygenated boundary has shoaled from 140 meters to 90 meters between 1955 and 2015, a compression of almost forty percent of the Black Sea&rsquo;s habitable space, driven by eutrophication and warming.<a class="src" href="https://www.sciencedaily.com/releases/2016/09/160901093155.htm">3</a></p>
+
+<p>All of the sea&rsquo;s marine life, all of its fisheries, all of the protein it provides to the six nations on its shores, exists in that narrowing band of breathable water. And now a war is being fought on top of it.</p>
+
+<hr>
+
+<p>Mark Twain would not recognize the Black Sea he visited in 1867. He arrived in Odessa aboard the <em>Quaker City</em>, a retired Civil War steamship repurposed as a pleasure cruiser on what has been called the world&rsquo;s first long-distance cruise. Twain was thirty-one, still known as Samuel Clemens, writing dispatches for the <em>San Francisco Alta California</em>. When he climbed the famous stone steps from the harbor to the city above and looked around, he saw something that surprised him.</p>
+
+<p>&ldquo;I have not felt so much at home for a long time as I did when I &lsquo;raised the hill&rsquo; and stood in Odessa for the first time,&rdquo; he wrote in <em>The Innocents Abroad</em>.<a class="src" href="https://odessa-journal.com/public/mark-twains-cruise-to-odessa">4</a> The city reminded him of America. Its roadstead was full of ships. Engineers were building massive stone piers into the sea. It was, Twain wrote, &ldquo;the great grain mart of this particular part of the world.&rdquo;<a class="src" href="https://www.gutenberg.org/files/3176/3176-h/3176-h.htm">5</a></p>
+
+<p>A century and a half later, it still was. Before February 2022, roughly ninety percent of Ukraine&rsquo;s agricultural exports left through Black Sea ports, most of them near Odessa.<a class="src" href="https://www.sciencedirect.com/science/article/abs/pii/S0305750X23002140">6</a> Ukraine was the world&rsquo;s largest exporter of sunflower oil, accounting for fifty percent of global trade, its third-largest exporter of barley, fourth-largest of maize, and fifth of wheat.<a class="src" href="https://www.europarl.europa.eu/RegData/etudes/BRIE/2025/767238/EPRS_BRI(2025)767238_EN.pdf">7</a> Together with Russia, it supplied nearly a third of global wheat and maize and more than half the world&rsquo;s sunflower oil. The grain Twain admired flowing through Odessa&rsquo;s harbor in 1867 had become, by the twenty-first century, a lifeline for some of the most food-insecure nations on earth. Between 2016 and 2021, ninety-two percent of Ukraine&rsquo;s wheat exports went to Asia and Africa.<a class="src" href="https://www.europarl.europa.eu/RegData/etudes/BRIE/2025/767238/EPRS_BRI(2025)767238_EN.pdf">7</a></p>
+
+<p>Then Russia invaded, and the grain stopped moving.</p>
+
+<hr>
+
+<p>The effects were immediate and global. Between mid-February and early March 2022, wheat futures prices surged more than fifty percent. U.S. soft red winter wheat prices spiked by more than eighty percent in the same period.<a class="src" href="https://www.chicagofed.org/publications/chicago-fed-letter/2024/492">8</a> Ukrainian wheat exports dropped by more than ninety percent in the months following the invasion.<a class="src" href="https://www.europarl.europa.eu/RegData/etudes/BRIE/2025/767238/EPRS_BRI(2025)767238_EN.pdf">7</a> An area of farmland the size of Belgium went unplanted in Ukraine&rsquo;s first war season.<a class="src" href="https://www.europarl.europa.eu/RegData/etudes/BRIE/2025/767238/EPRS_BRI(2025)767238_EN.pdf">7</a></p>
+
+<p>The Black Sea Grain Initiative, brokered by Turkey and the United Nations in July 2022, provided temporary relief. Over the following year, roughly 33 million tonnes of agricultural products moved through the corridor, sixty-five percent of it to developing countries.<a class="src" href="https://www.europarl.europa.eu/RegData/etudes/BRIE/2025/767238/EPRS_BRI(2025)767238_EN.pdf">7</a> Then Russia withdrew in July 2023, and Ukraine was forced to establish its own shipping corridor through contested, mined waters. A Panama-flagged cargo ship heading to pick up grain struck a Russian mine in December 2023, injuring two sailors and losing power. The captain maneuvered into shallow water to prevent sinking.<a class="src" href="https://www.euronews.com/2023/12/28/ukrainian-grain-ship-hits-russian-mine-in-black-sea">9</a></p>
+
+<p>The scale of disruption can be measured in tonnage. Before the invasion, Ukraine exported grain and oilseeds at a rate of roughly 5.3 million metric tons per month, with over ninety-six percent moving by sea through its Black Sea ports.<a class="src" href="https://www.csis.org/analysis/setting-record-straight-ukraines-grain-exports">25</a> In the first five months of the war, with ports blockaded, maritime exports collapsed and the sea&rsquo;s share fell from ninety-six to sixty-nine percent. The overall numbers tell the story starkly.</p>
+
+<!-- GRAIN SHIPPING TABLE -->
+<div class="data-table-wrap">
+    <div class="table-title">Ukrainian Grain &amp; Oilseed Exports by Marketing Year</div>
+    <div class="table-subtitle">Million metric tons (MMT). Maritime share via Black Sea and Danube ports.</div>
+    <table class="data-table">
+        <thead>
+            <tr><th>Marketing Year</th><th class="num">Total Exports (MMT)</th><th class="num">Maritime Share</th><th class="num">Change vs. Pre-War Avg.</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>2019/20 (pre-war)</td><td class="num">74.1</td><td class="num">~96%</td><td class="num">&mdash;</td></tr>
+            <tr><td>2020/21 (pre-war)</td><td class="num">60.0</td><td class="num">~96%</td><td class="num">&mdash;</td></tr>
+            <tr><td>2021/22 (invasion begins)</td><td class="num">48.5</td><td class="num">69%</td><td class="num neg">&minus;28%</td></tr>
+            <tr><td>2022/23 (grain deal)</td><td class="num">49.9</td><td class="num">80%</td><td class="num neg">&minus;26%</td></tr>
+            <tr><td>2023/24 (Ukraine corridor)</td><td class="num">63.8</td><td class="num">92%</td><td class="num neg">&minus;5%</td></tr>
+        </tbody>
+    </table>
+    <p class="table-source">Sources: USDA Agricultural Marketing Service, Ukraine Grain Transportation Reports (2023, 2025); CSIS, &ldquo;Setting the Record Straight on Ukraine&rsquo;s Grain Exports&rdquo; (2024)<a class="src" href="https://www.csis.org/analysis/setting-record-straight-ukraines-grain-exports">25</a><a class="src" href="https://www.ams.usda.gov/sites/default/files/media/UkraineJune2025.pdf">26</a></p>
+</div>
+
+<!-- GRAIN BAR CHART -->
+<div class="chart-wrap">
+    <div class="chart-title">The Grain Shock</div>
+    <div class="chart-subtitle">Ukrainian grain &amp; oilseed exports by marketing year (MMT)</div>
+    <div class="bar-row"><span class="bar-label">2019/20</span><div class="bar-track"><div class="bar-fill prewar" style="width:100%">74.1</div></div></div>
+    <div class="bar-row"><span class="bar-label">2020/21</span><div class="bar-track"><div class="bar-fill prewar" style="width:81%">60.0</div></div></div>
+    <div class="bar-row"><span class="bar-label">2021/22</span><div class="bar-track"><div class="bar-fill war" style="width:65%">48.5</div></div></div>
+    <div class="bar-row"><span class="bar-label">2022/23</span><div class="bar-track"><div class="bar-fill war" style="width:67%">49.9</div></div></div>
+    <div class="bar-row"><span class="bar-label">2023/24</span><div class="bar-track"><div class="bar-fill recovery" style="width:86%">63.8</div></div></div>
+    <div class="chart-legend">
+        <span><span class="legend-swatch" style="background:#4A7C59"></span> Pre-war</span>
+        <span><span class="legend-swatch" style="background:#EC1B24"></span> War years</span>
+        <span><span class="legend-swatch" style="background:#D4883A"></span> Partial recovery</span>
+    </div>
+    <p class="chart-source">Sources: USDA AMS; CSIS (2024)</p>
+</div>
+
+<p>The consequences rippled far beyond the Black Sea. A study published in <em>Communications Earth &amp; Environment</em> in 2024 found that the Black Sea Grain Initiative and EU solidarity lanes may have mitigated the 2022 wheat price spike by thirteen percentage points. In a worst-case scenario of simultaneous harvest failures and blocked exports, the researchers projected wheat prices could increase by ninety percent above the 2000&ndash;2020 average.<a class="src" href="https://www.nature.com/articles/s43247-024-01638-7">10</a></p>
+
+<p>For Americans, the war felt distant. It was not. The Federal Reserve Bank of Chicago documented that U.S. wheat futures actually moved more dramatically than European ones in response to the invasion, a counterintuitive finding the researchers attributed to the structure of American derivatives markets and greater speculative access.<a class="src" href="https://www.chicagofed.org/publications/chicago-fed-letter/2024/492">8</a> Wheat prices rose to over nine dollars per bushel in 2022&ndash;23, up from a baseline that the Food and Agricultural Policy Research Institute estimated would have been significantly lower without the war. At their June 2022 peak, the USDA projected prices of $10.75 per bushel.<a class="src" href="https://www.choicesmagazine.org/choices-magazine/theme-articles/turmoil-in-global-food-agricultural-and--input-markets-implications-of-russias-invasion-of-ukraine/impacts-of-russias-invasion-of-ukraine-on-us-agriculture">11</a></p>
+
+<p>American farmers should have profited. Many did not. &ldquo;The issue we&rsquo;re having right now is that input costs are going up even more than the price of wheat,&rdquo; Nicole Berg, the owner of a 21,000-acre farm in Washington State, told CNBC in March 2022.<a class="src" href="https://www.cnbc.com/2022/03/24/russias-ukraine-war-boosts-food-prices-in-us-vexing-farmers-about-planting-more.html">12</a> Russia is the world&rsquo;s top fertilizer exporter. Sanctions and supply disruptions sent global fertilizer prices to record levels. The St. Louis Federal Reserve reported that fertilizer makes up thirty-six percent of the operating costs of growing corn and thirty-five percent of wheat in the United States. At least ten European fertilizer plants shuttered or cut output in July 2022 alone, and the cost rippled into American input markets.<a class="src" href="https://www.stlouisfed.org/on-the-economy/2023/apr/russia-ukraine-war-impact-fertilizer-prices-2022">13</a></p>
+
+<p>Todd Hultman, lead grain market analyst for DTN, put numbers to the pain. &ldquo;In 2021 it was roughly $700 to grow an acre,&rdquo; he told the <em>Washington Post</em>. &ldquo;This year a ballpark is $900 per acre.&rdquo;<a class="src" href="https://www.washingtonpost.com/business/2022/02/26/ukraine-russia-wheat-exports/">14</a> Higher revenues, higher costs, and the same brutal uncertainty that has always defined farming, now amplified by a war 5,000 miles away fought over a body of water that is eighty-seven percent dead.</p>
+
+<hr>
+
+<p>The ecological damage to the Black Sea itself may prove more lasting than the economic shock.</p>
+
+<p>On June 6, 2023, seismic sensors in Ukraine and Romania detected detonations near the city of Nova Kakhovka. The Kakhovka Dam, built in 1956 and holding Europe&rsquo;s largest reservoir by volume at eighteen cubic kilometers, had been destroyed.<a class="src" href="https://ceobs.org/analysing-the-environmental-consequences-of-the-kakhovka-dam-collapse/">15</a> The flood released 14.4 billion cubic meters of water in four days, inundating more than 620 square kilometers, killing dozens, and inflicting an estimated fourteen billion dollars in total damage.<a class="src" href="https://www.science.org/content/article/ukrainian-scientists-tally-grave-environmental-consequences-kakhovka-dam-disaster">16</a></p>
+
+<p>What poured into the Black Sea was not water alone. It was sixty years of industrial sediment. Researchers found the dam breach impacted more than fifty percent of the northwestern Black Sea, producing over fifty times the normal concentrations of chlorophyll and suspended sediment. Severe algal blooms erupted within a week and persisted for twenty days.<a class="src" href="https://www.nature.com/articles/s43247-025-02153-z">17</a> The floodwaters carried heavy metals, PCBs, persistent pesticides, and agricultural chemicals accumulated in the reservoir&rsquo;s sediment over decades. Ukraine&rsquo;s border guard described the sea off Odessa as &ldquo;a garbage dump and animal cemetery,&rdquo; filling with dead livestock, parts of houses, and debris.<a class="src" href="https://time.com/6286291/ukraine-warns-toxic-dam-debris/">18</a></p>
+
+<p>The destruction hit the Black Sea at its most vulnerable point. The northwestern shelf is the sea&rsquo;s most biologically productive zone, where the Danube, Dnieper, and other rivers deliver nutrients that sustain the thin oxygenated layer. It is where Zernov&rsquo;s Phyllophora Fields, critical habitat for juvenile fish, lie on the seafloor.<a class="src" href="https://ceobs.org/analysing-the-environmental-consequences-of-the-kakhovka-dam-collapse/">15</a> The Kakhovka reservoir itself held forty-three fish species; a sturgeon breeding facility that annually stocked 1.5 million juvenile Danube sturgeons, a critically endangered species, was destroyed by a four-meter wave of polluted water.<a class="src" href="https://www.science.org/content/article/ukrainian-scientists-tally-grave-environmental-consequences-kakhovka-dam-disaster">16</a></p>
+
+<hr>
+
+<h2>The Dolphins Are Dying</h2>
+
+<p>In the first weeks of March 2022, dead dolphins began washing ashore on beaches across the Black Sea&mdash;not just in Ukraine, but in Turkey, Bulgaria, and Romania. More than a hundred common dolphins stranded on Turkey&rsquo;s western Black Sea coast within weeks of the invasion, an event the Turkish Marine Research Foundation (TUDAV) described as &ldquo;an extraordinary increase.&rdquo;<a class="src" href="https://www.newsweek.com/dolphins-black-sea-dying-thousands-during-russia-ukraine-war-1726551">27</a> By May 2022, Ukrainian scientists had officially documented roughly 2,500 cetacean carcasses along Black Sea shores. But only an estimated five percent of dead dolphins wash ashore; the rest sink. Extrapolating from that ratio, marine biologist Ivan Rusev of Tuzly Lagoons National Park estimated that between 37,500 and 50,000 dolphins may have died in just the first months of the full-scale war&mdash;roughly fifteen to twenty percent of the total population.<a class="src" href="https://www.valaszonline.hu/2024/07/18/ukraine-russia-war-ivan-rusev-black-sea-emma-strauss-documentary/">28</a></p>
+
+<p>The suspected causes are cumulative and devastating. Military sonar from Russian submarines and warships is the leading hypothesis. Ukraine&rsquo;s Ministry of Ecology said the sonar used to detect enemy vessels directly damages dolphins&rsquo; hearing, disrupting the echolocation they depend on to navigate, communicate, and hunt. Researchers found strandings of dolphins with no cuts, no net marks, no external injuries&mdash;animals that appeared healthy but were simply dead, consistent with severe acoustic trauma.<a class="src" href="https://uwecworkgroup.info/mass-dolphin-mortality-in-the-black-sea-a-military-perspective/">29</a> Floating mines, missile launches from submarines, and the chemical residue of exploded ordnance have added further stress. Then came the Kakhovka Dam collapse in June 2023, which flushed heavy metals, pesticides, and organic pollutants into the sea, contaminating the food chain from zooplankton upward. Scientists at the Schmalhausen Institute of Zoology found toxic industrial substances including naphthalene, phenanthrene, and heptachlor in tissue samples from dead cetaceans after the breach.<a class="src" href="https://ceobs.org/evidencing-a-recovery-plan-for-black-sea-dolphins-and-porpoises/">30</a></p>
+
+<p>Researchers documented 914 cetacean deaths across the western Black Sea in 2022 alone&mdash;2.2 times the average mortality recorded between 2019 and 2021. Harbour porpoises accounted for fifty-nine percent of the dead, common dolphins twenty-six percent, and bottlenose dolphins ten percent.<a class="src" href="https://ceobs.org/evidencing-a-recovery-plan-for-black-sea-dolphins-and-porpoises/">30</a> In December 2024, the scientific committee of ACCOBAMS, the intergovernmental body tasked with protecting cetaceans in the Black and Mediterranean Seas, recommended a post-war recovery plan for Black Sea dolphins&mdash;an acknowledgment that the damage may already be irreversible without intervention.</p>
+
+<!-- DOLPHIN DEATHS TABLE -->
+<div class="data-table-wrap">
+    <div class="table-title">Documented Cetacean Strandings, Western Black Sea</div>
+    <div class="table-subtitle">Recorded deaths across Ukraine, Turkey, Bulgaria, and Romania. Actual mortality is estimated at 10&ndash;20&times; stranding counts.</div>
+    <table class="data-table">
+        <thead>
+            <tr><th>Period</th><th class="num">Documented Strandings</th><th>Key Events</th></tr>
+        </thead>
+        <tbody>
+            <tr class="annualized"><td>2019&ndash;21 avg. (pre-war baseline)</td><td class="num">~415/yr</td><td>Normal bycatch-related mortality; seasonal spring peaks</td></tr>
+            <tr><td>Feb&ndash;May 2022</td><td class="num">~2,500</td><td>Invasion; Russian naval operations peak; sonar exposure across full Black Sea</td></tr>
+            <tr><td>Jun&ndash;Dec 2022</td><td class="num">~370</td><td>BSGI corridor opens; Ukraine retakes Snake Island; some naval activity shifts east</td></tr>
+            <tr class="annualized"><td>2022 total</td><td class="num">914*</td><td>*Verified western coast only (CEOBS/ACCOBAMS); 2.2&times; pre-war average</td></tr>
+            <tr><td>Jan&ndash;May 2023</td><td class="num">~150</td><td>Reduced naval presence in NW Black Sea; lower strandings than spring 2022</td></tr>
+            <tr><td>Apr 2023 (Crimea)</td><td class="num">100+</td><td>Mass die-off in Sevastopol bays; reported via Russian open sources</td></tr>
+            <tr><td>Jun&ndash;Dec 2023</td><td class="num">Elevated</td><td>Kakhovka Dam breach (Jun 6); toxic plume; renewed cetacean deaths off Odesa</td></tr>
+        </tbody>
+    </table>
+    <p class="table-source">Sources: CEOBS, &ldquo;Evidencing a recovery plan for Black Sea dolphins&rdquo; (Dec. 2025)<a class="src" href="https://ceobs.org/evidencing-a-recovery-plan-for-black-sea-dolphins-and-porpoises/">30</a>; UWEC, &ldquo;Mass dolphin mortality: a military perspective&rdquo; (2022)<a class="src" href="https://uwecworkgroup.info/mass-dolphin-mortality-in-the-black-sea-a-military-perspective/">29</a>; V&aacute;lasz Online (2024)<a class="src" href="https://www.valaszonline.hu/2024/07/18/ukraine-russia-war-ivan-rusev-black-sea-emma-strauss-documentary/">28</a>; Newsweek (2022, 2023)<a class="src" href="https://www.newsweek.com/dolphins-black-sea-dying-thousands-during-russia-ukraine-war-1726551">27</a></p>
+</div>
+
+<!-- DOLPHIN BAR CHART -->
+<div class="chart-wrap">
+    <div class="chart-title">Dolphin Deaths Surge with the War</div>
+    <div class="chart-subtitle">Documented cetacean strandings by year, western Black Sea coasts</div>
+    <div class="bar-row"><span class="bar-label">Pre-war avg.</span><div class="bar-track"><div class="dolphin-bar baseline" style="width:17%">~415/yr</div></div></div>
+    <div class="bar-row"><span class="bar-label">2022</span><div class="bar-track"><div class="dolphin-bar crisis" style="width:100%">~2,500</div></div></div>
+    <div class="bar-row"><span class="bar-label">2023</span><div class="bar-track"><div class="dolphin-bar elevated" style="width:22%">Elevated*</div></div></div>
+    <div class="bar-row"><span class="bar-label">2024&ndash;26</span><div class="bar-track"><div class="dolphin-bar" style="width:100%; background: repeating-linear-gradient(45deg, #ddd, #ddd 5px, #eee 5px, #eee 10px); color: #999;">Data unavailable &mdash; monitoring collapse</div></div></div>
+    <div class="chart-legend">
+        <span><span class="legend-swatch" style="background:#4A7C59"></span> Pre-war baseline (~415/yr, 2019&ndash;21 avg.)</span>
+        <span><span class="legend-swatch" style="background:#EC1B24"></span> Crisis year</span>
+        <span><span class="legend-swatch" style="background:#D4883A"></span> Elevated (partial data)</span>
+    </div>
+    <p class="chart-source">*2023 full-year total not yet published; partial data shows continued elevated mortality including post-Kakhovka die-offs. 2024&ndash;26 annual figures remain uncollected due to war-driven monitoring collapse. verified western coast only. Actual mortality est. 10&ndash;20&times; stranding counts. Sources: CEOBS; UWEC; ACCOBAMS</p>
+</div>
+
+<!-- ICEBERG GRAPHIC: What the numbers actually represent -->
+<div class="chart-wrap" style="margin-top: 48px;">
+    <div class="chart-title">What We Count vs. What We Lose</div>
+    <div class="chart-subtitle">The 2022 cetacean death toll, from observed to estimated</div>
+
+    <div style="max-width: 540px; margin: 20px auto 0;">
+        <!-- Layer 1: Western coast verified -->
+        <div style="display: flex; align-items: stretch; margin-bottom: 2px;">
+            <div style="width: 18%; min-height: 52px; background: #2B5A3D; border-radius: 3px 3px 0 0; display: flex; align-items: center; justify-content: center; color: #fff; font-family: var(--section-font); font-weight: 700; font-size: 18px; text-align: center; padding: 8px 4px;">914</div>
+            <div style="flex: 1; padding: 8px 0 8px 14px; display: flex; flex-direction: column; justify-content: center;">
+                <span style="font-family: var(--section-font); font-size: 13px; font-weight: 700; color: var(--text-black);">Verified &mdash; Western coast only</span>
+                <span style="font-family: var(--section-font); font-size: 12px; color: var(--text-gray); line-height: 1.4;">Documented by CEOBS/ACCOBAMS in Bulgaria, Romania &amp; Ukraine&rsquo;s accessible coastline</span>
+            </div>
+        </div>
+        <!-- Layer 2: All shores documented -->
+        <div style="display: flex; align-items: stretch; margin-bottom: 2px;">
+            <div style="width: 42%; min-height: 56px; background: #D4883A; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-family: var(--section-font); font-weight: 700; font-size: 18px; text-align: center; padding: 8px 4px;">~2,500</div>
+            <div style="flex: 1; padding: 8px 0 8px 14px; display: flex; flex-direction: column; justify-content: center;">
+                <span style="font-family: var(--section-font); font-size: 13px; font-weight: 700; color: var(--text-black);">Documented &mdash; All Black Sea shores</span>
+                <span style="font-family: var(--section-font); font-size: 12px; color: var(--text-gray); line-height: 1.4;">Carcasses found on beaches across Ukraine, Turkey, Bulgaria &amp; Romania (Feb&ndash;May 2022)</span>
+            </div>
+        </div>
+        <!-- Layer 3: Estimated true mortality -->
+        <div style="display: flex; align-items: stretch;">
+            <div style="width: 100%; min-height: 64px; background: var(--atlantic-red); border-radius: 0 0 3px 3px; display: flex; align-items: center; justify-content: center; color: #fff; font-family: var(--section-font); font-weight: 700; font-size: 18px; text-align: center; padding: 8px 4px;">37,500 &ndash; 50,000</div>
+        </div>
+        <div style="padding: 6px 0 0 0;">
+            <span style="font-family: var(--section-font); font-size: 13px; font-weight: 700; color: var(--text-black);">Estimated true mortality &mdash; First months of the war</span>
+            <br><span style="font-family: var(--section-font); font-size: 12px; color: var(--text-gray); line-height: 1.4;">Only ~5% of dead cetaceans wash ashore; the rest sink. Extrapolation per U.S. National Oceanographic Agency methodology.</span>
+        </div>
+    </div>
+
+    <p class="chart-source" style="margin-top: 14px;">Sources: CEOBS (Dec. 2025); Royal Society study via Newsweek (May 2023); Válasz Online / Ivan Rusev (2024); UWEC (2022)</p>
+</div>
+
+<p>The numbers require explanation, because each figure conceals a larger one. The roughly 2,500 carcasses documented on Black Sea beaches in the early months of the war represent only the fraction that currents and wind carried ashore; according to the U.S. National Oceanographic Agency&rsquo;s methodology for cetacean mortality events, approximately ninety-five percent of dead dolphins sink and are never recovered, placing the plausible death toll between 37,500 and 50,000 in the war&rsquo;s first months alone.<a class="src" href="https://www.valaszonline.hu/2024/07/18/ukraine-russia-war-ivan-rusev-black-sea-emma-strauss-documentary/">28</a> Even among those that do wash ashore, the war has made systematic counting impossible: the verified figure of 914 covers only the western Black Sea coast&mdash;Bulgaria, Romania, and those stretches of Ukraine&rsquo;s shoreline that scientists can still safely access. Crimea, occupied Ukraine, and large sections of Turkey&rsquo;s eastern Black Sea remain unmonitored, meaning the documented strandings are themselves a subset of a subset.<a class="src" href="https://ceobs.org/evidencing-a-recovery-plan-for-black-sea-dolphins-and-porpoises/">30</a> The true scale of cetacean loss in the Black Sea is, by the admission of every researcher working on it, unknowable while the war continues&mdash;making these numbers not a complete accounting but the visible tip of a much larger catastrophe.</p>
+
+<p>&ldquo;The population can simply not withstand that type of death rate,&rdquo; explained Naomi Rose, a marine mammal expert. Pavlo Goldin, the leading Ukrainian cetacean researcher, identifies a litany of causes: infectious diseases, acoustic and blast injuries, rocket fuel contamination, stress, loss of feeding grounds, and depletion of the food base. The problem, he says, is that all of them are happening simultaneously.<a class="src" href="https://en.necu.org.ua/yak-kahovska-katastrofa-vplynula-na-stan-chornogo-morya/">31</a> The consequences extend far beyond the dolphins themselves. As apex predators, cetaceans exert top-down control on fish populations, regulating the abundance and behavior of forage species like anchovy and sprat. When top predators vanish from a marine ecosystem, the effects cascade downward: prey species can briefly explode in number before crashing as their own food supply is overwhelmed, zooplankton communities destabilize, and algal blooms intensify. The Black Sea has already lived through this sequence once, when industrial-scale dolphin hunting in the mid-twentieth century removed millions of cetaceans and helped trigger the fishery collapses that followed.<a class="src" href="https://tudav.org/en/our-fields/marine-biodiversity/marine-mammals-studies/no-dolphin-no-fish/">33</a> A second mass die-off, this time driven by war, threatens to repeat the cycle&mdash;undermining the long-term viability of the commercial fisheries on which Turkey, Romania, Bulgaria, and Georgia all depend.</p>
+
+<hr>
+
+<p>The fisheries were struggling long before the war. A 2020 study in <em>Frontiers in Marine Science</em> documented what its authors called a &ldquo;dramatic decline&rdquo; in eastern Mediterranean and Black Sea fish stocks, finding that Turkish fisheries in particular were driving the near-total collapse of wild marine fisheries in the basin. The study found that if normal fishing practices continued, all assessed stocks would &ldquo;soon be depleted, whose recovery may be impossible at later dates.&rdquo;<a class="src" href="https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2020.00103/full">19</a></p>
+
+<p>The broader pattern is one of sequential collapse. Top predators disappeared from the Black Sea in the 1960s, simplifying the food web from top-down to bottom-up control. Forage fish populations exploded, zooplankton crashed, phytoplankton bloomed unchecked. Then, in the late 1980s, the invasive comb jelly <em>Mnemiopsis leidyi</em> arrived and devastated fish larvae and eggs, causing further fishery collapse.<a class="src" href="https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2020.00103/full">19</a> Romanian fishing fleets, finding commercial fish stocks so depleted, have largely switched to harvesting sea snails to stay afloat. &ldquo;Economically, they&rsquo;re better off doing that,&rdquo; said Marian Paiu, an ecologist at the Romanian NGO Mare Nostrum.<a class="src" href="https://www.smithsonianmag.com/science-nature/black-sea-dying-and-war-might-push-it-over-edge-180959053/">20</a></p>
+
+<p>The war has compounded every one of these stresses. The European Parliamentary Research Service reported in February 2025 that EU Black Sea fishers landed 8,722 tonnes in 2022, an eighteen-percent decline from the previous year. Romanian vessels, which historically fished near Ukrainian waters, have been advised to stay clear. The EU Black Sea fleet of 1,345 vessels, ninety percent of them small-scale family operations, accounts for a mere three percent of total Black Sea landings. Turkey dominates at nearly sixty-two percent.<a class="src" href="https://www.europarl.europa.eu/RegData/etudes/BRIE/2025/767238/EPRS_BRI(2025)767238_EN.pdf">21</a></p>
+
+<p>But Turkey&rsquo;s fishermen are afraid of the mines.</p>
+
+<hr>
+
+<p>The most troubling dimension of the crisis may be the one that is hardest to see: the collapse of scientific monitoring.</p>
+
+<p>The last international research expedition in the western Black Sea took place in 2020, with researchers from Romania, Bulgaria, Turkey, and Ukraine.<a class="src" href="https://www.mdpi.com/2073-4441/15/6/1012">22</a> Since the invasion, cross-border data sharing has ceased. Black Sea Day meetings have been postponed. The diplomatic infrastructure that underpinned joint environmental monitoring has fractured along the same lines as the war.</p>
+
+<p>In 2023, a paper published in the journal <em>Water</em> by Romanian researcher Radulescu attempted to synthesize environmental conditions and fish stock data for the Black Sea. It was retracted in August 2024. The journal cited significant overlap with uncredited reports, unverifiable data provenance, and the author&rsquo;s disagreement with the retraction findings.<a class="src" href="https://www.mdpi.com/2073-4441/15/6/1012">22</a> The retraction was not just an academic footnote. It was a symptom. The monitoring infrastructure that would normally verify, contextualize, and challenge such findings no longer exists. Nobody is systematically measuring how fast the Black Sea is dying, because the scientists who would do the measuring cannot work together.</p>
+
+<p>Victor Karamushka, head of environmental studies at the National University of Kyiv-Mohyla Academy and a member of Ukraine&rsquo;s coastal zone management advisory group, has watched cooperation erode for years. &ldquo;The interest of governments of littoral countries to the Black Sea environment is just getting weaker and weaker,&rdquo; he told the <em>Smithsonian</em>.<a class="src" href="https://www.smithsonianmag.com/science-nature/black-sea-dying-and-war-might-push-it-over-edge-180959053/">20</a></p>
+
+<p>The General Fisheries Commission for the Mediterranean, operating under the FAO, remains the primary multilateral body for Black Sea fisheries management. It counts Bulgaria, Romania, and Turkey as members, with Georgia, Moldova, and Ukraine as cooperating non-contracting parties. But its ability to enforce conservation measures depends on data that is increasingly unavailable and cooperation that is increasingly impossible.<a class="src" href="https://www.europarl.europa.eu/RegData/etudes/BRIE/2025/767238/EPRS_BRI(2025)767238_EN.pdf">21</a></p>
+
+<p>In January 2024, Turkey, Romania, and Bulgaria signed an agreement in Istanbul to create a trilateral countermine naval group, aiming to establish a security belt free from mines to protect shipping.<a class="src" href="https://www.rferl.org/a/black-sea-mines-ukraine-russia-shipping-turkey-bulgaria-romania/32773644.html">23</a> NATO welcomed the initiative but remains formally uninvolved. The mines continue to drift. The fish continue to decline. The hydrogen sulphide continues to rise.</p>
+
+<hr>
+
+<p>There is a passage near the end of Twain&rsquo;s account of Odessa that resonates differently now. He described the Potemkin Steps, the vast stone staircase descending from the city to the harbor, and noted that from the top, &ldquo;the people toiling up it looked like insects.&rdquo;<a class="src" href="https://www.gutenberg.org/files/3176/3176-h/3176-h.htm">5</a> He was being characteristically wry. But there is something in that image, the smallness of human figures against the scale of the infrastructure they had built, that captures the predicament of the Black Sea today.</p>
+
+<p>The sea is vast. Its problems are vaster. A body of water that is eighty-seven percent hostile to life is simultaneously a critical grain corridor for the world&rsquo;s poorest nations, a fishery in cascading collapse, a minefield, a dumping ground for the chemical residue of a destroyed dam, a graveyard for thousands of dolphins, and the site of an unmonitored ecological emergency. The nations that border it cannot agree on who laid the mines, let alone how to save it.</p>
+
+<p>Before the war, there was a movement in Odessa to erect a statue of Mark Twain, to honor his visit and promote goodwill between the United States and Ukraine.<a class="src" href="https://www.sierrasun.com/news/pine-nuts-mark-twain-in-ukraine/">24</a> The idea seems quaint now. What America is sending Ukraine today is not statues but weapons, and what the Black Sea is sending the world is a warning: that a sea most people cannot find on a map is connected, by grain routes and fertilizer markets and fishery collapses and mine-strewn shipping lanes, to the price of bread on every table on earth.</p>
+
+<p>The Black Sea cannot speak for itself. The scientists who could speak for it have been silenced by war, by funding cuts, by the collapse of the international cooperation on which environmental science depends. The fishermen of Rumelifeneri sit in port and wait. The hydrogen sulphide rises. The grain does not move. And somewhere beneath the surface, in the thin bright layer where life is still possible, the anchovies are running out of room.</p>
+
+</div>
+
+<div class="sources-section">
+<h3>Sources</h3>
+<p>[1] &ldquo;Turkish fishermen in Black Sea closely watch navy boats,&rdquo; <em>H&uuml;rriyet Daily News</em>, April 2022. <a href="https://www.hurriyetdailynews.com/turkish-fishermen-in-black-sea-closely-watch-navy-boats-172860">Link</a></p>
+<p>[2] Neretin, L. et al., &ldquo;Biogeochemistry of the Black Sea Anoxic Zone,&rdquo; NATO Science Series, Springer, 2006. <a href="https://link.springer.com/chapter/10.1007/1-4020-4297-3_04">Link</a></p>
+<p>[3] Capet, A. et al., &ldquo;Decline of the Black Sea oxygen inventory,&rdquo; <em>Biogeosciences</em>, 2016. <a href="https://www.sciencedaily.com/releases/2016/09/160901093155.htm">Link</a></p>
+<p>[4] &ldquo;Mark Twain&rsquo;s cruise to Odessa,&rdquo; <em>Odessa Journal</em>. <a href="https://odessa-journal.com/public/mark-twains-cruise-to-odessa">Link</a></p>
+<p>[5] Twain, M., <em>The Innocents Abroad</em>, 1869. <a href="https://www.gutenberg.org/files/3176/3176-h/3176-h.htm">Link</a></p>
+<p>[6] Devadoss &amp; Ridley, &ldquo;Impacts of the Russian invasion on the global wheat market,&rdquo; <em>World Development</em>, 2023. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0305750X23002140">Link</a></p>
+<p>[7] European Parliamentary Research Service, &ldquo;European marine fishing areas: The Black Sea,&rdquo; Feb. 2025. <a href="https://www.europarl.europa.eu/RegData/etudes/BRIE/2025/767238/EPRS_BRI(2025)767238_EN.pdf">Link</a></p>
+<p>[8] Federal Reserve Bank of Chicago, &ldquo;Why the Russian Invasion Moved Wheat Futures Prices More in the U.S.,&rdquo; 2024. <a href="https://www.chicagofed.org/publications/chicago-fed-letter/2024/492">Link</a></p>
+<p>[9] &ldquo;Ukrainian grain ship hits Russian mine,&rdquo; <em>Euronews</em>, Dec. 2023. <a href="https://www.euronews.com/2023/12/28/ukrainian-grain-ship-hits-russian-mine-in-black-sea">Link</a></p>
+<p>[10] &ldquo;International cooperation was key to stabilize wheat prices,&rdquo; <em>Comms. Earth &amp; Environment</em>, 2024. <a href="https://www.nature.com/articles/s43247-024-01638-7">Link</a></p>
+<p>[11] &ldquo;Impacts of Russia&rsquo;s Invasion on U.S. Agriculture,&rdquo; <em>Choices Magazine</em>. <a href="https://www.choicesmagazine.org/choices-magazine/theme-articles/turmoil-in-global-food-agricultural-and--input-markets-implications-of-russias-invasion-of-ukraine/impacts-of-russias-invasion-of-ukraine-on-us-agriculture">Link</a></p>
+<p>[12] &ldquo;Russia&rsquo;s Ukraine war boosts food prices in U.S.,&rdquo; CNBC, March 2022. <a href="https://www.cnbc.com/2022/03/24/russias-ukraine-war-boosts-food-prices-in-us-vexing-farmers-about-planting-more.html">Link</a></p>
+<p>[13] Federal Reserve Bank of St. Louis, &ldquo;The Russia-Ukraine War&rsquo;s Impact on Fertilizer Prices,&rdquo; April 2023. <a href="https://www.stlouisfed.org/on-the-economy/2023/apr/russia-ukraine-war-impact-fertilizer-prices-2022">Link</a></p>
+<p>[14] &ldquo;American food prices could rise because of Russian invasion,&rdquo; <em>Washington Post</em>, Feb. 2022. <a href="https://www.washingtonpost.com/business/2022/02/26/ukraine-russia-wheat-exports/">Link</a></p>
+<p>[15] CEOBS/UNEP, &ldquo;Analysing the environmental consequences of the Kakhovka dam collapse,&rdquo; July 2023. <a href="https://ceobs.org/analysing-the-environmental-consequences-of-the-kakhovka-dam-collapse/">Link</a></p>
+<p>[16] &ldquo;Ukrainian scientists tally the Kakhovka Dam disaster,&rdquo; <em>Science</em> (AAAS). <a href="https://www.science.org/content/article/ukrainian-scientists-tally-grave-environmental-consequences-kakhovka-dam-disaster">Link</a></p>
+<p>[17] &ldquo;The biogeochemical response of the NW Black Sea to the Kakhovka Dam breach,&rdquo; <em>Comms. Earth &amp; Environment</em>, 2025. <a href="https://www.nature.com/articles/s43247-025-02153-z">Link</a></p>
+<p>[18] &ldquo;Ukraine Warns of Toxic Black Sea,&rdquo; <em>TIME</em>, June 2023. <a href="https://time.com/6286291/ukraine-warns-toxic-dam-debris/">Link</a></p>
+<p>[19] Ulman, A. et al., &ldquo;First Large-Scale Eastern Mediterranean and Black Sea Stock Assessment,&rdquo; <em>Frontiers in Marine Science</em>, 2020. <a href="https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2020.00103/full">Link</a></p>
+<p>[20] &ldquo;The Black Sea Is Dying, and War Might Push it Over the Edge,&rdquo; <em>Smithsonian</em>. <a href="https://www.smithsonianmag.com/science-nature/black-sea-dying-and-war-might-push-it-over-edge-180959053/">Link</a></p>
+<p>[21] EPRS, &ldquo;European marine fishing areas: The Black Sea,&rdquo; Feb. 2025. <a href="https://www.europarl.europa.eu/RegData/etudes/BRIE/2025/767238/EPRS_BRI(2025)767238_EN.pdf">Link</a></p>
+<p>[22] Radulescu, <em>Water</em> (MDPI), 2023 (retracted Aug. 2024). <a href="https://www.mdpi.com/2073-4441/15/6/1012">Link</a></p>
+<p>[23] &ldquo;The Battle To Clear The Black Sea Of Mines,&rdquo; RFE/RL, Jan. 2024. <a href="https://www.rferl.org/a/black-sea-mines-ukraine-russia-shipping-turkey-bulgaria-romania/32773644.html">Link</a></p>
+<p>[24] McAvoy Layne, &ldquo;Pine Nuts: Mark Twain in Ukraine,&rdquo; <em>Sierra Sun</em>, July 2023. <a href="https://www.sierrasun.com/news/pine-nuts-mark-twain-in-ukraine/">Link</a></p>
+<p>[25] CSIS, &ldquo;Setting the Record Straight on Ukraine&rsquo;s Grain Exports,&rdquo; 2024. <a href="https://www.csis.org/analysis/setting-record-straight-ukraines-grain-exports">Link</a></p>
+<p>[26] USDA Agricultural Marketing Service, <em>Ukraine Grain Transportation</em> reports, 2023 &amp; 2025. <a href="https://www.ams.usda.gov/sites/default/files/media/UkraineJune2025.pdf">Link</a></p>
+<p>[27] &ldquo;Dolphins in Black Sea Dying by the Thousands,&rdquo; <em>Newsweek</em>, July 2022. <a href="https://www.newsweek.com/dolphins-black-sea-dying-thousands-during-russia-ukraine-war-1726551">Link</a></p>
+<p>[28] &ldquo;At least 50,000 died: The silent victims of the war in Ukraine,&rdquo; <em>V&aacute;lasz Online</em>, July 2024. <a href="https://www.valaszonline.hu/2024/07/18/ukraine-russia-war-ivan-rusev-black-sea-emma-strauss-documentary/">Link</a></p>
+<p>[29] UWEC, &ldquo;Mass dolphin mortality in the Black Sea: a military perspective,&rdquo; Sept. 2022. <a href="https://uwecworkgroup.info/mass-dolphin-mortality-in-the-black-sea-a-military-perspective/">Link</a></p>
+<p>[30] CEOBS, &ldquo;Evidencing a recovery plan for Black Sea dolphins and porpoises,&rdquo; Dec. 2025. <a href="https://ceobs.org/evidencing-a-recovery-plan-for-black-sea-dolphins-and-porpoises/">Link</a></p>
+<p>[31] National Ecological Center of Ukraine, &ldquo;How the Kakhovka disaster affected the state of the Black Sea,&rdquo; Nov. 2024. <a href="https://en.necu.org.ua/yak-kahovska-katastrofa-vplynula-na-stan-chornogo-morya/">Link</a></p>
+<p>[32] &ldquo;Dolphins as casualties: The environmental costs of Ukraine war,&rdquo; <em>Christian Science Monitor</em>, April 2023. <a href="https://www.csmonitor.com/World/Europe/2023/0419/Dolphins-as-casualties-The-environmental-costs-of-Ukraine-war">Link</a></p>
+<p>[33] TUDAV, &ldquo;No dolphin &mdash; No fish,&rdquo; Turkish Marine Research Foundation. <a href="https://tudav.org/en/our-fields/marine-biodiversity/marine-mammals-studies/no-dolphin-no-fish/">Link</a></p>
+</div>
+
+</body>
+</html>
