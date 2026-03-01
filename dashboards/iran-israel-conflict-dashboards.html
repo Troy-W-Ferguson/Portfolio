@@ -6,6 +6,16 @@
 <title>Iran–Israel Conflict Dashboards</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+  /*
+    ═══════════════════════════════════════
+    GLOBAL DESIGN TOKENS
+    All colors are defined here as CSS custom
+    properties so they cascade consistently
+    across all three dashboard panels.
+    --iran / --israel / --us map to actor colors
+    used for badges, dots, stat numbers, and bars.
+    ═══════════════════════════════════════
+  */
   :root {
     --bg: #0a0a0c;
     --surface: #111116;
@@ -32,7 +42,13 @@
     min-height: 100vh;
   }
 
-  /* ─── TAB NAV ─── */
+  /* ─── TAB NAV ───
+     Sticky top bar that persists while scrolling.
+     Each .tab-btn gets a data-tab attribute that the
+     JS tab-switcher reads to show/hide the right panel.
+     The "Live" tab gets a red date sub-label via its
+     data-tab selector in the Epic Fury <style> block below.
+  ─── */
   .tab-nav {
     position: sticky;
     top: 0;
@@ -171,7 +187,15 @@
     border-bottom: 1px solid var(--border);
   }
 
-  /* ─── TIMELINE ─── */
+  /* ─── TIMELINE ───
+     The core layout structure for all three tabs.
+     Each event (.tl-entry) is a two-column grid:
+     left col = date, right col = content.
+     The vertical line (.tl-line) is an absolutely
+     positioned pseudo-element. The colored dot
+     (.tl-dot) sits on top of that line and is
+     positioned to straddle both columns.
+  ─── */
   .timeline-wrap { grid-column: 1; }
   .timeline { position: relative; }
   .tl-line {
@@ -232,6 +256,13 @@
     margin-bottom: 6px;
     flex-wrap: wrap;
   }
+  /* ─── ACTOR BADGES ───
+     Small pill labels on each timeline entry.
+     Each actor (iran / israel / us / ceasefire / coalition)
+     gets its own color scheme: semi-transparent background,
+     tinted text, and a faint border — all derived from the
+     root color tokens above.
+  ─── */
   .tl-actor-badge {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 9px;
@@ -375,7 +406,12 @@
   .context-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
   .context-item strong { color: var(--accent); font-weight: 500; }
 
-  /* ─── FILTER BAR ─── */
+  /* ─── FILTER BAR ───
+     Buttons above each timeline that show/hide entries
+     by actor. The JS at the bottom of the file handles
+     the actual filtering logic using data-filter-* attributes.
+     Active state uses the gold accent as a filled background.
+  ─── */
   .filter-bar { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
   .filter-btn {
     font-family: 'IBM Plex Mono', monospace;
@@ -473,6 +509,10 @@
   <button class="tab-btn" data-tab="twelveday">
     The Twelve-Day War
     <span class="tab-date">June 2025</span>
+  </button>
+  <button class="tab-btn" data-tab="epicfury">
+    Operations Epic Fury / Roaring Lion
+    <span class="tab-date">Feb–Mar 2026 · Live</span>
   </button>
 </nav>
 
@@ -951,9 +991,9 @@
   <div class="header-sub">Iran–Israel direct conflict, 13–24 June 2025. Israel's Operation Rising Lion, Iran's Operation True Promise III, and US intervention at Fordow, Natanz & Isfahan.</div>
   <div class="header-stats">
     <div class="hstat"><div class="hstat-val">12</div><div class="hstat-label">Days of combat</div></div>
-    <div class="hstat"><div class="hstat-val iran">610+</div><div class="hstat-label">Iranian dead (est.)</div></div>
-    <div class="hstat"><div class="hstat-val israel">28</div><div class="hstat-label">Israeli dead (est.)</div></div>
-    <div class="hstat"><div class="hstat-val">1,550+</div><div class="hstat-label">Iranian missiles & drones fired</div></div>
+    <div class="hstat"><div class="hstat-val">610+</div><div class="hstat-label">Iranian dead (est.)</div></div>
+    <div class="hstat"><div class="hstat-val">28</div><div class="hstat-label">Israeli dead (est.)</div></div>
+    <div class="hstat"><div class="hstat-val iran">1,550+</div><div class="hstat-label">Iranian missiles & drones fired</div></div>
     <div class="hstat"><div class="hstat-val us">3</div><div class="hstat-label">US nuclear sites struck</div></div>
   </div>
 </header>
@@ -1216,6 +1256,14 @@
 </div><!-- /panel-twelveday -->
 
 <script>
+  /*
+    ═══════════════════════════════════════════════
+    TAB SWITCHER
+    Reads data-tab from the clicked button, hides all
+    .panel divs, then shows the matching #panel-{tab}.
+    Also scrolls back to top so the header is visible.
+    ═══════════════════════════════════════════════
+  */
   // ── Tab switching
   const tabBtns = document.querySelectorAll('.tab-btn');
   const panels = document.querySelectorAll('.panel');
@@ -1268,6 +1316,553 @@
       });
     });
   });
+
+  /*
+    EPIC FURY FILTER
+    Same pattern as the other two tabs but uses
+    data-filter-fury / data-fury attributes.
+    Four categories: us-israel · iran · regional · diplomatic
+    Phase dividers are hidden when a filter is active
+    since they only make sense with all events visible.
+  */
+  // ── Filter: Epic Fury
+  document.querySelectorAll('[data-filter-fury]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-fury]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filterFury;
+      document.querySelectorAll('#timeline-fury .tl-entry').forEach(entry => {
+        if (filter === 'all' || entry.dataset.fury === filter) {
+          entry.classList.remove('hidden');
+        } else {
+          entry.classList.add('hidden');
+        }
+      });
+      document.querySelectorAll('#timeline-fury .phase-divider').forEach(div => {
+        div.style.display = filter === 'all' ? '' : 'none';
+      });
+    });
+  });
 </script>
+
+<style>
+  /* ── LIVE BADGE & UPDATE BOX ── */
+  .tab-btn[data-tab="epicfury"] .tab-date {
+    color: var(--iran);
+    opacity: 1;
+  }
+  .tab-btn[data-tab="epicfury"].active .tab-date {
+    color: var(--iran);
+    opacity: 0.85;
+  }
+  .live-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--iran);
+    margin-right: 6px;
+    animation: pulse-live 1.5s ease-in-out infinite;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+  @keyframes pulse-live {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,80,80,0.6); }
+    50% { opacity: 0.6; box-shadow: 0 0 0 4px rgba(255,80,80,0); }
+  }
+  .update-box {
+    position: absolute;
+    top: 28px;
+    right: 60px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    z-index: 10;
+  }
+  .update-box .update-label {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .update-box .update-time {
+    color: var(--text);
+    font-size: 11px;
+  }
+  .update-box .update-note {
+    display: block;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-style: italic;
+  }
+  .source-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    text-decoration: none;
+    opacity: 0.7;
+    border-bottom: 1px solid rgba(200,169,110,0.3);
+    transition: opacity 0.15s;
+  }
+  .source-link:hover { opacity: 1; }
+  .tl-sources {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .tl-sources-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--border);
+  }
+  .badge-ongoing {
+    background: rgba(255,80,80,0.12);
+    color: var(--iran);
+    border: 1px solid rgba(255,80,80,0.3);
+    animation: none;
+  }
+  .warning-box {
+    background: rgba(255,80,80,0.07);
+    border: 1px solid rgba(255,80,80,0.2);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: #c08080;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+  .warning-box strong { color: var(--iran); font-weight: 500; }
+</style>
+
+<!-- ══════════════════════════════════════════════
+     PANEL 3 — OPERATIONS EPIC FURY / ROARING LION
+     This is the "live" tab. It follows the same
+     HTML structure as panels 1 and 2 but adds:
+       · An update-box timestamp in the header
+       · A warning banner below the filter bar
+       · Clickable source links (class="source-link")
+       · A commented-out placeholder entry at the bottom
+         of the timeline for daily manual updates
+     To add new events: paste a new .tl-entry block
+     above the placeholder phase-divider.
+══════════════════════════════════════════════ -->
+<div class="panel" id="panel-epicfury">
+
+<header style="position:relative;">
+  <!-- UPDATE TIMESTAMP BOX
+       Positioned absolutely top-right of the header.
+       Update "March 1, 2026 · 4:00 PM EST" here daily.
+       The pulsing red dot is a CSS animation (pulse-live).
+  -->
+  <div class="update-box">
+    <span class="update-label">Last updated</span>
+    <span class="update-time"><span class="live-dot"></span>March 1, 2026 · 4:00 PM EST</span>
+    <span class="update-note">Updated daily · verify all figures</span>
+  </div>
+
+  <div class="header-label">Conflict Analysis · Middle East · February–March 2026 · Ongoing</div>
+  <h1>Operations <span>Epic Fury</span> / <span>Roaring Lion</span></h1>
+  <div class="header-sub">Joint US-Israeli offensive against Iran, launched 28 February 2026. Targets: Iranian regime leadership, nuclear infrastructure, missile arsenal, naval assets, and IRGC command network. Supreme Leader Khamenei killed. Iran retaliates across the Middle East and Gulf.</div>
+  <div class="header-stats">
+    <div class="hstat"><div class="hstat-val iran">200+</div><div class="hstat-label">Civilians killed in Iran (Red Crescent, Day 1)</div></div>
+    <div class="hstat"><div class="hstat-val">500+</div><div class="hstat-label">Targets struck (Israel, Day 1)</div></div>
+    <div class="hstat"><div class="hstat-val iran">1</div><div class="hstat-label">Supreme Leader killed (Khamenei)</div></div>
+    <div class="hstat"><div class="hstat-val">1</div><div class="hstat-label">Israeli civilian killed (Day 1–2)</div></div>
+    <div class="hstat"><div class="hstat-val us">3</div><div class="hstat-label">US soldiers KIA (Kuwait base, Day 2)</div></div>
+  </div>
+</header>
+
+<div class="main">
+
+  <div class="timeline-wrap">
+    <div class="section-title">Chronological event log — <em style="font-style:normal;color:var(--iran);">ONGOING · Updated daily</em></div>
+
+    <div class="warning-box">
+      <strong>⚠ LIVE CONFLICT NOTICE:</strong> This tab covers an active, ongoing military operation. All casualty figures, strike counts, and territorial claims are <strong>preliminary and subject to revision</strong>. Multiple claims are contested between US/Israeli and Iranian sources. Do not treat any figure as confirmed without independent verification. Last data pull: <strong>March 1, 2026 · 4:00 PM EST</strong>.
+    </div>
+
+    <div class="filter-bar" id="filter-bar-fury">
+      <button class="filter-btn active" data-filter-fury="all">All Events</button>
+      <button class="filter-btn" data-filter-fury="us-israel">US/Israel Offensive</button>
+      <button class="filter-btn" data-filter-fury="iran">Iran Retaliation</button>
+      <button class="filter-btn" data-filter-fury="regional">Regional Spillover</button>
+      <button class="filter-btn" data-filter-fury="diplomatic">Diplomatic</button>
+    </div>
+
+    <div class="timeline" id="timeline-fury">
+      <div class="tl-line"></div>
+
+      <!-- ── CONTEXT ── -->
+      <div class="phase-divider"><span>Context — Road to conflict</span></div>
+
+      <div class="tl-entry" data-fury="diplomatic">
+        <div class="tl-date"><div class="tl-day">6–26</div><div class="tl-month">Feb</div></div>
+        <div class="tl-dot dot-ceasefire"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-ceasefire">Diplomacy</span>
+            <span class="tl-action-type">Nuclear Talks · Collapse</span>
+          </div>
+          <div class="tl-title">US-Iran nuclear talks in Oman & Geneva collapse — strike decision made</div>
+          <div class="tl-details">6 Feb: US and Iran hold indirect nuclear talks in Muscat, Oman. 17 Feb: Resumed in Geneva. 22 Feb: Further session. 26 Feb: Oman FM says "significant progress" reached; Iran reportedly agrees to cap enrichment and allow IAEA verification. Despite this, Trump — briefed by envoys Witkoff and Kushner that Iran's latest counter-proposal was "intended only to buy time" — authorises the strike operation. Iran had rebuilt nuclear infrastructure after Operation Midnight Hammer (June 2025). Trump's 10-day deadline to reach a deal expires on 27 February.</div>
+          <div class="tl-sources">
+            <span class="tl-sources-label">Sources:</span>
+            <a class="source-link" href="https://www.aljazeera.com/news/2026/2/28/us-israel-bomb-iran-a-timeline-of-talks-and-threats-leading-up-to-attacks" target="_blank">Al Jazeera Timeline</a>
+            <a class="source-link" href="https://www.timesofisrael.com/liveblog-february-28-2026/" target="_blank">Times of Israel Liveblog</a>
+            <a class="source-link" href="https://www.globalsecurity.org/military/ops/epic-fury.htm" target="_blank">GlobalSecurity.org</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PHASE I ── -->
+      <div class="phase-divider"><span>Phase I — Opening strikes (28 Feb, ~1:15 AM EST / 9:45 AM IRST)</span></div>
+
+      <!-- US/Israel opening strikes -->
+      <div class="tl-entry" data-fury="us-israel">
+        <div class="tl-date"><div class="tl-day">28</div><div class="tl-month">Feb</div></div>
+        <div class="tl-dot dot-us-israel"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-us-israel">US + Israel</span>
+            <span class="tl-action-type">Offensive · Opening Salvo — Ops Epic Fury / Roaring Lion</span>
+          </div>
+          <div class="tl-title">Operations Epic Fury & Roaring Lion launched — ~200 IAF jets open with "Genesis"; US strikes separately via Tomahawks, B-2 bombers, HIMARS & LUCAS drones</div>
+          <div class="tl-details">Joint US-Israeli campaign begins at 9:45 AM Tehran time, but the two nations execute distinct and separately attributed strike packages. <strong>Israel (Op. Roaring Lion):</strong> The IAF's opening phase — codenamed "Genesis" — is described by the IDF as "the largest strike sortie in the history of the Israeli Air Force." Roughly 200 IAF fighter jets drop 550+ munitions on ~500 targets, focusing on ballistic missile launchers and air defense systems in western and central Iran. IAF Commander Maj. Gen. Tomer Bar tells pilots afterwards: "We have just concluded one of the most significant flyovers in the history of the Israeli Air Force." <strong>US (Op. Epic Fury):</strong> A separate but coordinated package — B-2 Spirit stealth bombers fly from Whiteman AFB, Missouri and strike hardened missile facilities with 2,000 lb. bombs; US Navy warships launch Tomahawk cruise missiles; HIMARS fires from land; and Task Force Scorpion Strike deploys LUCAS (Low-cost Unmanned Combat Attack System) drones in their first-ever combat use. Two carrier strike groups, USS Abraham Lincoln and USS Gerald R. Ford, support the operation. Combined strikes hit: Tehran (government quarter, presidential palace, intelligence and defense ministries, Khamenei compound), Mehrabad, Isfahan nuclear site, Fordow, Natanz, Qom, Karaj, Kermanshah, Tabriz, Bandar Abbas and Konarak Naval Base (satellite imagery confirms vessels burning). Cyber operations simultaneously disrupt Iranian internet and communications. CENTCOM calls it "the largest regional concentration of American military firepower in a generation."</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Tehran, Isfahan, Fordow, Natanz, Qom, Karaj, Kermanshah, Tabriz, Bandar Abbas, Konarak</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span><strong>IAF:</strong> ~200 F-35I/F-15 jets, 550+ munitions, ~500 targets · <strong>US:</strong> B-2 bombers · Tomahawk TLAM · HIMARS · LUCAS drones (first combat use)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🛡</span>Iranians' AD largely pre-suppressed; CENTCOM intercepts hundreds of retaliatory drones/missiles</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">201 Iranian civilians killed, 747 injured (Red Crescent, Day 1) · 40+ senior officials killed (CBS intelligence source)</span></span>
+          </div>
+          <div class="tl-sources">
+            <span class="tl-sources-label">Sources:</span>
+            <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a>
+            <a class="source-link" href="https://news.usni.org/2026/02/28/u-s-israel-launch-operation-epic-fury-against-iran-tehran-retaliates-across-region" target="_blank">USNI News</a>
+            <a class="source-link" href="https://www.csis.org/analysis/operation-epic-fury-and-remnants-irans-nuclear-program" target="_blank">CSIS</a>
+            <a class="source-link" href="https://aviationweek.com/defense/israel-joins-us-operation-epic-fury-new-fighting-iran" target="_blank">Aviation Week</a>
+            <a class="source-link" href="https://www.breitbart.com/politics/2026/02/28/largest-military-flyover-iaf-history-200-jets-strike-500-targets-iran/" target="_blank">IDF/Breitbart (IAF figures)</a>
+            <a class="source-link" href="https://www.flightglobal.com/military-uavs/us-deploys-iranian-derived-strike-drones-in-operation-epic-fury/166480.article" target="_blank">FlightGlobal (LUCAS)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Khamenei killed -->
+      <div class="tl-entry" data-fury="us-israel">
+        <div class="tl-date"><div class="tl-day">28</div><div class="tl-month">Feb</div></div>
+        <div class="tl-dot dot-israel"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-israel">Israel (IAF)</span>
+            <span class="tl-action-type">Targeted Assassination · Supreme Leader</span>
+          </div>
+          <div class="tl-title">Supreme Leader Ayatollah Ali Khamenei killed — his compound reduced to rubble</div>
+          <div class="tl-details">An Israeli airstrike hits Khamenei's Tehran compound and official residence. Satellite imagery confirms the building reduced to rubble with black smoke rising. Netanyahu says there are "growing signs" of his death, later confirmed. Khamenei (86) is killed along with his daughter, son-in-law, and grandson. Iranian state media initially denies then confirms death late on 28 Feb / early 1 March. Also confirmed killed: Security Council Secretary Ali Shamkhani, Defense Minister Aziz Nasirzadeh, SPND chief Hossein Jabal Amelian, former SPND head Reza Mozaffari-Nia, and military office chief Mohammad Shirazi. On 1 March, Chief of Staff Gen. Abdolrahim Mousavi also confirmed dead by Iranian state media. Iran declares 40 days of national mourning. Grand Ayatollah Makarem Shirazi (99) issues fatwa calling Khamenei's death "the religious duty of all Muslims" to avenge.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Khamenei compound, Tehran (35.69°N, 51.42°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Israeli precision air-launched munitions (confirmed by satellite, Israeli intelligence)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">Khamenei + family + 6+ top security officials confirmed killed; thousands of IRGC personnel casualties reported</span></span>
+          </div>
+          <div class="tl-sources">
+            <span class="tl-sources-label">Sources:</span>
+            <a class="source-link" href="https://www.npr.org/2026/02/28/nx-s1-5730158/israel-iran-strikes-trump-us" target="_blank">NPR</a>
+            <a class="source-link" href="https://www.cbsnews.com/live-updates/israel-us-attack-iran-trump-says-major-combat-operations/" target="_blank">CBS News</a>
+            <a class="source-link" href="https://www.timesofisrael.com/liveblog-february-28-2026/" target="_blank">Times of Israel</a>
+            <a class="source-link" href="https://www.aljazeera.com/news/2026/3/1/us-israel-attacks-on-iran-day-2-khamenei-is-killed-iran-retaliates" target="_blank">Al Jazeera</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PHASE II ── -->
+      <div class="phase-divider"><span>Phase II — Iranian retaliation (28 Feb, hours after strikes)</span></div>
+
+      <!-- Iran retaliates on Israel -->
+      <div class="tl-entry" data-fury="iran">
+        <div class="tl-date"><div class="tl-day">28</div><div class="tl-month">Feb</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-iran">Iran (IRGC)</span>
+            <span class="tl-action-type">Retaliation · Israel</span>
+          </div>
+          <div class="tl-title">Iran fires missiles at Israel — residential building near Jerusalem struck; one woman killed</div>
+          <div class="tl-details">Iran launches ballistic missiles at Israeli population centers. A direct hit on a residential building in Beit Shemesh (near Jerusalem) kills one woman in her 50s and injures ~18. Separate missile strikes near Tel Aviv injure ~27 people (2 moderate, 25 mild). Another strike near Jerusalem injures ~20 (including a 10-year-old girl, critically). MDA dispatched to dozens of scenes across Israel. Total Day 1–2: 1 Israeli civilian killed, 121 injured across Israel. Israel's layered air defense intercepts most; IDF says more than 10 Iranian drones also intercepted.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Beit Shemesh, Tel Aviv area, Jerusalem area — Israel-wide</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Ballistic missiles + drones</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🛡</span>Iron Dome, Arrow, David's Sling; CENTCOM defends regional bases</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">1 killed (Beit Shemesh), 121 injured across Israel (Day 1–2)</span></span>
+          </div>
+          <div class="tl-sources">
+            <span class="tl-sources-label">Sources:</span>
+            <a class="source-link" href="https://www.cbsnews.com/live-updates/israel-us-attack-iran-trump-says-major-combat-operations/" target="_blank">CBS News</a>
+            <a class="source-link" href="https://www.cnn.com/world/live-news/israel-iran-attack-02-28-26-hnk-intl" target="_blank">CNN Live</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Iran regional retaliation — Gulf states -->
+      <div class="tl-entry" data-fury="regional">
+        <div class="tl-date"><div class="tl-day">28</div><div class="tl-month">Feb</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-iran">Iran (IRGC)</span>
+            <span class="tl-action-type">Retaliation · Regional — US Bases & Gulf States</span>
+          </div>
+          <div class="tl-title">Iran strikes US bases across Gulf + UAE, Bahrain, Kuwait, Qatar, Jordan, Saudi Arabia, Iraq</div>
+          <div class="tl-details">Iran launches one of the broadest regional retaliatory barrages in its history, targeting US military installations and neighbouring countries simultaneously. Key strikes confirmed: US 5th Fleet HQ, Manama Bahrain (smoke reported, no US casualties per CENTCOM); Al Dhafra AB, UAE; Al Udeid AB, Qatar (11 explosions heard over Doha, 16 Qatari injuries); Ali Al Salem AB, Kuwait (3 US soldiers KIA, 5 seriously wounded — CENTCOM confirms); Bahrain Crowne Plaza Hotel struck by drone (fire, guests evacuated); Dubai International Airport terminal damaged (4 workers injured, flights suspended indefinitely); Kuwait International Airport struck (drone, damage confirmed); Abu Dhabi — drone intercepted near Etihad Towers/Israeli embassy (debris injures a woman and child). Iran also fires on US assets in Jordan, Saudi Arabia, Iraq (2 PMF fighters killed, Jurf al-Sakhar). Oman's Duqm port struck by 2 drones (1 injured). Cyprus — British military bases targeted. Iranian missiles fired at Iraq and Syria.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Bahrain · UAE · Kuwait · Qatar · Jordan · Saudi Arabia · Iraq · Oman · Cyprus · Israel</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>165 ballistic missiles + 541 drones + 2 cruise missiles (UAE totals alone) · Wider totals still tallying</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">3 US KIA (Kuwait); 1 killed + 32 injured (Kuwait total); 3 killed + 58 injured (UAE); 16 injuries (Qatar); PMF 2+ KIA (Iraq)</span></span>
+          </div>
+          <div class="tl-sources">
+            <span class="tl-sources-label">Sources:</span>
+            <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a>
+            <a class="source-link" href="https://news.usni.org/2026/02/28/u-s-israel-launch-operation-epic-fury-against-iran-tehran-retaliates-across-region" target="_blank">USNI News</a>
+            <a class="source-link" href="https://www.aljazeera.com/news/liveblog/2026/2/28/live-israel-launches-attacks-on-iran-multiple-explosions-heard-in-tehran" target="_blank">Al Jazeera Live</a>
+            <a class="source-link" href="https://www.pbs.org/newshour/world/live-updates-u-s-and-israel-attack-iran" target="_blank">PBS News Live</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Strait of Hormuz closure -->
+      <div class="tl-entry" data-fury="regional">
+        <div class="tl-date"><div class="tl-day">28</div><div class="tl-month">Feb</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-iran">Iran</span>
+            <span class="tl-action-type">Economic Warfare · Strait of Hormuz</span>
+          </div>
+          <div class="tl-title">Strait of Hormuz closed — 150 oil tankers stranded; Dubai International Airport halted</div>
+          <div class="tl-details">Iran effectively closes the Strait of Hormuz, through which ~20% of global oil supply transits. 150 freight ships including oil tankers stall behind the strait. Dubai International Airport — the world's busiest for international travel — halts all flights indefinitely. Dubai World Central also closed. Qatar Airways, El Al, Emirates, and most major carriers cancel or suspend Middle East routes. Airspace closed across Israel, UAE, Qatar, Kuwait, Iraq, Bahrain, southern Syria. Multiple governments issue evacuation orders for citizens in the region. Saudi Arabia condemns Iranian strikes as a breach of its neighbours' sovereignty.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Strait of Hormuz · Dubai International Airport · Regional airspace</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">Economic impact ongoing; oil markets disrupted; 150+ tankers stalled</span></span>
+          </div>
+          <div class="tl-sources">
+            <span class="tl-sources-label">Sources:</span>
+            <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a>
+            <a class="source-link" href="https://www.pbs.org/newshour/world/live-updates-u-s-and-israel-attack-iran" target="_blank">PBS Live</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PHASE III ── -->
+      <div class="phase-divider"><span>Phase III — Day 2 escalation (1 March 2026)</span></div>
+
+      <!-- Israel second wave Tehran -->
+      <div class="tl-entry" data-fury="us-israel">
+        <div class="tl-date"><div class="tl-day">1</div><div class="tl-month">Mar</div></div>
+        <div class="tl-dot dot-israel"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-israel">Israel (IAF)</span>
+            <span class="tl-action-type">Offensive · Wave 2 — "Heart of Tehran"</span>
+          </div>
+          <div class="tl-title">Israel strikes "heart of Tehran" in second wave — 30+ targets including missile arrays and AD systems</div>
+          <div class="tl-details">IDF announces first formal strikes under the "Operation Roaring Lion" name label for public communication. Israel strikes 30+ targets in western and central Iran targeting Iran's ballistic missile array and air defense systems. IDF states attacks will continue against "air defence installations, missile sites, military headquarters, and other regime targets." Strikes on Iraq also reported — Israeli attacks on military installations in Jurf al-Sakhar. Iran's parliament speaker Ghalibaf (highest-ranking official to appear on camera) vows "devastating blows" in retaliation.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Tehran (western & central) · Western Iran provinces · Iraq (Jurf al-Sakhar)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>IAF precision munitions; targeting ballistic missile launchers and AD batteries</span>
+          </div>
+          <div class="tl-sources">
+            <span class="tl-sources-label">Sources:</span>
+            <a class="source-link" href="https://www.aljazeera.com/news/2026/3/1/us-israel-attacks-on-iran-day-2-khamenei-is-killed-iran-retaliates" target="_blank">Al Jazeera Day 2</a>
+            <a class="source-link" href="https://www.foxnews.com/live-news/israel-us-launch-attack-on-iran-amid-escalating-protests" target="_blank">Fox News Live</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Khamenei death confirmed -->
+      <div class="tl-entry" data-fury="diplomatic">
+        <div class="tl-date"><div class="tl-day">1</div><div class="tl-month">Mar</div></div>
+        <div class="tl-dot dot-ceasefire"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-ceasefire">Iran State Media</span>
+            <span class="tl-action-type">Confirmation · Leadership Vacuum</span>
+          </div>
+          <div class="tl-title">Iran officially confirms Khamenei dead — 40 days mourning; Chief of Staff Mousavi also confirmed killed</div>
+          <div class="tl-details">Iranian state media officially confirms Khamenei's death early March 1, after initially denying it. Iranian President Pezeshkian issues a statement calling revenge "legitimate right and duty." Iran's National Security Council vows to "stab America in the heart." Chief of Staff Gen. Abdolrahim Mousavi confirmed killed by Iranian state media. Intelligence head Salah Asadi also confirmed killed. Leadership succession unclear — US intelligence had assessed likely successors will be hardline IRGC figures. Iraq announces 3 days of national mourning. Mourning crowds gather in Tehran; contrast with celebrations in Los Angeles and among Iranian diaspora. IAEA Board of Governors convenes emergency special session Monday (requested by Russia) to address strikes on nuclear sites.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Tehran — global diplomatic response</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">Khamenei + daughter + son-in-law + grandson + 8+ top security/military officials confirmed killed</span></span>
+          </div>
+          <div class="tl-sources">
+            <span class="tl-sources-label">Sources:</span>
+            <a class="source-link" href="https://www.aljazeera.com/news/2026/3/1/us-israel-attacks-on-iran-day-2-khamenei-is-killed-iran-retaliates" target="_blank">Al Jazeera</a>
+            <a class="source-link" href="https://www.nytimes.com/live/2026/02/28/world/iran-strikes-trump" target="_blank">NYT Live</a>
+            <a class="source-link" href="https://www.cfr.org/articles/gauging-the-impact-of-massive-u-s-israeli-strikes-on-iran" target="_blank">CFR Analysis</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PLACEHOLDER — for future updates ── -->
+      <div class="phase-divider"><span>↓ Future entries — update daily below this line</span></div>
+
+      <div class="tl-entry" data-fury="diplomatic" style="opacity:0.45;pointer-events:none;">
+        <div class="tl-date"><div class="tl-day">TBD</div><div class="tl-month">Mar</div></div>
+        <div class="tl-dot dot-ceasefire" style="opacity:0.3"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-ongoing">PENDING UPDATE</span>
+          </div>
+          <!--
+            NEXT EVENT PLACEHOLDER — DO NOT DELETE THIS BLOCK
+            To add the next update, copy a complete tl-entry block from above
+            and paste it before the phase-divider "↓ Future entries" line.
+
+            Fill in:
+              - data-fury=""  → us-israel | iran | regional | diplomatic
+              - tl-day / tl-month
+              - tl-actor-badge class and label
+              - tl-action-type text
+              - tl-title
+              - tl-details paragraph
+              - tl-meta items (📍 location, ⚔️ weapons, 🛡 defense, 💀 casualties)
+              - tl-sources links
+          -->
+        </div>
+      </div>
+
+    </div><!-- /timeline-fury -->
+  </div><!-- /timeline-wrap -->
+
+  <!-- SIDEBAR Epic Fury -->
+  <div class="sidebar">
+
+    <div class="legend-card">
+      <div class="section-title">Actor key</div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--us);box-shadow:0 0 6px var(--us)"></div>
+        <div><div class="legend-name">US + Israel</div><div class="legend-desc">Op. Epic Fury (US) / Op. Roaring Lion (Israel) — joint offensive targeting leadership, nukes, missiles, navy</div></div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--iran);box-shadow:0 0 6px var(--iran)"></div>
+        <div><div class="legend-name">Iran (IRGC)</div><div class="legend-desc">Retaliatory strikes on Israel + US bases + Gulf states; Strait of Hormuz closure</div></div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--jordan);box-shadow:0 0 6px var(--jordan)"></div>
+        <div><div class="legend-name">Regional spillover</div><div class="legend-desc">UAE, Bahrain, Kuwait, Qatar, Jordan, Saudi Arabia, Iraq, Oman, Cyprus hit by Iranian strikes</div></div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--green);box-shadow:0 0 6px var(--green)"></div>
+        <div><div class="legend-name">Diplomatic</div><div class="legend-desc">Ceasefire negotiations, international responses, UN sessions</div></div>
+      </div>
+    </div>
+
+    <!-- Running totals -->
+    <div class="stats-grid-wrap">
+      <div class="section-title">Running totals <span style="font-size:9px;color:var(--iran);letter-spacing:1px;">· PRELIMINARY · AS OF 1 MAR 4PM EST</span></div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num red">201+</div>
+          <div class="stat-label">Iranian civilians killed (Red Crescent, Day 1)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num red">747+</div>
+          <div class="stat-label">Iranian civilians injured</div>
+        </div>
+        <!-- Israeli civilian stat: white (no class) per editorial decision — not blue,
+             since this is a civilian death count rather than a military/state actor metric -->
+        <div class="stat-card">
+          <div class="stat-num">1</div>
+          <div class="stat-label">Israeli civilians killed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num blue">121+</div>
+          <div class="stat-label">Israelis injured</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num yellow">3</div>
+          <div class="stat-label">US soldiers KIA (Kuwait)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Targets struck by Israel (Day 1)</div>
+        </div>
+        <div class="stat-card full">
+          <div class="stat-num red">9+</div>
+          <div class="stat-label">Countries struck by Iranian retaliation (Israel, UAE, Bahrain, Kuwait, Qatar, Jordan, Saudi Arabia, Iraq, Oman, Cyprus)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key assassinations -->
+    <div class="context-card">
+      <div class="section-title">Confirmed leadership killed</div>
+      <div class="context-item"><strong>Ali Khamenei</strong> — Supreme Leader of Iran (86). Killed at his Tehran compound by Israeli precision strike. Daughter, son-in-law, grandson also killed. <a class="source-link" href="https://www.npr.org/2026/02/28/nx-s1-5730158/israel-iran-strikes-trump-us" target="_blank">NPR</a></div>
+      <div class="context-item"><strong>Ali Shamkhani</strong> — Secretary, Supreme National Security Council. Confirmed killed. <a class="source-link" href="https://www.cbsnews.com/live-updates/israel-us-attack-iran-trump-says-major-combat-operations/" target="_blank">CBS</a></div>
+      <div class="context-item"><strong>Aziz Nasirzadeh</strong> — Defense Minister, oversaw missile industry and SPND nuclear/CBW research. <a class="source-link" href="https://www.foxnews.com/live-news/israel-us-launch-attack-on-iran-amid-escalating-protests" target="_blank">Fox News</a></div>
+      <div class="context-item"><strong>Hossein Jabal Amelian</strong> — SPND Director (Organization of Defensive Innovation and Research — nuclear/biological/chemical weapons). <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
+      <div class="context-item"><strong>Abdolrahim Mousavi</strong> — Chief of Staff of Iranian Armed Forces. Confirmed 1 March by Iranian state media. <a class="source-link" href="https://www.aljazeera.com/news/2026/3/1/us-israel-attacks-on-iran-day-2-khamenei-is-killed-iran-retaliates" target="_blank">Al Jazeera</a></div>
+      <div class="context-item"><strong>Reza Mozaffari-Nia</strong> · <strong>Mohammad Shirazi</strong> · <strong>Salah Asadi</strong> — Former SPND head, Khamenei's military office chief, intelligence chief. <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
+    </div>
+
+    <!-- Context card -->
+    <div class="context-card">
+      <div class="section-title">Strategic context</div>
+      <div class="context-item"><strong>Stated US objectives (Trump):</strong> (1) Prevent Iran acquiring nuclear weapon. (2) Destroy missile arsenal and production. (3) Degrade proxy networks. (4) Annihilate Iranian navy. (5) Regime change from within. <a class="source-link" href="https://www.csis.org/analysis/operation-epic-fury-and-remnants-irans-nuclear-program" target="_blank">CSIS</a></div>
+      <div class="context-item"><strong>Scale vs June 2025:</strong> Operation Epic Fury targets leadership, full military/naval infrastructure, and government ministries — far beyond Operation Midnight Hammer's limited nuclear focus. CSIS calls it "an initial salvo of a longer conflict." <a class="source-link" href="https://www.csis.org/analysis/operation-epic-fury-and-remnants-irans-nuclear-program" target="_blank">CSIS</a></div>
+      <div class="context-item"><strong>New US weapons:</strong> LUCAS (Low-cost Unmanned Combat Attack System) — reverse-engineered Shahed-136 drone, first combat use. Also HIMARS land-based rockets, Tomahawks from warships, B-2 bombers, Task Force Scorpion Strike drones. <a class="source-link" href="https://www.flightglobal.com/military-uavs/us-deploys-iranian-derived-strike-drones-in-operation-epic-fury/166480.article" target="_blank">FlightGlobal</a></div>
+      <div class="context-item"><strong>Risk: Nuclear material:</strong> Iran still holds ~400 kg of 60%-enriched uranium. CSIS warns exact location unknown after strikes. Collapse of Atomic Energy Organisation could scatter nuclear scientists — proliferation risk to non-state actors. <a class="source-link" href="https://www.csis.org/analysis/operation-epic-fury-and-remnants-irans-nuclear-program" target="_blank">CSIS</a></div>
+      <div class="context-item"><strong>Succession crisis:</strong> CFR assesses that even if Khamenei dies, likely successors are hardline IRGC figures who control the terror and missile networks. <a class="source-link" href="https://www.cfr.org/articles/gauging-the-impact-of-massive-u-s-israeli-strikes-on-iran" target="_blank">CFR</a></div>
+    </div>
+
+    <!--
+      ═══════════════════════════════════════════════════════════
+      DAILY UPDATE GUIDE — commented out; content preserved below
+      ═══════════════════════════════════════════════════════════
+
+      HOW TO ADD A NEW EVENT:
+        Copy an existing <div class="tl-entry"> block in the timeline
+        above the placeholder entry. Set data-fury attribute:
+          data-fury="us-israel"  → US or Israeli offensive actions
+          data-fury="iran"       → Iranian offensive/retaliatory actions
+          data-fury="regional"   → Spillover into Gulf/neighbouring states
+          data-fury="diplomatic" → Negotiations, confirmations, intl responses
+
+      HOW TO UPDATE THE TIMESTAMP:
+        Search for "March 1, 2026 · 4:00 PM EST" — appears in two places:
+          1. Inside <div class="update-box"> in the panel header
+          2. In the <footer> at the bottom of the Epic Fury panel
+
+      HOW TO UPDATE RUNNING TOTALS:
+        Find the <div class="stats-grid-wrap"> in the sidebar below.
+        Edit the <div class="stat-num"> values for each stat card.
+        Also update the "AS OF" date in the section-title span.
+
+      SOURCE LINK FORMAT:
+        <div class="tl-sources">
+          <span class="tl-sources-label">Sources:</span>
+          <a class="source-link" href="URL" target="_blank">Label</a>
+        </div>
+      ═══════════════════════════════════════════════════════════
+    -->
+
+  </div><!-- /sidebar -->
+</div><!-- /main -->
+
+<footer>
+  Sources: Wikipedia (2026 Israeli–United States strikes on Iran), Al Jazeera, CNN, PBS News, USNI News, CSIS, CFR, NPR, CBS News, Times of Israel, Aviation Week, FlightGlobal, ICT SITREP, FDD Action, GlobalSecurity.org. All data reflects open-source reporting as of <strong>March 1, 2026 · 4:00 PM EST</strong>. Figures are preliminary and subject to revision. This tab is updated daily.
+</footer>
+
+</div><!-- /panel-epicfury -->
 </body>
 </html>
