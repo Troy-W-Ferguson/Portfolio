@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iran–Israel Conflict Dashboards</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --surface: #111116;
+    --surface2: #18181f;
+    --border: #2a2a35;
+    --text: #e8e8f0;
+    --muted: #888899;
+    --israel: #4a9eff;
+    --iran: #ff5050;
+    --us: #ffd166;
+    --accent: #c8a96e;
+    --green: #50d890;
+    --jordan: #a78bfa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ─── TAB NAV ─── */
+  .tab-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: stretch;
+    padding: 0 60px;
+    gap: 0;
+  }
+  .tab-nav-brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    padding-right: 40px;
+    border-right: 1px solid var(--border);
+    margin-right: 32px;
+    white-space: nowrap;
+  }
+  .tab-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 18px 24px 16px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-btn .tab-date {
+    display: block;
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-top: 2px;
+    opacity: 0.7;
+  }
+  .tab-btn.active .tab-date { color: var(--accent); opacity: 0.6; }
+
+  /* ─── PANELS ─── */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ─── SHARED HEADER ─── */
+  header {
+    position: relative;
+    padding: 56px 60px 40px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(200,169,110,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    color: #fff;
+  }
+  h1 span { color: var(--accent); }
+  .header-sub {
+    margin-top: 12px;
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 640px;
+    font-weight: 300;
+  }
+  .header-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .hstat { display: flex; flex-direction: column; gap: 4px; }
+  .hstat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .hstat-val.iran { color: var(--iran); }
+  .hstat-val.israel { color: var(--israel); }
+  .hstat-val.us { color: var(--us); }
+  .hstat-val.green { color: var(--green); }
+  .hstat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ─── LAYOUT ─── */
+  .main {
+    padding: 40px 60px;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 32px;
+    max-width: 1400px;
+  }
+
+  /* ─── SECTION TITLES ─── */
+  .section-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline-wrap { grid-column: 1; }
+  .timeline { position: relative; }
+  .tl-line {
+    position: absolute;
+    left: 80px;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--border) 5%, var(--border) 95%, transparent);
+  }
+  .tl-entry {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0 24px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.15s;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(42,42,53,0.5);
+  }
+  .tl-entry:hover { background: rgba(255,255,255,0.02); }
+  .tl-entry:last-child { border-bottom: none; }
+  .tl-date { text-align: right; padding-top: 2px; }
+  .tl-day {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+  }
+  .tl-month {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .tl-dot {
+    position: absolute;
+    left: 76px;
+    top: 22px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+    z-index: 2;
+  }
+  .dot-iran { background: var(--iran); box-shadow: 0 0 8px var(--iran); }
+  .dot-israel { background: var(--israel); box-shadow: 0 0 8px var(--israel); }
+  .dot-us { background: var(--us); box-shadow: 0 0 8px var(--us); }
+  .dot-us-israel { background: var(--us); box-shadow: 0 0 8px var(--us); }
+  .dot-ceasefire { background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .dot-defensive { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .tl-content { padding-left: 12px; }
+  .tl-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .tl-actor-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+  .badge-iran { background: rgba(255,80,80,0.15); color: var(--iran); border: 1px solid rgba(255,80,80,0.3); }
+  .badge-israel { background: rgba(74,158,255,0.12); color: var(--israel); border: 1px solid rgba(74,158,255,0.25); }
+  .badge-us-israel { background: rgba(255,209,102,0.12); color: var(--us); border: 1px solid rgba(255,209,102,0.25); }
+  .badge-us { background: rgba(255,209,102,0.12); color: var(--us); border: 1px solid rgba(255,209,102,0.25); }
+  .badge-ceasefire { background: rgba(80,216,144,0.12); color: var(--green); border: 1px solid rgba(80,216,144,0.25); }
+  .badge-defensive { background: rgba(80,216,144,0.10); color: var(--green); border: 1px solid rgba(80,216,144,0.2); }
+  .badge-coalition { background: rgba(167,139,250,0.12); color: var(--jordan); border: 1px solid rgba(167,139,250,0.25); }
+  .tl-action-type {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .tl-title { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: 6px; line-height: 1.3; }
+  .tl-details { font-size: 13px; color: #b0b0c0; line-height: 1.6; font-weight: 300; }
+  .tl-meta { display: flex; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
+  .tl-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .tl-meta-icon { opacity: 0.6; font-size: 12px; }
+  .casualty-val { color: var(--iran); }
+  .location-val { color: var(--accent); }
+  .intercept-val { color: var(--green); }
+
+  /* ─── MUNITION TABLE (April 2024) ─── */
+  .munition-table-wrap { overflow-x: auto; margin-top: 4px; }
+  .munition-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+  .munition-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .munition-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(42,42,53,0.4);
+    color: #b0b0c0;
+    font-size: 11px;
+  }
+  .munition-table tr:last-child td { border-bottom: none; }
+  .munition-table tr:hover td { background: rgba(255,255,255,0.015); }
+  .mt-actor { font-family: 'IBM Plex Mono', monospace; font-size: 9px; }
+  .mt-iran { color: var(--iran); }
+  .mt-israel { color: var(--israel); }
+  .mt-us { color: var(--us); }
+  .mt-coalition { color: var(--jordan); }
+  .mt-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .mt-intercepted { color: var(--green); }
+  .mt-launched { color: #fff; }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar { grid-column: 2; display: flex; flex-direction: column; gap: 28px; }
+  .legend-card, .stats-grid-wrap, .bar-chart-card, .context-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 13px;
+  }
+  .legend-item:last-child { margin-bottom: 0; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+  .legend-name { color: var(--text); }
+  .legend-desc { color: var(--muted); font-size: 11px; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px;
+  }
+  .stat-card.full { grid-column: 1 / -1; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+  }
+  .stat-num.red { color: var(--iran); }
+  .stat-num.blue { color: var(--israel); }
+  .stat-num.yellow { color: var(--us); }
+  .stat-num.green { color: var(--green); }
+  .stat-num.purple { color: var(--jordan); }
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); width: 72px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 6px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 2px; }
+  .bar-val { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text); width: 36px; text-align: right; flex-shrink: 0; }
+  .context-item {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: #a0a0b0;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  .context-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .context-item strong { color: var(--accent); font-weight: 500; }
+
+  /* ─── FILTER BAR ─── */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+  .filter-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 500; }
+
+  /* ─── PHASE DIVIDER ─── */
+  .phase-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+    padding-left: 104px;
+  }
+  .phase-divider span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--border);
+    white-space: nowrap;
+  }
+  .phase-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    opacity: 0.4;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 32px 60px;
+    border-top: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ─── ANIMATION ─── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .panel.active .tl-entry { animation: fadeIn 0.3s ease both; }
+  .panel.active .tl-entry:nth-child(1) { animation-delay: 0.05s; }
+  .panel.active .tl-entry:nth-child(2) { animation-delay: 0.10s; }
+  .panel.active .tl-entry:nth-child(3) { animation-delay: 0.15s; }
+  .panel.active .tl-entry:nth-child(4) { animation-delay: 0.20s; }
+  .panel.active .tl-entry:nth-child(5) { animation-delay: 0.25s; }
+  .panel.active .tl-entry:nth-child(6) { animation-delay: 0.30s; }
+  .panel.active .tl-entry:nth-child(7) { animation-delay: 0.35s; }
+  .panel.active .tl-entry:nth-child(8) { animation-delay: 0.40s; }
+  .panel.active .tl-entry:nth-child(9) { animation-delay: 0.45s; }
+  .panel.active .tl-entry:nth-child(10) { animation-delay: 0.50s; }
+  .panel.active .tl-entry:nth-child(11) { animation-delay: 0.55s; }
+  .panel.active .tl-entry:nth-child(12) { animation-delay: 0.60s; }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 900px) {
+    .tab-nav { padding: 0 20px; }
+    header { padding: 32px 20px 28px; }
+    .main { grid-template-columns: 1fr; padding: 20px; }
+    .sidebar { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ TAB NAV ══════════════════ -->
+<nav class="tab-nav">
+  <div class="tab-nav-brand">Iran–Israel · Conflict Series</div>
+  <button class="tab-btn active" data-tab="april2024">
+    Operation True Promise I
+    <span class="tab-date">April 2024</span>
+  </button>
+  <button class="tab-btn" data-tab="twelveday">
+    The Twelve-Day War
+    <span class="tab-date">June 2025</span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     PANEL 1 — APRIL 2024
+══════════════════════════════════════════════ -->
+<div class="panel active" id="panel-april2024">
+
+<header>
+  <div class="header-label">Conflict Analysis · Middle East · April 2024</div>
+  <h1>Operation <span>True Promise I</span></h1>
+  <div class="header-sub">Iran's first-ever direct attack on Israel, 13–19 April 2024. A 320+ projectile barrage in retaliation for Israel's airstrike on the Iranian consulate in Damascus — and Israel's limited counter-strike on Isfahan.</div>
+  <div class="header-stats">
+    <div class="hstat"><div class="hstat-val iran">320+</div><div class="hstat-label">Projectiles launched</div></div>
+    <div class="hstat"><div class="hstat-val green">~99%</div><div class="hstat-label">Intercept rate (coalition)</div></div>
+    <div class="hstat"><div class="hstat-val">1</div><div class="hstat-label">Serious injury (Israeli Bedouin girl, 7)</div></div>
+    <div class="hstat"><div class="hstat-val israel">3</div><div class="hstat-label">Israeli missiles (Apr 19 counterstrike)</div></div>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- TIMELINE -->
+  <div class="timeline-wrap">
+    <div class="section-title">Chronological event log</div>
+
+    <div class="filter-bar" id="filter-bar-april">
+      <button class="filter-btn active" data-filter-april="all">All Events</button>
+      <button class="filter-btn" data-filter-april="offensive-iran">Iran Offensive</button>
+      <button class="filter-btn" data-filter-april="defensive">Coalition Defense</button>
+      <button class="filter-btn" data-filter-april="counterstrike">Israel Counterstrike</button>
+    </div>
+
+    <div class="timeline" id="timeline-april">
+      <div class="tl-line"></div>
+
+      <div class="phase-divider"><span>Context — Trigger event</span></div>
+
+      <!-- Trigger -->
+      <div class="tl-entry" data-april="counterstrike">
+        <div class="tl-date"><div class="tl-day">1</div><div class="tl-month">Apr</div></div>
+        <div class="tl-dot dot-israel"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-israel">Israel</span>
+            <span class="tl-action-type">Airstrike · Trigger Event</span>
+          </div>
+          <div class="tl-title">Israel strikes Iranian consulate complex in Damascus — triggering True Promise</div>
+          <div class="tl-details">Israeli airstrike destroys the Iranian consulate annex in Damascus, killing IRGC Quds Force commander Gen. Mohammad Reza Zahedi, his deputy, five IRGC officers, and two civilians. Iran vows direct retaliation — the first time it pledges to strike Israel from Iranian soil. Operation True Promise is planned in the two weeks that follow.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Iranian Consulate Annex, Damascus, Syria (33.51°N, 36.29°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Precision air-launched munitions (F-35I)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">16 killed incl. Gen. Zahedi (IRGC Quds Force commander)</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-divider"><span>Phase I — UAV Swarm Wave (Hours 1–9)</span></div>
+
+      <!-- Shahed-136 UAVs -->
+      <div class="tl-entry" data-april="offensive-iran">
+        <div class="tl-date"><div class="tl-day">13</div><div class="tl-month">Apr</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-iran">Iran (IRGC)</span>
+            <span class="tl-action-type">Offensive · UAV Swarm — Wave 1</span>
+          </div>
+          <div class="tl-title">170 Shahed-136/238 loitering munitions launched — saturating Iron Dome</div>
+          <div class="tl-details">Iran's IRGC launches 170 Shahed-136 "kamikaze" drones plus 185 faster jet-propelled Shahed-238 variants from Iranian and Iraqi territory. Tactic: overwhelm Iron Dome and David's Sling with a slow-flying saturation wave to clear the path for faster ballistic and cruise missiles. IDF detects the swarm ~5 hours into its flight and issues public alert at 11:30 PM. US forces in the Red Sea and Jordan begin intercepting UAVs long before they reach Israeli airspace.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Israel nationwide airspace (31.0°N, 35.0°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Shahed-136 (loitering munition) + Shahed-238 (jet-propelled variant)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🔢</span>Launched: <strong>170</strong> · Intercepted coalition-wide: <span class="intercept-val">~150</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">0 killed</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-divider"><span>Phase II — Cruise Missile & Ballistic Strike (~2:00 AM Apr 14)</span></div>
+
+      <!-- Cruise missiles -->
+      <div class="tl-entry" data-april="offensive-iran">
+        <div class="tl-date"><div class="tl-day">13–14</div><div class="tl-month">Apr</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-iran">Iran (IRGC)</span>
+            <span class="tl-action-type">Offensive · Cruise Missiles — Wave 2</span>
+          </div>
+          <div class="tl-title">30 Paveh cruise missiles fired; UK & France assist intercepts over Syria/Iraq</div>
+          <div class="tl-details">Iran fires 30 Paveh land-attack cruise missiles as the second wave, timed to follow the UAV swarm. The Paveh (also designated Ya Ali) has a range of ~1,700 km and flies at low altitude to evade radar. UK and French air assets intercept several over Syria and northern Iraq before they reach Israeli airspace. David's Sling engages those that penetrate further. 5 of 30 evade interception and reach Israeli territory.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Israel nationwide + en route intercepts over Syria/Jordan</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Paveh cruise missile (Ya Ali variant, ~1,700 km range)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🔢</span>Launched: <strong>30</strong> · Intercepted: <span class="intercept-val">~25</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">0 killed</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ballistic missiles -->
+      <div class="tl-entry" data-april="offensive-iran">
+        <div class="tl-date"><div class="tl-day">13–14</div><div class="tl-month">Apr</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-iran">Iran (IRGC)</span>
+            <span class="tl-action-type">Offensive · Ballistic Missiles — Wave 3</span>
+          </div>
+          <div class="tl-title">120 Fateh-110 / Kheibar Shekan ballistic missiles target Nevatim & Ramon airbases</div>
+          <div class="tl-details">Iran's third and most consequential wave: 120 ballistic missiles — Fateh-110 (SRBM) and the more advanced Kheibar Shekan (MRBM, ~1,450 km range) — aimed specifically at Nevatim Airbase (home of Israel's F-35 fleet) and Ramon Airbase in the Negev. Arrow-3 intercepts some exo-atmospherically; others are engaged by Arrow-2 and David's Sling. Despite ~110 interceptions, nine missiles strike the two airbases. Five hit Nevatim: one craters a runway, others hit storage and empty facilities. Four hit Ramon. A 7-year-old Bedouin girl is seriously injured by shrapnel near Arad. Some missiles struck exactly at 1:20 AM — the hour of Soleimani's assassination in 2020, a deliberate symbolic gesture.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Nevatim AB, Negev (30.88°N, 34.82°E) · Ramon AB (30.78°N, 34.66°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Fateh-110 (SRBM) + Kheibar Shekan (MRBM); 60 tons explosive payload total</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🔢</span>Launched: <strong>120</strong> · Intercepted: <span class="intercept-val">~110</span> · Impacted bases: <span class="casualty-val">9</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">0 killed · 1 seriously injured (7yr-old girl, shrapnel near Arad) · 31 minor</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-divider"><span>Coalition Air Defense — Operation Iron Shield</span></div>
+
+      <!-- Arrow-3 -->
+      <div class="tl-entry" data-april="defensive">
+        <div class="tl-date"><div class="tl-day">13–14</div><div class="tl-month">Apr</div></div>
+        <div class="tl-dot dot-defensive"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-defensive">Israel (IDF)</span>
+            <span class="tl-action-type">Defensive · Exo-atmospheric intercept</span>
+          </div>
+          <div class="tl-title">Arrow-3 achieves first combat ballistic missile intercepts in space</div>
+          <div class="tl-details">Israel's Arrow-3 interceptor — designed for exo-atmospheric intercept of ballistic missiles during the boost/apogee phase — achieves its first-ever combat intercepts, destroying ballistic missiles in space before they re-enter the atmosphere. Approximately 30 intercepts credited to Arrow-3. Arrow-2 handles mid-course interceptions at lower altitudes. Together they form the top two tiers of Israel's "onion" defense. David's Sling and Iron Dome cover lower tiers.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Exo-atmospheric (above Israel, 31.5°N, 35.0°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Arrow-3 interceptor (hit-to-kill, exo-atmospheric)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🔢</span>Intercepted: <span class="intercept-val">~30 ballistic missiles</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- David's Sling -->
+      <div class="tl-entry" data-april="defensive">
+        <div class="tl-date"><div class="tl-day">13–14</div><div class="tl-month">Apr</div></div>
+        <div class="tl-dot dot-defensive"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-defensive">Israel (IDF)</span>
+            <span class="tl-action-type">Defensive · Mid-tier intercept</span>
+          </div>
+          <div class="tl-title">David's Sling (Stunner) engages cruise missiles & medium-altitude ballistics</div>
+          <div class="tl-details">David's Sling fills the critical mid-tier gap between Arrow-3 (exo-atmospheric) and Iron Dome (short-range). Its Stunner interceptor engages cruise missiles and medium-to-high-altitude ballistic missiles. Approximately 40 intercepts credited across the overnight attack. First large-scale combat deployment of the system, which had limited prior combat use.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Central Israel (31.5°N, 34.8°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>David's Sling / Stunner interceptor (endo-atmospheric, 300 km range)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🔢</span>Intercepted: <span class="intercept-val">~40</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Iron Dome -->
+      <div class="tl-entry" data-april="defensive">
+        <div class="tl-date"><div class="tl-day">13–14</div><div class="tl-month">Apr</div></div>
+        <div class="tl-dot dot-defensive"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-defensive">Israel (IDF)</span>
+            <span class="tl-action-type">Defensive · Short-range intercept</span>
+          </div>
+          <div class="tl-title">Iron Dome Tamir interceptors engage terminal-phase UAVs & short-range threats</div>
+          <div class="tl-details">Iron Dome handles the lowest tier — terminal-phase UAVs and short-range threats that evade upper-tier intercepts. ~100 engagements credited to Iron Dome Tamir interceptors over the Tel Aviv district and central Israel. The sheer volume of Shahed drones (170+ slow-flying) is specifically designed to overwhelm this layer, though most are destroyed before reaching Israeli airspace by US and Jordanian assets further out.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Tel Aviv District (32.09°N, 34.78°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Iron Dome / Tamir interceptor (short-range, ~70 km)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🔢</span>Intercepted: <span class="intercept-val">~100</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- US SM-3 -->
+      <div class="tl-entry" data-april="defensive">
+        <div class="tl-date"><div class="tl-day">13–14</div><div class="tl-month">Apr</div></div>
+        <div class="tl-dot dot-us"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-us">United States (USN)</span>
+            <span class="tl-action-type">Defensive · Naval intercept</span>
+          </div>
+          <div class="tl-title">US Aegis warships fire SM-3 interceptors — Red Sea intercept zone</div>
+          <div class="tl-details">US Navy Aegis-equipped destroyers and cruisers operating in the Red Sea fire SM-3 Block IIA interceptors against Iranian ballistic missiles and UAVs transiting toward Israel from the south and east. The Intercept reports US forces "did most of the heavy lifting" against Iranian projectiles — intercepting more total threats than Israel itself. ~20 SM-3 intercepts credited. US involvement marks the first US active combat interception of Iranian missiles in defense of Israel.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Red Sea / Aegis intercept zone (20.0°N, 38.0°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>SM-3 Block IIA (naval ABM, Aegis BMD)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🔢</span>Intercepted: <span class="intercept-val">~20</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- US/Jordan Patriot -->
+      <div class="tl-entry" data-april="defensive">
+        <div class="tl-date"><div class="tl-day">13–14</div><div class="tl-month">Apr</div></div>
+        <div class="tl-dot dot-us"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-coalition">US / Jordan / UK / France</span>
+            <span class="tl-action-type">Defensive · Forward intercept over Jordan</span>
+          </div>
+          <div class="tl-title">Patriot PAC-3 & allied air assets intercept over Jordanian airspace</div>
+          <div class="tl-details">US Patriot PAC-3 batteries based in Jordan engage Iranian UAVs and missiles transiting Jordanian airspace. Jordan's Royal Air Force also independently intercepts threats, and UK (Typhoons from Cyprus) and French (Rafales) join with BVR engagements over Syria and northern Iraq — notably the first coordinated multi-nation air defense operation of this kind in the Middle East. Jordan reports shrapnel falling on its territory from interception debris. ~15 Patriot intercepts credited to US assets; allied total exceeds 100 across all platforms.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Jordan airspace (31.24°N, 36.51°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Patriot PAC-3 (US) · Typhoon/Meteor AAM (UK) · Rafale/MICA (France) · RJAF fighters (Jordan)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🔢</span>US Patriot intercepts: <span class="intercept-val">~15</span> · Allied total: <span class="intercept-val">100+</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-divider"><span>Phase III — Israeli Counterstrike (Apr 19)</span></div>
+
+      <!-- Israeli counterstrike -->
+      <div class="tl-entry" data-april="counterstrike">
+        <div class="tl-date"><div class="tl-day">19</div><div class="tl-month">Apr</div></div>
+        <div class="tl-dot dot-israel"></div>
+        <div class="tl-content">
+          <div class="tl-header">
+            <span class="tl-actor-badge badge-israel">Israel (IAF)</span>
+            <span class="tl-action-type">Counterstrike · Deliberate restraint</span>
+          </div>
+          <div class="tl-title">Israel fires 3 precision missiles at Isfahan air defense radar — limited, symbolic response</div>
+          <div class="tl-details">At 5:23 AM IRST, the IAF launches a deliberately limited counterstrike: 3 air-launched precision munitions (reported Rampage-class) target an S-300 air defense radar site at Shekari Air Base near Isfahan — home to Iran's fleet of F-14 Tomcats and adjacent to nuclear facilities. The target is chosen for symbolic resonance (Isfahan hosts key nuclear infrastructure) while avoiding escalation. Satellite imagery confirms the radar battery is destroyed. Iran initially denies the strike; IRNA describes "minor explosions." A former IRGC commander later publicly acknowledges the strike in October 2024. US and its allies briefed in advance but do not participate. The limited scope is a deliberate signal: Israel "can reach Isfahan" without triggering a full exchange.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Shekari Air Base, Isfahan (32.65°N, 51.67°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Air-launched precision munition (reported Rampage anti-radiation missile)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🔢</span>Launched: <strong>3</strong> · Target destroyed: S-300 air defense radar battery</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">0 killed (no escalation sought)</span></span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /timeline-april -->
+
+    <!-- MUNITION TABLE -->
+    <div style="margin-top: 32px;">
+      <div class="section-title">Full munitions inventory — Operation True Promise I & Iron Shield</div>
+      <div class="munition-table-wrap">
+        <table class="munition-table">
+          <thead>
+            <tr>
+              <th>Actor</th>
+              <th>Munition</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Launched</th>
+              <th>Intercepted</th>
+              <th>Killed</th>
+              <th>Injured</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="mt-actor mt-iran">Iran (IRGC)</span></td>
+              <td>Shahed-136/238</td>
+              <td>Loitering UAV</td>
+              <td>Israel-wide</td>
+              <td class="mt-num mt-launched">170</td>
+              <td class="mt-num mt-intercepted">150</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td><span class="mt-actor mt-iran">Iran (IRGC)</span></td>
+              <td>Paveh Cruise Missile</td>
+              <td>LACM</td>
+              <td>Israel-wide</td>
+              <td class="mt-num mt-launched">30</td>
+              <td class="mt-num mt-intercepted">25</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td><span class="mt-actor mt-iran">Iran (IRGC)</span></td>
+              <td>Fateh-110 / Kheibar Shekan</td>
+              <td>SRBM / MRBM</td>
+              <td>Nevatim / Ramon AB</td>
+              <td class="mt-num mt-launched">120</td>
+              <td class="mt-num mt-intercepted">110</td>
+              <td>0</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td><span class="mt-actor mt-israel">Israel (IDF)</span></td>
+              <td>Arrow-3 (Hetz-3)</td>
+              <td>Exo-atm ABM</td>
+              <td>Above Israel (space)</td>
+              <td class="mt-num">—</td>
+              <td class="mt-num mt-intercepted">30</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="mt-actor mt-israel">Israel (IDF)</span></td>
+              <td>David's Sling / Stunner</td>
+              <td>SAM (mid-tier)</td>
+              <td>Central Israel</td>
+              <td class="mt-num">—</td>
+              <td class="mt-num mt-intercepted">40</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="mt-actor mt-israel">Israel (IDF)</span></td>
+              <td>Iron Dome / Tamir</td>
+              <td>Short-range SAM</td>
+              <td>Tel Aviv District</td>
+              <td class="mt-num">—</td>
+              <td class="mt-num mt-intercepted">100</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="mt-actor mt-us">US (USN)</span></td>
+              <td>SM-3 Block IIA</td>
+              <td>Naval ABM (Aegis)</td>
+              <td>Red Sea</td>
+              <td class="mt-num">—</td>
+              <td class="mt-num mt-intercepted">20</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="mt-actor mt-us">US / Jordan / UK / FR</span></td>
+              <td>Patriot PAC-3 + Allied Air</td>
+              <td>SAM + Air-to-Air</td>
+              <td>Jordan Airspace</td>
+              <td class="mt-num">—</td>
+              <td class="mt-num mt-intercepted">15+</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="mt-actor mt-israel">Israel (IAF)</span></td>
+              <td>Rampage (air-launched)</td>
+              <td>Precision strike missile</td>
+              <td>Isfahan AB, Iran</td>
+              <td class="mt-num mt-launched">3</td>
+              <td class="mt-num">0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /timeline-wrap -->
+
+  <!-- SIDEBAR April 2024 -->
+  <div class="sidebar">
+
+    <div class="legend-card">
+      <div class="section-title">Actor key</div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--iran);box-shadow:0 0 6px var(--iran)"></div>
+        <div><div class="legend-name">Iran (IRGC Aerospace Force)</div><div class="legend-desc">Operation True Promise — 320+ UAVs, cruise & ballistic missiles against Israeli airbases</div></div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--israel);box-shadow:0 0 6px var(--israel)"></div>
+        <div><div class="legend-name">Israel (IDF / IAF)</div><div class="legend-desc">Operation Iron Shield (defense) + Apr 19 counterstrike on Isfahan</div></div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--us);box-shadow:0 0 6px var(--us)"></div>
+        <div><div class="legend-name">United States (USN)</div><div class="legend-desc">Aegis SM-3 intercepts from Red Sea; Patriot PAC-3 from Jordan</div></div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--jordan);box-shadow:0 0 6px var(--jordan)"></div>
+        <div><div class="legend-name">Allied Coalition</div><div class="legend-desc">Jordan RJAF, UK Typhoons, France Rafales — intercepts over Syria/Jordan</div></div>
+      </div>
+    </div>
+
+    <div class="stats-grid-wrap">
+      <div class="section-title">Strike totals</div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num red">170</div>
+          <div class="stat-label">UAVs launched</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num red">120</div>
+          <div class="stat-label">Ballistic missiles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num red">30</div>
+          <div class="stat-label">Cruise missiles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num green">~99%</div>
+          <div class="stat-label">Overall intercept rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num blue">9</div>
+          <div class="stat-label">Missiles hit Israeli bases</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num yellow">35</div>
+          <div class="stat-label">US intercepts (SM-3 + PAC)</div>
+        </div>
+        <div class="stat-card full">
+          <div class="stat-num red">1</div>
+          <div class="stat-label">Seriously injured (7yr-old Bedouin girl, shrapnel near Arad) · 31 minor injuries</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bar-chart-card">
+      <div class="section-title">Intercepts by platform</div>
+      <div class="bar-row">
+        <div class="bar-label">Iron Dome</div>
+        <div class="bar-track"><div class="bar-fill" style="width:53%;background:var(--israel)"></div></div>
+        <div class="bar-val">~100</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">David's Sling</div>
+        <div class="bar-track"><div class="bar-fill" style="width:21%;background:var(--israel)"></div></div>
+        <div class="bar-val">~40</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Arrow-3</div>
+        <div class="bar-track"><div class="bar-fill" style="width:16%;background:var(--israel)"></div></div>
+        <div class="bar-val">~30</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">US SM-3</div>
+        <div class="bar-track"><div class="bar-fill" style="width:11%;background:var(--us)"></div></div>
+        <div class="bar-val">~20</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">US PAC-3</div>
+        <div class="bar-track"><div class="bar-fill" style="width:8%;background:var(--us)"></div></div>
+        <div class="bar-val">~15</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Allied (UK/FR/JO)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--jordan)"></div></div>
+        <div class="bar-val">~30+</div>
+      </div>
+    </div>
+
+    <div class="context-card">
+      <div class="section-title">Strategic context</div>
+      <div class="context-item"><strong>First direct attack:</strong> True Promise was the first time in the 45-year history of the Islamic Republic that Iran directly attacked Israeli territory from Iranian soil — a historic escalation crossing a longstanding red line.</div>
+      <div class="context-item"><strong>Iranian tactic:</strong> Deliberate three-wave saturation: slow UAVs first (to drain interceptors), then cruise missiles (evade radar with terrain-following), then ballistic missiles (fastest, hardest to intercept). Designed to overwhelm any single layer of defense.</div>
+      <div class="context-item"><strong>US role:</strong> The Intercept reported US forces intercepted more Iranian weapons than Israel itself. First time the US directly engaged Iranian military assets in defense of Israel — a strategic threshold crossed.</div>
+      <div class="context-item"><strong>Israeli restraint (Apr 19):</strong> Under pressure from Biden and G7 allies, Israel's response was deliberately minimal — 3 missiles, one radar destroyed. Intended to demonstrate reach without triggering escalation. Both sides accepted de-escalation.</div>
+      <div class="context-item"><strong>Legacy:</strong> The intercept of Iran's S-300 batteries in October 2024 (Operation Days of Repentance) was made possible by intelligence gathered during Iron Shield. Lessons from True Promise I directly shaped the IAF's planning for Operation Rising Lion in June 2025.</div>
+    </div>
+
+  </div><!-- /sidebar -->
+</div><!-- /main -->
+
+<footer>
+  Sources: Wikipedia (April 2024 Iranian strikes on Israel, 2024 Iran–Israel conflict), BESA Center, The Intercept, IDF spokesperson statements, US DoD, Congress.gov CRS. Some interception figures are approximate due to operational security restrictions.
+</footer>
+
+</div><!-- /panel-april2024 -->
+
+
+<!-- ══════════════════════════════════════════════
+     PANEL 2 — TWELVE DAY WAR
+══════════════════════════════════════════════ -->
+<div class="panel" id="panel-twelveday">
+
+<header>
+  <div class="header-label">Conflict Analysis · Middle East · 2025</div>
+  <h1>The <span>Twelve-Day War</span></h1>
+  <div class="header-sub">Iran–Israel direct conflict, 13–24 June 2025. Israel's Operation Rising Lion, Iran's Operation True Promise III, and US intervention at Fordow, Natanz & Isfahan.</div>
+  <div class="header-stats">
+    <div class="hstat"><div class="hstat-val">12</div><div class="hstat-label">Days of combat</div></div>
+    <div class="hstat"><div class="hstat-val iran">610+</div><div class="hstat-label">Iranian dead (est.)</div></div>
+    <div class="hstat"><div class="hstat-val israel">28</div><div class="hstat-label">Israeli dead (est.)</div></div>
+    <div class="hstat"><div class="hstat-val">1,550+</div><div class="hstat-label">Iranian missiles & drones fired</div></div>
+    <div class="hstat"><div class="hstat-val us">3</div><div class="hstat-label">US nuclear sites struck</div></div>
+  </div>
+</header>
+
+<div class="main">
+
+  <div class="timeline-wrap">
+    <div class="section-title">Chronological event log</div>
+
+    <div class="filter-bar" id="filter-bar-twelve">
+      <button class="filter-btn active" data-filter-twelve="all">All Events</button>
+      <button class="filter-btn" data-filter-twelve="iran">Iran Strikes</button>
+      <button class="filter-btn" data-filter-twelve="israel">Israel Strikes</button>
+      <button class="filter-btn" data-filter-twelve="us-israel">US/Coalition</button>
+      <button class="filter-btn" data-filter-twelve="ceasefire">Ceasefire</button>
+    </div>
+
+    <div class="timeline" id="timeline-twelve">
+      <div class="tl-line"></div>
+
+      <div class="phase-divider"><span>Phase I — Opening Salvo</span></div>
+
+      <div class="tl-entry" data-twelve="israel">
+        <div class="tl-date"><div class="tl-day">13</div><div class="tl-month">Jun</div></div>
+        <div class="tl-dot dot-israel"></div>
+        <div class="tl-content">
+          <div class="tl-header"><span class="tl-actor-badge badge-israel">Israel</span><span class="tl-action-type">Offensive · Air Campaign</span></div>
+          <div class="tl-title">Operation Rising Lion — Opening strikes on Iran</div>
+          <div class="tl-details">200+ IAF fighter jets launch 5 waves of airstrikes before dawn, targeting ~100 Iranian nuclear facilities, missile factories, military bases, and air defense systems. Mossad operatives simultaneously sabotage air defense networks from within. IRGC commander Hossein Salami killed. Natanz Nuclear Facility among primary targets. More than 330 munitions dropped.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Natanz, Tehran & facilities across 27 Iranian provinces</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>200+ F-35I/F-15 jets, precision munitions, Mossad sabotage</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🛡</span>Iranian AD degraded by Mossad prior to strikes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-entry" data-twelve="iran">
+        <div class="tl-date"><div class="tl-day">13</div><div class="tl-month">Jun</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header"><span class="tl-actor-badge badge-iran">Iran</span><span class="tl-action-type">Retaliation · Wave 1</span></div>
+          <div class="tl-title">Operation True Promise III — First ballistic missile salvos hit Israeli cities</div>
+          <div class="tl-details">Iran retaliates within hours with ~50 ballistic missiles and drones targeting Tel Aviv district and population centers. Iron Dome and layered air defenses intercept most. One person killed, ~70 wounded. Opening wave of what becomes a sustained nightly barrage over 12 days.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Tel Aviv District, Israel-wide (31.77°N, 35.23°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>~50 ballistic missiles + drones (Shahab/Fattah series)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🛡</span>Iron Dome, David's Sling, Arrow-3 intercept most</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">1 killed, ~70 wounded</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-divider"><span>Phase II — Escalation & Economic Targets</span></div>
+
+      <div class="tl-entry" data-twelve="israel">
+        <div class="tl-date"><div class="tl-day">14</div><div class="tl-month">Jun</div></div>
+        <div class="tl-dot dot-israel"></div>
+        <div class="tl-content">
+          <div class="tl-header"><span class="tl-actor-badge badge-israel">Israel</span><span class="tl-action-type">Offensive · Infrastructure</span></div>
+          <div class="tl-title">Israel strikes Tehran's Shahran oil depot & 70+ Iranian air defense batteries</div>
+          <div class="tl-details">First Israeli strike on Iranian critical civilian infrastructure: Shahran oil depot in Tehran. IDF also reports destroying 70+ Iranian air defense batteries so far. Ongoing strikes continue against missile production facilities and IRGC assets.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Shahran Oil Depot, Tehran (35.69°N, 51.39°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Precision air-launched munitions</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">Multiple Iranian personnel killed</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-entry" data-twelve="iran">
+        <div class="tl-date"><div class="tl-day">15</div><div class="tl-month">Jun</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header"><span class="tl-actor-badge badge-iran">Iran</span><span class="tl-action-type">Offensive · Wave 2 (Major Barrage)</span></div>
+          <div class="tl-title">Deadliest single day — Mass barrage hits HaSharon, Tel Aviv, Weizmann Institute & Soroka Hospital</div>
+          <div class="tl-details">Iran's heaviest barrage: ~110 ballistic missiles in salvos of 30–50 striking HaSharon and Tel Aviv subdistricts, plus dedicated strikes on the Weizmann Institute of Science in Rehovot. A missile hits the Soroka Medical Center. Residential buildings struck in Ramat Gan (Diamond Exchange district). A drone intercepted near Be'er Sheva by Barak Magen naval AD. Iranian cluster missiles hit seven Israeli cities simultaneously.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">HaSharon, Tel Aviv, Ramat Gan, Rehovot, Be'er Sheva</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>~111 ballistic missiles + drones; cluster munition variants</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🛡</span>Iron Dome intercepts most; Barak Magen intercepts Be'er Sheva drone</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">9 killed, ~259 wounded (deadliest day for Israel)</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-entry" data-twelve="iran">
+        <div class="tl-date"><div class="tl-day">16</div><div class="tl-month">Jun</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header"><span class="tl-actor-badge badge-iran">Iran</span><span class="tl-action-type">Strategic Strike · Energy Infrastructure</span></div>
+          <div class="tl-title">Haifa Oil Refinery struck — Israel's largest refinery shut down for two weeks</div>
+          <div class="tl-details">Iran retaliates for Shahran by striking the Haifa Refinery (Bazan Group), which supplies 65% of Israel's diesel, 59% of gasoline, and 52% of aviation kerosene. Three impact points confirmed inside the compound. Three workers killed. Facility offline until October. Estimated damages $150–200M.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Haifa Refinery (32.82°N, 35.02°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Ballistic missiles</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">3 workers killed; $150–200M damage; offline until Oct</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-divider"><span>Phase III — Sustained Exchange</span></div>
+
+      <div class="tl-entry" data-twelve="iran">
+        <div class="tl-date"><div class="tl-day">18</div><div class="tl-month">Jun</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header"><span class="tl-actor-badge badge-iran">Iran</span><span class="tl-action-type">Offensive · Wave 3</span></div>
+          <div class="tl-title">Multiple districts struck; Iran adapts tactics, hit rate rises from 8% to 16%</div>
+          <div class="tl-details">~20 ballistic missiles and 8 drone raids. Iran begins varying attack patterns and using more advanced longer-range missiles, improving its penetration rate over the course of the war. Multiple light injuries. Trump signals ambiguity: "nobody knows what I'm going to do."</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Multiple Israeli districts</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>~20 ballistic missiles + 8 drone raids</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">Multiple light injuries</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-entry" data-twelve="iran">
+        <div class="tl-date"><div class="tl-day">19</div><div class="tl-month">Jun</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header"><span class="tl-actor-badge badge-iran">Iran</span><span class="tl-action-type">Offensive · Wave 4</span></div>
+          <div class="tl-title">Beersheba & multiple cities struck; Israeli interceptor stocks strained</div>
+          <div class="tl-details">~25–30 ballistic missiles and 5 drone raids. 200+ wounded, no confirmed deaths. Israeli officials float "regime change" as desirable outcome. WSJ reports Israeli interceptor inventory under strain.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Beersheba & surroundings (31.25°N, 34.79°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>~25–30 ballistic missiles + 5 drone raids</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">200+ wounded, no confirmed deaths</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-divider"><span>Phase IV — US Entry & Endgame</span></div>
+
+      <div class="tl-entry" data-twelve="us-israel">
+        <div class="tl-date"><div class="tl-day">21–22</div><div class="tl-month">Jun</div></div>
+        <div class="tl-dot dot-us-israel"></div>
+        <div class="tl-content">
+          <div class="tl-header"><span class="tl-actor-badge badge-us-israel">US + Israel</span><span class="tl-action-type">Offensive · Nuclear Sites</span></div>
+          <div class="tl-title">US B-2 bombers strike Natanz, Fordow & Isfahan with GBU-57 bunker-busters</div>
+          <div class="tl-details">US B-2 Spirit stealth bombers deploy GBU-57 Massive Ordnance Penetrator bunker-busting bombs against Iran's three hardened nuclear sites — including the deeply buried Fordow enrichment facility, unreachable by Israeli munitions alone. Trump declares "major combat operation." IAEA later assesses nuclear program set back by "months." Iran's Wave 22 hits Tel Aviv and Haifa on the same day: 10 of 27 missiles penetrate — Iran's most effective single day of the conflict.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Natanz (33.72°N, 51.73°E) · Fordow (34.88°N, 50.99°E) · Isfahan (32.65°N, 51.68°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>B-2 Spirit + GBU-57 MOPs (US); F-35I precision munitions (Israel)</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">Multiple senior IRGC killed; 10/27 Iranian missiles hit Israel same day</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-entry" data-twelve="israel">
+        <div class="tl-date"><div class="tl-day">23</div><div class="tl-month">Jun</div></div>
+        <div class="tl-dot dot-israel"></div>
+        <div class="tl-content">
+          <div class="tl-header"><span class="tl-actor-badge badge-israel">Israel</span><span class="tl-action-type">Offensive · Regime Target</span></div>
+          <div class="tl-title">Israeli airstrike on Evin Prison, Tehran — 79+ killed</div>
+          <div class="tl-details">Israel strikes Evin Prison in Tehran — Iran's most notorious detention facility housing political prisoners, activists, and dual nationals. 79+ killed. Strike is widely reported as symbolic/strategic, internationally condemned. Iranian air defenses largely degraded at this point.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Evin Prison, Tehran (35.75°N, 51.38°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>Air-launched precision munitions</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">79+ killed</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-entry" data-twelve="iran">
+        <div class="tl-date"><div class="tl-day">23</div><div class="tl-month">Jun</div></div>
+        <div class="tl-dot dot-iran"></div>
+        <div class="tl-content">
+          <div class="tl-header"><span class="tl-actor-badge badge-iran">Iran</span><span class="tl-action-type">Retaliation · US Forces</span></div>
+          <div class="tl-title">Iran fires 14 missiles at Al Udeid Air Base, Qatar (US forces)</div>
+          <div class="tl-details">In direct retaliation for US nuclear strikes, Iran launches 14 ballistic missiles at Al Udeid — the largest US base in the Middle East (~10,000 personnel). US/Qatari AD intercepts ~13. One missile impacts. Zero casualties. Qatar-mediated ceasefire diplomacy begins immediately.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">Al Udeid Air Base, Qatar (25.12°N, 51.31°E)</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">⚔️</span>14 ballistic missiles</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">🛡</span>US/Qatar AD intercept ~13 of 14</span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">0 casualties</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-entry" data-twelve="ceasefire">
+        <div class="tl-date"><div class="tl-day">23–24</div><div class="tl-month">Jun</div></div>
+        <div class="tl-dot dot-ceasefire"></div>
+        <div class="tl-content">
+          <div class="tl-header"><span class="tl-actor-badge badge-ceasefire">Ceasefire</span><span class="tl-action-type">Diplomatic · US-Brokered</span></div>
+          <div class="tl-title">Trump announces ceasefire; fighting ends after 12 days</div>
+          <div class="tl-details">Trump announces ceasefire via social media evening of 23 June. Ceasefire takes effect 24 June, mediated by US and Qatar. Initial violations by both sides; Trump expresses frustration live on TV; Israel carries out reduced retaliatory strike on radar near Tehran — then stands down. Ceasefire holds. Iran claims "great victory"; Netanyahu declares "historic victory." Total cost: 610+ Iranian dead, 28 Israeli dead, $5.9B to Israel's economy.</div>
+          <div class="tl-meta">
+            <span class="tl-meta-item"><span class="tl-meta-icon">📍</span><span class="location-val">US–Qatar mediated; effective June 24, 2025</span></span>
+            <span class="tl-meta-item"><span class="tl-meta-icon">💀</span><span class="casualty-val">Total: 610+ Iranian, 28 Israeli dead · $5.9B cost to Israel</span></span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /timeline-twelve -->
+  </div><!-- /timeline-wrap -->
+
+  <!-- SIDEBAR Twelve Day -->
+  <div class="sidebar">
+    <div class="legend-card">
+      <div class="section-title">Actor key</div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--israel);box-shadow:0 0 6px var(--israel)"></div>
+        <div><div class="legend-name">Israel (IDF / Mossad)</div><div class="legend-desc">Operation Rising Lion — nuclear, military & infrastructure targets in Iran</div></div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--iran);box-shadow:0 0 6px var(--iran)"></div>
+        <div><div class="legend-name">Iran (IRGC)</div><div class="legend-desc">Operation True Promise III — 550+ missiles, 1,000+ drones</div></div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--us);box-shadow:0 0 6px var(--us)"></div>
+        <div><div class="legend-name">United States + Israel</div><div class="legend-desc">B-2 strikes on Fordow, Natanz, Isfahan (Jun 21–22)</div></div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--green);box-shadow:0 0 6px var(--green)"></div>
+        <div><div class="legend-name">Ceasefire</div><div class="legend-desc">US-Qatar brokered; effective June 24, 2025</div></div>
+      </div>
+    </div>
+
+    <div class="stats-grid-wrap">
+      <div class="section-title">War totals</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num red">550+</div><div class="stat-label">Iranian missiles fired</div></div>
+        <div class="stat-card"><div class="stat-num red">1,000+</div><div class="stat-label">Iranian drones fired</div></div>
+        <div class="stat-card"><div class="stat-num blue">~90%</div><div class="stat-label">Intercept rate (Israel)</div></div>
+        <div class="stat-card"><div class="stat-num blue">508+</div><div class="stat-label">Israeli strikes on Iran</div></div>
+        <div class="stat-card"><div class="stat-num yellow">3</div><div class="stat-label">US nuclear sites hit</div></div>
+        <div class="stat-card"><div class="stat-num">27</div><div class="stat-label">Iranian provinces struck</div></div>
+        <div class="stat-card full"><div class="stat-num green">$5.9B</div><div class="stat-label">Economic cost to Israel (Central Bank est.)</div></div>
+      </div>
+    </div>
+
+    <div class="bar-chart-card">
+      <div class="section-title">Iranian missiles fired — by day</div>
+      <div class="bar-row"><div class="bar-label">Jun 13</div><div class="bar-track"><div class="bar-fill" style="width:33%;background:var(--iran)"></div></div><div class="bar-val">~50</div></div>
+      <div class="bar-row"><div class="bar-label">Jun 15</div><div class="bar-track"><div class="bar-fill" style="width:73%;background:var(--iran)"></div></div><div class="bar-val">~111</div></div>
+      <div class="bar-row"><div class="bar-label">Jun 16</div><div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--iran)"></div></div><div class="bar-val">~35</div></div>
+      <div class="bar-row"><div class="bar-label">Jun 18</div><div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--iran)"></div></div><div class="bar-val">~20</div></div>
+      <div class="bar-row"><div class="bar-label">Jun 19</div><div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--iran)"></div></div><div class="bar-val">~28</div></div>
+      <div class="bar-row"><div class="bar-label">Jun 22</div><div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--iran)"></div></div><div class="bar-val">~27</div></div>
+      <div class="bar-row"><div class="bar-label">Jun 23</div><div class="bar-track"><div class="bar-fill" style="width:10%;background:var(--iran)"></div></div><div class="bar-val">~14</div></div>
+    </div>
+
+    <div class="context-card">
+      <div class="section-title">Strategic context</div>
+      <div class="context-item"><strong>Trigger:</strong> June 12 IAEA declares Iran non-compliant with nuclear obligations for first time in 20 years. Iran announces secret enrichment site. Israel launches pre-dawn strikes the next morning.</div>
+      <div class="context-item"><strong>Iranian arsenal depletion:</strong> Iran began with est. 2,500–3,000 ballistic missiles. 500+ fired, ~1,000 destroyed by Israeli strikes on launchers, ~250 launchers eliminated.</div>
+      <div class="context-item"><strong>Israeli defense:</strong> "Onion" layered system — Arrow-3, Arrow-2, David's Sling, Iron Dome, Barak — intercepts ~90%. Interceptor stocks significantly strained by conflict's end.</div>
+      <div class="context-item"><strong>US weapons:</strong> B-2 Spirit + GBU-57 Massive Ordnance Penetrators — the only munition capable of destroying Fordow. First-ever US strike on another state's nuclear program.</div>
+      <div class="context-item"><strong>Aftermath:</strong> 21,000+ detained in Iran. Several Kurds executed. Iran signals possible NPT exit. Ceasefire holds through late 2025. New US-Israel strikes on Iran begin February 28, 2026.</div>
+    </div>
+  </div><!-- /sidebar -->
+</div><!-- /main -->
+
+<footer>
+  Sources: Wikipedia (Twelve-Day War), ACLED, Al Jazeera, FDD Long War Journal, Brookings, CFR, Al Jazeera Centre for Studies, Congress.gov CRS, The Forward. Data compiled June 2025 – March 2026. Some casualty figures remain disputed.
+</footer>
+
+</div><!-- /panel-twelveday -->
+
+<script>
+  // ── Tab switching
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + target).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // ── Filter: April 2024
+  document.querySelectorAll('[data-filter-april]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-april]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filterApril;
+      document.querySelectorAll('#timeline-april .tl-entry').forEach(entry => {
+        if (filter === 'all' || entry.dataset.april === filter) {
+          entry.classList.remove('hidden');
+        } else {
+          entry.classList.add('hidden');
+        }
+      });
+      document.querySelectorAll('#timeline-april .phase-divider').forEach(div => {
+        div.style.display = filter === 'all' ? '' : 'none';
+      });
+    });
+  });
+
+  // ── Filter: Twelve Day War
+  document.querySelectorAll('[data-filter-twelve]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-twelve]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filterTwelve;
+      document.querySelectorAll('#timeline-twelve .tl-entry').forEach(entry => {
+        if (filter === 'all' || entry.dataset.twelve === filter) {
+          entry.classList.remove('hidden');
+        } else {
+          entry.classList.add('hidden');
+        }
+      });
+      document.querySelectorAll('#timeline-twelve .phase-divider').forEach(div => {
+        div.style.display = filter === 'all' ? '' : 'none';
+      });
+    });
+  });
+</script>
+</body>
+</html>
