@@ -30,7 +30,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* === HEADER === */
         header {
             padding: 3rem 2rem 0;
             max-width: 1100px;
@@ -109,7 +108,6 @@
             content: none;
         }
 
-        /* === TABS === */
         .tab-nav {
             display: flex;
             gap: 0;
@@ -139,15 +137,11 @@
             color: var(--muted);
             position: relative;
             transition: color 0.25s;
+            white-space: nowrap;
         }
 
-        .tab-btn:hover {
-            color: var(--ink);
-        }
-
-        .tab-btn.active {
-            color: var(--ink);
-        }
+        .tab-btn:hover { color: var(--ink); }
+        .tab-btn.active { color: var(--ink); }
 
         .tab-btn.active::after {
             content: "";
@@ -166,7 +160,6 @@
             vertical-align: -1px;
         }
 
-        /* === CONTENT === */
         main {
             max-width: 1100px;
             margin: 0 auto;
@@ -178,9 +171,7 @@
             animation: fadeIn 0.4s ease-out;
         }
 
-        .tab-panel.active {
-            display: block;
-        }
+        .tab-panel.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px); }
@@ -198,7 +189,6 @@
             padding-left: 1.2rem;
         }
 
-        /* === ARTICLE CARDS === */
         .article-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -216,9 +206,7 @@
             cursor: pointer;
         }
 
-        .article-card:first-child {
-            padding-top: 0;
-        }
+        .article-card:first-child { padding-top: 0; }
 
         .article-card:hover {
             background: linear-gradient(90deg, #1c1a16 0%, transparent 100%);
@@ -242,9 +230,7 @@
             transition: color 0.2s;
         }
 
-        .article-card h3 a:hover {
-            color: var(--accent);
-        }
+        .article-card h3 a:hover { color: var(--accent); }
 
         .article-meta {
             display: flex;
@@ -285,7 +271,32 @@
             margin-top: 0.2rem;
         }
 
-        /* === FEATURED === */
+        .article-tag.interactive {
+            border-color: var(--accent-dark);
+            color: var(--accent-light);
+            background: rgba(194, 60, 42, 0.08);
+        }
+
+        .dashboard-hint {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.72rem;
+            color: var(--accent-light);
+            margin-top: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .dashboard-hint svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: var(--accent-light);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
         .featured {
             background: #1f1e1b;
             color: var(--ink);
@@ -306,28 +317,30 @@
             color: var(--accent);
         }
 
-        .featured h3 a {
-            color: var(--ink) !important;
-        }
-
-        .featured h3 a:hover {
-            color: var(--accent) !important;
-        }
-
-        .featured .article-meta .publication {
+        .featured h3 a { color: var(--ink) !important; }
+        .featured h3 a:hover { color: var(--accent) !important; }
+        .featured .article-meta .publication { color: var(--accent-light); }
+        .featured .article-excerpt { color: #9e9a93; }
+        .featured .article-tag { border-color: #3a3835; color: #8a857e; }
+        .featured .article-tag.interactive {
+            border-color: var(--accent-dark);
             color: var(--accent-light);
+            background: rgba(194, 60, 42, 0.1);
         }
 
-        .featured .article-excerpt {
-            color: #9e9a93;
+        /* Placeholder styling for Justice tab */
+        .placeholder-note {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            color: var(--muted);
+            font-style: italic;
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px dashed var(--rule);
+            border-radius: 4px;
+            text-align: center;
         }
 
-        .featured .article-tag {
-            border-color: #3a3835;
-            color: #8a857e;
-        }
-
-        /* === FOOTER === */
         footer {
             max-width: 1100px;
             margin: 0 auto;
@@ -342,10 +355,7 @@
             gap: 1rem;
         }
 
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
+        footer a { color: var(--accent); text-decoration: none; }
 
         .availability {
             display: flex;
@@ -369,34 +379,15 @@
             50% { opacity: 0.4; }
         }
 
-        /* === RESPONSIVE === */
         @media (max-width: 768px) {
-            .masthead {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
+            .masthead { flex-direction: column; gap: 0.5rem; }
             .masthead h1 { font-size: 2rem; }
             .masthead-meta { text-align: left; }
-
-            .tab-btn {
-                font-size: 0.75rem;
-                padding: 0.8rem 1rem;
-                letter-spacing: 0.06em;
-            }
-
+            .tab-btn { font-size: 0.75rem; padding: 0.8rem 1rem; letter-spacing: 0.06em; }
             .tab-icon { display: none; }
-
-            .article-card {
-                grid-template-columns: 1fr;
-            }
-
+            .article-card { grid-template-columns: 1fr; }
             .article-card h3 { font-size: 1.2rem; }
-
-            .featured {
-                margin: 0 -1rem 2rem;
-                padding: 1.8rem 1.2rem;
-            }
+            .featured { margin: 0 -1rem 2rem; padding: 1.8rem 1.2rem; }
         }
 
         @media (max-width: 480px) {
@@ -419,7 +410,7 @@
         informed by past analytical experience.
     </p>
     <div class="contact-bar">
-        <span><a href="/cdn-cgi/l/email-protection#f980968c8bd79c94989095b99c81989489959cd79a9694"><span class="__cf_email__" data-cfemail="f58c9a8087db9098949c99b5908d9498859990db969a98">[email&#160;protected]</span></a></span>
+        <span><a href="mailto:your.email@example.com">your.email@example.com</a></span>
         <span><a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a></span>
         <span>Cambridge, UK</span>
     </div>
@@ -441,120 +432,50 @@
     <button class="tab-btn" data-tab="justice">
         <span class="tab-icon">◈</span>Justice
     </button>
+    <button class="tab-btn" data-tab="data">
+        <span class="tab-icon">▦</span>Data Journalism
+    </button>
 </nav>
 
 <main>
-    <!-- ==================== ENVIRONMENT ==================== -->
-    <div class="tab-panel" id="environment">
+    <!-- ==================== US BUSINESS ==================== -->
+    <div class="tab-panel active" id="business">
         <p class="section-intro">
-            Climate and environmental reporting grounded in data analysis and geopolitical context. 
-            My work connects ecological consequences to the security decisions and industrial systems that cause them.
+            Reporting on American industry, markets, and economic policy — from insurance sector failures 
+            to the corporate dynamics shaping global forums like Davos.
         </p>
 
         <div class="article-grid">
 
-            <!-- FEATURED ARTICLE — replace with your best piece -->
             <div class="article-card featured">
                 <div>
                     <div class="article-meta">
-                        <span class="publication">The Atlantic · Planet</span>
-                        <span>March 2026</span>
+                        <span class="publication">Style of The Economist · Finance & Economics</span>
+                        <span>2026</span>
                     </div>
-                    <h3><a href="#" target="_blank">War Beneath the Waves: How Conflict Is Rewriting the Black Sea's Ecosystem</a></h3>
+                    <h3><a href="articles/economist-playing-with-fire.html" target="_blank">Playing with Fire</a></h3>
                     <p class="article-excerpt">
-                        An investigation into how naval warfare, sunken munitions, and disrupted shipping lanes 
-                        are transforming one of Europe's most fragile marine environments — with consequences 
-                        that will outlast the conflict itself.
-                    </p>
-                </div>
-                <span class="article-tag">Investigation</span>
-            </div>
-
-            <!-- Article 2 — replace with your work -->
-            <div class="article-card">
-                <div>
-                    <div class="article-meta">
-                        <span class="publication">Publication Name</span>
-                        <span>Date</span>
-                    </div>
-                    <h3><a href="#" target="_blank">Your Article Title Here</a></h3>
-                    <p class="article-excerpt">
-                        A brief description of the piece — two to three sentences that convey the scope 
-                        and significance of the reporting. What did you uncover or explain?
+                        From the Great Chicago Fire to CME Group's data-centre meltdown, insurers have always 
+                        grappled with risks they cannot model. An examination of how AI is automating the insurance 
+                        industry's oldest delusion — that historical data predicts the future — while catastrophic 
+                        risk migrates to public backstops ill-equipped to absorb it.
                     </p>
                 </div>
                 <span class="article-tag">Analysis</span>
             </div>
 
-            <!-- Article 3 -->
             <div class="article-card">
                 <div>
                     <div class="article-meta">
-                        <span class="publication">Publication Name</span>
-                        <span>Date</span>
-                    </div>
-                    <h3><a href="#" target="_blank">Your Article Title Here</a></h3>
-                    <p class="article-excerpt">
-                        A brief description of the piece — two to three sentences that convey the scope 
-                        and significance of the reporting.
-                    </p>
-                </div>
-                <span class="article-tag">Data</span>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- ==================== JUSTICE ==================== -->
-    <div class="tab-panel" id="justice">
-        <p class="section-intro">
-            Accountability journalism focused on institutional failures, infrastructure neglect, 
-            and the communities left behind by policy decisions.
-        </p>
-
-        <div class="article-grid">
-
-            <div class="article-card featured">
-                <div>
-                    <div class="article-meta">
-                        <span class="publication">NYT Local · Fellowship Pitch</span>
+                        <span class="publication">Style of The Economist · Business</span>
                         <span>2026</span>
                     </div>
-                    <h3><a href="#" target="_blank">Broken Pipes, Broken Promises: Water Infrastructure Failures in the American South</a></h3>
+                    <h3><a href="articles/economist-unprofitable-plot.html" target="_blank">The Unprofitable Plot</a></h3>
                     <p class="article-excerpt">
-                        An investigative pitch examining how decades of disinvestment in water systems 
-                        across Southern cities have created a slow-moving public health crisis — and who profits 
-                        from inaction.
-                    </p>
-                </div>
-                <span class="article-tag">Investigation</span>
-            </div>
-
-            <div class="article-card">
-                <div>
-                    <div class="article-meta">
-                        <span class="publication">Publication Name</span>
-                        <span>Date</span>
-                    </div>
-                    <h3><a href="#" target="_blank">Your Article Title Here</a></h3>
-                    <p class="article-excerpt">
-                        A brief description of the piece — two to three sentences that convey the scope 
-                        and significance of the reporting.
-                    </p>
-                </div>
-                <span class="article-tag">Feature</span>
-            </div>
-
-            <div class="article-card">
-                <div>
-                    <div class="article-meta">
-                        <span class="publication">Publication Name</span>
-                        <span>Date</span>
-                    </div>
-                    <h3><a href="#" target="_blank">Your Article Title Here</a></h3>
-                    <p class="article-excerpt">
-                        A brief description of the piece — two to three sentences that convey the scope 
-                        and significance of the reporting.
+                        For American bosses, the half-million-dollar trip to Davos cannot be justified by 
+                        "improving the state of the world." The true return on investment comes not from the 
+                        deals made, but from observing the deals that inevitably fall apart — a real-time 
+                        demonstration of the limits of centralised planning.
                     </p>
                 </div>
                 <span class="article-tag">Analysis</span>
@@ -575,105 +496,18 @@
             <div class="article-card featured">
                 <div>
                     <div class="article-meta">
-                        <span class="publication">Style of The Economist</span>
+                        <span class="publication">Style of The Economist · Defence & Diplomacy</span>
                         <span>2026</span>
                     </div>
-                    <h3><a href="#" target="_blank">The Semiconductor Battlefield: How Chip Export Controls Are Reshaping Geopolitics</a></h3>
+                    <h3><a href="articles/economist-golden-dome.html" target="_blank">From Teapot to Golden: America's Domes of Depletion</a></h3>
                     <p class="article-excerpt">
-                        An analysis of how semiconductor export restrictions are redrawing alliance structures 
-                        and accelerating the decoupling of global technology supply chains — with consequences 
-                        for defense readiness on both sides.
+                        A century after the Teapot Dome scandal depleted naval oil reserves for private profit, 
+                        America's precision munitions stockpile faces a parallel crisis — this time in plain sight. 
+                        An analysis of how alliance transfers, contractor lobbying, and the physics of missile defence 
+                        are draining the arsenal of democracy faster than industry can refill it.
                     </p>
                 </div>
                 <span class="article-tag">Analysis</span>
-            </div>
-
-            <div class="article-card">
-                <div>
-                    <div class="article-meta">
-                        <span class="publication">Publication Name</span>
-                        <span>Date</span>
-                    </div>
-                    <h3><a href="#" target="_blank">Your Article Title Here</a></h3>
-                    <p class="article-excerpt">
-                        A brief description of the piece — two to three sentences that convey the scope 
-                        and significance of the reporting.
-                    </p>
-                </div>
-                <span class="article-tag">Feature</span>
-            </div>
-
-            <div class="article-card">
-                <div>
-                    <div class="article-meta">
-                        <span class="publication">Publication Name</span>
-                        <span>Date</span>
-                    </div>
-                    <h3><a href="#" target="_blank">Your Article Title Here</a></h3>
-                    <p class="article-excerpt">
-                        A brief description of the piece — two to three sentences that convey the scope 
-                        and significance of the reporting.
-                    </p>
-                </div>
-                <span class="article-tag">Data</span>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- ==================== US BUSINESS ==================== -->
-    <div class="tab-panel active" id="business">
-        <p class="section-intro">
-            Reporting on American industry, markets, and economic policy — from insurance sector failures 
-            to the corporate dynamics shaping global forums like Davos.
-        </p>
-
-        <div class="article-grid">
-
-            <div class="article-card featured">
-                <div>
-                    <div class="article-meta">
-                        <span class="publication">Publication Name</span>
-                        <span>2026</span>
-                    </div>
-                    <h3><a href="#" target="_blank">When the Safety Net Breaks: Inside America's Insurance Industry Failures</a></h3>
-                    <p class="article-excerpt">
-                        An investigation into how structural failures in the U.S. insurance market are leaving 
-                        homeowners and businesses exposed — and what the industry's retreat from high-risk areas 
-                        signals about the future of American property markets.
-                    </p>
-                </div>
-                <span class="article-tag">Investigation</span>
-            </div>
-
-            <div class="article-card">
-                <div>
-                    <div class="article-meta">
-                        <span class="publication">Publication Name</span>
-                        <span>Date</span>
-                    </div>
-                    <h3><a href="#" target="_blank">The Davos Equation: Who Really Sets the Agenda at the World Economic Forum</a></h3>
-                    <p class="article-excerpt">
-                        An analysis of the power dynamics, corporate lobbying, and backroom dealmaking 
-                        that shape outcomes at the world's most exclusive economic gathering.
-                    </p>
-                </div>
-                <span class="article-tag">Analysis</span>
-            </div>
-
-            <div class="article-card">
-                <div>
-                    <div class="article-meta">
-                        <span class="publication">Publication Name</span>
-                        <span>Date</span>
-                    </div>
-                    <h3><a href="#" target="_blank">Your Article Title Here</a></h3>
-                    <p class="article-excerpt">
-                        A brief description of the piece — two to three sentences that convey the scope 
-                        and significance of the reporting.
-                    </p>
-                </div>
-                <span class="article-tag">Feature</span>
             </div>
 
         </div>
@@ -682,8 +516,8 @@
     <!-- ==================== SCIENCE ==================== -->
     <div class="tab-panel" id="science">
         <p class="section-intro">
-            Science reporting that bridges research and real-world consequence — from satellite-derived 
-            environmental datasets to the methodologies behind emerging threat detection.
+            Science reporting that bridges research and real-world consequence — from the entomologists 
+            defending American agriculture to the methodologies behind emerging threat detection.
         </p>
 
         <div class="article-grid">
@@ -691,46 +525,108 @@
             <div class="article-card featured">
                 <div>
                     <div class="article-meta">
-                        <span class="publication">Publication Name</span>
+                        <span class="publication">Style of The Atlantic · Planet</span>
                         <span>2026</span>
                     </div>
-                    <h3><a href="#" target="_blank">Your Article Title Here</a></h3>
+                    <h3><a href="articles/atlantic-bug-scientists.html" target="_blank">The Bug Scientists Who Saved America — and Might Not Be Around Next Time</a></h3>
                     <p class="article-excerpt">
-                        Replace with your strongest science piece — two to three sentences that convey the scope 
-                        and significance of the reporting. What did you uncover or explain?
+                        America eliminated its worst agricultural pest by accident. It may now be eliminating 
+                        the scientists who could stop the next one on purpose. An investigation into the 
+                        Entomological Society of America, the invisible infrastructure between the American 
+                        breadbasket and catastrophe — and the funding cuts threatening to dismantle it.
                     </p>
                 </div>
                 <span class="article-tag">Investigation</span>
             </div>
 
-            <div class="article-card">
+        </div>
+    </div>
+
+    <!-- ==================== ENVIRONMENT ==================== -->
+    <div class="tab-panel" id="environment">
+        <p class="section-intro">
+            Climate and environmental reporting grounded in data analysis and geopolitical context. 
+            My work connects ecological consequences to the security decisions and industrial systems that cause them.
+        </p>
+
+        <div class="article-grid">
+
+            <div class="article-card featured">
                 <div>
                     <div class="article-meta">
-                        <span class="publication">Publication Name</span>
-                        <span>Date</span>
+                        <span class="publication">Style of The Atlantic · Planet</span>
+                        <span>2026</span>
                     </div>
-                    <h3><a href="#" target="_blank">Your Article Title Here</a></h3>
+                    <h3><a href="articles/atlantic-black-sea.html" target="_blank">The Dead Sea That Feeds the World</a></h3>
                     <p class="article-excerpt">
-                        A brief description of the piece — two to three sentences that convey the scope 
-                        and significance of the reporting.
+                        How the war in Ukraine is killing the Black Sea, starving the Global South, and raising the 
+                        price of bread in America. An investigation into drifting sea mines, collapsing fisheries, 
+                        munitions leaching into anoxic waters, and the destruction of an ecosystem that feeds 
+                        some of the most food-insecure nations on earth.
                     </p>
                 </div>
-                <span class="article-tag">Data</span>
+                <span class="article-tag">Investigation</span>
             </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== JUSTICE ==================== -->
+    <div class="tab-panel" id="justice">
+        <p class="section-intro">
+            Accountability journalism focused on institutional failures, infrastructure neglect, 
+            and the communities left behind by policy decisions.
+        </p>
+
+        <div class="article-grid">
 
             <div class="article-card">
                 <div>
                     <div class="article-meta">
-                        <span class="publication">Publication Name</span>
-                        <span>Date</span>
+                        <span class="publication">In Progress</span>
+                        <span>2026</span>
                     </div>
-                    <h3><a href="#" target="_blank">Your Article Title Here</a></h3>
+                    <h3><a href="#">Broken Pipes, Broken Promises: Water Infrastructure Failures in the American South</a></h3>
                     <p class="article-excerpt">
-                        A brief description of the piece — two to three sentences that convey the scope 
-                        and significance of the reporting.
+                        An investigative pitch examining how decades of disinvestment in water systems 
+                        across Southern cities have created a slow-moving public health crisis — and who profits 
+                        from inaction.
                     </p>
                 </div>
-                <span class="article-tag">Analysis</span>
+                <span class="article-tag">In Progress</span>
+            </div>
+
+        </div>
+        <div class="placeholder-note">Additional pieces in development — check back soon.</div>
+    </div>
+
+    <!-- ==================== DATA JOURNALISM ==================== -->
+    <div class="tab-panel" id="data">
+        <p class="section-intro">
+            Interactive data projects that combine investigative reporting with visualization and analysis. 
+            Each project links to a live dashboard — built with R, JavaScript, and open-source mapping tools.
+        </p>
+
+        <div class="article-grid">
+
+            <div class="article-card featured">
+                <div>
+                    <div class="article-meta">
+                        <span class="publication">Interactive Dashboard</span>
+                        <span>2026</span>
+                    </div>
+                    <h3><a href="dashboards/bristol-trolley-dashboard.html" target="_blank">Bristol River Trolley Survey: Mapping Urban Pollution in Waterways</a></h3>
+                    <p class="article-excerpt">
+                        An interactive map and data analysis tracking the scale and distribution of shopping trolley 
+                        dumping across Bristol's river systems from 2005 to 2011 — revealing spatial patterns tied to 
+                        retail proximity, urban density, and municipal enforcement gaps.
+                    </p>
+                    <div class="dashboard-hint">
+                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        Opens interactive dashboard
+                    </div>
+                </div>
+                <span class="article-tag interactive">Dashboard</span>
             </div>
 
         </div>
@@ -742,7 +638,7 @@
     <div>Former Intel Analyst · NATO Intelligence · Auburn University</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
     const tabs = document.querySelectorAll('.tab-btn');
     const panels = document.querySelectorAll('.tab-panel');
 
@@ -756,6 +652,15 @@
         });
     });
 
-    // Make entire card clickable
     document.querySelectorAll('.article-card').forEach(card => {
-        card.addEventListener('click', 
+        card.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'A') {
+                const link = card.querySelector('a');
+                if (link && link.getAttribute('href') !== '#') window.open(link.href, '_blank');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
