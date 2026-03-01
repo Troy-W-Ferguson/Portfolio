@@ -3,20 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- This tells search engines NOT to index this page — keeps it link-only -->
     <meta name="robots" content="noindex, nofollow">
+
     <title>Troy — Investigative Journalism Portfolio</title>
+
+    <!-- Google Fonts: Playfair Display for headlines, Source Serif for body/intros, DM Sans for UI -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
+        /* ============================================================
+           COLOR VARIABLES
+           Change these to restyle the entire site at once.
+           --ink = main text, --paper = background, --accent = red highlight
+           ============================================================ */
         :root {
             --ink: #e8e4df;
             --paper: #0d0d0d;
             --accent: #c23c2a;
             --accent-light: #e05a48;
             --accent-dark: #9e2f21;
-            --muted: #8a857e;
-            --rule: #2e2c29;
+            --muted: #8a857e;        /* secondary text, meta info */
+            --rule: #2e2c29;         /* borders & dividers */
             --tab-bg: #1a1917;
-            --highlight: #1c1a16;
+            --highlight: #1c1a16;    /* hover backgrounds */
             --card-bg: #1a1917;
         }
 
@@ -30,6 +41,9 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* ============================================================
+           HEADER — Your name, tagline, and contact info
+           ============================================================ */
         header {
             padding: 3rem 2rem 0;
             max-width: 1100px;
@@ -42,6 +56,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* The top bar with your name and title */
         .masthead {
             display: flex;
             align-items: baseline;
@@ -67,6 +82,7 @@
             text-transform: uppercase;
         }
 
+        /* The italic description below your name */
         .tagline {
             font-family: 'Source Serif 4', serif;
             font-size: 1.15rem;
@@ -77,6 +93,7 @@
             max-width: 700px;
         }
 
+        /* Email, LinkedIn, location row */
         .contact-bar {
             display: flex;
             gap: 1.8rem;
@@ -98,6 +115,7 @@
             border-bottom-color: var(--accent);
         }
 
+        /* Dot separators between contact items */
         .contact-bar span::before {
             content: "•";
             margin-right: 0.6rem;
@@ -108,6 +126,11 @@
             content: none;
         }
 
+        /* ============================================================
+           TAB NAVIGATION
+           Each button switches which .tab-panel is visible.
+           The scrollable overflow keeps all tabs accessible on mobile.
+           ============================================================ */
         .tab-nav {
             display: flex;
             gap: 0;
@@ -115,13 +138,13 @@
             max-width: 1100px;
             margin: 0 auto;
             padding: 0 2rem;
-            overflow-x: auto;
+            overflow-x: auto;                    /* horizontal scroll on mobile */
             -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
+            scrollbar-width: none;               /* hides scrollbar on Firefox */
         }
 
         .tab-nav::-webkit-scrollbar {
-            display: none;
+            display: none;                       /* hides scrollbar on Chrome/Safari */
         }
 
         .tab-btn {
@@ -137,12 +160,13 @@
             color: var(--muted);
             position: relative;
             transition: color 0.25s;
-            white-space: nowrap;
+            white-space: nowrap;                 /* prevents tab text from wrapping */
         }
 
         .tab-btn:hover { color: var(--ink); }
         .tab-btn.active { color: var(--ink); }
 
+        /* The red underline on the active tab */
         .tab-btn.active::after {
             content: "";
             position: absolute;
@@ -153,6 +177,7 @@
             background: var(--accent);
         }
 
+        /* Small decorative icon before each tab label */
         .tab-icon {
             display: inline-block;
             margin-right: 0.5rem;
@@ -160,17 +185,23 @@
             vertical-align: -1px;
         }
 
+        /* ============================================================
+           MAIN CONTENT AREA
+           Contains all tab panels. Only one is visible at a time.
+           ============================================================ */
         main {
             max-width: 1100px;
             margin: 0 auto;
             padding: 2.5rem 2rem 4rem;
         }
 
+        /* Each tab's content wrapper — hidden by default */
         .tab-panel {
             display: none;
             animation: fadeIn 0.4s ease-out;
         }
 
+        /* The active panel is shown */
         .tab-panel.active { display: block; }
 
         @keyframes fadeIn {
@@ -178,6 +209,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* The italic intro paragraph at the top of each tab */
         .section-intro {
             font-family: 'Source Serif 4', serif;
             font-size: 1.05rem;
@@ -185,10 +217,15 @@
             line-height: 1.65;
             margin-bottom: 2.5rem;
             max-width: 720px;
-            border-left: 3px solid var(--accent);
+            border-left: 3px solid var(--accent);  /* red left border */
             padding-left: 1.2rem;
         }
 
+        /* ============================================================
+           ARTICLE CARDS
+           Each card is a row: text on the left, tag badge on the right.
+           Clicking anywhere on the card opens the linked article.
+           ============================================================ */
         .article-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -208,6 +245,7 @@
 
         .article-card:first-child { padding-top: 0; }
 
+        /* Subtle highlight on hover */
         .article-card:hover {
             background: linear-gradient(90deg, #1c1a16 0%, transparent 100%);
             margin: 0 -1rem;
@@ -215,6 +253,7 @@
             padding-right: 1rem;
         }
 
+        /* Article headline */
         .article-card h3 {
             font-family: 'Playfair Display', serif;
             font-size: 1.4rem;
@@ -232,6 +271,7 @@
 
         .article-card h3 a:hover { color: var(--accent); }
 
+        /* Publication name + date line above each headline */
         .article-meta {
             display: flex;
             gap: 1rem;
@@ -248,6 +288,7 @@
             font-weight: 600;
         }
 
+        /* The summary paragraph under each headline */
         .article-excerpt {
             font-family: 'Source Serif 4', serif;
             font-size: 0.98rem;
@@ -256,6 +297,7 @@
             max-width: 640px;
         }
 
+        /* Small tag badge on the right side of each card (e.g. "Analysis", "Investigation") */
         .article-tag {
             display: inline-block;
             font-size: 0.7rem;
@@ -271,12 +313,14 @@
             margin-top: 0.2rem;
         }
 
+        /* Special red-tinted tag for interactive dashboards */
         .article-tag.interactive {
             border-color: var(--accent-dark);
             color: var(--accent-light);
             background: rgba(194, 60, 42, 0.08);
         }
 
+        /* "Opens interactive dashboard" hint with external-link icon */
         .dashboard-hint {
             display: flex;
             align-items: center;
@@ -297,6 +341,12 @@
             stroke-linejoin: round;
         }
 
+        /* ============================================================
+           FEATURED CARD
+           Add class="featured" to any .article-card to give it the
+           dark elevated background + red left border.
+           The "FEATURED" label sits in the BOTTOM-RIGHT corner.
+           ============================================================ */
         .featured {
             background: #1f1e1b;
             color: var(--ink);
@@ -306,10 +356,11 @@
             border-left: 3px solid var(--accent);
         }
 
+        /* "FEATURED" label — positioned bottom-right so it doesn't overlap content */
         .featured::before {
             content: "FEATURED";
             position: absolute;
-            top: 0.8rem;
+            bottom: 0.8rem;
             right: 1.2rem;
             font-size: 0.65rem;
             font-weight: 600;
@@ -322,13 +373,17 @@
         .featured .article-meta .publication { color: var(--accent-light); }
         .featured .article-excerpt { color: #9e9a93; }
         .featured .article-tag { border-color: #3a3835; color: #8a857e; }
+
+        /* Interactive dashboard tag inside a featured card */
         .featured .article-tag.interactive {
             border-color: var(--accent-dark);
             color: var(--accent-light);
             background: rgba(194, 60, 42, 0.1);
         }
 
-        /* Placeholder styling for Justice tab */
+        /* ============================================================
+           JUSTICE TAB — "In progress" placeholder styling
+           ============================================================ */
         .placeholder-note {
             font-family: 'DM Sans', sans-serif;
             font-size: 0.82rem;
@@ -341,6 +396,9 @@
             text-align: center;
         }
 
+        /* ============================================================
+           FOOTER
+           ============================================================ */
         footer {
             max-width: 1100px;
             margin: 0 auto;
@@ -357,6 +415,7 @@
 
         footer a { color: var(--accent); text-decoration: none; }
 
+        /* Green pulsing dot + "Available for staff writer positions" */
         .availability {
             display: flex;
             align-items: center;
@@ -379,12 +438,16 @@
             50% { opacity: 0.4; }
         }
 
+        /* ============================================================
+           RESPONSIVE BREAKPOINTS
+           768px = tablet, 480px = phone
+           ============================================================ */
         @media (max-width: 768px) {
             .masthead { flex-direction: column; gap: 0.5rem; }
             .masthead h1 { font-size: 2rem; }
             .masthead-meta { text-align: left; }
             .tab-btn { font-size: 0.75rem; padding: 0.8rem 1rem; letter-spacing: 0.06em; }
-            .tab-icon { display: none; }
+            .tab-icon { display: none; }  /* hide tab icons on mobile to save space */
             .article-card { grid-template-columns: 1fr; }
             .article-card h3 { font-size: 1.2rem; }
             .featured { margin: 0 -1rem 2rem; padding: 1.8rem 1.2rem; }
@@ -400,6 +463,10 @@
 </head>
 <body>
 
+<!-- ================================================================
+     HEADER SECTION
+     Edit your name, tagline, email, LinkedIn URL, and location here.
+     ================================================================ -->
 <header>
     <div class="masthead">
         <h1>Troy Ferguson</h1>
@@ -410,12 +477,16 @@
         informed by past analytical experience.
     </p>
     <div class="contact-bar">
-        <span><a href="mailto:your.email@example.com">your.email@example.com</a></span>
-        <span><a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a></span>
-        <span>Cambridge, UK</span>
+        <!-- Replace these with your real contact info -->
+        <span>Cambridge, UK- Willing to Relocate- US Citizen</span>
     </div>
 </header>
 
+<!-- ================================================================
+     TAB NAVIGATION
+     Each button's data-tab="xxx" must match the id="xxx" of its panel.
+     To add a new tab: add a button here AND a matching div below.
+     ================================================================ -->
 <nav class="tab-nav">
     <button class="tab-btn active" data-tab="business">
         <span class="tab-icon">◇</span>US Business
@@ -438,7 +509,13 @@
 </nav>
 
 <main>
-    <!-- ==================== US BUSINESS ==================== -->
+
+    <!-- ================================================================
+         US BUSINESS TAB
+         This tab opens by default (class="active" on both button and panel).
+         To add a new article card, copy any <div class="article-card"> block
+         and update the href, title, publication, date, and excerpt.
+         ================================================================ -->
     <div class="tab-panel active" id="business">
         <p class="section-intro">
             Reporting on American industry, markets, and economic policy — from insurance sector failures 
@@ -447,6 +524,7 @@
 
         <div class="article-grid">
 
+            <!-- FEATURED: Playing with Fire (insurance/CME piece) -->
             <div class="article-card featured">
                 <div>
                     <div class="article-meta">
@@ -464,6 +542,7 @@
                 <span class="article-tag">Analysis</span>
             </div>
 
+            <!-- Davos piece -->
             <div class="article-card">
                 <div>
                     <div class="article-meta">
@@ -484,7 +563,9 @@
         </div>
     </div>
 
-    <!-- ==================== DEFENSE ==================== -->
+    <!-- ================================================================
+         DEFENSE TAB
+         ================================================================ -->
     <div class="tab-panel" id="defense">
         <p class="section-intro">
             Defense and security reporting informed by direct experience within NATO and the U.S. intelligence community. 
@@ -493,6 +574,7 @@
 
         <div class="article-grid">
 
+            <!-- FEATURED: Golden Dome / munitions depletion piece -->
             <div class="article-card featured">
                 <div>
                     <div class="article-meta">
@@ -513,7 +595,9 @@
         </div>
     </div>
 
-    <!-- ==================== SCIENCE ==================== -->
+    <!-- ================================================================
+         SCIENCE TAB
+         ================================================================ -->
     <div class="tab-panel" id="science">
         <p class="section-intro">
             Science reporting that bridges research and real-world consequence — from the entomologists 
@@ -522,6 +606,7 @@
 
         <div class="article-grid">
 
+            <!-- FEATURED: Entomology / bug scientists piece -->
             <div class="article-card featured">
                 <div>
                     <div class="article-meta">
@@ -542,7 +627,9 @@
         </div>
     </div>
 
-    <!-- ==================== ENVIRONMENT ==================== -->
+    <!-- ================================================================
+         ENVIRONMENT TAB
+         ================================================================ -->
     <div class="tab-panel" id="environment">
         <p class="section-intro">
             Climate and environmental reporting grounded in data analysis and geopolitical context. 
@@ -551,6 +638,7 @@
 
         <div class="article-grid">
 
+            <!-- FEATURED: Black Sea ecosystem piece -->
             <div class="article-card featured">
                 <div>
                     <div class="article-meta">
@@ -571,7 +659,11 @@
         </div>
     </div>
 
-    <!-- ==================== JUSTICE ==================== -->
+    <!-- ================================================================
+         JUSTICE TAB
+         Still in development — placeholder cards only.
+         Replace href="#" with real links when articles are ready.
+         ================================================================ -->
     <div class="tab-panel" id="justice">
         <p class="section-intro">
             Accountability journalism focused on institutional failures, infrastructure neglect, 
@@ -600,7 +692,13 @@
         <div class="placeholder-note">Additional pieces in development — check back soon.</div>
     </div>
 
-    <!-- ==================== DATA JOURNALISM ==================== -->
+    <!-- ================================================================
+         DATA JOURNALISM TAB
+         These cards link to interactive dashboards (separate HTML files).
+         Each dashboard lives in the /dashboards/ folder of your GitHub repo.
+         The "dashboard-hint" gives recruiters a visual cue that a click
+         opens a live interactive project, not a static article.
+         ================================================================ -->
     <div class="tab-panel" id="data">
         <p class="section-intro">
             Interactive data projects that combine investigative reporting with visualization and analysis. 
@@ -609,6 +707,7 @@
 
         <div class="article-grid">
 
+            <!-- FEATURED: Bristol trolley pollution dashboard -->
             <div class="article-card featured">
                 <div>
                     <div class="article-meta">
@@ -629,16 +728,53 @@
                 <span class="article-tag interactive">Dashboard</span>
             </div>
 
+            <!-- Iran-Israel Conflict Dashboards -->
+            <div class="article-card">
+                <div>
+                    <div class="article-meta">
+                        <span class="publication">Interactive Dashboard · Conflict Analysis</span>
+                        <span>2026</span>
+                    </div>
+                    <h3><a href="dashboards/iran-israel-conflict-dashboards.html" target="_blank">Iran–Israel Conflict Dashboards: Operation True Promise I & the Twelve-Day War</a></h3>
+                    <p class="article-excerpt">
+                        A pair of interactive dashboards mapping Iran's first direct attack on Israel in April 2024 
+                        and the subsequent Twelve-Day War — tracking 320+ projectiles, coalition intercept rates, 
+                        escalation timelines, and the multinational defensive response across two unprecedented 
+                        episodes of direct state-on-state conflict in the Middle East.
+                    </p>
+                    <div class="dashboard-hint">
+                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        Opens interactive dashboard
+                    </div>
+                </div>
+                <span class="article-tag interactive">Dashboard</span>
+            </div>
+
         </div>
     </div>
+
 </main>
 
+<!-- ================================================================
+     FOOTER
+     Update credentials/education as needed.
+     The green dot pulses to signal you're actively looking.
+     ================================================================ -->
 <footer>
     <div class="availability">Available for staff writer positions</div>
     <div>Former Intel Analyst · NATO Intelligence · Auburn University</div>
 </footer>
 
+<!-- ================================================================
+     JAVASCRIPT
+     This handles two things:
+     1. Tab switching — clicking a tab button shows its matching panel
+     2. Card click-through — clicking anywhere on a card opens its link
+     ================================================================ -->
 <script>
+    // TAB SWITCHING
+    // When a tab button is clicked, remove "active" from all tabs/panels,
+    // then add "active" to the clicked tab and its matching panel.
     const tabs = document.querySelectorAll('.tab-btn');
     const panels = document.querySelectorAll('.tab-panel');
 
@@ -652,6 +788,11 @@
         });
     });
 
+    // CARD CLICK-THROUGH
+    // Makes the entire card area clickable (not just the headline link).
+    // If the user clicks directly on the <a> tag, it works normally.
+    // If they click elsewhere on the card, we trigger the link manually.
+    // Cards with href="#" (placeholders) are ignored.
     document.querySelectorAll('.article-card').forEach(card => {
         card.addEventListener('click', (e) => {
             if (e.target.tagName !== 'A') {
