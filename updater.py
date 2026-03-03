@@ -152,4 +152,3 @@ def update_dashboard() -> None:
 
 if __name__ == "__main__":
     update_dashboard()
-```
