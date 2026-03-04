@@ -63,7 +63,10 @@ After searching, return a single JSON object with this exact structure (omit any
     "us_kia": "7",
     "us_wounded": "20+",
     "targets_struck": "1,500+",
-    "countries_struck": "9+"
+    "countries_struck": "9+",
+    "iranian_ships": "11+",
+    "iranian_aircraft": "TBD",
+    "hezb_naval": "TBD"
   }},
 
   "hstats": {{
@@ -218,6 +221,9 @@ def apply_diff(panel: str, diff: dict) -> str:
         "us_wounded":      "seriously wounded",
         "targets_struck":  "targets struck",
         "countries_struck":"countries struck",
+        "iranian_ships":   "Iranian naval vessels destroyed",
+        "iranian_aircraft":"Iranian military aircraft destroyed",
+        "hezb_naval":      "Hezbollah maritime",
     }
     for key, label_fragment in stat_label_map.items():
         if key in diff.get("stats", {}):

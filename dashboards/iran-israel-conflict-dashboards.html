@@ -1565,12 +1565,59 @@
   <div class="header-label">Conflict Analysis · Middle East · February–March 2026 · Ongoing</div>
   <h1>Operations <span>Epic Fury</span> / <span>Roaring Lion</span></h1>
   <div class="header-sub">Joint US-Israeli offensive against Iran, launched 28 February 2026. Targets: Iranian regime leadership, nuclear infrastructure, missile arsenal, naval assets, and IRGC command network. Supreme Leader Khamenei killed. Iran retaliates across the Middle East and Gulf.</div>
-  <div class="header-stats">
-    <div class="hstat"><div class="hstat-val iran">200+</div><div class="hstat-label">Civilians killed in Iran (Red Crescent, Day 1)</div></div>
-    <div class="hstat"><div class="hstat-val">500+</div><div class="hstat-label">Targets struck (Israel, Day 1)</div></div>
-    <div class="hstat"><div class="hstat-val iran">1</div><div class="hstat-label">Supreme Leader killed (Khamenei)</div></div>
-    <div class="hstat"><div class="hstat-val">1</div><div class="hstat-label">Israeli civilian killed (Day 1–2)</div></div>
-    <div class="hstat"><div class="hstat-val us">6</div><div class="hstat-label">US soldiers KIA (Day 4 · 5th &amp; 6th KIA overnight)</div></div>
+  <div class="header-stats" style="display:block;margin-top:28px;">
+    <div class="stats-grid-wrap" style="background:transparent;border:none;padding:0;">
+      <div class="section-title">Running totals <span style="font-size:9px;color:var(--iran);letter-spacing:1px;">· PRELIMINARY · AS OF 3 Mar 18:30 UTC</span></div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num red">600+</div>
+          <div class="stat-label">Iranian civilians killed (Red Crescent, Day 3)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num red">900+</div>
+          <div class="stat-label">Iranian civilians injured (Day 1 figure; Day 3 tally ongoing)</div>
+        </div>
+        <!-- Israeli civilian stat: white (no class) per editorial decision — not blue,
+             since this is a civilian death count rather than a military/state actor metric -->
+        <div class="stat-card">
+          <div class="stat-num">22+</div>
+          <div class="stat-label">Israeli civilians killed (Days 1–4 · incl. 9 in Beit Shemesh synagogue)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num blue">121+</div>
+          <div class="stat-label">Israelis injured</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num yellow">18+</div>
+          <div class="stat-label">US soldiers KIA · 18+ seriously wounded (CENTCOM, Day 4)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">1,700+</div>
+          <div class="stat-label">US/Israeli targets struck in first 48 hrs (CENTCOM)</div>
+        </div>
+        <div class="stat-card full">
+          <div class="stat-num red">9+</div>
+          <div class="stat-label">Countries struck by Iranian retaliation (Israel, UAE, Bahrain, Kuwait, Qatar, Jordan, Saudi Arabia, Iraq, Oman, Cyprus)</div>
+        </div>
+        <!-- Naval & Air losses by country — color-coded: Iran=red, Hezbollah/proxy=purple, US/Israel=blue/yellow -->
+        <div class="stat-card" style="border-color:rgba(255,80,80,0.3);">
+          <div class="stat-num red">11+</div>
+          <div class="stat-label">Iranian naval vessels destroyed (IRGC Navy · CENTCOM confirmed)</div>
+        </div>
+        <div class="stat-card" style="border-color:rgba(255,80,80,0.3);">
+          <div class="stat-num red">TBD</div>
+          <div class="stat-label">Iranian military aircraft destroyed (IRGC Air Force · awaiting CENTCOM breakdown)</div>
+        </div>
+        <div class="stat-card" style="border-color:rgba(167,139,250,0.3);">
+          <div class="stat-num purple">TBD</div>
+          <div class="stat-label">Hezbollah maritime/naval assets destroyed (IDF · Lebanon)</div>
+        </div>
+        <div class="stat-card" style="border-color:rgba(74,158,255,0.3);">
+          <div class="stat-num blue">TBD</div>
+          <div class="stat-label">US/Israeli aircraft lost (CENTCOM · figures pending)</div>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -2611,11 +2658,13 @@
       </div>
     </div>
 
-    <!-- Running totals -->
+    <!-- Day 1 snapshot -->
     <div class="stats-grid-wrap">
-      <div class="section-title">Running totals <span style="font-size:9px;color:var(--iran);letter-spacing:1px;">· PRELIMINARY · AS OF 3 Mar 18:30 UTC</span></div>
+      <div class="section-title">Day 1 snapshot <span style="font-size:9px;color:var(--muted);letter-spacing:1px;">· Feb 28 · initial figures</span></div>
       <div class="stats-grid">
         <div class="stat-card">
+          <div class="hstat-val iran" style="font-size:22px;line-height:1;">200+</div>
+          <div class="stat-label">Civilians killed in Iran (Red Crescent, Day 1)</div>
           <div class="stat-num red">1,145+</div>
           <div class="stat-label">Iranian civilians killed (Red Crescent, Day 3)</div>
         </div>
@@ -2630,20 +2679,22 @@
           <div class="stat-label">Israeli civilians killed (Days 1–4 · incl. 9 in Beit Shemesh synagogue)</div>
         </div>
         <div class="stat-card">
-          <div class="stat-num blue">121+</div>
-          <div class="stat-label">Israelis injured</div>
+          <div class="hstat-val" style="font-size:22px;line-height:1;">500+</div>
+          <div class="stat-label">Targets struck (Israel, Day 1)</div>
         </div>
         <div class="stat-card">
-          <div class="stat-num yellow">18+</div>
-          <div class="stat-label">US soldiers KIA · 18+ seriously wounded (CENTCOM, Day 4)</div>
+          <div class="hstat-val iran" style="font-size:22px;line-height:1;">1</div>
+          <div class="stat-label">Supreme Leader killed (Khamenei)</div>
         </div>
         <div class="stat-card">
+          <div class="hstat-val" style="font-size:22px;line-height:1;">1</div>
+          <div class="stat-label">Israeli civilian killed (Day 1–2)</div>
           <div class="stat-num">2,000+</div>
           <div class="stat-label">US/Israeli targets struck in first 48 hrs (CENTCOM)</div>
         </div>
         <div class="stat-card full">
-          <div class="stat-num red">9+</div>
-          <div class="stat-label">Countries struck by Iranian retaliation (Israel, UAE, Bahrain, Kuwait, Qatar, Jordan, Saudi Arabia, Iraq, Oman, Cyprus)</div>
+          <div class="hstat-val us" style="font-size:22px;line-height:1;">6</div>
+          <div class="stat-label">US soldiers KIA (Day 4 · 5th &amp; 6th KIA overnight)</div>
         </div>
       </div>
     </div>
@@ -2856,6 +2907,7 @@
         <span style="color:var(--border);">IAF/US daily figures will be updated as ops continue · this is a live conflict</span>
       </div>
     
+      </div>
       <div class="context-item">Hussein Makled — Head of Hezbollah's Intelligence Headquarters, Beirut. Killed in a precise IDF airstrike on Beirut's southern suburbs, confirmed by the IDF on March 2, 2026. (CBS News / Times of Israel)</div>
       <div class="context-item">Mohammad Pakpour — IRGC Ground Forces Commander. Confirmed killed in opening strikes, per IDF's official list of regime officials killed Feb 28–Mar 1 (IDF Persian account / Wikipedia).</div>
       <div class="context-item">Khamenei's wife — Confirmed by Iranian sources to have died of injuries sustained in the strike on Khamenei's compound (Wikipedia / Mar 2 report).</div>
@@ -2864,6 +2916,7 @@
 
     <!-- Key assassinations -->
     <div class="context-card">
+      <!-- Add dead leaders to this section -->
       <div class="section-title">Confirmed leadership killed</div>
       <div class="context-item"><strong>Ali Khamenei</strong> — Supreme Leader of Iran (86). Killed at his Tehran compound by Israeli precision strike. Daughter, son-in-law, grandson also killed. <a class="source-link" href="https://www.npr.org/2026/02/28/nx-s1-5730158/israel-iran-strikes-trump-us" target="_blank">NPR</a></div>
       <div class="context-item"><strong>Ali Shamkhani</strong> — Secretary, Supreme National Security Council. Confirmed killed. <a class="source-link" href="https://www.cbsnews.com/live-updates/israel-us-attack-iran-trump-says-major-combat-operations/" target="_blank">CBS</a></div>
@@ -2871,6 +2924,7 @@
       <div class="context-item"><strong>Hossein Jabal Amelian</strong> — SPND Director (Organization of Defensive Innovation and Research — nuclear/biological/chemical weapons). <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
       <div class="context-item"><strong>Abdolrahim Mousavi</strong> — Chief of Staff of Iranian Armed Forces. Confirmed 1 March by Iranian state media. <a class="source-link" href="https://www.aljazeera.com/news/2026/3/1/us-israel-attacks-on-iran-day-2-khamenei-is-killed-iran-retaliates" target="_blank">Al Jazeera</a></div>
       <div class="context-item"><strong>Reza Mozaffari-Nia</strong> · <strong>Mohammad Shirazi</strong> · <strong>Salah Asadi</strong> — Former SPND head, Khamenei's military office chief, intelligence chief. <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
+      <div class="context-item"><strong>Hussein Makled</strong> — Head of Hezbollah's Intelligence Headquarters, Beirut. Killed in a precise IDF airstrike on Beirut's southern suburbs, confirmed by the IDF on March 2, 2026. (CBS News / Times of Israel)</div>
     </div>
 
     <!-- Context card -->
