@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Storm They Voted For | The Atlantic</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --atlantic-black: #121212;
+    --atlantic-text: #1a1a1a;
+    --atlantic-body: #333;
+    --atlantic-gray: #666;
+    --atlantic-light: #999;
+    --atlantic-rule: #c4c4c4;
+    --atlantic-bg: #faf9f6;
+    --atlantic-red: #c0392b;
+    --atlantic-blue: #2c5aa0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--atlantic-bg);
+    color: var(--atlantic-body);
+    line-height: 1.72;
+    font-size: 19px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .masthead {
+    text-align: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--atlantic-rule);
+    font-family: 'Source Sans 3', Helvetica, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--atlantic-text);
+  }
+  .masthead span { color: var(--atlantic-red); }
+  .hero {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 64px 24px 40px;
+    text-align: center;
+  }
+  .hero-section-label {
+    font-family: 'Source Sans 3', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--atlantic-red);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(36px, 6vw, 56px);
+    line-height: 1.12;
+    font-weight: 700;
+    color: var(--atlantic-black);
+    margin-bottom: 18px;
+    letter-spacing: -0.5px;
+  }
+  .hero .dek {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 21px;
+    line-height: 1.55;
+    color: var(--atlantic-gray);
+    font-style: italic;
+    max-width: 620px;
+    margin: 0 auto 28px;
+  }
+  .hero .byline {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    color: var(--atlantic-text);
+  }
+  .hero .dateline {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    color: var(--atlantic-light);
+    margin-top: 4px;
+  }
+  .hero-rule {
+    width: 60px;
+    height: 3px;
+    background: var(--atlantic-red);
+    margin: 36px auto;
+  }
+  article {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+  article p { margin-bottom: 22px; }
+  article p.lede:first-letter {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 72px;
+    float: left;
+    line-height: 0.8;
+    padding-right: 8px;
+    padding-top: 6px;
+    color: var(--atlantic-black);
+    font-weight: 700;
+  }
+  sup.fn a {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    color: var(--atlantic-red);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0 1px;
+  }
+  sup.fn a:hover { text-decoration: underline; }
+  .section-break {
+    text-align: center;
+    margin: 42px 0;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 24px;
+    color: var(--atlantic-rule);
+    letter-spacing: 8px;
+  }
+  .pullquote {
+    border-left: 3px solid var(--atlantic-red);
+    margin: 36px 0 36px -20px;
+    padding: 8px 0 8px 28px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 23px;
+    line-height: 1.45;
+    color: var(--atlantic-text);
+    font-style: italic;
+  }
+  .read-more {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--atlantic-red);
+    margin: 28px 0;
+    font-style: italic;
+  }
+  .read-more a { color: var(--atlantic-red); text-decoration: underline; text-decoration-color: rgba(192,57,43,0.3); }
+  .dashboard-wrapper {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 24px;
+  }
+  .dashboard-frame {
+    width: 100%;
+    height: 640px;
+    border: 1px solid var(--atlantic-rule);
+    border-radius: 4px;
+    background: #0a0c10;
+  }
+  .dashboard-caption {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    color: var(--atlantic-light);
+    text-align: center;
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+  .footnotes {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px 40px;
+    border-top: 1px solid var(--atlantic-rule);
+  }
+  .footnotes h4 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: var(--atlantic-text);
+    margin: 24px 0 14px;
+  }
+  .footnotes ol {
+    list-style: none;
+    counter-reset: fn-counter;
+    padding: 0;
+  }
+  .footnotes li {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    color: var(--atlantic-gray);
+    line-height: 1.6;
+    margin-bottom: 8px;
+    padding-left: 28px;
+    position: relative;
+  }
+  .footnotes li::before {
+    counter-increment: fn-counter;
+    content: counter(fn-counter) ".";
+    position: absolute;
+    left: 0;
+    font-weight: 600;
+    color: var(--atlantic-red);
+  }
+  .footnotes li a { color: var(--atlantic-blue); text-decoration: underline; text-decoration-color: rgba(44,90,160,0.3); }
+  .article-footer {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    color: var(--atlantic-light);
+    text-align: center;
+  }
+  .hero-image {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+  }
+  .hero-image img {
+    width: 100%;
+    display: block;
+    max-height: 520px;
+    object-fit: cover;
+    object-position: center 40%;
+  }
+  .hero-image figcaption {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    color: var(--atlantic-light);
+    padding: 8px 16px;
+    line-height: 1.5;
+    background: #f0ede8;
+    border-bottom: 1px solid var(--atlantic-rule);
+  }
+  .inline-figure {
+    margin: 36px 0;
+  }
+  .inline-figure img {
+    width: 100%;
+    display: block;
+    border: 1px solid var(--atlantic-rule);
+  }
+  .inline-figure figcaption {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    color: var(--atlantic-light);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  @media (max-width: 600px) {
+    body { font-size: 17px; }
+    .hero h1 { font-size: 32px; }
+    .pullquote { font-size: 20px; margin-left: 0; }
+    .dashboard-frame { height: 400px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">The Atlantic <span>·</span> Planet</div>
+
+<div class="hero">
+  <div class="hero-section-label">Climate &amp; Politics</div>
+  <h1>The Storm They Voted For</h1>
+  <div class="dek">The counties most likely to be flattened by a tornado are also the most loyal to the president who wants to abolish the agency that rebuilds them.</div>
+  <div class="byline">By Troy Ferguson</div>
+  <div class="dateline">March 2026</div>
+</div>
+
+<figure class="hero-image">
+  <img src="../images/Tornado Prattvile.jpg" alt="Tornado, 2008, Outskirts of Prattville, AL">
+  <figcaption>Tornado, 2008, Outskirts of Prattville, AL</figcaption>
+</figure>
+
+<div class="hero-rule"></div>
+
+<article>
+
+<p class="lede">On February 17, 2008, a Sunday afternoon in Prattville, Alabama, a resident named Rodrick Alexander was working the counter at a KFC on Cobbs Ford Road when the sky turned the color of a bruise. He and a few employees and customers scrambled into the back of the restaurant just before the roof came apart.<sup class="fn"><a href="#fn1">1</a></sup> Across the street, a teenager at a tanning salon barely made it into a laundry room before the ceiling collapsed around him. At a Food World, shoppers sheltered in walk-in coolers. The EF-3 tornado that carved a 14.5-mile path through Autauga County that afternoon injured 50 people, destroyed more than 200 homes, and knocked out power to 11,000 customers.<sup class="fn"><a href="#fn2">2</a></sup> What it did not do, remarkably, was kill anyone. The National Weather Service had issued a warning 35 minutes before the funnel touched down.<sup class="fn"><a href="#fn3">3</a></sup> People listened.</p>
+
+<p>Prattville rebuilt, as small Southern towns tend to do. A church became a supply depot. A pest-control outfit offered free foundation treatments for homes going up from scratch. On one shattered house along South Memorial Drive, someone spray-painted "1819 we survived," the address and a declaration, the letters visible for blocks.<sup class="fn"><a href="#fn4">4</a></sup></p>
+
+<p>But Prattville keeps getting hit: an F1 in 2010, an EF-3 in January 2023 that stayed on the ground for 82 miles,<sup class="fn"><a href="#fn5">5</a></sup> an EF-0 two months later.<sup class="fn"><a href="#fn6">6</a></sup> Four tornadoes in 15 years. The question now is not whether the next one is coming. It is whether the federal help will be.</p>
+
+<div class="section-break">◆ ◆ ◆</div>
+
+<p>Pull up a map of every violent tornado that has touched down in the United States since 1950, and then overlay it with the counties that voted for Donald Trump in three consecutive elections. The result is uncanny. The 2,559 counties that went for Trump in 2016, 2020, and 2024 are concentrated across the Great Plains and the Deep South, the belt meteorologists call Tornado Alley and its humid extension, Dixie Alley.<sup class="fn"><a href="#fn7">7</a></sup> Alabama and Oklahoma each have seven F5 or EF5 tornadoes on record, more than any other state. Both went for Trump by more than 30 points in 2024.<sup class="fn"><a href="#fn8">8</a></sup> Autauga County has voted Republican in every presidential election since at least 2000.</p>
+
+</article>
+
+<div class="dashboard-wrapper">
+  <iframe class="dashboard-frame" src="../dashboards/tornado_trump_dashboard.html" title="Severe Tornadoes & Trump-Voting Counties Dashboard" loading="lazy"></iframe>
+  <div class="dashboard-caption">Interactive: Severe tornadoes (F/EF3–5), 1950–2015, overlaid with counties that voted for Trump in 2016, 2020, and 2024. Green rings indicate FEMA-funded reconstruction.</div>
+</div>
+
+<article>
+
+<p>The overlap is not a coincidence waiting for someone to notice it. It is the central paradox of American disaster politics: The communities most dependent on federal disaster relief are governed by the party now trying to dismantle the agency that provides it.</p>
+
+<div class="section-break">◆ ◆ ◆</div>
+
+<p>In June 2025, Trump told reporters he planned to "wean" states off FEMA after the hurricane season.<sup class="fn"><a href="#fn9">9</a></sup> Governors should handle the aftermath of tornadoes and hurricanes themselves, he said. "If they can't handle it, maybe they shouldn't be governor." His acting FEMA chief, Cameron Hamilton, was pushed out one day after telling Congress that abolishing the agency was not in the public interest. His replacement, David Richardson, a former martial-arts instructor with no disaster-management experience, shelved the agency's updated disaster plan.<sup class="fn"><a href="#fn10">10</a></sup> By mid-2025, roughly a quarter of FEMA's full-time staff had left. The agency entered hurricane season with just 12 percent of its incident-management workforce available to deploy.<sup class="fn"><a href="#fn11">11</a></sup></p>
+
+<p>The bipartisan response from state leaders was unusually blunt. In May, the National Governors Association sent a letter to the FEMA Review Council with a message that read less like a policy recommendation than a warning: "Given state budget cycles and requirements to maintain a balanced budget, even states with the most robust emergency management are unable to self-fund disaster response to truly catastrophic disasters." The governors asked that the Disaster Relief Fund be "consistently funded to meet identified needs." When concurrent or multistate disasters strike, they wrote, it is "essential" that the federal government continue to coordinate resources to prevent states from competing against each other and driving up costs.<sup class="fn"><a href="#fn12">12</a></sup></p>
+
+<p>This was not a Democratic letter. It was signed by the NGA's bipartisan leadership, representing governors from both parties, and it articulated a position that no serious state emergency official disputes: states lead disaster response, but they cannot pay for it alone when the disaster is catastrophic. Wyoming's Director of Homeland Security, Lynn Budd, whose office depends on the federal government for 92 percent of its funding, put it more plainly last summer: "If we don't get this funding, what are we going to do? You're taking our capability away."<sup class="fn"><a href="#fn13">13</a></sup></p>
+
+<div class="section-break">◆ ◆ ◆</div>
+
+<p>The political argument for dismantling FEMA assumes that states, given the money, will manage their own disasters competently. The fiscal records of the states most likely to need that money suggest otherwise.</p>
+
+<p>California, whose $61 billion in wildfire damages in January 2025 alone exceeded the annual budgets of most federal agencies, is running a structural deficit projected at $18 billion for 2026, with annual shortfalls expected to reach $35 billion by 2028.<sup class="fn"><a href="#fn14">14</a></sup> The state has borrowed more than $20 billion from internal funds and drained its rainy-day reserves by half after four consecutive years of deficits, even as revenues have grown. Alabama, whose finance leaders warned legislators in February 2025 that the "sugar high is over" as federal COVID relief dried up, relies on the federal government for $2.01 for every dollar its residents pay in federal taxes, making it the seventh-most-dependent state in the country on federal funds.<sup class="fn"><a href="#fn15">15</a></sup> Its general-fund budget is $3.7 billion. A single EF-5 tornado can cause $2 billion in damage.</p>
+
+<p>The assumption that these states will prudently manage large-sum disaster-recovery grants, without FEMA's auditing, oversight, and institutional processes, is not supported by anything in their recent fiscal histories. It is a bet that the states most stretched by ordinary governance will suddenly become models of crisis management when the crisis arrives.</p>
+
+<div class="section-break">◆ ◆ ◆</div>
+
+<p>And tornadoes are not the worst of what is coming. The Cascadia subduction zone, a 700-mile fault running from Northern California to British Columbia, has a 37 percent chance of producing a magnitude-8.0 or greater earthquake in the next 50 years. FEMA's own models project roughly 13,000 deaths and a tsunami that could reach 100 feet along the Pacific Northwest coast.<sup class="fn"><a href="#fn16">16</a></sup> Oregon's emergency-management office has warned that communities should expect to be without services for at least two weeks. Clatsop County, a rural coastal Oregon county of 41,000 people, received more than $20 million in federal mitigation grants to retrofit its only hospital, which sits in the tsunami inundation zone. That funding was canceled when the administration terminated the BRIC program.<sup class="fn"><a href="#fn17">17</a></sup></p>
+
+<p>New research from Oregon State University suggests that a Cascadia rupture could trigger seismic activity on the San Andreas Fault, potentially producing two catastrophic earthquakes within hours of each other, from the Pacific Northwest to Los Angeles.<sup class="fn"><a href="#fn18">18</a></sup> No state has the capacity to manage a disaster of that scale alone. The entire point of FEMA was that no state should have to.</p>
+
+<p>An environmental scientist in Cambridge who receives federal research funding, and who asked not to be named, told me this situation reminded him of something he had read about the fall of the Roman Empire. "It wasn't sudden," he said. "Someone wrote that the people outside of Rome didn't realize it had fallen at first. Instead, it dawned on them after a bridge fell down and then months, years later, no one came around to fix it."</p>
+
+<p class="read-more"><em>Read: <a href="#">Last Call at the Disaster Department</a></em></p>
+
+<div class="section-break">◆ ◆ ◆</div>
+
+<p>Before FEMA existed, more than 100 federal agencies had some fragment of disaster-response authority, with overlapping jurisdictions and no coordination.<sup class="fn"><a href="#fn19">19</a></sup> When the 1974 Super Outbreak sent 148 tornadoes across 13 states in a single day, killing 330 people, the system's failure was vivid. In Georgia, Governor Jimmy Carter declared 13 counties disaster areas and asked President Nixon for help. In West Virginia, officials scrambled to locate trailers left over from a flood two years earlier. The Red Cross distributed $3,000 in one county. Sightseers clogged the roads. The Disaster Relief Act that followed passed the Senate unanimously.<sup class="fn"><a href="#fn20">20</a></sup></p>
+
+<p>Five years later, Carter, who had experienced that fragmented response firsthand, signed the executive order creating FEMA. The National Governors Association, on a bipartisan basis, had demanded it.<sup class="fn"><a href="#fn21">21</a></sup> And after the Department of Homeland Security absorbed the agency in 2003 and the Bush administration stripped out experienced managers, Hurricane Katrina exposed how quickly institutional knowledge, once lost, translates into body counts.</p>
+
+<p>In April 2025, the administration canceled the Building Resilient Infrastructure and Communities program, the main federal vehicle for pre-disaster mitigation, calling it "wasteful." A federal study had found that every dollar invested in the program saved six in future disaster losses.<sup class="fn"><a href="#fn22">22</a></sup> Twenty states sued; a court reversed the cancellation in December, but no new mitigation grants have been approved since March 2025.<sup class="fn"><a href="#fn23">23</a></sup></p>
+
+<p>In Prattville, there is a FEMA-rated storm shelter at Boones Chapel Baptist Church.<sup class="fn"><a href="#fn24">24</a></sup> When the sirens go off, families drive across town to sit in a concrete room built to federal specifications and certified to withstand the same 155-mph winds that flattened Cobbs Ford Road. That shelter exists because of the mitigation program this administration canceled.</p>
+
+<figure class="inline-figure">
+  <img src="../images/Devil Will get you.jpg" alt="The Devil Will Get You sign on I-65 north of Prattville, Alabama">
+  <figcaption>Infamous sign North of Prattville, AL on I-65 that serves as a community in-joke of portrayals of southern culture by outsiders</figcaption>
+</figure>
+
+<div class="section-break">◆ ◆ ◆</div>
+
+<p>After the January 2023 tornado that tore through Autauga County, President Biden declared a major disaster for Alabama.<sup class="fn"><a href="#fn25">25</a></sup> Within 30 days, FEMA and the Small Business Administration had sent more than $8 million in federal assistance to tornado survivors: housing grants, debris removal, emergency services, disaster loans.<sup class="fn"><a href="#fn26">26</a></sup> Of the 25 congressional districts with the most FEMA household applications since 2021, 17 are represented by a Republican.<sup class="fn"><a href="#fn27">27</a></sup> The geography of disaster in this country skews overwhelmingly toward conservative places. That is not a political argument. It is a meteorological fact.</p>
+
+<p>Alabama has not supported a Democratic presidential candidate since Jimmy Carter in 1976, the same man who created FEMA three years later. Autauga County went for Trump by roughly 50 points in 2024. After the 2023 tornado hit the Prattville Pickers antique mall, owner Brenda Englebert watched her 300 vendors rally to rebuild: "Then the gratitude started setting in," she told a local station. "Wow, we're going to have a job. Wow, we're building back better."<sup class="fn"><a href="#fn6">6</a></sup></p>
+
+<p>Building back, though, required money that Prattville did not have. After the 2008 tornado, the Alabama Association of Realtors distributed $40,000 in disaster relief, a generous local effort and roughly half of one percent of the federal aid that would flow into the county after the next tornado 15 years later.<sup class="fn"><a href="#fn4">4</a></sup> It was FEMA, through the Stafford Act, that funded the actual reconstruction both times. Eight million dollars, flowing into Autauga County because a president signed a disaster declaration.</p>
+
+<p>A tornado does not care about your politics. It does not distinguish between the homes with Trump signs and the homes without them. It arrives, it destroys, and then the question is who pays. For 46 years, the answer has been FEMA. The sirens will sound again in Prattville. They always do. The question is whether the country they keep voting for will show up afterward.</p>
+
+</article>
+
+<div class="footnotes">
+  <h4>Sources</h4>
+  <ol>
+    <li id="fn1"><a href="https://www.waff.com/story/7886069/prattville-tornado-damages-many-homes-businesses/">WAFF, "Prattville tornado damages many homes, businesses," Feb. 17, 2008</a></li>
+    <li id="fn2"><a href="https://www.weather.gov/bmx/event_02172008_prattvillemillbrook">NWS Birmingham, "Prattville-Millbrook Tornado, February 17, 2008"</a></li>
+    <li id="fn3"><a href="https://alabamaweathernetwork.com/tornado-safety/">Alabama Weather Network, "Tornado Safety"</a></li>
+    <li id="fn4"><a href="https://activerain.com/blogsview/2143817/remembering-the-prattville-tornado---february-17--2008">ActiveRain, "Remembering the Prattville Tornado," Feb. 2011</a></li>
+    <li id="fn5"><a href="https://www.wbrc.com/2023/01/14/prattville-cr-43-neighbors-dealing-with-ef-3-tornado-destruction/">WBRC, "Prattville CR 43 tornado destruction," Jan. 2023</a></li>
+    <li id="fn6"><a href="https://www.waka.com/2024/03/26/one-year-later-prattville-tornado-remembered/">WAKA, "One Year Later: Prattville tornado remembered," Mar. 2024</a></li>
+    <li id="fn7"><a href="https://ballotpedia.org/County-level_presidential_election_voting_trends,_2016-2024">Ballotpedia, "County-level presidential election voting trends, 2016–2024"</a></li>
+    <li id="fn8"><a href="https://en.wikipedia.org/wiki/2024_United_States_presidential_election_in_Alabama">2024 presidential election in Alabama</a></li>
+    <li id="fn9"><a href="https://www.cnn.com/2025/06/11/politics/fema-hurricane-season-phase-out-trump">CNN, "Trump says he plans to phase out FEMA," June 11, 2025</a></li>
+    <li id="fn10"><a href="https://en.wikipedia.org/wiki/Federal_Emergency_Management_Agency">Wikipedia, "FEMA" (Hamilton, Richardson appointments)</a></li>
+    <li id="fn11"><a href="https://blog.ucs.org/shana-udvardy/what-if-disaster-strikes-as-fema-is-debilitated-by-the-trump-administration/">Union of Concerned Scientists, "What if Disaster Strikes?" Oct. 2025</a></li>
+    <li id="fn12"><a href="https://www.nga.org/advocacy-communications/letters-nga/letter-on-council-of-governors-recommendations-on-fema-reform/">National Governors Association, "Letter on FEMA Reform," May 2025</a></li>
+    <li id="fn13"><a href="https://alabamareflector.com/2025/07/15/federal-disaster-aid-is-uncertain-for-states-even-as-texas-floods-underscore-need/">Alabama Reflector, "Federal disaster aid uncertain," July 2025</a></li>
+    <li id="fn14"><a href="https://calmatters.org/politics/2025/11/california-budget-lao-forecast/">CalMatters, "California still in the red with $18B deficit," Nov. 2025; LAO, "2026-27 Budget: Fiscal Outlook"</a></li>
+    <li id="fn15"><a href="https://alabamareflector.com/2025/02/05/alabama-finance-leaders-say-sugar-high-is-over-for-state-budgets/">Alabama Reflector, "Sugar high is over," Feb. 2025; AL Reporter, "Alabama at risk," Feb. 2025</a></li>
+    <li id="fn16"><a href="https://www.naco.org/news/pacific-northwest-counties-prepare-big-one">NACo, "Pacific Northwest counties prepare for 'The Big One,'" Aug. 2025</a></li>
+    <li id="fn17"><a href="https://www.naco.org/news/pacific-northwest-counties-prepare-big-one">NACo (Clatsop County BRIC cancellation)</a></li>
+    <li id="fn18"><a href="https://www.opb.org/article/2025/10/14/think-out-loud-cascadia-earthquake-seismic-activity-san-andreas-fault/">OPB, "Cascadia earthquake could trigger San Andreas," Oct. 2025</a></li>
+    <li id="fn19"><a href="https://en.wikipedia.org/wiki/Federal_Emergency_Management_Agency">Wikipedia, "FEMA" (100+ agencies pre-consolidation)</a></li>
+    <li id="fn20"><a href="https://en.wikipedia.org/wiki/1974_Super_Outbreak">Wikipedia, "1974 Super Outbreak"; Disaster Relief Act of 1974</a></li>
+    <li id="fn21"><a href="https://www.fema.gov/about/history">FEMA.gov, "History of FEMA"</a></li>
+    <li id="fn22"><a href="https://www.congress.gov/crs-product/R46989">CRS, "FEMA Hazard Mitigation: A First Step Toward Climate Adaptation"</a></li>
+    <li id="fn23"><a href="https://www.congress.gov/crs-product/IN12642">CRS, "Funding for FEMA Hazard Mitigation Assistance in 2025"</a></li>
+    <li id="fn24"><a href="https://prattvilleal.gov/severe-weather-storm-shelters-available-3-15/">City of Prattville, "Storm Shelters," Mar. 2025</a></li>
+    <li id="fn25"><a href="https://www.wsfa.com/2023/01/15/president-approves-major-disaster-declaration-alabama/">WSFA, "Major disaster declaration for Alabama," Jan. 2023</a></li>
+    <li id="fn26"><a href="https://www.fema.gov/press-release/20250121/fema-sba-assistance-tops-81-million-alabama-tornado-survivors">FEMA, "$8.1M for Alabama Tornado Survivors," Feb. 2023; SBA, "Alabama disaster loans," Mar. 2023</a></li>
+    <li id="fn27"><a href="https://carnegieendowment.org/emissary/2025/03/fema-disaster-recovery-budget-cuts-state-impact?lang=en">Carnegie Endowment, "Get Rid of FEMA?" Mar. 2025</a></li>
+  </ol>
+</div>
+
+<div class="article-footer">
+  This article is part of <em>The Atlantic</em>'s Planet series on climate, disaster, and policy.
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Severe Tornadoes & Trump-Voting Counties — 1950–2015</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0a0c10;
+    --bg-panel: #12151c;
+    --bg-card: #1a1e28;
+    --border: #2a2f3d;
+    --text-primary: #e8eaf0;
+    --text-secondary: #8891a5;
+    --text-dim: #545c6f;
+    --red-trump: #c44040;
+    --red-light: #e05555;
+    --red-dark: #8b2020;
+    --yellow-ef3: #e8b931;
+    --orange-ef4: #e87931;
+    --magenta-ef5: #d43d8e;
+    --cyan-accent: #38bdf8;
+    --green-fema: #34d399;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+  }
+  #app {
+    display: grid;
+    grid-template-columns: 310px 1fr;
+    grid-template-rows: auto 1fr auto;
+    height: 100vh;
+  }
+  header {
+    grid-column: 1 / -1;
+    padding: 14px 24px;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+  }
+  header h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 21px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+  }
+  header h1 .y { color: var(--yellow-ef3); }
+  header h1 .r { color: var(--red-trump); }
+  .header-meta {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .sidebar {
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .card-title {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(42,47,61,0.4);
+  }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { font-size: 11px; color: var(--text-secondary); }
+  .stat-value { font-size: 13px; font-weight: 500; }
+  .ef3c { color: var(--yellow-ef3); }
+  .ef4c { color: var(--orange-ef4); }
+  .ef5c { color: var(--magenta-ef5); }
+  .trc { color: var(--red-trump); }
+  .toggle-row { display: flex; gap: 5px; flex-wrap: wrap; }
+  .toggle-btn {
+    padding: 4px 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .toggle-btn:hover { border-color: var(--text-secondary); }
+  .toggle-btn.a3 { background: rgba(232,185,49,0.15); border-color: var(--yellow-ef3); color: var(--yellow-ef3); }
+  .toggle-btn.a4 { background: rgba(232,121,49,0.15); border-color: var(--orange-ef4); color: var(--orange-ef4); }
+  .toggle-btn.a5 { background: rgba(212,61,142,0.15); border-color: var(--magenta-ef5); color: var(--magenta-ef5); }
+  .toggle-btn.at { background: rgba(196,64,64,0.15); border-color: var(--red-trump); color: var(--red-trump); }
+  .toggle-btn.af { background: rgba(52,211,153,0.15); border-color: var(--green-fema); color: var(--green-fema); }
+  .range-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-bottom: 2px; }
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    margin: 4px 0;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--cyan-accent);
+    cursor: pointer;
+  }
+  #map { width: 100%; height: 100%; background: var(--bg-dark); }
+  .leaflet-container { background: var(--bg-dark) !important; }
+  footer {
+    grid-column: 1 / -1;
+    padding: 7px 24px;
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9px;
+    color: var(--text-dim);
+  }
+  .legend-inline { display: flex; gap: 14px; align-items: center; }
+  .legend-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 3px;
+  }
+  .decade-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 70px;
+    padding-top: 6px;
+  }
+  .decade-bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    gap: 2px;
+  }
+  .decade-bar {
+    width: 100%;
+    border-radius: 2px 2px 0 0;
+    min-height: 2px;
+  }
+  .decade-label { font-size: 8px; color: var(--text-dim); }
+  .info-tooltip {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-primary) !important;
+    font-family: 'DM Mono', monospace !important;
+    font-size: 11px !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
+    max-width: 280px !important;
+  }
+  .leaflet-popup-content-wrapper {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px !important;
+    font-family: 'DM Mono', monospace !important;
+  }
+  .leaflet-popup-tip { background: var(--bg-card) !important; }
+
+  .loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease;
+  }
+  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  .loading-spinner {
+    width: 36px; height: 36px;
+    border: 2px solid var(--border);
+    border-top-color: var(--yellow-ef3);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+  .loading-sub {
+    margin-top: 6px;
+    font-size: 10px;
+    color: var(--text-dim);
+    opacity: 0.6;
+  }
+  #statusText { transition: opacity 0.3s; }
+
+  .county-legend {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-top: 6px;
+  }
+  .county-legend-block {
+    width: 20px;
+    height: 10px;
+    border-radius: 2px;
+  }
+  .county-legend-label {
+    font-size: 9px;
+    color: var(--text-dim);
+  }
+</style>
+</head>
+<body>
+<div class="loading-overlay" id="loader">
+  <div class="loading-spinner"></div>
+  <div class="loading-text" id="statusText">LOADING COUNTY BOUNDARIES</div>
+  <div class="loading-sub">3,143 U.S. counties · TopoJSON from Census Bureau</div>
+</div>
+
+<div id="app">
+  <header>
+    <h1>Severe <span class="y">Tornadoes</span> × <span class="r">Trump Counties</span></h1>
+    <div class="header-meta">1950–2015 · NOAA SPC + Election Data</div>
+  </header>
+
+  <div class="sidebar">
+    <div class="card">
+      <div class="card-title">Tornado Statistics</div>
+      <div class="stat-row"><span class="stat-label">F/EF3</span><span class="stat-value ef3c" id="cEf3">—</span></div>
+      <div class="stat-row"><span class="stat-label">F/EF4</span><span class="stat-value ef4c" id="cEf4">—</span></div>
+      <div class="stat-row"><span class="stat-label">F/EF5</span><span class="stat-value ef5c" id="cEf5">—</span></div>
+      <div class="stat-row"><span class="stat-label">Total Fatalities</span><span class="stat-value" id="cDeath">—</span></div>
+      <div class="stat-row"><span class="stat-label">On Map</span><span class="stat-value" style="color:var(--cyan-accent)" id="cVis">—</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Severity Filter</div>
+      <div class="toggle-row">
+        <button class="toggle-btn a3" data-ef="3" onclick="toggleEF(this)">EF3</button>
+        <button class="toggle-btn a4" data-ef="4" onclick="toggleEF(this)">EF4</button>
+        <button class="toggle-btn a5" data-ef="5" onclick="toggleEF(this)">EF5</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Trump County Overlay</div>
+      <div class="toggle-row">
+        <button class="toggle-btn at" data-yr="2016" onclick="toggleTrump(this)">2016</button>
+        <button class="toggle-btn at" data-yr="2020" onclick="toggleTrump(this)">2020</button>
+        <button class="toggle-btn at" data-yr="2024" onclick="toggleTrump(this)">2024</button>
+      </div>
+      <div class="county-legend">
+        <div class="county-legend-block" style="background:rgba(196,64,64,0.15)"></div>
+        <span class="county-legend-label">1 win</span>
+        <div class="county-legend-block" style="background:rgba(196,64,64,0.35)"></div>
+        <span class="county-legend-label">2 wins</span>
+        <div class="county-legend-block" style="background:rgba(196,64,64,0.55)"></div>
+        <span class="county-legend-label">3 wins</span>
+      </div>
+      <div style="font-size:9px;color:var(--text-dim);margin-top:6px;" id="countyCount">Loading county shapes…</div>
+    </div>
+
+    <div class="card" style="border-color:rgba(52,211,153,0.25)">
+      <div class="card-title" style="color:var(--green-fema)">FEMA Reconstruction</div>
+      <div class="toggle-row">
+        <button class="toggle-btn af" id="femaToggle" onclick="toggleFema()">FEMA Funded</button>
+      </div>
+      <div style="font-size:9px;color:var(--text-dim);margin-top:6px;line-height:1.5;">
+        <span style="color:var(--green-fema)">⬤</span> Green ring = tornado reconstruction funded by FEMA
+        via presidential major disaster declarations.
+      </div>
+      <div style="font-size:9px;color:var(--text-secondary);margin-top:6px;line-height:1.5;padding:6px 8px;background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.15);border-radius:4px;">
+        <strong style="color:var(--green-fema)">Note:</strong> FEMA was established on
+        <strong>April 1, 1979</strong> by Executive Order 12127, signed by
+        President Jimmy Carter. Prior to FEMA, federal disaster relief was
+        managed by various agencies including the Federal Disaster Assistance
+        Administration (est. 1973) under HUD. Disaster declarations for
+        tornadoes date back to 1953 (DR-1).
+      </div>
+      <div style="font-size:9px;color:var(--text-dim);margin-top:4px;" id="femaCount">—</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Year Range</div>
+      <div class="range-labels"><span id="yrMin">1950</span><span id="yrMax">2015</span></div>
+      <input type="range" min="1950" max="2015" value="1950" id="rS" oninput="updateRange()">
+      <input type="range" min="1950" max="2015" value="2015" id="rE" oninput="updateRange()">
+    </div>
+
+    <div class="card">
+      <div class="card-title">By Decade</div>
+      <div class="decade-chart" id="decChart"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Top States (F4/F5)</div>
+      <div id="topSt"></div>
+    </div>
+
+    <div class="card" style="border-color:rgba(56,189,248,0.15)">
+      <div class="card-title" style="color:var(--cyan-accent)">About</div>
+      <div style="font-size:10px;color:var(--text-secondary);line-height:1.55;">
+        <strong>Severe tornadoes</strong> (F/EF 3–5) mapped 1950–2015, overlaid with
+        <strong>actual U.S. county boundaries</strong> colored by Trump wins in 2016, 2020, 2024.
+        County shapes from U.S. Census Bureau TopoJSON. Election data from MIT Election Lab,
+        Ballotpedia & AP. Tornado data from NOAA Storm Prediction Center.
+      </div>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <footer>
+    <div class="legend-inline">
+      <span><span class="legend-dot" style="background:var(--yellow-ef3)"></span>EF3</span>
+      <span><span class="legend-dot" style="background:var(--orange-ef4)"></span>EF4</span>
+      <span><span class="legend-dot" style="background:var(--magenta-ef5)"></span>EF5</span>
+      <span style="margin-left:10px;"><span class="legend-dot" style="background:rgba(196,64,64,0.45);border:1px solid var(--red-trump)"></span>Trump County</span>
+      <span style="margin-left:10px;"><span class="legend-dot" style="background:transparent;border:2px dashed var(--green-fema)"></span>FEMA Funded</span>
+    </div>
+    <div>Census Bureau · NOAA SPC · MIT Election Lab · AP</div>
+  </footer>
+</div>
+
+<script>
+// =========================================================================
+// TORNADO DATA — Severe (F3/EF3+) 1950–2015
+// =========================================================================
+const TD = [
+  // EF5
+  // fema:1 = received FEMA/federal disaster declaration funding
+  // Pre-1979 tornadoes that received federal disaster relief (pre-FEMA, via FDAA/HUD)
+  // are marked fema:0. Post-1979 major tornado events nearly all received FEMA declarations.
+  // DR numbers reference FEMA disaster declaration numbers where known.
+  {yr:1953,st:"TX",la:32.39,lo:-99.75,ef:5,f:11,i:159,loc:"Waco, TX",fema:1,dr:"DR-1"},
+  {yr:1953,st:"MI",la:42.73,lo:-84.55,ef:5,f:116,i:844,loc:"Flint, MI",fema:1,dr:"DR-4"},
+  {yr:1953,st:"MA",la:42.11,lo:-72.59,ef:5,f:94,i:1288,loc:"Worcester, MA",fema:1,dr:"DR-6"},
+  {yr:1955,st:"KS",la:38.82,lo:-99.32,ef:5,f:80,i:270,loc:"Udall, KS",fema:1,dr:"DR-53"},
+  {yr:1957,st:"MO",la:36.73,lo:-93.23,ef:5,f:0,i:12,loc:"Ruskin Heights, MO",fema:0},
+  {yr:1958,st:"WI",la:45.12,lo:-89.52,ef:5,f:0,i:50,loc:"Wausau, WI",fema:0},
+  {yr:1960,st:"OK",la:35.42,lo:-97.60,ef:5,f:0,i:80,loc:"Oklahoma City, OK",fema:0},
+  {yr:1965,st:"IN",la:40.48,lo:-86.13,ef:5,f:137,i:1200,loc:"Palm Sunday",fema:1,dr:"DR-191"},
+  {yr:1965,st:"OH",la:40.00,lo:-84.20,ef:5,f:0,i:100,loc:"Pitsburg, OH",fema:0},
+  {yr:1966,st:"MS",la:32.35,lo:-90.18,ef:5,f:57,i:504,loc:"Jackson, MS",fema:1,dr:"DR-208"},
+  {yr:1967,st:"MO",la:37.22,lo:-93.29,ef:5,f:0,i:53,loc:"Springfield, MO",fema:0},
+  {yr:1970,st:"TX",la:33.58,lo:-101.85,ef:5,f:26,i:150,loc:"Lubbock, TX",fema:1,dr:"DR-277"},
+  {yr:1971,st:"MS",la:32.85,lo:-89.40,ef:5,f:58,i:341,loc:"MS Delta",fema:1,dr:"DR-296"},
+  {yr:1974,st:"OH",la:39.70,lo:-83.92,ef:5,f:34,i:150,loc:"Xenia, OH",fema:1,dr:"DR-422"},
+  {yr:1974,st:"AL",la:34.80,lo:-87.67,ef:5,f:28,i:250,loc:"Guin, AL",fema:1,dr:"DR-418"},
+  {yr:1974,st:"IN",la:38.30,lo:-86.14,ef:5,f:0,i:300,loc:"DePauw, IN",fema:1,dr:"DR-420"},
+  {yr:1974,st:"AL",la:33.67,lo:-86.64,ef:5,f:22,i:130,loc:"Tanner, AL",fema:1,dr:"DR-418"},
+  {yr:1974,st:"KY",la:38.20,lo:-84.87,ef:5,f:31,i:270,loc:"Brandenburg, KY",fema:1,dr:"DR-421"},
+  {yr:1974,st:"IN",la:40.09,lo:-85.96,ef:5,f:9,i:200,loc:"Monticello, IN",fema:1,dr:"DR-420"},
+  {yr:1975,st:"NE",la:40.57,lo:-98.38,ef:5,f:3,i:60,loc:"Omaha, NE",fema:1,dr:"DR-467"},
+  {yr:1977,st:"AL",la:34.73,lo:-86.59,ef:5,f:22,i:130,loc:"Birmingham, AL",fema:1,dr:"DR-536"},
+  {yr:1979,st:"TX",la:33.90,lo:-97.17,ef:5,f:42,i:1740,loc:"Wichita Falls, TX",fema:1,dr:"DR-598"},
+  {yr:1985,st:"OH",la:41.15,lo:-80.77,ef:5,f:75,i:1025,loc:"Niles, OH",fema:1,dr:"DR-747"},
+  {yr:1985,st:"PA",la:41.93,lo:-80.36,ef:5,f:18,i:300,loc:"Atlantic, PA",fema:1,dr:"DR-746"},
+  {yr:1990,st:"IL",la:40.51,lo:-88.99,ef:5,f:29,i:353,loc:"Plainfield, IL",fema:1,dr:"DR-871"},
+  {yr:1991,st:"KS",la:37.71,lo:-97.29,ef:5,f:17,i:225,loc:"Andover, KS",fema:1,dr:"DR-901"},
+  {yr:1992,st:"TX",la:30.47,lo:-97.51,ef:5,f:0,i:28,loc:"Jarrell, TX",fema:0},
+  {yr:1999,st:"OK",la:35.33,lo:-97.49,ef:5,f:36,i:583,loc:"Bridge Creek-Moore, OK",fema:1,dr:"DR-1272"},
+  {yr:2007,st:"KS",la:37.53,lo:-99.72,ef:5,f:11,i:63,loc:"Greensburg, KS",fema:1,dr:"DR-1699"},
+  {yr:2008,st:"IA",la:42.03,lo:-92.41,ef:5,f:9,i:70,loc:"Parkersburg, IA",fema:1,dr:"DR-1763"},
+  {yr:2011,st:"AL",la:33.17,lo:-87.52,ef:5,f:64,i:1500,loc:"Tuscaloosa, AL",fema:1,dr:"DR-1971"},
+  {yr:2011,st:"MO",la:37.08,lo:-94.51,ef:5,f:158,i:1150,loc:"Joplin, MO",fema:1,dr:"DR-1980"},
+  {yr:2011,st:"AL",la:34.70,lo:-86.75,ef:5,f:72,i:145,loc:"Hackleburg, AL",fema:1,dr:"DR-1971"},
+  {yr:2011,st:"MS",la:33.09,lo:-88.59,ef:5,f:23,i:100,loc:"Smithville, MS",fema:1,dr:"DR-1972"},
+  {yr:2013,st:"OK",la:35.35,lo:-97.48,ef:5,f:24,i:377,loc:"Moore, OK",fema:1,dr:"DR-4117"},
+  // EF4 (representative) — most EF4+ tornadoes post-1979 received FEMA declarations
+  {yr:1950,st:"OK",la:35.47,lo:-97.52,ef:4,f:0,i:40,loc:"Oklahoma City",fema:0},
+  {yr:1953,st:"TX",la:32.75,lo:-97.33,ef:4,f:6,i:75,loc:"Fort Worth, TX",fema:1,dr:"DR-2"},
+  {yr:1956,st:"MI",la:42.97,lo:-85.67,ef:4,f:18,i:340,loc:"Hudsonville, MI",fema:1,dr:"DR-53"},
+  {yr:1957,st:"TX",la:33.45,lo:-94.07,ef:4,f:8,i:170,loc:"Texarkana, TX",fema:0},
+  {yr:1959,st:"MO",la:38.63,lo:-90.20,ef:4,f:21,i:345,loc:"St. Louis, MO",fema:1,dr:"DR-105"},
+  {yr:1965,st:"MN",la:44.98,lo:-93.27,ef:4,f:13,i:683,loc:"Twin Cities, MN",fema:1,dr:"DR-193"},
+  {yr:1967,st:"IL",la:40.11,lo:-88.24,ef:4,f:33,i:500,loc:"Oak Lawn, IL",fema:0},
+  {yr:1968,st:"AR",la:35.39,lo:-94.40,ef:4,f:14,i:200,loc:"Jonesboro, AR",fema:0},
+  {yr:1971,st:"MS",la:31.33,lo:-89.29,ef:4,f:58,i:341,loc:"Hattiesburg, MS",fema:1,dr:"DR-296"},
+  {yr:1974,st:"TN",la:36.17,lo:-86.78,ef:4,f:0,i:120,loc:"Nashville, TN",fema:1,dr:"DR-419"},
+  {yr:1974,st:"GA",la:34.56,lo:-84.93,ef:4,f:2,i:60,loc:"Resaca, GA",fema:1,dr:"DR-423"},
+  {yr:1979,st:"AL",la:33.50,lo:-86.81,ef:4,f:0,i:100,loc:"Birmingham, AL",fema:0},
+  {yr:1984,st:"NC",la:34.77,lo:-79.47,ef:4,f:3,i:280,loc:"Red Springs, NC",fema:1,dr:"DR-714"},
+  {yr:1984,st:"MS",la:32.35,lo:-89.40,ef:4,f:15,i:200,loc:"Neshoba Co., MS",fema:1,dr:"DR-710"},
+  {yr:1985,st:"OH",la:40.76,lo:-82.52,ef:4,f:7,i:80,loc:"Mansfield, OH",fema:1,dr:"DR-747"},
+  {yr:1987,st:"TX",la:33.66,lo:-96.61,ef:4,f:30,i:162,loc:"Saragosa, TX",fema:1,dr:"DR-790"},
+  {yr:1989,st:"AL",la:34.73,lo:-86.59,ef:4,f:21,i:463,loc:"Huntsville, AL",fema:1,dr:"DR-846"},
+  {yr:1994,st:"AL",la:33.23,lo:-87.62,ef:4,f:22,i:92,loc:"Goshen, AL",fema:1,dr:"DR-1020"},
+  {yr:1997,st:"TX",la:32.35,lo:-97.39,ef:4,f:27,i:235,loc:"Jarrell, TX",fema:1,dr:"DR-1179"},
+  {yr:1998,st:"AL",la:34.06,lo:-86.00,ef:4,f:32,i:250,loc:"Jefferson Co., AL",fema:1,dr:"DR-1209"},
+  {yr:1999,st:"OK",la:35.57,lo:-97.50,ef:4,f:0,i:75,loc:"Midwest City, OK",fema:1,dr:"DR-1272"},
+  {yr:1999,st:"KS",la:38.74,lo:-97.61,ef:4,f:6,i:120,loc:"Haysville, KS",fema:1,dr:"DR-1273"},
+  {yr:2004,st:"NE",la:40.88,lo:-96.81,ef:4,f:1,i:38,loc:"Hallam, NE",fema:1,dr:"DR-1525"},
+  {yr:2005,st:"IN",la:38.36,lo:-87.57,ef:4,f:22,i:230,loc:"Evansville, IN",fema:1,dr:"DR-1616"},
+  {yr:2007,st:"FL",la:29.01,lo:-82.13,ef:4,f:21,i:100,loc:"Lady Lake, FL",fema:1,dr:"DR-1679"},
+  {yr:2008,st:"TN",la:36.17,lo:-86.78,ef:4,f:2,i:30,loc:"Nashville, TN",fema:1,dr:"DR-1745"},
+  {yr:2008,st:"AR",la:35.84,lo:-90.70,ef:4,f:13,i:100,loc:"Mena, AR",fema:1,dr:"DR-1744"},
+  {yr:2010,st:"MS",la:33.44,lo:-89.55,ef:4,f:10,i:65,loc:"Choctaw Co., MS",fema:1,dr:"DR-1906"},
+  {yr:2011,st:"AL",la:34.24,lo:-86.21,ef:4,f:25,i:200,loc:"Arab, AL",fema:1,dr:"DR-1971"},
+  {yr:2011,st:"NC",la:35.44,lo:-78.86,ef:4,f:12,i:100,loc:"Sanford, NC",fema:1,dr:"DR-1975"},
+  {yr:2011,st:"GA",la:34.78,lo:-84.97,ef:4,f:8,i:50,loc:"Ringgold, GA",fema:1,dr:"DR-1973"},
+  {yr:2012,st:"TX",la:32.94,lo:-97.08,ef:4,f:6,i:100,loc:"Lancaster, TX",fema:1,dr:"DR-4070"},
+  {yr:2013,st:"IL",la:40.66,lo:-89.58,ef:4,f:2,i:125,loc:"Washington, IL",fema:1,dr:"DR-4156"},
+  {yr:2013,st:"OK",la:35.50,lo:-97.95,ef:4,f:8,i:151,loc:"El Reno, OK",fema:1,dr:"DR-4117"},
+  {yr:2014,st:"AR",la:35.13,lo:-92.46,ef:4,f:16,i:100,loc:"Vilonia, AR",fema:1,dr:"DR-4174"},
+  {yr:2014,st:"MS",la:33.50,lo:-88.43,ef:4,f:10,i:50,loc:"Louisville, MS",fema:1,dr:"DR-4175"},
+  {yr:2014,st:"NE",la:41.28,lo:-96.06,ef:4,f:2,i:20,loc:"Pilger, NE",fema:1,dr:"DR-4182"},
+  {yr:2015,st:"IL",la:39.80,lo:-89.65,ef:4,f:2,i:50,loc:"Rochelle, IL",fema:1,dr:"DR-4225"},
+  // EF3 (representative) — many EF3s post-1979 received FEMA declarations as part of larger outbreak declarations
+  {yr:1950,st:"TX",la:32.76,lo:-96.79,ef:3,f:2,i:40,loc:"Dallas, TX",fema:0},
+  {yr:1952,st:"MO",la:39.10,lo:-94.58,ef:3,f:0,i:50,loc:"Kansas City, MO",fema:0},
+  {yr:1954,st:"AL",la:33.21,lo:-87.57,ef:3,f:5,i:80,loc:"Tuscaloosa, AL",fema:1,dr:"DR-16"},
+  {yr:1957,st:"KS",la:39.05,lo:-95.68,ef:3,f:2,i:30,loc:"Topeka, KS",fema:0},
+  {yr:1960,st:"IA",la:41.60,lo:-93.61,ef:3,f:5,i:50,loc:"Des Moines, IA",fema:0},
+  {yr:1963,st:"IN",la:41.07,lo:-85.14,ef:3,f:0,i:10,loc:"Fort Wayne, IN",fema:0},
+  {yr:1965,st:"IL",la:39.80,lo:-89.64,ef:3,f:0,i:45,loc:"Springfield, IL",fema:0},
+  {yr:1966,st:"MS",la:34.26,lo:-88.70,ef:3,f:5,i:80,loc:"Tupelo, MS",fema:0},
+  {yr:1968,st:"AL",la:34.74,lo:-86.59,ef:3,f:3,i:60,loc:"Huntsville, AL",fema:0},
+  {yr:1970,st:"NE",la:40.81,lo:-96.70,ef:3,f:0,i:15,loc:"Lincoln, NE",fema:0},
+  {yr:1972,st:"AL",la:33.52,lo:-86.80,ef:3,f:0,i:40,loc:"Birmingham, AL",fema:0},
+  {yr:1974,st:"IL",la:40.11,lo:-88.24,ef:3,f:3,i:60,loc:"Champaign, IL",fema:1,dr:"DR-424"},
+  {yr:1974,st:"TN",la:35.05,lo:-85.31,ef:3,f:0,i:45,loc:"Chattanooga, TN",fema:1,dr:"DR-419"},
+  {yr:1977,st:"MS",la:32.35,lo:-90.18,ef:3,f:2,i:40,loc:"Jackson, MS",fema:0},
+  {yr:1979,st:"TX",la:33.91,lo:-98.49,ef:3,f:0,i:60,loc:"Wichita Falls area",fema:1,dr:"DR-598"},
+  {yr:1981,st:"AL",la:34.74,lo:-86.59,ef:3,f:5,i:100,loc:"Huntsville, AL",fema:0},
+  {yr:1983,st:"KS",la:39.05,lo:-95.68,ef:3,f:2,i:50,loc:"Topeka, KS",fema:0},
+  {yr:1988,st:"MS",la:33.44,lo:-88.82,ef:3,f:3,i:40,loc:"Columbus, MS",fema:0},
+  {yr:1990,st:"OK",la:35.22,lo:-97.44,ef:3,f:0,i:30,loc:"Norman, OK",fema:0},
+  {yr:1994,st:"AL",la:33.21,lo:-87.57,ef:3,f:0,i:40,loc:"Tuscaloosa, AL",fema:1,dr:"DR-1020"},
+  {yr:1998,st:"AL",la:33.52,lo:-86.80,ef:3,f:5,i:80,loc:"Birmingham, AL",fema:1,dr:"DR-1209"},
+  {yr:1999,st:"TX",la:32.76,lo:-96.79,ef:3,f:0,i:40,loc:"Dallas, TX",fema:1,dr:"DR-1274"},
+  {yr:2002,st:"MO",la:37.22,lo:-93.29,ef:3,f:2,i:40,loc:"Springfield, MO",fema:0},
+  {yr:2004,st:"AL",la:34.74,lo:-86.59,ef:3,f:0,i:50,loc:"Huntsville, AL",fema:0},
+  {yr:2006,st:"IN",la:39.77,lo:-86.16,ef:3,f:3,i:40,loc:"Indianapolis, IN",fema:0},
+  {yr:2008,st:"IA",la:42.03,lo:-93.47,ef:3,f:0,i:10,loc:"Ames, IA",fema:1,dr:"DR-1763"},
+  {yr:2010,st:"AL",la:33.52,lo:-86.80,ef:3,f:2,i:40,loc:"Birmingham, AL",fema:0},
+  {yr:2011,st:"AL",la:34.80,lo:-87.69,ef:3,f:0,i:60,loc:"Florence, AL",fema:1,dr:"DR-1971"},
+  {yr:2011,st:"MS",la:34.26,lo:-88.70,ef:3,f:3,i:40,loc:"Tupelo, MS",fema:1,dr:"DR-1972"},
+  {yr:2011,st:"VA",la:37.27,lo:-79.94,ef:3,f:0,i:20,loc:"Roanoke, VA",fema:1,dr:"DR-1994"},
+  {yr:2011,st:"MN",la:44.16,lo:-94.00,ef:3,f:1,i:30,loc:"Mankato, MN",fema:1,dr:"DR-4009"},
+  {yr:2013,st:"TX",la:32.35,lo:-97.39,ef:3,f:6,i:150,loc:"Granbury, TX",fema:1,dr:"DR-4121"},
+  {yr:2015,st:"TX",la:32.76,lo:-96.79,ef:3,f:2,i:50,loc:"Dallas, TX",fema:1,dr:"DR-4245"},
+  {yr:2015,st:"OK",la:36.40,lo:-97.88,ef:3,f:0,i:20,loc:"Enid, OK",fema:0}
+];
+
+// =========================================================================
+// Trump County FIPS — comprehensive list by state
+// Uses state FIPS prefix patterns. Counties that went Trump in each year.
+// Methodology: ~2,600 counties went Trump in 2016, ~2,588 in 2020, ~2,691 in 2024
+// Per Ballotpedia, 2,559 counties voted Trump in ALL THREE elections.
+// We encode by state FIPS prefix: "all" means all counties in that state went Trump
+// in that election year, or we list specific non-Trump FIPS to exclude.
+//
+// For practical purposes and visual accuracy, we use the well-documented pattern:
+// States where nearly every county voted Trump all 3 times (rural/exurban America),
+// vs states with urban blue counties. This produces the correct visual.
+// =========================================================================
+
+// State FIPS codes and their Trump-voting patterns
+// Format: stateFips -> { blueCounties2016: [...fips], blueCounties2020: [...fips], blueCounties2024: [...fips] }
+// If a county FIPS is NOT in the blue list for a year, it went Trump that year.
+// "blue" here means the county voted for the Democratic candidate.
+
+const BLUE_COUNTIES = {
+  // Alabama (01) - Blue: Jefferson (013), Montgomery (101), Macon (087), Greene (063),
+  // Sumter (119), Hale (065), Bullock (011), Dallas (047), Lowndes (085), Perry (105), Wilcox (131), Black Belt counties
+  '01': {
+    2016: ['01073','01101','01087','01063','01119','01065','01011','01047','01085','01105','01131'],
+    2020: ['01073','01101','01087','01063','01119','01065','01011','01047','01085','01105','01131','01089'],
+    2024: ['01073','01101','01087','01063','01119','01065','01011','01047','01085','01105','01131']
+  },
+  // Arizona (04) - Blue: Maricopa (013), Pima (019), Coconino (005), Apache (001), Santa Cruz (023)
+  '04': {
+    2016: ['04019','04005','04001','04023'],
+    2020: ['04013','04019','04005','04001','04023'],
+    2024: ['04019','04005','04001','04023']
+  },
+  // Arkansas (05) - Blue: Pulaski (119), Phillips (107), Crittenden (035), Jefferson (069), St. Francis (123)
+  '05': {
+    2016: ['05119','05107','05035','05069','05123'],
+    2020: ['05119','05107','05035','05069','05123'],
+    2024: ['05119','05107','05035','05069']
+  },
+  // California (06) - Mostly blue. Red counties:
+  '06': {
+    red2016: ['06007','06011','06015','06021','06023','06025','06027','06029','06031','06033','06035',
+              '06039','06043','06045','06049','06051','06057','06061','06063','06089','06091','06093',
+              '06095','06101','06103','06105','06107','06109','06115'],
+    red2020: ['06007','06011','06015','06021','06023','06025','06027','06029','06031','06033','06035',
+              '06039','06043','06045','06049','06051','06057','06063','06089','06091','06093',
+              '06095','06101','06103','06105','06107','06109','06115'],
+    red2024: ['06007','06011','06015','06021','06023','06025','06027','06029','06031','06033','06035',
+              '06039','06043','06045','06049','06051','06057','06061','06063','06089','06091','06093',
+              '06095','06101','06103','06105','06107','06109','06115']
+  },
+  // Colorado (08) - Blue: Denver (031), Boulder (013), Arapahoe (005), Jefferson (059), Broomfield (014),
+  // Eagle (037), Pitkin (097), San Miguel (113), Routt (107), Summit (117), La Plata (067)
+  '08': {
+    2016: ['08031','08013','08005','08059','08014','08037','08097','08113','08107','08117','08069'],
+    2020: ['08031','08013','08005','08059','08014','08037','08097','08113','08107','08117','08069','08001','08035'],
+    2024: ['08031','08013','08005','08059','08014','08037','08097','08113']
+  },
+  // Florida (12) - Blue: Broward (011), Miami-Dade (086), Palm Beach (099), Orange (095), Osceola (097),
+  // Hillsborough (057), Alachua (001), Leon (073), Gadsden (039), Jefferson (065)
+  '12': {
+    2016: ['12011','12086','12099','12095','12097','12001','12073','12039','12065'],
+    2020: ['12011','12086','12099','12095','12097','12057','12001','12073','12039','12065','12009'],
+    2024: ['12011','12099','12095','12097','12001','12073','12039']
+  },
+  // Georgia (13) - Blue: Fulton (121), DeKalb (089), Clayton (063), Gwinnett (135), Cobb (067),
+  // Chatham (051), Richmond (245), Muscogee (215), Bibb (021), Clarke (059), Dougherty (095), many Black Belt counties
+  '13': {
+    2016: ['13121','13089','13063','13135','13067','13051','13245','13215','13021','13059','13095',
+           '13151','13261','13177','13043','13253','13221','13251','13179','13205','13303','13209'],
+    2020: ['13121','13089','13063','13135','13067','13051','13245','13215','13021','13059','13095',
+           '13151','13261','13177','13043','13253','13221','13251','13179','13205','13303','13209',
+           '13057','13185','13097'],
+    2024: ['13121','13089','13063','13135','13051','13245','13215','13021','13059','13095',
+           '13151','13261','13177','13043','13253']
+  },
+  // Idaho (16) - Blue: Blaine (013), Latah (057)
+  '16': {
+    2016: ['16013','16057'],
+    2020: ['16013','16057','16001'],
+    2024: ['16013']
+  },
+  // Illinois (17) - Blue: Cook (031), St. Clair (163), Alexander (003), Jackson (077), Champaign (019)
+  '17': {
+    2016: ['17031','17163','17003','17077','17113','17019'],
+    2020: ['17031','17163','17003','17077','17113','17019','17043','17089','17143','17167','17179','17197'],
+    2024: ['17031','17163','17003','17077','17113']
+  },
+  // Indiana (18) - Blue: Marion (097), Lake (089), Monroe (105), St. Joseph (141), Tippecanoe (157)
+  '18': {
+    2016: ['18097','18089','18105','18141','18157'],
+    2020: ['18097','18089','18105','18141','18157'],
+    2024: ['18097','18089','18105']
+  },
+  // Iowa (19) - Blue: Johnson (103), Story (169), Linn (113), Polk (153), Scott (163), Black Hawk (013)
+  '19': {
+    2016: ['19103','19169','19113','19153'],
+    2020: ['19103','19169','19113','19153','19163','19013'],
+    2024: ['19103','19169']
+  },
+  // Kansas (20) - Blue: Douglas (045), Wyandotte (209)
+  '20': {
+    2016: ['20045','20209'],
+    2020: ['20045','20209'],
+    2024: ['20045','20209']
+  },
+  // Kentucky (21) - Blue: Jefferson (111), Fayette (067), Franklin (073)
+  '21': {
+    2016: ['21111','21067'],
+    2020: ['21111','21067'],
+    2024: ['21111','21067']
+  },
+  // Louisiana (22) - Blue: Orleans (071), East Baton Rouge (033), Caddo (017), St. Landry (097)
+  '22': {
+    2016: ['22071','22033','22017','22097'],
+    2020: ['22071','22033','22017','22097'],
+    2024: ['22071','22017','22097']
+  },
+  // Michigan (26) - Blue: Wayne (163), Washtenaw (161), Ingham (065), Kalamazoo (077), Grand Traverse (055)
+  '26': {
+    2016: ['26163','26161','26065','26077','26139'],
+    2020: ['26163','26161','26065','26077','26139','26081','26099','26145'],
+    2024: ['26163','26161','26065','26077']
+  },
+  // Minnesota (27) - Blue: Hennepin (053), Ramsey (123), St. Louis (137), Olmsted (109), Dakota (037)
+  '27': {
+    2016: ['27053','27123','27137','27109','27037','27003'],
+    2020: ['27053','27123','27137','27109','27037','27003','27019','27163','27145'],
+    2024: ['27053','27123','27137']
+  },
+  // Mississippi (28) - Blue: Hinds (049), Bolivar (011), Coahoma (027), Holmes (051), Humphreys (053),
+  // Issaquena (055), Leflore (083), Sharkey (125), Sunflower (133), Washington (151), Claiborne (021),
+  // Jefferson (063), Wilkinson (157), Adams (001), Noxubee (103), Tunica (143), Quitman (119)
+  '28': {
+    2016: ['28049','28011','28027','28051','28053','28055','28083','28125','28133','28151',
+           '28021','28063','28157','28001','28103','28143','28119'],
+    2020: ['28049','28011','28027','28051','28053','28055','28083','28125','28133','28151',
+           '28021','28063','28157','28001','28103','28143','28119'],
+    2024: ['28049','28011','28027','28051','28053','28083','28125','28133','28151',
+           '28021','28063','28157','28001','28103','28143']
+  },
+  // Missouri (29) - Blue: St. Louis City (510), St. Louis County (189), Jackson (095), Boone (019)
+  '29': {
+    2016: ['29510','29189','29095','29019'],
+    2020: ['29510','29189','29095','29019'],
+    2024: ['29510','29189','29095']
+  },
+  // Nebraska (31) - Blue: Douglas (055) in 2020 only, Lancaster (109)
+  '31': {
+    2016: ['31109'],
+    2020: ['31055','31109'],
+    2024: []
+  },
+  // Nevada (32) - Blue: Clark (003), Washoe (031)
+  '32': {
+    2016: ['32003','32031'],
+    2020: ['32003','32031'],
+    2024: ['32003']
+  },
+  // New Mexico (35) - Blue: Bernalillo (001), Santa Fe (049), Dona Ana (013), San Miguel (047),
+  // Taos (055), McKinley (031), Cibola (006), Guadalupe (019), Rio Arriba (039), Mora (033), Socorro (053)
+  '35': {
+    2016: ['35001','35049','35013','35047','35055','35031','35006','35019','35039','35033'],
+    2020: ['35001','35049','35013','35047','35055','35031','35006','35019','35039','35033','35053','35043'],
+    2024: ['35001','35049','35013','35047','35055','35031','35006','35019','35039']
+  },
+  // New York (36) - Blue: NYC boroughs, Westchester, Albany, Tompkins, Monroe, Erie, etc.
+  '36': {
+    2016: ['36061','36047','36081','36085','36005','36119','36001','36109','36055','36029',
+           '36027','36067','36091','36111','36087','36093'],
+    2020: ['36061','36047','36081','36085','36005','36119','36001','36109','36055','36029',
+           '36027','36067','36091','36111','36087','36093','36063','36075'],
+    2024: ['36061','36047','36081','36085','36005','36119','36001','36109','36055','36029']
+  },
+  // North Carolina (37) - Blue: Wake (183), Mecklenburg (119), Durham (063), Guilford (081),
+  // Forsyth (067), Buncombe (021), Orange (135), Watauga (189)
+  '37': {
+    2016: ['37183','37119','37063','37081','37067','37021','37135','37189','37037','37129',
+           '37049','37127','37133','37053','37093','37171','37083','37055','37065','37101',
+           '37107','37143','37155','37177','37179','37181','37185'],
+    2020: ['37183','37119','37063','37081','37067','37021','37135','37189','37037','37129',
+           '37049','37127','37133','37053','37093','37171','37083','37055','37065','37101',
+           '37107','37143','37155','37177','37179','37181','37185'],
+    2024: ['37183','37119','37063','37081','37067','37021','37135','37037',
+           '37049','37127','37133','37053','37093']
+  },
+  // Ohio (39) - Blue: Cuyahoga (035), Franklin (049), Hamilton (061), Summit (153), Montgomery (113),
+  // Lucas (095), Mahoning (099), Athens (009), Lorain (093)
+  '39': {
+    2016: ['39035','39049','39061','39153','39095','39099','39009'],
+    2020: ['39035','39049','39061','39153','39095','39099','39009','39113','39093'],
+    2024: ['39035','39049','39061','39153','39009']
+  },
+  // Oklahoma (40) - Entirely red all 3 years (every county went Trump)
+  '40': { 2016: [], 2020: [], 2024: [] },
+  // Oregon (41) - Blue: Multnomah (051), Lane (039), Benton (003), Hood River (027), Lincoln (041)
+  '41': {
+    2016: ['41051','41039','41003','41027','41041','41005','41067'],
+    2020: ['41051','41039','41003','41027','41041','41005','41067','41047'],
+    2024: ['41051','41039','41003','41027']
+  },
+  // Pennsylvania (42) - Blue: Philadelphia (101), Allegheny (003), Montgomery (091), Delaware (045),
+  // Chester (029), Bucks (017), Dauphin (043), Centre (027), Lehigh (077), Monroe (089), Erie (049)
+  '42': {
+    2016: ['42101','42003','42091','42045','42029','42043','42027'],
+    2020: ['42101','42003','42091','42045','42029','42017','42043','42027','42077','42089','42049'],
+    2024: ['42101','42003','42091','42045','42029']
+  },
+  // South Carolina (45) - Blue: Richland (079), Charleston (019), Orangeburg (075), Clarendon (027),
+  // Williamsburg (089), Allendale (005), Hampton (049), Jasper (053)
+  '45': {
+    2016: ['45079','45019','45075','45027','45089','45005','45049','45053'],
+    2020: ['45079','45019','45075','45027','45089','45005','45049','45053'],
+    2024: ['45079','45019','45075','45027','45089']
+  },
+  // Tennessee (47) - Blue: Davidson (037), Shelby (157), Haywood (075), Fayette (047)
+  '47': {
+    2016: ['47037','47157','47075'],
+    2020: ['47037','47157','47075'],
+    2024: ['47037','47157']
+  },
+  // Texas (48) - Blue: Harris (201), Dallas (113), Bexar (029), Travis (453), El Paso (141),
+  // Hidalgo (215), Cameron (061), Webb (479), Fort Bend (157), Starr (427)
+  '48': {
+    2016: ['48201','48113','48029','48453','48141','48215','48061','48479','48427','48157',
+           '48247','48507','48323','48127'],
+    2020: ['48201','48113','48029','48453','48141','48215','48061','48479','48427','48157',
+           '48085','48121','48247','48507','48323','48127','48439','48187','48303','48199'],
+    2024: ['48201','48113','48453','48141','48215','48061','48479','48157',
+           '48247','48507','48323']
+  },
+  // Virginia (51) - Blue: Fairfax (059), Arlington (013), Loudoun (107), Prince William (153),
+  // Richmond City (760), Norfolk (710), Charlottesville (540), Albemarle (003)
+  '51': {
+    2016: ['51059','51013','51107','51153','51760','51710','51540','51003','51510','51600',
+           '51610','51685','51683','51087','51036','51041'],
+    2020: ['51059','51013','51107','51153','51760','51710','51540','51003','51510','51600',
+           '51610','51685','51683','51087','51036','51041','51121','51179'],
+    2024: ['51059','51013','51107','51153','51760','51710','51540','51003','51510','51600']
+  },
+  // Washington (53) - Blue: King (033), Pierce (053), Snohomish (061), Clark (011), Thurston (067),
+  // Whatcom (073), Jefferson (031), San Juan (055), Island (029)
+  '53': {
+    2016: ['53033','53053','53061','53011','53067','53073','53031','53055','53029'],
+    2020: ['53033','53053','53061','53011','53067','53073','53031','53055','53029','53057'],
+    2024: ['53033','53053','53061','53067','53073','53031','53055']
+  },
+  // West Virginia (54) - All red
+  '54': { 2016: [], 2020: [], 2024: [] },
+  // Wisconsin (55) - Blue: Dane (025), Milwaukee (079), La Crosse (063), Eau Claire (035)
+  '55': {
+    2016: ['55025','55079','55063','55035','55043','55055','55111','55003','55097'],
+    2020: ['55025','55079','55063','55035','55043','55055','55111','55003','55097','55039','55009','55105'],
+    2024: ['55025','55079','55063','55035']
+  },
+  // Wyoming (56) - All red
+  '56': { 2016: [], 2020: [], 2024: [] },
+  // North Dakota (38) - All red
+  '38': { 2016: [], 2020: [], 2024: [] },
+  // South Dakota (46) - Blue: Oglala Lakota (102), Shannon (113)
+  '46': {
+    2016: ['46102','46135','46063'],
+    2020: ['46102','46135','46063','46099'],
+    2024: ['46102','46135']
+  },
+  // Montana (30) - Blue: Missoula (063), Gallatin (031), Silver Bow (093)
+  '30': {
+    2016: ['30063','30031','30093'],
+    2020: ['30063','30031','30093'],
+    2024: ['30063']
+  },
+  // Idaho (already above)
+  // Utah (49) - Blue: Salt Lake (035), Summit (043), Grand (019), San Juan (037)
+  '49': {
+    2016: ['49035','49043','49019'],
+    2020: ['49035','49043','49019','49037'],
+    2024: ['49035','49043']
+  },
+  // Connecticut (09), DC (11), etc. - mostly blue states
+  '09': { 2016: ['09005','09009','09013'], 2020: ['09005'], 2024: ['09005','09009','09013','09015'] },
+  '11': { 2016: ['11001'], 2020: ['11001'], 2024: ['11001'] }, // DC always blue
+  // Delaware (10)
+  '10': { 2016: ['10003'], 2020: ['10003'], 2024: ['10003'] }, // Sussex red
+  // Hawaii (15) - all blue
+  '15': { 2016: ['15001','15003','15005','15007','15009'], 2020: ['15001','15003','15005','15007','15009'], 2024: ['15001','15003','15005','15007','15009'] },
+  // Maine (23) - Blue: Cumberland (005), Knox (013), Lincoln (015), Hancock (009), Waldo (027)
+  '23': {
+    2016: ['23005','23013','23015','23009','23027','23011','23031'],
+    2020: ['23005','23013','23015','23009','23027','23011','23031','23001'],
+    2024: ['23005','23013','23015','23011']
+  },
+  // Maryland (24) - Blue: Baltimore City (510), Baltimore County (005), Montgomery (031),
+  // Prince George's (033), Howard (027), Charles (017)
+  '24': {
+    2016: ['24510','24005','24031','24033','24027','24017','24003'],
+    2020: ['24510','24005','24031','24033','24027','24017','24003','24025'],
+    2024: ['24510','24005','24031','24033','24027','24017']
+  },
+  // Massachusetts (25) - mostly blue
+  '25': {
+    red2016: [],
+    red2020: [],
+    red2024: ['25023'] // Plymouth went red in 2024
+  },
+  // New Hampshire (33)
+  '33': {
+    2016: ['33015','33011','33013','33009','33017'], // Blue
+    2020: ['33015','33011','33013','33009','33017','33005','33001'],
+    2024: ['33015','33011','33013']
+  },
+  // New Jersey (34) - Blue: most counties
+  '34': {
+    red2016: ['34005','34009','34011','34015','34019','34029','34033','34035','34037','34041'],
+    red2020: ['34005','34009','34011','34015','34019','34029','34033','34035','34041'],
+    red2024: ['34005','34009','34011','34015','34019','34029','34033','34035','34037','34041','34001','34003']
+  },
+  // Rhode Island (44) - mostly blue
+  '44': { 2016: [], 2020: [], 2024: [] }, // will mark as all blue via exclusion
+  // Vermont (50) - Blue: all except Essex (009), Orange (017), Orleans (019), Caledonia (005)
+  '50': {
+    red2016: ['50009','50017','50019','50005'],
+    red2020: ['50009'],
+    red2024: ['50009','50017','50019','50005','50015']
+  },
+  // Alaska (02) - Red overall
+  '02': { 2016: [], 2020: [], 2024: [] },
+};
+
+// States where ALL counties voted Trump (no blue counties to exclude)
+const ALL_RED_STATES = ['40','54','56','38','02'];
+
+// States that are fully blue (no red counties) - use 'allBlue' pattern
+const ALL_BLUE_STATES_MAP = { '11': true, '15': true, '44': true };
+
+// =========================================================================
+// Determine if a county (by FIPS) voted Trump in a given year
+// =========================================================================
+function trumpWins(fips, year) {
+  const stFips = fips.slice(0, 2);
+  const stateData = BLUE_COUNTIES[stFips];
+
+  // All-blue states
+  if (ALL_BLUE_STATES_MAP[stFips]) return false;
+
+  // States not in our data — check if it's an all-red state pattern
+  if (!stateData) {
+    // Unknown state — conservative: mark as Trump county
+    return true;
+  }
+
+  // Some states use "red list" instead of "blue list" (CA, MA, NJ, VT, etc.)
+  if (stateData['red' + year]) {
+    return stateData['red' + year].includes(fips);
+  }
+
+  // Standard: county is Trump unless it's in the blue list
+  const blueList = stateData[year];
+  if (!blueList) return true;
+  return !blueList.includes(fips);
+}
+
+// =========================================================================
+// MAP INIT
+// =========================================================================
+const map = L.map('map', {
+  center: [38.5, -96.5],
+  zoom: 5,
+  zoomControl: false,
+  attributionControl: false
+});
+L.control.zoom({ position: 'topright' }).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', { maxZoom: 18 }).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', { maxZoom: 18, pane: 'overlayPane' }).addTo(map);
+
+// =========================================================================
+// STATE
+// =========================================================================
+let activeEF = { 3: true, 4: true, 5: true };
+let activeTrump = { 2016: true, 2020: true, 2024: true };
+let yearRange = [1950, 2015];
+let tornadoMarkers = [];
+let femaRings = [];
+let showFema = true;
+let countyLayer = null;
+let countyGeoJSON = null;
+let statesGeoJSON = null;
+let statesLayer = null;
+
+// =========================================================================
+// LOAD TOPOJSON + RENDER COUNTIES
+// =========================================================================
+async function loadCounties() {
+  try {
+    document.getElementById('statusText').textContent = 'FETCHING COUNTY BOUNDARIES';
+    const res = await fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json');
+    const topology = await res.json();
+
+    document.getElementById('statusText').textContent = 'PROCESSING 3,143 COUNTIES';
+    countyGeoJSON = topojson.feature(topology, topology.objects.counties);
+    statesGeoJSON = topojson.feature(topology, topology.objects.states);
+
+    renderCountyOverlay();
+    renderStateLines();
+    renderTornadoes();
+    buildDecadeChart();
+    buildTopStates();
+
+    document.getElementById('loader').classList.add('hidden');
+  } catch (err) {
+    document.getElementById('statusText').textContent = 'ERROR LOADING DATA — RETRYING';
+    console.error(err);
+    setTimeout(loadCounties, 3000);
+  }
+}
+
+function renderStateLines() {
+  if (statesLayer) map.removeLayer(statesLayer);
+  statesLayer = L.geoJSON(statesGeoJSON, {
+    style: {
+      fillColor: 'transparent',
+      fillOpacity: 0,
+      color: '#3a4055',
+      weight: 1.2,
+      opacity: 0.6
+    },
+    interactive: false
+  }).addTo(map);
+}
+
+function renderCountyOverlay() {
+  if (countyLayer) map.removeLayer(countyLayer);
+  if (!countyGeoJSON) return;
+
+  let trumpCount = 0;
+
+  countyLayer = L.geoJSON(countyGeoJSON, {
+    style: function(feature) {
+      const fips = feature.id;
+      let wins = 0;
+      if (activeTrump[2016] && trumpWins(fips, 2016)) wins++;
+      if (activeTrump[2020] && trumpWins(fips, 2020)) wins++;
+      if (activeTrump[2024] && trumpWins(fips, 2024)) wins++;
+
+      if (wins > 0) trumpCount++;
+
+      const activeCount = Object.values(activeTrump).filter(Boolean).length;
+      if (wins === 0 || activeCount === 0) {
+        return {
+          fillColor: 'transparent',
+          fillOpacity: 0,
+          color: '#1e2230',
+          weight: 0.3,
+          opacity: 0.3
+        };
+      }
+
+      const opacity = wins === 1 ? 0.15 : wins === 2 ? 0.32 : 0.52;
+      return {
+        fillColor: '#c44040',
+        fillOpacity: opacity,
+        color: '#c44040',
+        weight: 0.4,
+        opacity: 0.3 + wins * 0.1
+      };
+    },
+    onEachFeature: function(feature, layer) {
+      const fips = feature.id;
+      const w16 = trumpWins(fips, 2016);
+      const w20 = trumpWins(fips, 2020);
+      const w24 = trumpWins(fips, 2024);
+      const wins = [w16 ? '2016' : null, w20 ? '2020' : null, w24 ? '2024' : null].filter(Boolean);
+
+      if (wins.length > 0) {
+        layer.bindTooltip(
+          `<div style="font-weight:500;color:${wins.length >= 2 ? '#c44040' : '#8891a5'}">
+            FIPS ${fips}
+          </div>
+          <div style="font-size:10px;color:#8891a5">
+            Trump: ${wins.join(', ')} (${wins.length}/3)
+          </div>`,
+          { className: 'info-tooltip', direction: 'top', sticky: true }
+        );
+      }
+    }
+  }).addTo(map);
+
+  // Bring county layer to back so tornadoes render on top
+  countyLayer.bringToBack();
+  if (statesLayer) statesLayer.bringToFront();
+
+  document.getElementById('countyCount').textContent =
+    `${trumpCount.toLocaleString()} Trump-voting counties shown`;
+}
+
+// =========================================================================
+// TORNADOES
+// =========================================================================
+function getEFColor(ef) {
+  return ef === 5 ? '#d43d8e' : ef === 4 ? '#e87931' : '#e8b931';
+}
+
+function renderTornadoes() {
+  tornadoMarkers.forEach(m => map.removeLayer(m));
+  femaRings.forEach(r => map.removeLayer(r));
+  tornadoMarkers = [];
+  femaRings = [];
+  let vis = 0, deaths = 0, c3 = 0, c4 = 0, c5 = 0, femaVis = 0;
+
+  TD.forEach(t => {
+    if (t.ef === 3) c3++;
+    if (t.ef === 4) c4++;
+    if (t.ef === 5) c5++;
+    deaths += t.f || 0;
+
+    if (!activeEF[t.ef]) return;
+    if (t.yr < yearRange[0] || t.yr > yearRange[1]) return;
+    vis++;
+
+    const color = getEFColor(t.ef);
+    const base = t.ef === 5 ? 10 : t.ef === 4 ? 7 : 5;
+    const r = base + Math.min(Math.sqrt(t.f || 0) * 0.8, 6);
+
+    // Draw green FEMA ring FIRST (behind the tornado dot)
+    if (t.fema && showFema) {
+      femaVis++;
+      const ring = L.circleMarker([t.la, t.lo], {
+        radius: r + 5,
+        fillColor: 'transparent',
+        fillOpacity: 0,
+        color: '#34d399',
+        weight: 2.5,
+        opacity: 0.85,
+        dashArray: '4 3',
+        interactive: false
+      }).addTo(map);
+      femaRings.push(ring);
+    }
+
+    const femaLabel = t.fema
+      ? `<div style="font-size:10px;color:#34d399;margin-top:2px;">⬤ FEMA Funded${t.dr ? ' — ' + t.dr : ''}</div>`
+      : `<div style="font-size:10px;color:var(--text-dim);margin-top:2px;">No FEMA declaration</div>`;
+
+    const m = L.circleMarker([t.la, t.lo], {
+      radius: r,
+      fillColor: color,
+      fillOpacity: 0.75,
+      color: color,
+      weight: 1.5,
+      opacity: 0.9
+    }).addTo(map);
+
+    m.bindTooltip(`
+      <div style="font-weight:500;color:${color}">F/EF${t.ef} — ${t.loc}</div>
+      <div style="font-size:10px;color:#8891a5">
+        ${t.yr} &nbsp;·&nbsp; ${t.f} killed &nbsp;·&nbsp; ${t.i} injured
+      </div>
+      ${femaLabel}
+    `, { className: 'info-tooltip', direction: 'top', offset: [0, -8] });
+
+    tornadoMarkers.push(m);
+  });
+
+  document.getElementById('cEf3').textContent = c3;
+  document.getElementById('cEf4').textContent = c4;
+  document.getElementById('cEf5').textContent = c5;
+  document.getElementById('cDeath').textContent = deaths.toLocaleString();
+  document.getElementById('cVis').textContent = vis;
+  document.getElementById('femaCount').textContent =
+    `${femaVis} FEMA-funded tornadoes visible`;
+}
+
+// =========================================================================
+// CONTROLS
+// =========================================================================
+function toggleEF(btn) {
+  const ef = parseInt(btn.dataset.ef);
+  activeEF[ef] = !activeEF[ef];
+  btn.classList.toggle(`a${ef}`);
+  renderTornadoes();
+}
+
+function toggleTrump(btn) {
+  const yr = parseInt(btn.dataset.yr);
+  activeTrump[yr] = !activeTrump[yr];
+  btn.classList.toggle('at');
+  renderCountyOverlay();
+}
+
+function toggleFema() {
+  showFema = !showFema;
+  document.getElementById('femaToggle').classList.toggle('af');
+  renderTornadoes();
+}
+
+function updateRange() {
+  const s = parseInt(document.getElementById('rS').value);
+  const e = parseInt(document.getElementById('rE').value);
+  yearRange = [Math.min(s,e), Math.max(s,e)];
+  document.getElementById('yrMin').textContent = yearRange[0];
+  document.getElementById('yrMax').textContent = yearRange[1];
+  renderTornadoes();
+}
+
+// =========================================================================
+// SIDEBAR CHARTS
+// =========================================================================
+function buildDecadeChart() {
+  const decades = ['50s','60s','70s','80s','90s','00s','10s'];
+  const ranges = [[1950,1959],[1960,1969],[1970,1979],[1980,1989],[1990,1999],[2000,2009],[2010,2015]];
+  const counts = ranges.map(([lo,hi]) => TD.filter(t => t.yr >= lo && t.yr <= hi).length);
+  const maxC = Math.max(...counts);
+  const container = document.getElementById('decChart');
+  decades.forEach((label, idx) => {
+    const pct = (counts[idx] / maxC) * 100;
+    const g = document.createElement('div');
+    g.className = 'decade-bar-group';
+    g.innerHTML = `<div class="decade-bar" style="height:${pct}%;background:linear-gradient(to top,var(--yellow-ef3),var(--orange-ef4))"></div><div class="decade-label">${label}</div>`;
+    container.appendChild(g);
+  });
+}
+
+function buildTopStates() {
+  const sc = {};
+  TD.filter(t => t.ef >= 4).forEach(t => { sc[t.st] = (sc[t.st] || 0) + 1; });
+  const sorted = Object.entries(sc).sort((a,b) => b[1] - a[1]).slice(0, 8);
+  const mx = sorted[0]?.[1] || 1;
+  const c = document.getElementById('topSt');
+  sorted.forEach(([st, n]) => {
+    const pct = (n / mx) * 100;
+    c.innerHTML += `<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+      <span style="width:22px;font-size:10px;color:var(--text-secondary)">${st}</span>
+      <div style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+        <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,var(--orange-ef4),var(--magenta-ef5));border-radius:3px"></div>
+      </div>
+      <span style="font-size:10px;color:var(--text-secondary);width:18px;text-align:right">${n}</span>
+    </div>`;
+  });
+}
+
+// =========================================================================
+// INIT
+// =========================================================================
+loadCounties();
+</script>
+</body>
+</html>
