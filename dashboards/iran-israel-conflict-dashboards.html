@@ -598,6 +598,16 @@
     line-height: 1.7;
   }
   .warning-box strong { color: var(--iran); font-weight: 500; }
+
+  /* ── HEADER RUNNING TOTALS: no boxes, match hstat appearance ── */
+  #panel-epicfury .header-stats { display: flex; flex-wrap: wrap; gap: 0; margin-top: 28px; align-items: flex-start; flex-direction: column; }
+  #panel-epicfury .header-stats .stats-grid-wrap { background: transparent; border: none; padding: 0; width: 100%; }
+  #panel-epicfury .header-stats .section-title { margin-bottom: 20px; }
+  #panel-epicfury .header-stats .stats-grid { display: flex; flex-wrap: wrap; gap: 40px 56px; align-items: flex-start; }
+  #panel-epicfury .header-stats .stat-card,
+  #panel-epicfury .header-stats .stat-card.full { background: transparent; border: none; padding: 0; grid-column: auto; }
+  #panel-epicfury .header-stats .stat-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+  #panel-epicfury .header-stats .stat-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -1565,8 +1575,8 @@
   <div class="header-label">Conflict Analysis · Middle East · February–March 2026 · Ongoing</div>
   <h1>Operations <span>Epic Fury</span> / <span>Roaring Lion</span></h1>
   <div class="header-sub">Joint US-Israeli offensive against Iran, launched 28 February 2026. Targets: Iranian regime leadership, nuclear infrastructure, missile arsenal, naval assets, and IRGC command network. Supreme Leader Khamenei killed. Iran retaliates across the Middle East and Gulf.</div>
-  <div class="header-stats" style="display:block;margin-top:28px;">
-    <div class="stats-grid-wrap" style="background:transparent;border:none;padding:0;">
+  <div class="header-stats">
+    <div class="stats-grid-wrap">
       <div class="section-title">Running totals <span style="font-size:9px;color:var(--iran);letter-spacing:1px;">· PRELIMINARY · AS OF 3 Mar 18:30 UTC</span></div>
       <div class="stats-grid">
         <div class="stat-card">
@@ -1600,19 +1610,19 @@
           <div class="stat-label">Countries struck by Iranian retaliation (Israel, UAE, Bahrain, Kuwait, Qatar, Jordan, Saudi Arabia, Iraq, Oman, Cyprus)</div>
         </div>
         <!-- Naval & Air losses by country — color-coded: Iran=red, Hezbollah/proxy=purple, US/Israel=blue/yellow -->
-        <div class="stat-card" style="border-color:rgba(255,80,80,0.3);">
+        <div class="stat-card">
           <div class="stat-num red">11+</div>
           <div class="stat-label">Iranian naval vessels destroyed (IRGC Navy · CENTCOM confirmed)</div>
         </div>
-        <div class="stat-card" style="border-color:rgba(255,80,80,0.3);">
+        <div class="stat-card">
           <div class="stat-num red">TBD</div>
           <div class="stat-label">Iranian military aircraft destroyed (IRGC Air Force · awaiting CENTCOM breakdown)</div>
         </div>
-        <div class="stat-card" style="border-color:rgba(167,139,250,0.3);">
+        <div class="stat-card">
           <div class="stat-num purple">TBD</div>
           <div class="stat-label">Hezbollah maritime/naval assets destroyed (IDF · Lebanon)</div>
         </div>
-        <div class="stat-card" style="border-color:rgba(74,158,255,0.3);">
+        <div class="stat-card">
           <div class="stat-num blue">TBD</div>
           <div class="stat-label">US/Israeli aircraft lost (CENTCOM · figures pending)</div>
         </div>
@@ -2918,7 +2928,7 @@
     <div class="context-card">
       <!-- Add dead leaders to this section -->
       <div class="section-title">Confirmed leadership killed</div>
-      <div class="context-item"><strong>Ali Khamenei</strong> — Supreme Leader of Iran (86). Killed at his Tehran compound by Israeli precision strike. Daughter, son-in-law, grandson also killed. <a class="source-link" href="https://www.npr.org/2026/02/28/nx-s1-5730158/israel-iran-strikes-trump-us" target="_blank">NPR</a></div>
+      <div class="context-item"><strong style="color:var(--accent);">Ali Khamenei</strong> — Supreme Leader of Iran (86). Killed at his Tehran compound by Israeli precision strike. Daughter, son-in-law, grandson also killed. <a class="source-link" href="https://www.npr.org/2026/02/28/nx-s1-5730158/israel-iran-strikes-trump-us" target="_blank">NPR</a></div>
       <div class="context-item"><strong>Ali Shamkhani</strong> — Secretary, Supreme National Security Council. Confirmed killed. <a class="source-link" href="https://www.cbsnews.com/live-updates/israel-us-attack-iran-trump-says-major-combat-operations/" target="_blank">CBS</a></div>
       <div class="context-item"><strong>Aziz Nasirzadeh</strong> — Defense Minister, oversaw missile industry and SPND nuclear/CBW research. <a class="source-link" href="https://www.foxnews.com/live-news/israel-us-launch-attack-on-iran-amid-escalating-protests" target="_blank">Fox News</a></div>
       <div class="context-item"><strong>Hossein Jabal Amelian</strong> — SPND Director (Organization of Defensive Innovation and Research — nuclear/biological/chemical weapons). <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
