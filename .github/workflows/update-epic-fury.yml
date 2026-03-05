@@ -2,10 +2,8 @@ name: Update Epic Fury Dashboard
 
 on:
   schedule:
-    # Every 6 hours: midnight, 6am, noon, 6pm UTC
     - cron: '0 0,6,12,18 * * *'
   workflow_dispatch:
-    # Manual trigger from the Actions tab anytime
 
 jobs:
   update:
@@ -16,6 +14,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
@@ -37,4 +38,4 @@ jobs:
           git pull --rebase origin main
           git add dashboards/iran-israel-conflict-dashboards.html
           git diff --staged --quiet || git commit -m "Auto-update dashboard: $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git push
+          git push origin main
