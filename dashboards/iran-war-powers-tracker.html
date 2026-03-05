@@ -37,6 +37,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ── WRITING SAMPLE BANNER ────────────────────────────────────────── */
+.writing-sample-banner {
+  background: var(--atlantic-red); color: #fff; text-align: center;
+  padding: 10px 20px; font-family: 'Source Sans 3', sans-serif; font-size: 13px;
+  font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+  position: sticky; top: 0; z-index: 1000;
+}
+
 /* ── MASTHEAD ─────────────────────────────────────────────────────── */
 .masthead {
   text-align: center;
@@ -50,7 +58,7 @@ body {
   color: var(--atlantic-text);
   background: var(--atlantic-bg);
   position: sticky;
-  top: 0;
+  top: 43px;
   z-index: 100;
 }
 .masthead em { font-style: normal; color: var(--atlantic-red); }
@@ -67,7 +75,7 @@ body {
   border-bottom: 1px solid var(--atlantic-rule);
   background: var(--atlantic-bg);
   position: sticky;
-  top: 57px;
+  top: 100px;
   z-index: 90;
 }
 .bill-tabs {
@@ -465,6 +473,8 @@ body {
 </style>
 </head>
 <body>
+
+<div class="writing-sample-banner">Unpublished Writing Sample</div>
 
 <!-- MASTHEAD -->
 <header class="masthead">
