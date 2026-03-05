@@ -66,7 +66,7 @@ After searching, return a single JSON object with this exact structure (omit any
     "countries_struck": "9+",
     "iranian_ships": "11+",
     "iranian_aircraft": "TBD",
-    "hezb_naval": "TBD"
+    "leb_hezb_killed": "TBD/TBD"
   }},
 
   "hstats": {{
@@ -129,12 +129,6 @@ def patch_timestamps(panel: str, timestamp: str) -> str:
         timestamp,
         panel
     )
-    # Also update the AS OF label
-    panel = re.sub(
-        r'AS OF \d+ [A-Z]{3} \d{2}:\d{2} UTC',
-        f'AS OF {datetime.datetime.now(datetime.UTC).strftime("%-d %b %H:%M UTC")}',
-        panel
-    )
     return panel
 
 def patch_stat_card(panel: str, label_fragment: str, new_value: str) -> str:
@@ -142,7 +136,7 @@ def patch_stat_card(panel: str, label_fragment: str, new_value: str) -> str:
     Finds a stat-card containing label_fragment in its stat-label,
     and replaces the stat-num value inside it.
     """
-    pattern = rf'(<div class="stat-num[^"]*">)[^<]+(</div>\s*<div class="stat-label">[^<]*{re.escape(label_fragment)})'
+    pattern = rf'(<div class="stat-num[^"]*">)[^<]+(</div>\s*<div class="stat-label[^"]*"[^>]*>[^<]*{re.escape(label_fragment)})'
     replacement = rf'\g<1>{new_value}\2'
     updated = re.sub(pattern, replacement, panel, count=1)
     if updated == panel:
@@ -223,7 +217,7 @@ def apply_diff(panel: str, diff: dict) -> str:
         "countries_struck":"countries struck",
         "iranian_ships":   "Iranian naval vessels destroyed",
         "iranian_aircraft":"Iranian military aircraft destroyed",
-        "hezb_naval":      "Hezbollah maritime",
+        "leb_hezb_killed": "Lebanese Civilians",
     }
     for key, label_fragment in stat_label_map.items():
         if key in diff.get("stats", {}):

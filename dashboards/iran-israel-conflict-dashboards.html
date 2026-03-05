@@ -170,7 +170,7 @@
   .main {
     padding: 40px 60px;
     display: grid;
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: 1fr 420px;
     gap: 32px;
     max-width: 1400px;
   }
@@ -390,10 +390,10 @@
   }
   .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
   .bar-row:last-child { margin-bottom: 0; }
-  .bar-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); width: 72px; flex-shrink: 0; }
+  .bar-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); width: 90px; flex-shrink: 0; }
   .bar-track { flex: 1; height: 6px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
   .bar-fill { height: 100%; border-radius: 2px; }
-  .bar-val { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text); width: 36px; text-align: right; flex-shrink: 0; }
+  .bar-val { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text); width: 140px; text-align: right; flex-shrink: 0; }
   .context-item {
     margin-bottom: 12px;
     padding-bottom: 12px;
@@ -1560,75 +1560,90 @@
 ══════════════════════════════════════════════ -->
 <div class="panel" id="panel-epicfury">
 
-<header style="position:relative;">
-  <!-- UPDATE TIMESTAMP BOX
-       Positioned absolutely top-right of the header.
-       Update "March 5, 2026 · 18:46 UTC" here daily.
-       The pulsing red dot is a CSS animation (pulse-live).
-  -->
-  <div class="update-box">
-    <span class="update-label">Last updated</span>
-    <span class="update-time"><span class="live-dot"></span>March 5, 2026 · 18:46 UTC</span>
-    <span class="update-note">Updated daily · verify all figures</span>
-  </div>
+<header style="display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:start;position:relative;">
 
-  <div class="header-label">Conflict Analysis · Middle East · February–March 2026 · Ongoing</div>
-  <h1>Operations <span>Epic Fury</span> / <span>Roaring Lion</span></h1>
-  <div class="header-sub">Joint US-Israeli offensive against Iran, launched 28 February 2026. Targets: Iranian regime leadership, nuclear infrastructure, missile arsenal, naval assets, and IRGC command network. Supreme Leader Khamenei killed. Iran retaliates across the Middle East and Gulf.</div>
-  <div class="header-stats">
-    <div class="stats-grid-wrap">
-      <div class="section-title">Running totals <span style="font-size:9px;color:var(--iran);letter-spacing:1px;">· PRELIMINARY · AS OF 3 Mar 18:30 UTC</span></div>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-num red">1,145+</div>
-          <div class="stat-label">Iranian civilians killed (Red Crescent, Day 3)</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num red">900+</div>
-          <div class="stat-label">Iranian civilians injured (Day 1 figure; Day 3 tally ongoing)</div>
-        </div>
-        <!-- Israeli civilian stat: white (no class) per editorial decision — not blue,
-             since this is a civilian death count rather than a military/state actor metric -->
-        <div class="stat-card">
-          <div class="stat-num">22+</div>
-          <div class="stat-label">Israeli civilians killed (Days 1–4 · incl. 9 in Beit Shemesh synagogue)</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num blue">121+</div>
-          <div class="stat-label">Israelis injured</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num yellow">18+</div>
-          <div class="stat-label">US soldiers KIA · 18+ seriously wounded (CENTCOM, Day 4)</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">2,000+</div>
-          <div class="stat-label">US/Israeli targets struck in first 48 hrs (CENTCOM)</div>
-        </div>
-        <div class="stat-card full">
-          <div class="stat-num red">9+</div>
-          <div class="stat-label">Countries struck by Iranian retaliation (Israel, UAE, Bahrain, Kuwait, Qatar, Jordan, Saudi Arabia, Iraq, Oman, Cyprus)</div>
-        </div>
-        <!-- Naval & Air losses by country — color-coded: Iran=red, Hezbollah/proxy=purple, US/Israel=blue/yellow -->
-        <div class="stat-card">
-          <div class="stat-num red">20+</div>
-          <div class="stat-label">Iranian naval vessels destroyed (IRGC Navy · CENTCOM confirmed)</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num red">1 (Yak-130, F-35I kill)</div>
-          <div class="stat-label">Iranian military aircraft destroyed (IRGC Air Force · awaiting CENTCOM breakdown)</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num purple">TBD</div>
-          <div class="stat-label">Hezbollah maritime/naval assets destroyed (IDF · Lebanon)</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num blue">TBD</div>
-          <div class="stat-label">US/Israeli aircraft lost (CENTCOM · figures pending)</div>
+  <!-- LEFT COLUMN: headline + running totals -->
+  <div>
+    <div class="header-label">Conflict Analysis · Middle East · February–March 2026 · Ongoing</div>
+    <h1>Operations <span>Epic Fury</span> / <span>Roaring Lion</span></h1>
+    <div class="header-sub">Joint US-Israeli offensive against Iran, launched 28 February 2026. Targets: Iranian regime leadership, nuclear infrastructure, missile arsenal, naval assets, and IRGC command network. Supreme Leader Khamenei killed. Iran retaliates across the Middle East and Gulf.</div>
+    <div class="header-stats">
+      <div class="stats-grid-wrap">
+        <div class="section-title">Running totals</div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-num red">1,145+</div>
+            <div class="stat-label">Iranian civilians killed (Red Crescent, Day 3)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num red">900+</div>
+            <div class="stat-label">Iranian civilians injured (Day 1 figure; Day 3 tally ongoing)</div>
+          </div>
+          <!-- Israeli civilian stat: white (no class) per editorial decision — not blue,
+               since this is a civilian death count rather than a military/state actor metric -->
+          <div class="stat-card">
+            <div class="stat-num">22+</div>
+            <div class="stat-label">Israeli civilians killed (Days 1–4 · incl. 9 in Beit Shemesh synagogue)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num blue">121+</div>
+            <div class="stat-label">Israelis injured</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num yellow">18+</div>
+            <div class="stat-label">US soldiers KIA · 18+ seriously wounded (CENTCOM, Day 4)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2,000+</div>
+            <div class="stat-label">US/Israeli targets struck in first 48 hrs (CENTCOM)</div>
+          </div>
+          <div class="stat-card full">
+            <div class="stat-num red">9+</div>
+            <div class="stat-label">Countries struck by Iranian retaliation (Israel, UAE, Bahrain, Kuwait, Qatar, Jordan, Saudi Arabia, Iraq, Oman, Cyprus)</div>
+          </div>
+          <!-- Naval & Air losses by country — color-coded: Iran=red, Hezbollah/proxy=purple, US/Israel=blue/yellow -->
+          <div class="stat-card">
+            <div class="stat-num red">20+</div>
+            <div class="stat-label">Iranian naval vessels destroyed (IRGC Navy · CENTCOM confirmed)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num red">1 (Yak-130, F-35I kill)</div>
+            <div class="stat-label">Iranian military aircraft destroyed (IRGC Air Force · awaiting CENTCOM breakdown)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num purple">TBD/TBD</div>
+            <div class="stat-label" style="color:var(--jordan);">Lebanese Civilians Killed / Hezbollah Killed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num blue">TBD</div>
+            <div class="stat-label">US/Israeli aircraft lost (CENTCOM · figures pending)</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- RIGHT COLUMN: update-box + strategic context -->
+  <div style="display:flex;flex-direction:column;gap:16px;padding-top:28px;">
+    <!-- UPDATE TIMESTAMP BOX
+         Update "March 5, 2026 · 18:46 UTC" here daily.
+         The pulsing red dot is a CSS animation (pulse-live).
+    -->
+    <div class="update-box" style="position:static;top:auto;right:auto;">
+      <span class="update-label">Last updated</span>
+      <span class="update-time"><span class="live-dot"></span>March 5, 2026 · 18:46 UTC</span>
+      <span class="update-note">Updated daily · verify all figures</span>
+    </div>
+    <div class="context-card" style="font-size:11px;">
+      <div class="section-title">Strategic context</div>
+      <div class="context-item"><strong>Stated US objectives (Trump):</strong> (1) Prevent Iran acquiring nuclear weapon. (2) Destroy missile arsenal and production. (3) Degrade proxy networks. (4) Annihilate Iranian navy. (5) Regime change from within. <a class="source-link" href="https://www.csis.org/analysis/operation-epic-fury-and-remnants-irans-nuclear-program" target="_blank">CSIS</a></div>
+      <div class="context-item"><strong>Scale vs June 2025:</strong> Operation Epic Fury targets leadership, full military/naval infrastructure, and government ministries — far beyond Operation Midnight Hammer's limited nuclear focus. CSIS calls it "an initial salvo of a longer conflict." <a class="source-link" href="https://www.csis.org/analysis/operation-epic-fury-and-remnants-irans-nuclear-program" target="_blank">CSIS</a></div>
+      <div class="context-item"><strong>New US weapons:</strong> LUCAS (Low-cost Unmanned Combat Attack System) — reverse-engineered Shahed-136 drone, first combat use. Also HIMARS land-based rockets, Tomahawks from warships, B-2 bombers, Task Force Scorpion Strike drones. <a class="source-link" href="https://www.flightglobal.com/military-uavs/us-deploys-iranian-derived-strike-drones-in-operation-epic-fury/166480.article" target="_blank">FlightGlobal</a></div>
+      <div class="context-item"><strong>Risk: Nuclear material:</strong> Iran still holds ~400 kg of 60%-enriched uranium. CSIS warns exact location unknown after strikes. Collapse of Atomic Energy Organisation could scatter nuclear scientists — proliferation risk to non-state actors. <a class="source-link" href="https://www.csis.org/analysis/operation-epic-fury-and-remnants-irans-nuclear-program" target="_blank">CSIS</a></div>
+      <div class="context-item"><strong>Succession crisis:</strong> CFR assesses that even if Khamenei dies, likely successors are hardline IRGC figures who control the terror and missile networks. <a class="source-link" href="https://www.cfr.org/articles/gauging-the-impact-of-massive-u-s-israeli-strikes-on-iran" target="_blank">CFR</a></div>
+    </div>
+  </div>
+
 </header>
 
 <div class="main">
@@ -3289,14 +3304,14 @@
         <div class="bar-val" style="color:var(--muted);">Continued (overnight)</div>
       </div>
        <div class="bar-row">
-         <div class="bar-label">Mar 2 â IAF</div>
+         <div class="bar-label">Mar 2 — IAF</div>
          <div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--israel);opacity:0.6;"></div></div>
-         <div class="bar-val" style="color:var(--muted);">Lebanon + Tehran cont.</div>
+         <div class="bar-val" style="color:var(--muted);">Lebanon &amp; Tehran cont.</div>
        </div>
        <div class="bar-row">
-         <div class="bar-label">Mar 2 â US</div>
+         <div class="bar-label">Mar 2 — US</div>
          <div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--us);opacity:0.6;"></div></div>
-         <div class="bar-val" style="color:var(--muted);">ongoing Â· tallying</div>
+         <div class="bar-val" style="color:var(--muted);">ongoing · tallying</div>
        </div>
       
       <div class="bar-row">
@@ -3401,16 +3416,6 @@
       <div class="context-item"><strong>Khamenei's wife</strong> — Confirmed by Iranian sources to have died of injuries sustained in the strike on Khamenei's compound. <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
       <div class="context-item"><strong>Mojtaba Khamenei</strong> <em>(elected, not killed)</em> — Son of Ali Khamenei, reportedly elected 3rd Supreme Leader of Iran by Assembly of Experts under IRGC pressure on March 4. Not yet publicly announced by Iranian state media. Israel has warned he is 'an unequivocal target for elimination.' <a class="source-link" href="https://www.iranintl.com/en/202603030390" target="_blank">Iran International</a></div>
       <div class="context-item"><strong>Daoud Alizadeh</strong> — Acting Commander, IRGC Quds Force Lebanon Corps. Killed in an Israeli airstrike in Tehran on March 3, 2026, per IDF announcement. Described by the IDF as 'the highest-ranking Iranian commander responsible for Lebanon.' <a class="source-link" href="https://www.timesofisrael.com/liveblog_entry/idf-kills-head-of-irgcs-lebanon-corps-in-tehran/" target="_blank">Times of Israel</a></div>
-    </div>
-
-    <!-- Context card -->
-    <div class="context-card">
-      <div class="section-title">Strategic context</div>
-      <div class="context-item"><strong>Stated US objectives (Trump):</strong> (1) Prevent Iran acquiring nuclear weapon. (2) Destroy missile arsenal and production. (3) Degrade proxy networks. (4) Annihilate Iranian navy. (5) Regime change from within. <a class="source-link" href="https://www.csis.org/analysis/operation-epic-fury-and-remnants-irans-nuclear-program" target="_blank">CSIS</a></div>
-      <div class="context-item"><strong>Scale vs June 2025:</strong> Operation Epic Fury targets leadership, full military/naval infrastructure, and government ministries — far beyond Operation Midnight Hammer's limited nuclear focus. CSIS calls it "an initial salvo of a longer conflict." <a class="source-link" href="https://www.csis.org/analysis/operation-epic-fury-and-remnants-irans-nuclear-program" target="_blank">CSIS</a></div>
-      <div class="context-item"><strong>New US weapons:</strong> LUCAS (Low-cost Unmanned Combat Attack System) — reverse-engineered Shahed-136 drone, first combat use. Also HIMARS land-based rockets, Tomahawks from warships, B-2 bombers, Task Force Scorpion Strike drones. <a class="source-link" href="https://www.flightglobal.com/military-uavs/us-deploys-iranian-derived-strike-drones-in-operation-epic-fury/166480.article" target="_blank">FlightGlobal</a></div>
-      <div class="context-item"><strong>Risk: Nuclear material:</strong> Iran still holds ~400 kg of 60%-enriched uranium. CSIS warns exact location unknown after strikes. Collapse of Atomic Energy Organisation could scatter nuclear scientists — proliferation risk to non-state actors. <a class="source-link" href="https://www.csis.org/analysis/operation-epic-fury-and-remnants-irans-nuclear-program" target="_blank">CSIS</a></div>
-      <div class="context-item"><strong>Succession crisis:</strong> CFR assesses that even if Khamenei dies, likely successors are hardline IRGC figures who control the terror and missile networks. <a class="source-link" href="https://www.cfr.org/articles/gauging-the-impact-of-massive-u-s-israeli-strikes-on-iran" target="_blank">CFR</a></div>
     </div>
 
     <!--
