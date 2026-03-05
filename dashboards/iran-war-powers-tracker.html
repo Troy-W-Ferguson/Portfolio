@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Vote They Wouldn't Take | The Atlantic</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── ATLANTIC DESIGN TOKENS ───────────────────────────────────────── */
+:root {
+  --atlantic-black: #121212;
+  --atlantic-text:  #1a1a1a;
+  --atlantic-body:  #2d2d2d;
+  --atlantic-gray:  #555;
+  --atlantic-light: #888;
+  --atlantic-rule:  #c4c4c4;
+  --atlantic-bg:    #faf9f6;
+  --atlantic-red:   #c0392b;
+  --atlantic-blue:  #2c5aa0;
+  --party-dem:      #2563eb;
+  --party-rep:      #dc2626;
+  --party-ind:      #d97706;
+  --vote-yea:       #16a34a;
+  --vote-nay:       #dc2626;
+  --vote-na:        #6b7280;
+  --vote-ns:        #d97706;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--atlantic-bg);
+  color: var(--atlantic-body);
+  line-height: 1.72;
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── MASTHEAD ─────────────────────────────────────────────────────── */
+.masthead {
+  text-align: center;
+  padding: 16px 20px;
+  border-bottom: 2px solid var(--atlantic-black);
+  font-family: 'Source Sans 3', sans-serif;
+  letter-spacing: 6px;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--atlantic-text);
+  background: var(--atlantic-bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.masthead em { font-style: normal; color: var(--atlantic-red); }
+.masthead-sub {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--atlantic-light);
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+/* ── BILL TABS ────────────────────────────────────────────────────── */
+.bill-tabs-wrap {
+  border-bottom: 1px solid var(--atlantic-rule);
+  background: var(--atlantic-bg);
+  position: sticky;
+  top: 57px;
+  z-index: 90;
+}
+.bill-tabs {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  padding: 0 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.bill-tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--atlantic-light);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 14px 20px 11px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .2s, border-color .2s;
+}
+.tab-btn:hover { color: var(--atlantic-text); }
+.tab-btn.active {
+  color: var(--atlantic-red);
+  border-bottom-color: var(--atlantic-red);
+}
+
+/* ── TAB PANELS ───────────────────────────────────────────────────── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── ARTICLE HERO ─────────────────────────────────────────────────── */
+.article-hero {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 60px 24px 36px;
+  text-align: center;
+}
+.section-label {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3.5px;
+  color: var(--atlantic-red);
+  margin-bottom: 22px;
+}
+.article-hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(32px, 5.5vw, 52px);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--atlantic-black);
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+.article-dek {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--atlantic-gray);
+  font-style: italic;
+  max-width: 600px;
+  margin: 0 auto 28px;
+}
+.byline-block {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  color: var(--atlantic-text);
+}
+.byline-block strong { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.byline-block .dateline { color: var(--atlantic-light); margin-top: 4px; }
+.hero-rule {
+  width: 48px;
+  height: 3px;
+  background: var(--atlantic-red);
+  margin: 36px auto 0;
+}
+
+/* ── ARTICLE BODY ─────────────────────────────────────────────────── */
+.article-body {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 40px 24px 16px;
+}
+.article-body p { margin-bottom: 24px; }
+.article-body p.lede::first-letter {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 5.5em;
+  font-weight: 900;
+  float: left;
+  line-height: 0.78;
+  padding-right: 10px;
+  padding-top: 6px;
+  color: var(--atlantic-black);
+}
+.pullquote {
+  border-left: 4px solid var(--atlantic-red);
+  padding: 6px 0 6px 24px;
+  margin: 36px 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 21px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--atlantic-black);
+}
+
+/* ── GRAPHIC SECTIONS ─────────────────────────────────────────────── */
+.graphic-section {
+  max-width: 900px;
+  margin: 0 auto 56px;
+  padding: 0 24px;
+}
+.graphic-label {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--atlantic-light);
+  border-top: 1px solid var(--atlantic-rule);
+  padding-top: 14px;
+  margin-bottom: 20px;
+}
+.graphic-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--atlantic-black);
+  margin-bottom: 6px;
+}
+.graphic-sub {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  color: var(--atlantic-gray);
+  margin-bottom: 28px;
+}
+
+/* ── GAUGE METER ──────────────────────────────────────────────────── */
+.gauge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+#gauge-svg { max-width: 460px; width: 100%; }
+.gauge-legend {
+  display: flex;
+  gap: 32px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  color: var(--atlantic-gray);
+}
+.gauge-legend span { display: flex; align-items: center; gap: 6px; }
+.legend-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.gauge-source {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px;
+  color: var(--atlantic-light);
+  text-align: center;
+}
+
+/* ── CONGRESS VIZ ─────────────────────────────────────────────────── */
+.congress-viz-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.chamber-block {
+  position: relative;
+}
+.chamber-title {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--atlantic-text);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.chamber-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--atlantic-rule);
+}
+.chamber-svg-wrap { position: relative; }
+.chamber-svg-wrap svg { display: block; width: 100%; max-width: 860px; margin: 0 auto; }
+
+/* Vote tally board */
+.vote-tally {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--atlantic-rule);
+  border-radius: 4px;
+  overflow: hidden;
+  font-family: 'Source Sans 3', sans-serif;
+  margin-top: 8px;
+}
+.tally-block {
+  flex: 1;
+  text-align: center;
+  padding: 18px 12px;
+  border-right: 1px solid var(--atlantic-rule);
+}
+.tally-block:last-child { border-right: none; }
+.tally-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.tally-yea .tally-num { color: var(--vote-yea); }
+.tally-nay .tally-num { color: var(--vote-nay); }
+.tally-abs .tally-num { color: var(--vote-na); }
+.tally-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--atlantic-light);
+}
+.tally-result {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--atlantic-red);
+  background: #fef2f2;
+}
+.tally-result.passed { color: var(--vote-yea); background: #f0fdf4; }
+.house-note {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  color: var(--atlantic-gray);
+  font-style: italic;
+  border-left: 3px solid var(--atlantic-rule);
+  padding-left: 12px;
+  margin-top: 12px;
+}
+
+/* Member detail panel */
+.member-panel {
+  display: none;
+  position: fixed;
+  right: 0; top: 0; bottom: 0;
+  width: min(380px, 100vw);
+  background: white;
+  box-shadow: -4px 0 32px rgba(0,0,0,.12);
+  z-index: 500;
+  overflow-y: auto;
+  animation: slideIn .22s ease;
+}
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+.member-panel.open { display: block; }
+.panel-close {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--atlantic-gray);
+  line-height: 1;
+}
+.panel-close:hover { color: var(--atlantic-text); }
+.panel-portrait {
+  width: 100%;
+  height: 220px;
+  background: #e5e7eb;
+  overflow: hidden;
+  position: relative;
+}
+.panel-portrait img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+}
+.portrait-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 72px;
+  font-weight: 900;
+  color: white;
+}
+.panel-body { padding: 24px; }
+.panel-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--atlantic-black);
+  margin-bottom: 4px;
+}
+.panel-meta {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  color: var(--atlantic-gray);
+  margin-bottom: 16px;
+}
+.vote-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 6px 14px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+.badge-yea  { background: #dcfce7; color: #15803d; }
+.badge-nay  { background: #fee2e2; color: #b91c1c; }
+.badge-na   { background: #f3f4f6; color: #4b5563; }
+.badge-ns   { background: #fef3c7; color: #92400e; }
+.panel-rule { height: 1px; background: var(--atlantic-rule); margin: 16px 0; }
+.panel-stance-label {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--atlantic-light);
+  margin-bottom: 10px;
+}
+.panel-stance {
+  font-family: 'Source Serif 4', serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--atlantic-body);
+}
+
+/* ── LEGEND ───────────────────────────────────────────────────────── */
+.dot-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  color: var(--atlantic-gray);
+  margin-bottom: 16px;
+}
+.dot-legend span { display: flex; align-items: center; gap: 6px; }
+.swatch {
+  width: 12px; height: 12px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.swatch-clickable {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid #1a1a1a;
+  flex-shrink: 0;
+}
+
+/* ── ARTICLE DIVIDER ──────────────────────────────────────────────── */
+.article-divider {
+  max-width: 660px;
+  margin: 48px auto 52px;
+  padding: 0 24px;
+  text-align: center;
+}
+.article-divider hr {
+  border: none;
+  border-top: 1px solid var(--atlantic-rule);
+  margin-bottom: 16px;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .tally-num { font-size: 36px; }
+  .bill-tabs { padding: 0 12px; }
+  .tab-btn { padding: 12px 14px 9px; font-size: 10px; }
+  .member-panel { width: 100vw; }
+}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div>The <em>Atlantic</em></div>
+  <div class="masthead-sub">Data Journalism · Congress Tracker</div>
+</header>
+
+<!-- TAB NAVIGATION -->
+<div class="bill-tabs-wrap">
+  <nav class="bill-tabs" role="tablist">
+    <button class="tab-btn active" onclick="switchTab('sjres104')" id="tab-sjres104" role="tab" aria-selected="true">
+      S.J.Res. 104 — Iran War Powers
+    </button>
+    <!-- ADD NEW TAB BUTTONS HERE using the updater prompt -->
+  </nav>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TAB PANEL 1 — S.J.Res. 104
+═══════════════════════════════════════════════════════════════════ -->
+<div class="tab-panel active" id="panel-sjres104" role="tabpanel">
+
+  <!-- ARTICLE HERO -->
+  <div class="article-hero">
+    <div class="section-label">Politics · War &amp; Congress</div>
+    <h1>The War They Refused to Stop</h1>
+    <p class="article-dek">Senate Republicans killed a bipartisan effort to assert congressional authority over Trump's undeclared war with Iran — and in doing so, may have drawn a permanent new line around presidential war power.</p>
+    <div class="byline-block">
+      <strong>Troy W. Ferguson</strong>
+      <div class="dateline">March 5, 2026 &nbsp;·&nbsp; Data Journalism</div>
+    </div>
+    <div class="hero-rule"></div>
+  </div>
+
+  <!-- ARTICLE BODY (~400 words) -->
+  <div class="article-body">
+    <p class="lede">The resolution was only a page long. It invoked a law passed in the shadow of Vietnam. And it asked Congress to do something it has not done in decades: say clearly whether the United States is at war.</p>
+
+    <p>S.J.Res. 104, introduced by Senator Tim Kaine of Virginia and Senator Rand Paul of Kentucky, would have directed President Trump to remove American forces from hostilities against Iran unless Congress specifically authorized their use. The resolution did not call for retreat. It did not prohibit self-defense. It asked only that the oldest constitutional prerogative of the legislative branch — the power to declare war — be honored.</p>
+
+    <p>The Senate answered on Wednesday with a 47–53 vote. The resolution failed. Fifty-three Republicans, with the notable exception of Paul and the equally notable defection of Pennsylvania Democrat John Fetterman, chose the president's war over the Constitution's text.</p>
+
+    <div class="pullquote">"Donald Trump has launched America into a conflict with no clear objectives, no plan, and no authorization from Congress." — Sen. Chuck Schumer</div>
+
+    <p>The vote landed in a country already deeply skeptical of the war it was being asked to ratify. A CNN/SSRS poll conducted just days before the vote found that 59 percent of Americans disapproved of the administration's decision to strike Iran, with 31 percent saying they strongly disapproved. Republicans backed the strikes by wide margins; Democrats and independents did not. The public, in other words, was ahead of Congress — or rather, Congress had decided the public's opinion was beside the point.</p>
+
+    <p>The legal architecture behind the resolution is the War Powers Resolution of 1973, a post-Vietnam statute that requires the president to notify Congress within 48 hours of introducing forces into hostilities and to withdraw those forces within 60 days unless Congress authorizes the conflict. Every president since Nixon has disputed its constitutionality while mostly complying with it anyway. Trump has done neither.</p>
+
+    <p>In the House, Democratic Leader Hakeem Jeffries announced his caucus would force a floor vote on H.Con.Res. 38, a companion measure introduced by Republican Representative Thomas Massie and co-sponsored by more than eighty Democrats. Speaker Johnson expressed confidence that Republicans would again defeat it. The margin, if the House indeed votes, will be narrower — and the politics considerably messier.</p>
+
+    <p>What the Senate produced on Wednesday was not a verdict on the war. It was a verdict on itself. Fifty-three senators looked at an unauthorized war, a skeptical public, and a Constitution that says "Congress shall have power to declare war," and chose to let someone else decide.</p>
+  </div>
+
+  <div class="article-divider"><hr></div>
+
+  <!-- ── GRAPHIC 1: POLL GAUGE ──────────────────────────────────────── -->
+  <section class="graphic-section">
+    <div class="graphic-label">Graphic 1 · Static</div>
+    <div class="graphic-title">How America Feels About the Iran Strikes</div>
+    <div class="graphic-sub">Public disapproval of U.S. military action — and implicit support for congressional oversight</div>
+
+    <div class="gauge-wrap">
+      <svg id="gauge-svg" viewBox="0 0 460 260" xmlns="http://www.w3.org/2000/svg" aria-label="Poll throttle gauge showing 59% disapprove of Iran strikes">
+        <defs>
+          <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#16a34a"/>
+            <stop offset="40%"  stop-color="#ca8a04"/>
+            <stop offset="100%" stop-color="#dc2626"/>
+          </linearGradient>
+          <clipPath id="arcClip">
+            <rect x="0" y="0" width="460" height="260"/>
+          </clipPath>
+        </defs>
+
+        <!-- Background arc track -->
+        <path d="M 50 230 A 180 180 0 0 1 410 230"
+              fill="none" stroke="#e5e7eb" stroke-width="28" stroke-linecap="round"/>
+
+        <!-- Colored arc (full range for reference) -->
+        <path d="M 50 230 A 180 180 0 0 1 410 230"
+              fill="none" stroke="url(#gaugeGrad)" stroke-width="28" stroke-linecap="round" opacity="0.25"/>
+
+        <!-- Filled arc up to 59% disapproval mark (needle position) -->
+        <!-- 59% of 180deg = 106.2deg; arc starts at 180°, needle at 180-106.2=73.8° from left -->
+        <!-- SVG arc: start 50,230 sweeping to ~59% point -->
+        <!-- 59% along the arc: angle from 180° → 0° left to right = 180° range -->
+        <!-- 59% = 180 * 0.59 = 106.2°; point on circle r=180, center=(230,230): -->
+        <!-- x = 230 + 180*cos(180-106.2) = 230 + 180*cos(73.8°) = 230+50.2=280.2 -->
+        <!-- y = 230 - 180*sin(73.8°) = 230 - 173 = 57 -->
+        <path d="M 50 230 A 180 180 0 0 1 280 57"
+              fill="none" stroke="#dc2626" stroke-width="28" stroke-linecap="round" opacity="0.85"/>
+
+        <!-- Needle -->
+        <line x1="230" y1="230" x2="283" y2="62"
+              stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="230" cy="230" r="10" fill="#1a1a1a"/>
+        <circle cx="230" cy="230" r="5"  fill="white"/>
+
+        <!-- Center label -->
+        <text x="230" y="190" text-anchor="middle"
+              font-family="'Playfair Display', serif" font-size="44" font-weight="900" fill="#1a1a1a">59%</text>
+        <text x="230" y="212" text-anchor="middle"
+              font-family="'Source Sans 3', sans-serif" font-size="12" fill="#555" letter-spacing="1">DISAPPROVE</text>
+
+        <!-- Left label -->
+        <text x="44" y="254" text-anchor="middle"
+              font-family="'Source Sans 3', sans-serif" font-size="11" fill="#16a34a" font-weight="700">SUPPORT</text>
+        <text x="44" y="266" text-anchor="middle"
+              font-family="'Source Sans 3', sans-serif" font-size="10" fill="#888">STRIKES</text>
+
+        <!-- Right label -->
+        <text x="416" y="254" text-anchor="middle"
+              font-family="'Source Sans 3', sans-serif" font-size="11" fill="#dc2626" font-weight="700">OPPOSE</text>
+        <text x="416" y="266" text-anchor="middle"
+              font-family="'Source Sans 3', sans-serif" font-size="10" fill="#888">STRIKES</text>
+
+        <!-- Tick marks -->
+        <g stroke="#aaa" stroke-width="1.5">
+          <!-- 25% -->
+          <line x1="95"  y1="124" x2="106" y2="134"/>
+          <!-- 50% -->
+          <line x1="230" y1="50"  x2="230" y2="64"/>
+          <!-- 75% -->
+          <line x1="365" y1="124" x2="354" y2="134"/>
+        </g>
+        <text x="88"  y="120" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="10" fill="#aaa">25%</text>
+        <text x="230" y="46"  text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="10" fill="#aaa">50%</text>
+        <text x="372" y="120" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="10" fill="#aaa">75%</text>
+      </svg>
+
+      <div class="gauge-legend">
+        <span><span class="legend-dot" style="background:#16a34a"></span>41% Approve strikes</span>
+        <span><span class="legend-dot" style="background:#dc2626"></span>59% Disapprove strikes</span>
+      </div>
+      <div class="gauge-source">CNN/SSRS Poll · Feb. 28 – Mar. 1, 2026 · n=1,206 adults nationwide</div>
+    </div>
+  </section>
+
+  <!-- ── GRAPHIC 2: CONGRESS VIZ ────────────────────────────────────── -->
+  <section class="graphic-section">
+    <div class="graphic-label">Graphic 2 · Interactive — Click the outlined circles</div>
+    <div class="graphic-title">The Chambers That Decided</div>
+    <div class="graphic-sub">Each circle represents one member of Congress, colored by party affiliation. Bold-outlined circles are the 10 most prominent figures — click to reveal their vote and stance.</div>
+
+    <div class="dot-legend">
+      <span><span class="swatch" style="background:var(--party-dem)"></span>Democrat</span>
+      <span><span class="swatch" style="background:var(--party-rep)"></span>Republican</span>
+      <span><span class="swatch" style="background:var(--party-ind)"></span>Independent</span>
+      <span><span class="swatch-clickable"></span>Clickable — Prominent member</span>
+    </div>
+
+    <div class="congress-viz-wrap">
+
+      <!-- SENATE -->
+      <div class="chamber-block">
+        <div class="chamber-title">U.S. Senate — Final Vote on S.J.Res. 104</div>
+        <div class="chamber-svg-wrap">
+          <svg id="senate-svg" viewBox="0 0 860 320" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+
+        <!-- Vote tally -->
+        <div style="display:flex; align-items:stretch; gap:0; margin-top:20px;">
+          <div class="vote-tally" style="flex:1">
+            <div class="tally-block tally-yea">
+              <div class="tally-num">47</div>
+              <div class="tally-label">Yea</div>
+            </div>
+            <div class="tally-block tally-nay">
+              <div class="tally-num">53</div>
+              <div class="tally-label">Nay</div>
+            </div>
+            <div class="tally-block tally-abs">
+              <div class="tally-num">0</div>
+              <div class="tally-label">Abstain</div>
+            </div>
+          </div>
+          <div class="tally-result" style="border:1px solid var(--atlantic-rule); border-left:none; border-radius:0 4px 4px 0; padding:0 18px; flex-shrink:0;">
+            <span style="font-size:18px">✗</span>
+            <span style="font-size:11px; font-weight:700; letter-spacing:1.5px; line-height:1.3;">FAILED<br>Mar. 5, 2026</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOUSE -->
+      <div class="chamber-block">
+        <div class="chamber-title">U.S. House of Representatives — H.Con.Res. 38 (Companion Bill)</div>
+        <div class="chamber-svg-wrap">
+          <svg id="house-svg" viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+        <div class="house-note">
+          The House companion measure, H.Con.Res. 38 (introduced by Rep. Thomas Massie, R-KY), has not yet received a floor vote as of March 5, 2026. House Democratic Leader Hakeem Jeffries has announced Democrats will compel a vote. Prominent member stances below reflect stated positions, not recorded votes.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- /tab-panel#sjres104 -->
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     MEMBER DETAIL PANEL (shared, populated by JS)
+═══════════════════════════════════════════════════════════════════ -->
+<aside class="member-panel" id="member-panel" role="dialog" aria-modal="true" aria-label="Member detail">
+  <button class="panel-close" onclick="closeMemberPanel()" aria-label="Close">×</button>
+  <div class="panel-portrait" id="panel-portrait-wrap">
+    <div class="portrait-fallback" id="panel-initial" style="background:#6b7280;">?</div>
+    <img id="panel-img" src="" alt="" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position:top center;">
+  </div>
+  <div class="panel-body">
+    <div class="panel-name" id="panel-name">—</div>
+    <div class="panel-meta" id="panel-meta">—</div>
+    <div id="panel-badge"></div>
+    <div class="panel-rule"></div>
+    <div class="panel-stance-label">Stance &amp; Reporting</div>
+    <div class="panel-stance" id="panel-stance">—</div>
+  </div>
+</aside>
+<div id="panel-overlay" onclick="closeMemberPanel()"
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:499;"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════════════ -->
+<script>
+/* ── DATA ───────────────────────────────────────────────────────── */
+const MEMBERS = {
+  "bernie-sanders": {
+    name: "Sen. Bernie Sanders",
+    party: "I",
+    chamber: "Senate",
+    state: "Vermont",
+    initials: "BS",
+    partyColor: "#d97706",
+    vote: "YEA",
+    img: "../images/congress/bernie-sanders.jpg",
+    stance: "Sanders was among the most vocal proponents of the resolution. A longtime opponent of unauthorized military adventurism, he has consistently argued that the President cannot unilaterally launch offensive wars without congressional approval. 'The Constitution is not a suggestion,' Sanders said in a Senate floor speech ahead of the vote. 'When we go to war, it has to be Congress that decides — not one person in the Oval Office.' He had co-sponsored similar war powers measures against U.S. involvement in Yemen."
+  },
+  "elizabeth-warren": {
+    name: "Sen. Elizabeth Warren",
+    party: "D",
+    chamber: "Senate",
+    state: "Massachusetts",
+    initials: "EW",
+    partyColor: "#2563eb",
+    vote: "YEA",
+    img: "../images/congress/elizabeth-warren.jpg",
+    stance: "Warren voted in favor of the resolution, framing her support in terms of institutional responsibility and democratic accountability. 'Congress has been ceding its war powers for decades, and each time we do, we make the next war easier to start and harder to stop,' she said. Warren has been a consistent critic of the Iran strikes, arguing that the administration lacked a clear exit strategy and had bypassed the diplomatic channels that were available."
+  },
+  "ted-cruz": {
+    name: "Sen. Ted Cruz",
+    party: "R",
+    chamber: "Senate",
+    state: "Texas",
+    initials: "TC",
+    partyColor: "#dc2626",
+    vote: "NAY",
+    img: "../images/congress/ted-cruz.jpg",
+    stance: "Cruz voted against the resolution and has been one of the most prominent Republican defenders of the Iran military campaign, arguing the strikes were legally justified under existing authorizations and essential to protecting American interests in the region. 'This is the most significant blow struck against Iranian nuclear ambition in the history of the program,' Cruz said. 'The last thing we should do is tie the president's hands at this critical moment.' He dismissed the war powers argument as a 'process objection dressed up as a constitutional concern.'"
+  },
+  "marco-rubio": {
+    name: "Sec. Marco Rubio",
+    party: "R",
+    chamber: "Senate",
+    state: "Florida",
+    initials: "MR",
+    partyColor: "#dc2626",
+    vote: "NOT_SENATOR",
+    img: "../images/congress/marco-rubio.jpg",
+    stance: "Marco Rubio vacated his Florida Senate seat in January 2025 upon confirmation as Secretary of State — the first Latino to hold that office. As Secretary of State, Rubio has been one of the architects of the Iran campaign and a direct participant in the diplomatic (and military) strategy it replaced. He was confirmed by the Senate 99–0. His former seat was filled by appointee Ashley Moody; a special election is scheduled for November 2026. Rubio's position on war powers is rendered moot by his executive branch role."
+  },
+  "chuck-schumer": {
+    name: "Sen. Chuck Schumer",
+    party: "D",
+    chamber: "Senate",
+    state: "New York",
+    initials: "CS",
+    partyColor: "#2563eb",
+    vote: "YEA",
+    img: "../images/congress/chuck-schumer.jpg",
+    stance: "Senate Minority Leader Schumer was a key organizer of the war powers vote and delivered one of the chamber's sharpest floor speeches against the Iran campaign. 'Donald Trump has launched America into a conflict with no clear objectives, no plan, and no authorization from Congress,' Schumer said. He framed the vote as a test of the Senate's independence and accused Republican colleagues of choosing 'loyalty to one man over loyalty to the Constitution.' Schumer has also pushed for classified briefings on the military operation."
+  },
+  "nancy-pelosi": {
+    name: "Rep. Nancy Pelosi",
+    party: "D",
+    chamber: "House",
+    state: "California",
+    initials: "NP",
+    partyColor: "#2563eb",
+    vote: "PENDING",
+    img: "../images/congress/nancy-pelosi.jpg",
+    stance: "Pelosi has not yet cast a vote on a House companion measure, which remains pending as of March 5, 2026. However, the former Speaker has been consistently outspoken against the Iran campaign. 'This is an unconstitutional war, started without a single vote of Congress,' she said in a statement. Pelosi was instrumental in passing previous war powers measures against Yemen and has signaled she will support H.Con.Res. 38. Her presence on the floor is seen as a signal to wavering Democrats."
+  },
+  "aoc": {
+    name: "Rep. Alexandria Ocasio-Cortez",
+    party: "D",
+    chamber: "House",
+    state: "New York",
+    initials: "AO",
+    partyColor: "#2563eb",
+    vote: "PENDING",
+    img: "../images/congress/aoc.jpg",
+    stance: "AOC has been one of the most visible House critics of the Iran strikes, using her platform to amplify public opposition and challenge both parties to act. She has committed to voting for H.Con.Res. 38 and has called the Iran campaign 'a war of choice sold to the public as a necessity.' AOC has also organized in-district town halls on the conflict and been particularly outspoken about the civilian toll of the strikes in Iran. She has repeatedly invoked the War Powers Resolution as a floor she expects Democrats to defend."
+  },
+  "marjorie-taylor-greene": {
+    name: "Rep. Marjorie Taylor Greene",
+    party: "R",
+    chamber: "House",
+    state: "Georgia",
+    initials: "MT",
+    partyColor: "#dc2626",
+    vote: "PENDING",
+    img: "../images/congress/marjorie-taylor-greene.jpg",
+    stance: "Greene has taken an unusual position among Republicans, publicly expressing skepticism about the Iran campaign while stopping short of endorsing the war powers resolution. Her 'America First' ideology conflicts with open-ended military engagements abroad. 'We were promised no more forever wars,' she posted. 'Iran is starting to look like one.' However, sources close to her office suggest she is unlikely to vote for the Democratic-led companion measure, preferring to abstain or register opposition through other means. Her stance is being closely watched by anti-interventionist conservatives."
+  },
+  "hakeem-jeffries": {
+    name: "Rep. Hakeem Jeffries",
+    party: "D",
+    chamber: "House",
+    state: "New York",
+    initials: "HJ",
+    partyColor: "#2563eb",
+    vote: "PENDING",
+    img: "../images/congress/hakeem-jeffries.jpg",
+    stance: "As House Minority Leader, Jeffries announced Democrats would use procedural rules to force a floor vote on H.Con.Res. 38 after it stalled in the Foreign Affairs Committee. 'The American people deserve a vote. The Constitution demands one,' Jeffries said at a press conference. He has worked to hold together Democratic caucus unity on the measure and reached out to Republican colleagues with concerns about the conflict's scope. Political analysts see the House vote, if it occurs, as a closer call than the Senate result due to the chamber's razor-thin Republican majority."
+  },
+  "jim-jordan": {
+    name: "Rep. Jim Jordan",
+    party: "R",
+    chamber: "House",
+    state: "Ohio",
+    initials: "JJ",
+    partyColor: "#dc2626",
+    vote: "PENDING",
+    img: "../images/congress/jim-jordan.jpg",
+    stance: "Jordan, chair of the House Judiciary Committee, is expected to oppose any House war powers resolution and has aligned himself with the administration's position that the President has full authority to conduct the Iran campaign under his Article II powers and existing AUMFs. Jordan has framed Democratic war powers efforts as obstruction rather than oversight, calling the push 'a gift to Tehran at the worst possible time.' He is also a key vote-counter for Speaker Johnson in blocking the companion bill from reaching the floor."
+  }
+};
+
+/* ── SENATE LAYOUT ─────────────────────────────────────────────── */
+// 100 senators arranged in arc rows (like US Senate chamber)
+// Composition: 53 R, 45 D, 2 I (Sanders, King — both caucus Dem)
+const SENATE_COMPOSITION = [
+  // [count, party, color]
+  [53, "R", "#dc2626"],
+  [45, "D", "#2563eb"],
+  [2,  "I", "#d97706"]
+];
+
+// Prominent member positions in the Senate arc (indices 0-99)
+// Place them visibly: we'll assign specific seat indices
+const SENATE_PROMINENT = {
+  5:  "bernie-sanders",
+  15: "elizabeth-warren",
+  60: "ted-cruz",
+  70: "marco-rubio",
+  20: "chuck-schumer"
+};
+
+/* ── HOUSE LAYOUT ──────────────────────────────────────────────── */
+// 435 members. Composition after 2024: ~220 R, 213 D, 2 other
+const HOUSE_COMPOSITION = [
+  [220, "R", "#dc2626"],
+  [213, "D", "#2563eb"],
+  [2,   "I", "#9333ea"]
+];
+const HOUSE_PROMINENT = {
+  100: "nancy-pelosi",
+  110: "aoc",
+  130: "hakeem-jeffries",
+  200: "marjorie-taylor-greene",
+  210: "jim-jordan"
+};
+
+/* ── RENDER CHAMBER ────────────────────────────────────────────── */
+function renderChamber(svgId, total, composition, prominent, viewW, viewH) {
+  const svg = document.getElementById(svgId);
+  if (!svg) return;
+
+  const cx = viewW / 2;
+  const cy = viewH - 20;
+  const dotR = total <= 100 ? 9 : 5.5;
+  const gap  = total <= 100 ? 4 : 2.5;
+  const rows = total <= 100 ? 5 : 8;
+
+  // Build colored seat array
+  const seats = [];
+  for (const [count, party, color] of composition) {
+    for (let i = 0; i < count; i++) seats.push({ party, color });
+  }
+
+  // Distribute across arc rows
+  const seatsPerRow = Math.ceil(total / rows);
+  const minR = (dotR * 2 + gap) * rows * 0.5 + 40;
+  const rowSpacing = (dotR * 2 + gap + 1);
+
+  let seatIdx = 0;
+  const positions = [];
+
+  for (let r = 0; r < rows; r++) {
+    const radius = minR + r * rowSpacing * 2.2;
+    const arcLength = Math.PI * radius;
+    const nSeats = Math.min(
+      Math.round(arcLength / (dotR * 2 + gap)),
+      seatsPerRow + r * 2
+    );
+    const actualN = Math.min(nSeats, total - seatIdx);
+    if (actualN <= 0) break;
+
+    for (let s = 0; s < actualN && seatIdx < total; s++) {
+      const angle = Math.PI + (Math.PI * s / (actualN - 1 || 1));
+      const x = cx + radius * Math.cos(angle);
+      const y = cy + radius * Math.sin(angle);
+      positions.push({ x, y, idx: seatIdx });
+      seatIdx++;
+    }
+  }
+
+  // Render
+  const ns = "http://www.w3.org/2000/svg";
+  const prominentIds = Object.values(prominent);
+
+  positions.forEach(({ x, y, idx }) => {
+    if (idx >= seats.length) return;
+    const { color } = seats[idx];
+    const memberId = prominent[idx];
+    const isProminent = !!memberId;
+
+    const g = document.createElementNS(ns, "g");
+    g.setAttribute("transform", `translate(${x.toFixed(1)},${y.toFixed(1)})`);
+
+    const circle = document.createElementNS(ns, "circle");
+    circle.setAttribute("r", dotR);
+    circle.setAttribute("fill", color);
+    circle.setAttribute("opacity", "0.85");
+
+    if (isProminent) {
+      circle.setAttribute("stroke", "#1a1a1a");
+      circle.setAttribute("stroke-width", total <= 100 ? "2.5" : "2");
+      circle.setAttribute("opacity", "1");
+      g.style.cursor = "pointer";
+      g.setAttribute("data-member", memberId);
+      g.addEventListener("click", () => showMemberDetail(memberId));
+
+      // Pulse ring
+      const pulse = document.createElementNS(ns, "circle");
+      pulse.setAttribute("r", dotR + 3);
+      pulse.setAttribute("fill", "none");
+      pulse.setAttribute("stroke", "#1a1a1a");
+      pulse.setAttribute("stroke-width", "1");
+      pulse.setAttribute("opacity", "0.4");
+      g.appendChild(pulse);
+
+      // Hover
+      g.addEventListener("mouseenter", () => {
+        circle.setAttribute("opacity", "1");
+        circle.setAttribute("r", dotR + 1.5);
+      });
+      g.addEventListener("mouseleave", () => {
+        circle.setAttribute("opacity", "1");
+        circle.setAttribute("r", dotR);
+      });
+    }
+
+    g.appendChild(circle);
+    svg.appendChild(g);
+  });
+}
+
+/* ── MEMBER DETAIL ──────────────────────────────────────────────── */
+function showMemberDetail(memberId) {
+  const m = MEMBERS[memberId];
+  if (!m) return;
+
+  document.getElementById("panel-name").textContent = m.name;
+  document.getElementById("panel-meta").textContent =
+    `${m.party === "R" ? "Republican" : m.party === "D" ? "Democrat" : "Independent"} · ${m.chamber} · ${m.state}`;
+
+  // Vote badge
+  const badgeEl = document.getElementById("panel-badge");
+  const badges = {
+    "YEA":         { cls: "badge-yea", text: "✓ Voted Yea" },
+    "NAY":         { cls: "badge-nay", text: "✗ Voted Nay" },
+    "PENDING":     { cls: "badge-na",  text: "⏳ Vote Pending" },
+    "NOT_SENATOR": { cls: "badge-ns",  text: "⚡ No Longer a Senator" }
+  };
+  const b = badges[m.vote] || badges["PENDING"];
+  badgeEl.innerHTML = `<span class="vote-badge ${b.cls}">${b.text}</span>`;
+
+  document.getElementById("panel-stance").textContent = m.stance;
+
+  // Portrait
+  const img = document.getElementById("panel-img");
+  const initial = document.getElementById("panel-initial");
+  img.style.display = "none";
+  initial.style.display = "flex";
+  initial.textContent = m.initials;
+  initial.style.background = m.partyColor;
+
+  img.onload = () => { img.style.display = "block"; initial.style.display = "none"; };
+  img.onerror = () => { img.style.display = "none"; initial.style.display = "flex"; };
+  img.src = m.img;
+  img.alt = m.name;
+
+  // Open panel
+  document.getElementById("member-panel").classList.add("open");
+  document.getElementById("panel-overlay").style.display = "block";
+  document.body.style.overflow = "hidden";
+}
+
+function closeMemberPanel() {
+  document.getElementById("member-panel").classList.remove("open");
+  document.getElementById("panel-overlay").style.display = "none";
+  document.body.style.overflow = "";
+}
+
+/* ── TAB SWITCHING ──────────────────────────────────────────────── */
+function switchTab(billId) {
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b => {
+    b.classList.remove("active");
+    b.setAttribute("aria-selected", "false");
+  });
+  const panel = document.getElementById("panel-" + billId);
+  const btn   = document.getElementById("tab-" + billId);
+  if (panel) panel.classList.add("active");
+  if (btn)   { btn.classList.add("active"); btn.setAttribute("aria-selected", "true"); }
+  closeMemberPanel();
+}
+
+/* ── INIT ────────────────────────────────────────────────────────── */
+document.addEventListener("DOMContentLoaded", () => {
+  renderChamber("senate-svg", 100, SENATE_COMPOSITION, SENATE_PROMINENT, 860, 320);
+  renderChamber("house-svg",  435, HOUSE_COMPOSITION,  HOUSE_PROMINENT,  860, 380);
+});
+
+// Close on Escape
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeMemberPanel();
+});
+</script>
+
+<!--
+═══════════════════════════════════════════════════════════════════════
+ UPDATER PROMPT
+ ───────────────────────────────────────────────────────────────────
+ Copy the prompt below into a Claude conversation to generate a new
+ bill tab. Replace all [BRACKETED] values with real data, then paste
+ Claude's output into this file:
+   1. The <button> block → inside <nav class="bill-tabs">
+   2. The <div class="tab-panel"> block → after the last tab panel
+ No other code changes are needed.
+═══════════════════════════════════════════════════════════════════════
+
+──────────────────────────────────────────
+CLAUDE UPDATER PROMPT (copy everything below this line through END)
+──────────────────────────────────────────
+
+You are generating a new bill tab for a congressional tracking dashboard.
+The HTML file uses an Atlantic magazine theme. Below is the bill data.
+Output ONLY raw HTML — no explanation, no markdown fences, no commentary.
+Output two clearly labeled sections separated by a comment.
+
+BILL DATA:
+- Bill ID (no spaces, alphanumeric, e.g. "hjres38"): [BILL_ID]
+- Display label for tab button (short, e.g. "H.J.Res. 38 — War Powers House"): [TAB_LABEL]
+- Full bill title: [FULL_TITLE]
+- Chamber where vote occurred (Senate / House / N/A): [CHAMBER]
+- Result (PASSED / FAILED / PENDING): [RESULT]
+- Vote date (e.g. "March 10, 2026"): [VOTE_DATE]
+- YEA count: [YEA]
+- NAY count: [NAY]
+- ABSTAIN count: [ABSTAIN]
+- Senate composition for this bill (Dem+Ind seats, Rep seats): [SEN_DEM] / [SEN_REP]
+- House composition for this bill (Dem seats, Rep seats): [HOUSE_DEM] / [HOUSE_REP]
+
+POLL DATA (for gauge):
+- Poll question topic (what does 100% = oppose?): [POLL_TOPIC]
+- Disapprove / oppose percentage (0–100): [DISAPPROVE_PCT]
+- Approve / support percentage: [APPROVE_PCT]
+- Poll source + date: [POLL_SOURCE]
+
+ARTICLE TEXT (400 words, you may use this verbatim):
+[PASTE_400_WORD_ARTICLE_HERE]
+
+MEMBER DATA (repeat for all 10):
+Member 1:
+  - id (slug, e.g. "bernie-sanders"): [ID]
+  - Full display name (e.g. "Sen. Bernie Sanders"): [NAME]
+  - Party (D/R/I): [PARTY]
+  - Chamber (Senate/House): [CHAMBER]
+  - State: [STATE]
+  - Initials (2 chars): [INITIALS]
+  - Vote (YEA / NAY / PENDING / NOT_SENATOR / ABSTAIN): [VOTE]
+  - Stance (2–4 sentence paragraph): [STANCE]
+
+[REPEAT FOR MEMBERS 2–10]
+
+PROMINENT MEMBER SEAT POSITIONS:
+For Senate SVG (100 seats, indices 0–99), assign these 5 Senate members to seat indices:
+  [MEMBER_SLUG]: [SEAT_INDEX]  (pick visible positions, spread across the arc)
+
+For House SVG (435 seats, indices 0–434), assign these 5 House members to seat indices:
+  [MEMBER_SLUG]: [SEAT_INDEX]
+
+─── OUTPUT FORMAT ───────────────────────────────────────────────────
+
+Output this exact structure:
+
+<!-- ═══ TAB BUTTON — paste inside <nav class="bill-tabs"> ═══ -->
+<button class="tab-btn" onclick="switchTab('[BILL_ID]')" id="tab-[BILL_ID]" role="tab" aria-selected="false">
+  [TAB_LABEL]
+</button>
+
+<!-- ═══ TAB PANEL — paste after last </div><!-- /tab-panel --> ═══ -->
+<div class="tab-panel" id="panel-[BILL_ID]" role="tabpanel">
+
+  <!-- ARTICLE HERO -->
+  <div class="article-hero">
+    <div class="section-label">Politics · [SECTION]</div>
+    <h1>[HEADLINE]</h1>
+    <p class="article-dek">[DEK]</p>
+    <div class="byline-block">
+      <strong>Troy W. Ferguson</strong>
+      <div class="dateline">[DATE] · Data Journalism</div>
+    </div>
+    <div class="hero-rule"></div>
+  </div>
+
+  <!-- ARTICLE BODY -->
+  <div class="article-body">
+    [400_WORD_ARTICLE_AS_<p>_TAGS — first <p> gets class="lede"]
+    [INCLUDE ONE <div class="pullquote"> block with a relevant quote]
+  </div>
+
+  <div class="article-divider"><hr></div>
+
+  <!-- GRAPHIC 1: GAUGE -->
+  <section class="graphic-section">
+    <div class="graphic-label">Graphic 1 · Static</div>
+    <div class="graphic-title">[GAUGE_TITLE]</div>
+    <div class="graphic-sub">[GAUGE_SUB]</div>
+    <div class="gauge-wrap">
+      [REPRODUCE gauge SVG from bill 1, updating the needle path endpoint and center label]
+      [Needle endpoint formula: angle = 180 * DISAPPROVE_PCT/100 degrees from left]
+      [Arc endpoint: x = 230 + 180*cos(180° - angle_deg), y = 230 - 180*sin(angle_deg)]
+      [Center text: DISAPPROVE_PCT% / DISAPPROVE label]
+      <div class="gauge-legend">
+        <span><span class="legend-dot" style="background:#16a34a"></span>[APPROVE_PCT]% [APPROVE_LABEL]</span>
+        <span><span class="legend-dot" style="background:#dc2626"></span>[DISAPPROVE_PCT]% [DISAPPROVE_LABEL]</span>
+      </div>
+      <div class="gauge-source">[POLL_SOURCE]</div>
+    </div>
+  </section>
+
+  <!-- GRAPHIC 2: CONGRESS VIZ -->
+  <section class="graphic-section">
+    <div class="graphic-label">Graphic 2 · Interactive — Click the outlined circles</div>
+    <div class="graphic-title">The Chambers That Decided</div>
+    <div class="graphic-sub">[UPDATE for this bill — note if vote was in Senate or House]</div>
+    [REPRODUCE dot-legend, congress-viz-wrap, chamber blocks from bill 1]
+    [UPDATE vote tally numbers: YEA=[YEA], NAY=[NAY], ABSTAIN=[ABSTAIN]]
+    [UPDATE tally-result class: "tally-result passed" if PASSED, "tally-result" if FAILED]
+    [UPDATE result icon: ✓ if PASSED, ✗ if FAILED]
+    [UPDATE house-note if applicable]
+  </section>
+
+  <!-- BILL-SCOPED MEMBER + CHAMBER DATA -->
+  <script>
+    // Register new members (only new/changed ones needed)
+    Object.assign(MEMBERS, {
+      "[ID1]": { name:"[NAME]", party:"[P]", chamber:"[C]", state:"[S]", initials:"[IN]", partyColor:"[COLOR]", vote:"[V]", img:"../images/congress/[ID1].jpg", stance:"[STANCE]" },
+      // ... repeat for all 10
+    });
+
+    // Render chambers for this bill
+    const SENATE_PROMINENT_[BILL_ID_UPPER] = { [SEAT]: "[SLUG]", ... };
+    const HOUSE_PROMINENT_[BILL_ID_UPPER]  = { [SEAT]: "[SLUG]", ... };
+    const SENATE_COMP_[BILL_ID_UPPER] = [[SEN_REP],"R","#dc2626"], [[SEN_DEM],"D","#2563eb"], [2,"I","#d97706"]];
+    const HOUSE_COMP_[BILL_ID_UPPER]  = [[[HOUSE_REP],"R","#dc2626"], [[HOUSE_DEM],"D","#2563eb"]];
+
+    // IDs for SVGs in this panel must be unique, e.g. "senate-svg-[BILL_ID]"
+    document.addEventListener("DOMContentLoaded", () => {
+      renderChamber("senate-svg-[BILL_ID]", 100, SENATE_COMP_[BILL_ID_UPPER], SENATE_PROMINENT_[BILL_ID_UPPER], 860, 320);
+      renderChamber("house-svg-[BILL_ID]",  435, HOUSE_COMP_[BILL_ID_UPPER],  HOUSE_PROMINENT_[BILL_ID_UPPER],  860, 380);
+    }, { once: true });
+  </script>
+
+</div><!-- /tab-panel#[BILL_ID] -->
+
+──────────────────────────────────────────
+END OF UPDATER PROMPT
+──────────────────────────────────────────
+-->
+
+</body>
+</html>
