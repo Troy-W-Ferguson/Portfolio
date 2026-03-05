@@ -607,7 +607,7 @@ body {
   <section class="graphic-section">
     <div class="graphic-label">Graphic 2 · Interactive — Click the outlined circles</div>
     <div class="graphic-title">The Chambers That Decided</div>
-    <div class="graphic-sub">Each circle represents one member of Congress, colored by party affiliation. Bold-outlined circles are the 10 most prominent figures — click to reveal their vote and stance.</div>
+    <div class="graphic-sub">Each circle represents one member of Congress, colored by party affiliation. Bold-outlined circles are 16 prominent figures — click to reveal their vote and stance.</div>
 
     <div class="dot-legend">
       <span><span class="swatch" style="background:var(--party-dem)"></span>Democrat</span>
@@ -622,7 +622,7 @@ body {
       <div class="chamber-block">
         <div class="chamber-title">U.S. Senate — Final Vote on S.J.Res. 104</div>
         <div class="chamber-svg-wrap">
-          <svg id="senate-svg" viewBox="0 0 860 320" xmlns="http://www.w3.org/2000/svg"></svg>
+          <svg id="senate-svg" viewBox="0 0 860 370" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
 
         <!-- Vote tally -->
@@ -691,6 +691,7 @@ body {
 <script>
 /* ── DATA ───────────────────────────────────────────────────────── */
 const MEMBERS = {
+  // ── SENATE ───────────────────────────────────────────────────
   "bernie-sanders": {
     name: "Sen. Bernie Sanders",
     party: "I",
@@ -746,6 +747,40 @@ const MEMBERS = {
     img: "../images/congress/chuck-schumer.jpg",
     stance: "Senate Minority Leader Schumer was a key organizer of the war powers vote and delivered one of the chamber's sharpest floor speeches against the Iran campaign. 'Donald Trump has launched America into a conflict with no clear objectives, no plan, and no authorization from Congress,' Schumer said. He framed the vote as a test of the Senate's independence and accused Republican colleagues of choosing 'loyalty to one man over loyalty to the Constitution.' Schumer has also pushed for classified briefings on the military operation."
   },
+  "rand-paul": {
+    name: "Sen. Rand Paul",
+    party: "R",
+    chamber: "Senate",
+    state: "Kentucky",
+    initials: "RP",
+    partyColor: "#dc2626",
+    vote: "YEA",
+    img: "../images/congress/rand-paul.jpg",
+    stance: "Rand Paul was the only Republican senator to vote in favor of S.J.Res. 104, which he co-sponsored alongside Sen. Tim Kaine. A committed libertarian-constitutionalist, Paul has been one of the most consistent voices against executive war-making regardless of which party holds the White House. 'There is nothing in the Constitution that gives the president the authority to unilaterally take this nation to war,' he said on the Senate floor. Paul has forced similar war powers votes on Yemen, Somalia, and Syria, each time drawing fire from hawks in his own party."
+  },
+  "tim-kaine": {
+    name: "Sen. Tim Kaine",
+    party: "D",
+    chamber: "Senate",
+    state: "Virginia",
+    initials: "TK",
+    partyColor: "#2563eb",
+    vote: "YEA",
+    img: "../images/congress/tim-kaine.jpg",
+    stance: "Kaine co-introduced S.J.Res. 104 with Rand Paul and has been the primary Democratic champion for reasserting congressional war authority. 'If you don't have the guts to vote yes or no on a war vote, how dare you send our sons and daughters into war where they risk their lives,' he told reporters. This was Kaine's second attempt to force a war powers vote on Iran, following a similar failed effort in June 2025 after the first round of U.S. strikes on Iranian nuclear sites. He has pledged to keep forcing votes as the conflict develops."
+  },
+  "john-fetterman": {
+    name: "Sen. John Fetterman",
+    party: "D",
+    chamber: "Senate",
+    state: "Pennsylvania",
+    initials: "JF",
+    partyColor: "#2563eb",
+    vote: "NAY",
+    img: "../images/congress/john-fetterman.jpg",
+    stance: "Fetterman was the only Democrat to vote against S.J.Res. 104, defecting from his entire caucus to side with Senate Republicans. He made his position clear before the vote: 'Yes, I'm the only Democrat who supports the strikes, because I'm not afraid of my base to just say, you know what? This was overall a good thing.' Fetterman argued the Iran operation successfully degraded the country's nuclear weapons program and that halting it mid-campaign would embolden adversaries. It was his third vote against a Democratic-sponsored war powers resolution since Trump took office."
+  },
+  // ── HOUSE ────────────────────────────────────────────────────
   "nancy-pelosi": {
     name: "Rep. Nancy Pelosi",
     party: "D",
@@ -800,6 +835,39 @@ const MEMBERS = {
     vote: "PENDING",
     img: "../images/congress/jim-jordan.jpg",
     stance: "Jordan, chair of the House Judiciary Committee, is expected to oppose any House war powers resolution and has aligned himself with the administration's position that the President has full authority to conduct the Iran campaign under his Article II powers and existing AUMFs. Jordan has framed Democratic war powers efforts as obstruction rather than oversight, calling the push 'a gift to Tehran at the worst possible time.' He is also a key vote-counter for Speaker Johnson in blocking the companion bill from reaching the floor."
+  },
+  "thomas-massie": {
+    name: "Rep. Thomas Massie",
+    party: "R",
+    chamber: "House",
+    state: "Kentucky",
+    initials: "TM",
+    partyColor: "#dc2626",
+    vote: "PENDING",
+    img: "../images/congress/thomas-massie.jpg",
+    stance: "Massie introduced H.Con.Res. 38 alongside Rep. Ro Khanna, making him the primary Republican champion for the House war powers effort. An arch-libertarian and one of the most constitutionalist members of the House GOP, Massie declared: 'I am opposed to this war. This is not America First.' He argued that Congress must go on record — setting objectives and a definition of victory before any more American servicemembers are put at risk. His bipartisan coalition on the resolution drew predictable attacks from pro-war conservatives, who labeled it 'siding with the far left.'"
+  },
+  "ilhan-omar": {
+    name: "Rep. Ilhan Omar",
+    party: "D",
+    chamber: "House",
+    state: "Minnesota",
+    initials: "IO",
+    partyColor: "#2563eb",
+    vote: "PENDING",
+    img: "../images/congress/ilhan-omar.jpg",
+    stance: "Omar spoke on the House floor in support of H.Con.Res. 38 and has been one of the most forceful progressive voices against the Iran campaign. 'President Trump is unilaterally dragging this nation into an illegal and unjustified war with Iran without congressional authorization, without a clear objective, and without any imminent threat to the United States,' she said. Omar called the operation 'a reckless abuse of power that puts both innocent civilians and American lives on the line for a conflict the American people do not want.' She co-sponsored the resolution and has organized constituent outreach in Minnesota's large Somali-American and East African diaspora communities."
+  },
+  "mike-johnson": {
+    name: "Rep. Mike Johnson",
+    party: "R",
+    chamber: "House",
+    state: "Louisiana",
+    initials: "MJ",
+    partyColor: "#dc2626",
+    vote: "PENDING",
+    img: "../images/congress/mike-johnson.jpg",
+    stance: "Speaker Johnson has been the primary institutional obstacle to H.Con.Res. 38 reaching the House floor. He has expressed confidence that Republicans will defeat the war powers resolution if forced to a vote, warning that passage 'would be a terrible, dangerous idea — it would empower our enemies and kneecap our own forces.' Johnson has used his scheduling authority to bottle up the Massie-Khanna measure in the Foreign Affairs Committee. Democrats, led by Jeffries, are attempting to use a discharge petition to bypass him. The Speaker's razor-thin majority means even a handful of Republican defections could defeat him."
   }
 };
 
@@ -813,14 +881,22 @@ const SENATE_COMPOSITION = [
   [2,  "I", "#d97706"]
 ];
 
-// Prominent member positions in the Senate arc (indices 0-99)
-// Place them visibly: we'll assign specific seat indices
+// Seat indices must match party slot in composition array:
+//   Seats   0– 52 → Republican  (red)
+//   Seats  53– 97 → Democrat    (blue)
+//   Seats  98– 99 → Independent (amber)
 const SENATE_PROMINENT = {
-  5:  "bernie-sanders",
-  15: "elizabeth-warren",
-  60: "ted-cruz",
-  70: "marco-rubio",
-  20: "chuck-schumer"
+  // ── Republicans (0-52) ──
+  5:  "ted-cruz",
+  18: "marco-rubio",
+  32: "rand-paul",
+  // ── Democrats (53-97) ──
+  56: "elizabeth-warren",
+  65: "chuck-schumer",
+  74: "tim-kaine",
+  83: "john-fetterman",
+  // ── Independent (98-99) ──
+  98: "bernie-sanders"
 };
 
 /* ── HOUSE LAYOUT ──────────────────────────────────────────────── */
@@ -830,12 +906,21 @@ const HOUSE_COMPOSITION = [
   [213, "D", "#2563eb"],
   [2,   "I", "#9333ea"]
 ];
+// Seat indices must match party slot:
+//   Seats   0–219 → Republican  (red)
+//   Seats 220–432 → Democrat    (blue)
+//   Seats 433–434 → Other       (purple)
 const HOUSE_PROMINENT = {
-  100: "nancy-pelosi",
-  110: "aoc",
-  130: "hakeem-jeffries",
-  200: "marjorie-taylor-greene",
-  210: "jim-jordan"
+  // ── Republicans (0-219) ──
+  20:  "jim-jordan",
+  45:  "marjorie-taylor-greene",
+  75:  "thomas-massie",
+  105: "mike-johnson",
+  // ── Democrats (220-432) ──
+  228: "nancy-pelosi",
+  248: "aoc",
+  268: "hakeem-jeffries",
+  288: "ilhan-omar"
 };
 
 /* ── RENDER CHAMBER ────────────────────────────────────────────── */
@@ -996,7 +1081,7 @@ function switchTab(billId) {
 
 /* ── INIT ────────────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", () => {
-  renderChamber("senate-svg", 100, SENATE_COMPOSITION, SENATE_PROMINENT, 860, 320);
+  renderChamber("senate-svg", 100, SENATE_COMPOSITION, SENATE_PROMINENT, 860, 370);
   renderChamber("house-svg",  435, HOUSE_COMPOSITION,  HOUSE_PROMINENT,  860, 380);
 });
 
