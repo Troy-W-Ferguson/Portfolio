@@ -15,7 +15,7 @@ import anthropic
 # ── Config ────────────────────────────────────────────────────────────────────
 HTML_FILE = "dashboards/iran-israel-conflict-dashboards.html"
 MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 8000
+MAX_TOKENS = 16000
 PANEL_START_MARKER = '<div class="panel" id="panel-epicfury">'
 PANEL_END_MARKER   = "</div><!-- /panel-epicfury -->"
 TIMELINE_INSERT_MARKER = "<!-- ── PLACEHOLDER — keep for next update ── -->"
