@@ -450,6 +450,36 @@ body {
   flex-shrink: 0;
 }
 
+/* ── PARTY / VOTE VIEW TOGGLE ─────────────────────────────────────
+   Pill button pair above the Senate SVG. "Party" is the default
+   and shows D/R/I affiliation colors. "Vote" switches to YEA=green
+   (full opacity) and NAY=red (faded to 0.35 — Option D), so YEA
+   senators visually pop while NAY senators recede.                */
+.view-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+.toggle-opt {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border: 1px solid var(--atlantic-rule);
+  background: none;
+  color: var(--atlantic-light);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+/* Left pill */
+.toggle-opt:first-child { border-radius: 4px 0 0 4px; border-right: none; }
+/* Right pill */
+.toggle-opt:last-child  { border-radius: 0 4px 4px 0; }
+/* Active pill — fills with Atlantic red */
+.toggle-opt.active { background: var(--atlantic-red); color: #fff; border-color: var(--atlantic-red); }
+
 /* ── ARTICLE DIVIDER ──────────────────────────────────────────────── */
 .article-divider {
   max-width: 660px;
@@ -619,10 +649,20 @@ body {
     <div class="graphic-title">The Chambers That Decided</div>
     <div class="graphic-sub">Each circle represents one member of Congress, colored by party affiliation. Bold-outlined circles are 16 prominent figures — click to reveal their vote and stance.</div>
 
-    <div class="dot-legend">
+    <!-- PARTY LEGEND — visible by default; swaps out when Vote view is active -->
+    <div class="dot-legend" id="legend-party">
       <span><span class="swatch" style="background:var(--party-dem)"></span>Democrat</span>
       <span><span class="swatch" style="background:var(--party-rep)"></span>Republican</span>
       <span><span class="swatch" style="background:var(--party-ind)"></span>Independent</span>
+      <span><span class="swatch-clickable"></span>Clickable — Prominent member</span>
+    </div>
+
+    <!-- VOTE LEGEND — hidden until the "Vote" pill is clicked;
+         YEA=solid green, NAY=faded red (Option D), vacant seat=gray -->
+    <div class="dot-legend" id="legend-vote" style="display:none">
+      <span><span class="swatch" style="background:#16a34a"></span>Voted Yea</span>
+      <span><span class="swatch" style="background:#dc2626; opacity:.35; display:inline-block"></span>Voted Nay (faded)</span>
+      <span><span class="swatch" style="background:#6b7280; opacity:.5; display:inline-block"></span>Seat vacant / Not voting</span>
       <span><span class="swatch-clickable"></span>Clickable — Prominent member</span>
     </div>
 
@@ -631,6 +671,15 @@ body {
       <!-- SENATE -->
       <div class="chamber-block">
         <div class="chamber-title">U.S. Senate — Final Vote on S.J.Res. 104</div>
+
+        <!-- VIEW TOGGLE PILL — switches dot colors between party affiliation and vote outcome.
+             Only the Senate held a recorded vote on S.J.Res. 104, so this control
+             does not appear above the House visualization below.                    -->
+        <div class="view-toggle">
+          <button class="toggle-opt active" id="toggle-party" onclick="setSenateView('party')">Party</button>
+          <button class="toggle-opt"        id="toggle-vote"  onclick="setSenateView('vote')">Vote</button>
+        </div>
+
         <div class="chamber-svg-wrap">
           <svg id="senate-svg" viewBox="0 0 860 370" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
@@ -909,6 +958,25 @@ const SENATE_PROMINENT = {
   98: "bernie-sanders"
 };
 
+/* ── SENATE SEAT VOTES ──────────────────────────────────────────────
+   Maps each of the 100 senate seat indices to a vote outcome string.
+   Default is party-line: R (seats 0–52) → NAY, D (53–97) → YEA,
+   I (98–99) → YEA. Two crossovers are then applied:
+     Seat 32 = Rand Paul (R) voted YEA — co-sponsor of the resolution
+     Seat 83 = John Fetterman (D) voted NAY — crossed party line
+   Seat 18 = Marco Rubio (R) — seat vacated when he became Sec. of State;
+             shown as gray/faded in vote view.
+   This array is consumed by renderChamber() and read by setSenateView()
+   to drive the Party ↔ Vote color toggle.                             */
+const SENATE_SEAT_VOTES = Array.from({ length: 100 }, (_, i) => {
+  if (i <= 52) return "NAY";   // Republican default
+  if (i <= 97) return "YEA";   // Democrat default
+  return "YEA";                // Independent default (Sanders, King)
+});
+SENATE_SEAT_VOTES[32] = "YEA";         // Rand Paul (R) — co-sponsor, voted YEA
+SENATE_SEAT_VOTES[83] = "NAY";         // John Fetterman (D) — crossed party line, voted NAY
+SENATE_SEAT_VOTES[18] = "NOT_SENATOR"; // Marco Rubio — vacated seat (now Sec. of State)
+
 /* ── HOUSE LAYOUT ──────────────────────────────────────────────── */
 // 435 members. Composition after 2024: ~220 R, 213 D, 2 other
 const HOUSE_COMPOSITION = [
@@ -934,7 +1002,7 @@ const HOUSE_PROMINENT = {
 };
 
 /* ── RENDER CHAMBER ────────────────────────────────────────────── */
-function renderChamber(svgId, total, composition, prominent, viewW, viewH) {
+function renderChamber(svgId, total, composition, prominent, viewW, viewH, seatVotes = null) {
   const svg = document.getElementById(svgId);
   if (!svg) return;
 
@@ -1018,13 +1086,80 @@ function renderChamber(svgId, total, composition, prominent, viewW, viewH) {
         circle.setAttribute("r", dotR + 1.5);
       });
       g.addEventListener("mouseleave", () => {
-        circle.setAttribute("opacity", "1");
+        // In vote view, NAY senators restore to faded opacity rather than full
+        if (senateViewMode === "vote" && g.dataset.vote === "NAY") {
+          circle.setAttribute("opacity", "0.35");
+        } else {
+          circle.setAttribute("opacity", "1");
+        }
         circle.setAttribute("r", dotR);
       });
     }
 
+    // Store party color as a data attribute so setSenateView() can restore it
+    g.dataset.partyColor = color;
+
+    // Store vote outcome color if a seatVotes array was passed (Senate only).
+    // setSenateView() reads these when switching to Vote view.
+    if (seatVotes) {
+      const voteType = seatVotes[idx] || "YEA";
+      g.dataset.vote      = voteType;
+      g.dataset.voteColor = voteType === "YEA"         ? "#16a34a"  // green
+                          : voteType === "NAY"         ? "#dc2626"  // red (faded in view)
+                          : "#6b7280";                              // gray (NOT_SENATOR)
+    }
+
     g.appendChild(circle);
     svg.appendChild(g);
+  });
+}
+
+/* ── PARTY / VOTE VIEW TOGGLE ───────────────────────────────────────
+   Switches the Senate dot colors between two modes:
+   • "party" — fill = party affiliation color (D/R/I), default opacity
+   • "vote"  — fill = vote outcome color; YEA senators at full opacity,
+               NAY senators faded to 0.35 (Option D) so the 47 YEA
+               dots visually pop against the receding 53 NAY dots.
+   The current mode is tracked in senateViewMode so the mouseleave
+   handler in renderChamber() can restore the correct opacity.        */
+let senateViewMode = "party"; // global — read by renderChamber mouseleave
+
+function setSenateView(mode) {
+  senateViewMode = mode;
+
+  // Swap active state on the pill buttons
+  document.getElementById("toggle-party").classList.toggle("active", mode === "party");
+  document.getElementById("toggle-vote").classList.toggle("active", mode === "vote");
+
+  // Swap the legend block beneath the graphic title
+  document.getElementById("legend-party").style.display = mode === "party" ? "" : "none";
+  document.getElementById("legend-vote").style.display  = mode === "vote"  ? "" : "none";
+
+  // Recolor every senate circle group using stored data attributes
+  document.querySelectorAll("#senate-svg > g").forEach(g => {
+    // First <circle> child is the filled dot; additional circles are pulse rings
+    const circle      = g.querySelector("circle");
+    const isProminent = g.hasAttribute("data-member");
+    const baseOpacity = isProminent ? "1" : "0.85"; // default party-view opacity
+
+    if (mode === "party") {
+      // Restore party affiliation color and normal opacity
+      circle.setAttribute("fill",    g.dataset.partyColor);
+      circle.setAttribute("opacity", baseOpacity);
+    } else {
+      // Apply vote outcome color
+      circle.setAttribute("fill", g.dataset.voteColor);
+      // Option D: NAY senators fade so YEA senators pop;
+      // vacated seats (NOT_SENATOR) are gray and very faded
+      if (g.dataset.vote === "NAY") {
+        circle.setAttribute("opacity", "0.35");
+      } else if (g.dataset.vote === "NOT_SENATOR") {
+        circle.setAttribute("opacity", "0.4");
+      } else {
+        // YEA — full opacity so they stand out against the faded NAY backdrop
+        circle.setAttribute("opacity", isProminent ? "1" : "0.9");
+      }
+    }
   });
 }
 
@@ -1091,7 +1226,9 @@ function switchTab(billId) {
 
 /* ── INIT ────────────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", () => {
-  renderChamber("senate-svg", 100, SENATE_COMPOSITION, SENATE_PROMINENT, 860, 370);
+  // Pass SENATE_SEAT_VOTES so each dot gets data-vote/data-vote-color attributes
+  // for the Party ↔ Vote toggle. House omits seatVotes — no recorded vote yet.
+  renderChamber("senate-svg", 100, SENATE_COMPOSITION, SENATE_PROMINENT, 860, 370, SENATE_SEAT_VOTES);
   renderChamber("house-svg",  435, HOUSE_COMPOSITION,  HOUSE_PROMINENT,  860, 380);
 });
 
