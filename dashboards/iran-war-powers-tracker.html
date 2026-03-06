@@ -310,13 +310,26 @@ body {
   text-transform: uppercase;
   color: var(--atlantic-light);
 }
+/* Tally row — flex wrapper that pairs the tally board with the result badge */
+.tally-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-top: 20px;
+}
+/* The tally board fills remaining space */
+.vote-tally { flex: 1; }
 .tally-result {
   font-family: 'Source Sans 3', sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  padding: 8px 20px;
+  padding: 0 18px;
+  border: 1px solid var(--atlantic-rule);
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -324,6 +337,8 @@ body {
   background: #fef2f2;
 }
 .tally-result.passed { color: var(--vote-yea); background: #f0fdf4; }
+.tally-result-icon { font-size: 18px; }
+.tally-result-text { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; line-height: 1.3; }
 .house-note {
   font-family: 'Source Sans 3', sans-serif;
   font-size: 12px;
@@ -578,11 +593,109 @@ body {
 }
 
 /* ── RESPONSIVE ───────────────────────────────────────────────────── */
+
+/* ── ≤ 768 px (tablet / large phone landscape) ──────────────────── */
+@media (max-width: 768px) {
+  .article-hero { padding: 48px 20px 28px; }
+  .article-dek  { font-size: 18px; }
+  .graphic-section { padding: 0 20px; }
+}
+
+/* ── ≤ 640 px (phone portrait) ──────────────────────────────────── */
 @media (max-width: 640px) {
-  .tally-num { font-size: 36px; }
-  .bill-tabs { padding: 0 12px; }
-  .tab-btn { padding: 12px 14px 9px; font-size: 10px; }
+  /* Typography scale-down */
+  body { font-size: 16px; }
+
+  /* Masthead shrinks so the sticky stack is shorter */
+  .masthead       { font-size: 15px; letter-spacing: 3px; padding: 12px 16px; }
+  .masthead-sub   { font-size: 9px;  letter-spacing: 1.5px; }
+
+  /* Recalculated sticky offset: banner ≈ 35px + masthead ≈ 52px = 87px */
+  .bill-tabs-wrap { top: 87px; }
+
+  /* Tab bar tighter */
+  .bill-tabs  { padding: 0 10px; }
+  .tab-btn    { padding: 11px 12px 9px; font-size: 10px; letter-spacing: 1px; }
+
+  /* Hero */
+  .article-hero { padding: 32px 16px 22px; }
+  .article-dek  { font-size: 17px; line-height: 1.5; }
+
+  /* Body copy */
+  .article-body { padding: 22px 16px 12px; }
+  /* Drop cap at narrow widths can clip; scale it down */
+  .article-body p.lede::first-letter {
+    font-size: 4.2em;
+    line-height: 0.82;
+    padding-right: 8px;
+    padding-top: 4px;
+  }
+  .pullquote {
+    font-size: 17px;
+    margin: 24px 0;
+    padding: 6px 0 6px 16px;
+  }
+
+  /* Graphics */
+  .graphic-section  { padding: 0 16px; }
+  .graphic-title    { font-size: 18px; }
+  .graphic-sub      { font-size: 12px; }
+  .article-divider  { padding: 0 16px; }
+
+  /* Chamber labels */
+  .chamber-title { font-size: 10px; letter-spacing: 1.5px; }
+
+  /* Tally board */
+  .tally-num   { font-size: 36px; }
+  .tally-block { padding: 14px 8px; }
+  .tally-result { padding: 0 12px; }
+  .tally-result-icon { font-size: 16px; }
+
+  /* Dot legend */
+  .dot-legend { gap: 10px; font-size: 11px; }
+
+  /* Member detail panel — full-width on phones */
   .member-panel { width: 100vw; }
+
+  /* Member vote grid already stacks to 1 column via its own query */
+}
+
+/* ── ≤ 420 px (small phones, SE, Galaxy A-series) ───────────────── */
+@media (max-width: 420px) {
+  .masthead     { font-size: 13px; letter-spacing: 2px; padding: 10px 12px; }
+  .masthead-sub { font-size: 8px;  letter-spacing: 1px; }
+
+  /* Recalculated sticky offset: banner ≈ 31px + masthead ≈ 45px = 76px */
+  .bill-tabs-wrap { top: 76px; }
+
+  .tab-btn { font-size: 9px; padding: 10px 10px 8px; letter-spacing: .8px; }
+
+  .tally-num    { font-size: 28px; }
+  .tally-block  { padding: 10px 5px; }
+  .tally-label  { font-size: 8px; letter-spacing: 1.5px; }
+  /* On very small screens, stack result badge below the numbers */
+  .tally-row    { flex-wrap: wrap; }
+  .vote-tally   { width: 100%; }
+  .tally-result {
+    width: 100%;
+    border: 1px solid var(--atlantic-rule);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    padding: 8px 16px;
+    justify-content: center;
+  }
+
+  /* Tighter article spacing */
+  .article-body { padding: 18px 14px 10px; }
+  .graphic-section { padding: 0 14px; }
+  .pullquote { font-size: 15px; padding: 6px 0 6px 12px; }
+
+  /* Drop cap — prevent overflow at ~320px */
+  .article-body p.lede::first-letter { font-size: 3.6em; }
+
+  /* MVG grid rows: keep badge on its own line if name is long */
+  .mvg-item { flex-wrap: wrap; gap: 8px; }
+  .mvg-name { min-width: 0; }
 }
 </style>
 </head>
@@ -770,8 +883,8 @@ body {
         </div>
 
         <!-- Vote tally -->
-        <div style="display:flex; align-items:stretch; gap:0; margin-top:20px;">
-          <div class="vote-tally" style="flex:1">
+        <div class="tally-row">
+          <div class="vote-tally">
             <div class="tally-block tally-yea">
               <div class="tally-num">47</div>
               <div class="tally-label">Yea</div>
@@ -785,9 +898,9 @@ body {
               <div class="tally-label">Abstain</div>
             </div>
           </div>
-          <div class="tally-result" style="border:1px solid var(--atlantic-rule); border-left:none; border-radius:0 4px 4px 0; padding:0 18px; flex-shrink:0;">
-            <span style="font-size:18px">✗</span>
-            <span style="font-size:11px; font-weight:700; letter-spacing:1.5px; line-height:1.3;">FAILED<br>Mar. 5, 2026</span>
+          <div class="tally-result">
+            <span class="tally-result-icon">✗</span>
+            <span class="tally-result-text">FAILED<br>Mar. 5, 2026</span>
           </div>
         </div>
       </div>
@@ -800,8 +913,8 @@ body {
         </div>
 
         <!-- House vote tally — Roll Call 85, March 5, 2026 -->
-        <div style="display:flex; align-items:stretch; gap:0; margin-top:20px;">
-          <div class="vote-tally" style="flex:1">
+        <div class="tally-row">
+          <div class="vote-tally">
             <div class="tally-block tally-yea">
               <div class="tally-num">212</div>
               <div class="tally-label">Yea</div>
@@ -816,9 +929,9 @@ body {
               <div class="tally-label">Not Voting</div>
             </div>
           </div>
-          <div class="tally-result" style="border:1px solid var(--atlantic-rule); border-left:none; border-radius:0 4px 4px 0; padding:0 18px; flex-shrink:0;">
-            <span style="font-size:18px">✗</span>
-            <span style="font-size:11px; font-weight:700; letter-spacing:1.5px; line-height:1.3;">FAILED<br>Mar. 5, 2026</span>
+          <div class="tally-result">
+            <span class="tally-result-icon">✗</span>
+            <span class="tally-result-text">FAILED<br>Mar. 5, 2026</span>
           </div>
         </div>
         <!-- Roll call citation -->
