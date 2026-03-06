@@ -480,6 +480,90 @@ body {
 /* Active pill — fills with Atlantic red */
 .toggle-opt.active { background: var(--atlantic-red); color: #fff; border-color: var(--atlantic-red); }
 
+/* ── PROMINENT MEMBER VOTE GRID ────────────────────────────────────
+   Two-column grid below both SVGs listing every prominent member
+   and their recorded vote. Senate on the left, House on the right.  */
+.mvg-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 32px;
+  border-top: 2px solid var(--atlantic-black);
+  padding-top: 20px;
+}
+/* Full-width label above both columns */
+.mvg-label {
+  grid-column: 1 / -1;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--atlantic-light);
+  margin-bottom: 4px;
+}
+.mvg-chamber-title {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--atlantic-black);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--atlantic-rule);
+  margin-bottom: 6px;
+}
+/* Each member row */
+.mvg-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--atlantic-rule);
+}
+.mvg-item:last-child { border-bottom: none; }
+/* Colored initial circle matching panel portrait */
+.mvg-initial {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 10px; font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+.mvg-name {
+  flex: 1;
+  font-family: 'Source Serif 4', serif;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--atlantic-text);
+}
+.mvg-state {
+  display: block;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 10px;
+  color: var(--atlantic-light);
+  letter-spacing: .5px;
+}
+/* Compact vote badge variant for the grid */
+.mvg-badge {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.mvg-badge.yea  { background: #dcfce7; color: #166534; }
+.mvg-badge.nay  { background: #fee2e2; color: #991b1b; }
+.mvg-badge.gone { background: #fef3c7; color: #92400e; }
+@media (max-width: 600px) {
+  .mvg-wrap { grid-template-columns: 1fr; }
+}
+
 /* ── ARTICLE DIVIDER ──────────────────────────────────────────────── */
 .article-divider {
   max-width: 660px;
@@ -647,7 +731,7 @@ body {
   <section class="graphic-section">
     <div class="graphic-label">Graphic 2 · Interactive — Click the outlined circles</div>
     <div class="graphic-title">The Chambers That Decided</div>
-    <div class="graphic-sub">Each circle represents one member of Congress, colored by party affiliation. Bold-outlined circles are 16 prominent figures — click to reveal their vote and stance.</div>
+    <div class="graphic-sub">Each circle represents one member of Congress, colored by party affiliation. Toggle to <strong>Vote</strong> to see how each chamber voted — YEA in green, NAY faded. Bold-outlined circles are 16 prominent figures; click any to reveal their vote and stance.</div>
 
     <!-- PARTY LEGEND — visible by default; swaps out when Vote view is active -->
     <div class="dot-legend" id="legend-party">
@@ -666,19 +750,20 @@ body {
       <span><span class="swatch-clickable"></span>Clickable — Prominent member</span>
     </div>
 
+    <!-- VIEW TOGGLE PILL — one control for both semicircles below.
+         "Party" colors dots by D/R/I affiliation (default).
+         "Vote" colors dots by YEA/NAY outcome for both chambers:
+         YEA = solid green, NAY = faded red (Option D), vacated seat = gray. -->
+    <div class="view-toggle">
+      <button class="toggle-opt active" id="toggle-party" onclick="setVoteView('party')">Party</button>
+      <button class="toggle-opt"        id="toggle-vote"  onclick="setVoteView('vote')">Vote</button>
+    </div>
+
     <div class="congress-viz-wrap">
 
       <!-- SENATE -->
       <div class="chamber-block">
         <div class="chamber-title">U.S. Senate — Final Vote on S.J.Res. 104</div>
-
-        <!-- VIEW TOGGLE PILL — switches dot colors between party affiliation and vote outcome.
-             Only the Senate held a recorded vote on S.J.Res. 104, so this control
-             does not appear above the House visualization below.                    -->
-        <div class="view-toggle">
-          <button class="toggle-opt active" id="toggle-party" onclick="setSenateView('party')">Party</button>
-          <button class="toggle-opt"        id="toggle-vote"  onclick="setSenateView('vote')">Vote</button>
-        </div>
 
         <div class="chamber-svg-wrap">
           <svg id="senate-svg" viewBox="0 0 860 370" xmlns="http://www.w3.org/2000/svg"></svg>
@@ -709,16 +794,174 @@ body {
 
       <!-- HOUSE -->
       <div class="chamber-block">
-        <div class="chamber-title">U.S. House of Representatives — H.Con.Res. 38 (Companion Bill)</div>
+        <div class="chamber-title">U.S. House of Representatives — Final Vote on H.Con.Res. 38</div>
         <div class="chamber-svg-wrap">
           <svg id="house-svg" viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
-        <div class="house-note">
-          The House companion measure, H.Con.Res. 38 (introduced by Rep. Thomas Massie, R-KY), has not yet received a floor vote as of March 5, 2026. House Democratic Leader Hakeem Jeffries has announced Democrats will compel a vote. Prominent member stances below reflect stated positions, not recorded votes.
+
+        <!-- House vote tally — Roll Call 85, March 5, 2026 -->
+        <div style="display:flex; align-items:stretch; gap:0; margin-top:20px;">
+          <div class="vote-tally" style="flex:1">
+            <div class="tally-block tally-yea">
+              <div class="tally-num">212</div>
+              <div class="tally-label">Yea</div>
+            </div>
+            <div class="tally-block tally-nay">
+              <div class="tally-num">219</div>
+              <div class="tally-label">Nay</div>
+            </div>
+            <!-- "Not Voting" uses the abstain block style -->
+            <div class="tally-block tally-abs">
+              <div class="tally-num">1</div>
+              <div class="tally-label">Not Voting</div>
+            </div>
+          </div>
+          <div class="tally-result" style="border:1px solid var(--atlantic-rule); border-left:none; border-radius:0 4px 4px 0; padding:0 18px; flex-shrink:0;">
+            <span style="font-size:18px">✗</span>
+            <span style="font-size:11px; font-weight:700; letter-spacing:1.5px; line-height:1.3;">FAILED<br>Mar. 5, 2026</span>
+          </div>
+        </div>
+        <!-- Roll call citation -->
+        <div class="house-note" style="margin-top:10px;">
+          Roll Call 85 · 119th Congress, 2nd Session · Only 2 Republicans crossed the aisle (Massie, Davidson). Four Democrats voted Nay (Cuellar, Golden, Landsman, Vargas). Rep. Marjorie Taylor Greene's seat was vacant — she resigned in January 2026.
         </div>
       </div>
 
-    </div>
+    </div><!-- /congress-viz-wrap -->
+
+    <!-- ── PROMINENT MEMBER VOTE GRID ─────────────────────────────────────
+         Lists every clickable member and their recorded vote.
+         Senate column on the left, House column on the right.
+         Each row mirrors the color coding used in the SVG dots above.   -->
+    <div class="mvg-wrap">
+
+      <!-- Full-width section label -->
+      <div class="mvg-label">Recorded Votes — Prominent Members</div>
+
+      <!-- SENATE COLUMN -->
+      <div>
+        <div class="mvg-chamber-title">Senate · S.J.Res. 104</div>
+
+        <!-- Ted Cruz — NAY -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#dc2626">TC</div>
+          <div class="mvg-name">Sen. Ted Cruz <span class="mvg-state">Texas (R)</span></div>
+          <span class="mvg-badge nay">✗ Nay</span>
+        </div>
+
+        <!-- Marco Rubio — vacated seat -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#dc2626">MR</div>
+          <div class="mvg-name">Sec. Marco Rubio <span class="mvg-state">Florida (R) — Seat Vacated</span></div>
+          <span class="mvg-badge gone">⚡ Not a Senator</span>
+        </div>
+
+        <!-- Rand Paul — YEA (sole R crossover) -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#dc2626">RP</div>
+          <div class="mvg-name">Sen. Rand Paul <span class="mvg-state">Kentucky (R)</span></div>
+          <span class="mvg-badge yea">✓ Yea</span>
+        </div>
+
+        <!-- Elizabeth Warren — YEA -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#2563eb">EW</div>
+          <div class="mvg-name">Sen. Elizabeth Warren <span class="mvg-state">Massachusetts (D)</span></div>
+          <span class="mvg-badge yea">✓ Yea</span>
+        </div>
+
+        <!-- Chuck Schumer — YEA -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#2563eb">CS</div>
+          <div class="mvg-name">Sen. Chuck Schumer <span class="mvg-state">New York (D)</span></div>
+          <span class="mvg-badge yea">✓ Yea</span>
+        </div>
+
+        <!-- Tim Kaine — YEA (co-sponsor) -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#2563eb">TK</div>
+          <div class="mvg-name">Sen. Tim Kaine <span class="mvg-state">Virginia (D)</span></div>
+          <span class="mvg-badge yea">✓ Yea</span>
+        </div>
+
+        <!-- John Fetterman — NAY (sole D crossover) -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#2563eb">JF</div>
+          <div class="mvg-name">Sen. John Fetterman <span class="mvg-state">Pennsylvania (D)</span></div>
+          <span class="mvg-badge nay">✗ Nay</span>
+        </div>
+
+        <!-- Bernie Sanders — YEA -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#d97706">BS</div>
+          <div class="mvg-name">Sen. Bernie Sanders <span class="mvg-state">Vermont (I)</span></div>
+          <span class="mvg-badge yea">✓ Yea</span>
+        </div>
+      </div>
+
+      <!-- HOUSE COLUMN -->
+      <div>
+        <div class="mvg-chamber-title">House · H.Con.Res. 38 · Roll Call 85</div>
+
+        <!-- Jim Jordan — NAY -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#dc2626">JJ</div>
+          <div class="mvg-name">Rep. Jim Jordan <span class="mvg-state">Ohio (R)</span></div>
+          <span class="mvg-badge nay">✗ Nay</span>
+        </div>
+
+        <!-- MTG — resigned, seat vacant -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#dc2626">MT</div>
+          <div class="mvg-name">Rep. M.T. Greene <span class="mvg-state">Georgia (R) — Resigned Jan. 2026</span></div>
+          <span class="mvg-badge gone">⚡ Not in House</span>
+        </div>
+
+        <!-- Thomas Massie — YEA (co-sponsor, sole R leader) -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#dc2626">TM</div>
+          <div class="mvg-name">Rep. Thomas Massie <span class="mvg-state">Kentucky (R)</span></div>
+          <span class="mvg-badge yea">✓ Yea</span>
+        </div>
+
+        <!-- Mike Johnson — NAY -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#dc2626">MJ</div>
+          <div class="mvg-name">Rep. Mike Johnson <span class="mvg-state">Louisiana (R)</span></div>
+          <span class="mvg-badge nay">✗ Nay</span>
+        </div>
+
+        <!-- Nancy Pelosi — YEA -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#2563eb">NP</div>
+          <div class="mvg-name">Rep. Nancy Pelosi <span class="mvg-state">California (D)</span></div>
+          <span class="mvg-badge yea">✓ Yea</span>
+        </div>
+
+        <!-- AOC — YEA -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#2563eb">AO</div>
+          <div class="mvg-name">Rep. Alexandria Ocasio-Cortez <span class="mvg-state">New York (D)</span></div>
+          <span class="mvg-badge yea">✓ Yea</span>
+        </div>
+
+        <!-- Hakeem Jeffries — YEA -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#2563eb">HJ</div>
+          <div class="mvg-name">Rep. Hakeem Jeffries <span class="mvg-state">New York (D)</span></div>
+          <span class="mvg-badge yea">✓ Yea</span>
+        </div>
+
+        <!-- Ilhan Omar — YEA -->
+        <div class="mvg-item">
+          <div class="mvg-initial" style="background:#2563eb">IO</div>
+          <div class="mvg-name">Rep. Ilhan Omar <span class="mvg-state">Minnesota (D)</span></div>
+          <span class="mvg-badge yea">✓ Yea</span>
+        </div>
+      </div>
+
+    </div><!-- /mvg-wrap -->
+
   </section>
 
 </div><!-- /tab-panel#sjres104 -->
@@ -847,9 +1090,9 @@ const MEMBERS = {
     state: "California",
     initials: "NP",
     partyColor: "#2563eb",
-    vote: "PENDING",
+    vote: "YEA",
     img: "../images/congress/nancy-pelosi.jpg",
-    stance: "Pelosi has not yet cast a vote on a House companion measure, which remains pending as of March 5, 2026. However, the former Speaker has been consistently outspoken against the Iran campaign. 'This is an unconstitutional war, started without a single vote of Congress,' she said in a statement. Pelosi was instrumental in passing previous war powers measures against Yemen and has signaled she will support H.Con.Res. 38. Her presence on the floor is seen as a signal to wavering Democrats."
+    stance: "Pelosi voted Yea and delivered a floor speech calling the vote 'a test of whether this Congress has the courage to fulfill its constitutional duty.' The former Speaker has been consistently outspoken against the Iran campaign. 'This is an unconstitutional war, started without a single vote of Congress,' she said. Pelosi was instrumental in previous war powers measures against Yemen and her presence on the floor was seen as a rallying signal to wavering Democrats. The resolution ultimately failed by seven votes."
   },
   "aoc": {
     name: "Rep. Alexandria Ocasio-Cortez",
@@ -858,9 +1101,9 @@ const MEMBERS = {
     state: "New York",
     initials: "AO",
     partyColor: "#2563eb",
-    vote: "PENDING",
+    vote: "YEA",
     img: "../images/congress/aoc.jpg",
-    stance: "AOC has been one of the most visible House critics of the Iran strikes, using her platform to amplify public opposition and challenge both parties to act. She has committed to voting for H.Con.Res. 38 and has called the Iran campaign 'a war of choice sold to the public as a necessity.' AOC has also organized in-district town halls on the conflict and been particularly outspoken about the civilian toll of the strikes in Iran. She has repeatedly invoked the War Powers Resolution as a floor she expects Democrats to defend."
+    stance: "AOC voted Yea and has been one of the most visible House critics of the Iran strikes. She called the Iran campaign 'a war of choice sold to the public as a necessity' and organized in-district town halls on the conflict. 'We had a chance today to put the Constitution over partisanship. Two hundred nineteen members chose the latter,' she said after the vote. AOC was also among the loudest voices criticizing the four Democrats who crossed the aisle to defeat the measure."
   },
   "marjorie-taylor-greene": {
     name: "Rep. Marjorie Taylor Greene",
@@ -869,9 +1112,9 @@ const MEMBERS = {
     state: "Georgia",
     initials: "MT",
     partyColor: "#dc2626",
-    vote: "PENDING",
+    vote: "NOT_IN_HOUSE",
     img: "../images/congress/marjorie-taylor-greene.jpg",
-    stance: "Greene has taken an unusual position among Republicans, publicly expressing skepticism about the Iran campaign while stopping short of endorsing the war powers resolution. Her 'America First' ideology conflicts with open-ended military engagements abroad. 'We were promised no more forever wars,' she posted. 'Iran is starting to look like one.' However, sources close to her office suggest she is unlikely to vote for the Democratic-led companion measure, preferring to abstain or register opposition through other means. Her stance is being closely watched by anti-interventionist conservatives."
+    stance: "Greene resigned from Congress in January 2026 following a public falling-out with President Trump over her demands to release the Epstein files. She was not a member of the House at the time of the H.Con.Res. 38 vote. Before her resignation, she had publicly expressed skepticism about the Iran campaign — 'We were promised no more forever wars,' she posted — but stopped short of endorsing the Democratic-led war powers measure. Her departure left Georgia's 14th District seat vacant ahead of a scheduled special election."
   },
   "hakeem-jeffries": {
     name: "Rep. Hakeem Jeffries",
@@ -880,9 +1123,9 @@ const MEMBERS = {
     state: "New York",
     initials: "HJ",
     partyColor: "#2563eb",
-    vote: "PENDING",
+    vote: "YEA",
     img: "../images/congress/hakeem-jeffries.jpg",
-    stance: "As House Minority Leader, Jeffries announced Democrats would use procedural rules to force a floor vote on H.Con.Res. 38 after it stalled in the Foreign Affairs Committee. 'The American people deserve a vote. The Constitution demands one,' Jeffries said at a press conference. He has worked to hold together Democratic caucus unity on the measure and reached out to Republican colleagues with concerns about the conflict's scope. Political analysts see the House vote, if it occurs, as a closer call than the Senate result due to the chamber's razor-thin Republican majority."
+    stance: "Jeffries voted Yea and was the principal architect of the Democratic strategy that forced H.Con.Res. 38 onto the House floor via discharge petition. 'The American people deserve a vote. The Constitution demands one,' he said at a press conference ahead of the vote. As House Minority Leader he held together near-total caucus unity — only four Democrats crossed the aisle. After the narrow defeat, Jeffries vowed to continue forcing war powers votes as the Iran campaign expands."
   },
   "jim-jordan": {
     name: "Rep. Jim Jordan",
@@ -891,9 +1134,9 @@ const MEMBERS = {
     state: "Ohio",
     initials: "JJ",
     partyColor: "#dc2626",
-    vote: "PENDING",
+    vote: "NAY",
     img: "../images/congress/jim-jordan.jpg",
-    stance: "Jordan, chair of the House Judiciary Committee, is expected to oppose any House war powers resolution and has aligned himself with the administration's position that the President has full authority to conduct the Iran campaign under his Article II powers and existing AUMFs. Jordan has framed Democratic war powers efforts as obstruction rather than oversight, calling the push 'a gift to Tehran at the worst possible time.' He is also a key vote-counter for Speaker Johnson in blocking the companion bill from reaching the floor."
+    stance: "Jordan voted Nay and was a key Republican vote-counter for Speaker Johnson in defeating H.Con.Res. 38. The chair of the House Judiciary Committee argued the President has full authority to conduct the Iran campaign under his Article II powers and existing AUMFs, framing Democratic war powers efforts as 'obstruction dressed up as oversight — a gift to Tehran at the worst possible time.' Jordan helped hold together enough Republican opposition to sink the measure by a seven-vote margin."
   },
   "thomas-massie": {
     name: "Rep. Thomas Massie",
@@ -902,9 +1145,9 @@ const MEMBERS = {
     state: "Kentucky",
     initials: "TM",
     partyColor: "#dc2626",
-    vote: "PENDING",
+    vote: "YEA",
     img: "../images/congress/thomas-massie.jpg",
-    stance: "Massie introduced H.Con.Res. 38 alongside Rep. Ro Khanna, making him the primary Republican champion for the House war powers effort. An arch-libertarian and one of the most constitutionalist members of the House GOP, Massie declared: 'I am opposed to this war. This is not America First.' He argued that Congress must go on record — setting objectives and a definition of victory before any more American servicemembers are put at risk. His bipartisan coalition on the resolution drew predictable attacks from pro-war conservatives, who labeled it 'siding with the far left.'"
+    stance: "Massie introduced H.Con.Res. 38 alongside Rep. Ro Khanna and was one of only two Republicans to vote Yea. An arch-libertarian constitutionalist, he declared: 'I am opposed to this war. This is not America First.' Massie argued Congress must go on record — setting objectives and a definition of victory before any more servicemembers are put at risk. His bipartisan coalition drew attacks from pro-war conservatives, and after the narrow 212–219 defeat he pledged to keep forcing the vote: 'We will be back.'"
   },
   "ilhan-omar": {
     name: "Rep. Ilhan Omar",
@@ -913,9 +1156,9 @@ const MEMBERS = {
     state: "Minnesota",
     initials: "IO",
     partyColor: "#2563eb",
-    vote: "PENDING",
+    vote: "YEA",
     img: "../images/congress/ilhan-omar.jpg",
-    stance: "Omar spoke on the House floor in support of H.Con.Res. 38 and has been one of the most forceful progressive voices against the Iran campaign. 'President Trump is unilaterally dragging this nation into an illegal and unjustified war with Iran without congressional authorization, without a clear objective, and without any imminent threat to the United States,' she said. Omar called the operation 'a reckless abuse of power that puts both innocent civilians and American lives on the line for a conflict the American people do not want.' She co-sponsored the resolution and has organized constituent outreach in Minnesota's large Somali-American and East African diaspora communities."
+    stance: "Omar voted Yea and delivered one of the floor's sharpest speeches against the Iran campaign: 'President Trump is unilaterally dragging this nation into an illegal and unjustified war — without authorization, without a clear objective, and without any imminent threat to the United States.' She called the operation 'a reckless abuse of power that puts innocent civilians and American lives on the line for a conflict the American people do not want.' Omar co-sponsored the resolution and organized constituent outreach in Minnesota's large Somali-American and East African diaspora communities."
   },
   "mike-johnson": {
     name: "Rep. Mike Johnson",
@@ -924,9 +1167,9 @@ const MEMBERS = {
     state: "Louisiana",
     initials: "MJ",
     partyColor: "#dc2626",
-    vote: "PENDING",
+    vote: "NAY",
     img: "../images/congress/mike-johnson.jpg",
-    stance: "Speaker Johnson has been the primary institutional obstacle to H.Con.Res. 38 reaching the House floor. He has expressed confidence that Republicans will defeat the war powers resolution if forced to a vote, warning that passage 'would be a terrible, dangerous idea — it would empower our enemies and kneecap our own forces.' Johnson has used his scheduling authority to bottle up the Massie-Khanna measure in the Foreign Affairs Committee. Democrats, led by Jeffries, are attempting to use a discharge petition to bypass him. The Speaker's razor-thin majority means even a handful of Republican defections could defeat him."
+    stance: "Speaker Johnson voted Nay and was the primary institutional force behind the resolution's defeat. He had used his scheduling authority to bottle up the Massie-Khanna measure in the Foreign Affairs Committee, and when Democrats forced a floor vote via discharge petition, he led the whipping effort to hold Republicans in line. Johnson had warned that passage 'would be a terrible, dangerous idea — it would empower our enemies and kneecap our own forces.' The seven-vote margin of defeat was far closer than his office predicted."
   }
 };
 
@@ -1000,6 +1243,24 @@ const HOUSE_PROMINENT = {
   268: "hakeem-jeffries",
   288: "ilhan-omar"
 };
+
+/* ── HOUSE SEAT VOTES ───────────────────────────────────────────────
+   Maps each of the 435 house seats (by seat index) to a vote outcome.
+   Default is party-line: R (seats 0–219) → NAY, D (220–432) → YEA,
+   Other (433–434) → YEA.
+   Named overrides:
+     Seat 45 = Marjorie Taylor Greene — resigned January 2026 (vacated)
+     Seat 75 = Thomas Massie (R) — resolution co-sponsor, voted YEA
+   Note: Warren Davidson (R, the only other R crossover) is not a
+   prominent member so his seat index is unknown; his dot defaults to
+   NAY in the visualization, a one-dot approximation.                 */
+const HOUSE_SEAT_VOTES = Array.from({ length: 435 }, (_, i) => {
+  if (i <= 219) return "NAY";   // Republican default
+  if (i <= 432) return "YEA";   // Democrat default
+  return "YEA";                 // Independent/Other default
+});
+HOUSE_SEAT_VOTES[45]  = "NOT_IN_HOUSE"; // MTG — resigned January 2026
+HOUSE_SEAT_VOTES[75]  = "YEA";          // Thomas Massie (R) — co-sponsor, voted YEA
 
 /* ── RENDER CHAMBER ────────────────────────────────────────────── */
 function renderChamber(svgId, total, composition, prominent, viewW, viewH, seatVotes = null) {
@@ -1087,7 +1348,7 @@ function renderChamber(svgId, total, composition, prominent, viewW, viewH, seatV
       });
       g.addEventListener("mouseleave", () => {
         // In vote view, NAY senators restore to faded opacity rather than full
-        if (senateViewMode === "vote" && g.dataset.vote === "NAY") {
+        if (viewMode === "vote" && g.dataset.vote === "NAY") {
           circle.setAttribute("opacity", "0.35");
         } else {
           circle.setAttribute("opacity", "1");
@@ -1096,11 +1357,11 @@ function renderChamber(svgId, total, composition, prominent, viewW, viewH, seatV
       });
     }
 
-    // Store party color as a data attribute so setSenateView() can restore it
+    // Store party color as a data attribute so setVoteView() can restore it
     g.dataset.partyColor = color;
 
-    // Store vote outcome color if a seatVotes array was passed (Senate only).
-    // setSenateView() reads these when switching to Vote view.
+    // Store vote outcome color if a seatVotes array was passed for this chamber.
+    // setVoteView() reads these when switching to Vote view.
     if (seatVotes) {
       const voteType = seatVotes[idx] || "YEA";
       g.dataset.vote      = voteType;
@@ -1115,51 +1376,53 @@ function renderChamber(svgId, total, composition, prominent, viewW, viewH, seatV
 }
 
 /* ── PARTY / VOTE VIEW TOGGLE ───────────────────────────────────────
-   Switches the Senate dot colors between two modes:
+   Switches BOTH chamber visualizations between two modes:
    • "party" — fill = party affiliation color (D/R/I), default opacity
-   • "vote"  — fill = vote outcome color; YEA senators at full opacity,
-               NAY senators faded to 0.35 (Option D) so the 47 YEA
-               dots visually pop against the receding 53 NAY dots.
-   The current mode is tracked in senateViewMode so the mouseleave
-   handler in renderChamber() can restore the correct opacity.        */
-let senateViewMode = "party"; // global — read by renderChamber mouseleave
+   • "vote"  — fill = vote outcome color; YEA at full opacity,
+               NAY faded to 0.35 (Option D) so YEA members pop,
+               vacated seats (NOT_SENATOR / NOT_IN_HOUSE) gray & faded.
+   The current mode is stored in viewMode so the mouseleave handler
+   inside renderChamber() can restore the correct opacity on hover.   */
+let viewMode = "party"; // global — read by renderChamber mouseleave
 
-function setSenateView(mode) {
-  senateViewMode = mode;
+function setVoteView(mode) {
+  viewMode = mode;
 
   // Swap active state on the pill buttons
   document.getElementById("toggle-party").classList.toggle("active", mode === "party");
   document.getElementById("toggle-vote").classList.toggle("active", mode === "vote");
 
-  // Swap the legend block beneath the graphic title
+  // Swap the legend block
   document.getElementById("legend-party").style.display = mode === "party" ? "" : "none";
   document.getElementById("legend-vote").style.display  = mode === "vote"  ? "" : "none";
 
-  // Recolor every senate circle group using stored data attributes
-  document.querySelectorAll("#senate-svg > g").forEach(g => {
-    // First <circle> child is the filled dot; additional circles are pulse rings
-    const circle      = g.querySelector("circle");
-    const isProminent = g.hasAttribute("data-member");
-    const baseOpacity = isProminent ? "1" : "0.85"; // default party-view opacity
+  // Recolor circles in both chambers using stored data attributes
+  ["#senate-svg", "#house-svg"].forEach(svgSel => {
+    document.querySelectorAll(svgSel + " > g").forEach(g => {
+      // First <circle> child = filled dot; subsequent circles = pulse rings
+      const circle      = g.querySelector("circle");
+      const isProminent = g.hasAttribute("data-member");
+      const baseOpacity = isProminent ? "1" : "0.85";
 
-    if (mode === "party") {
-      // Restore party affiliation color and normal opacity
-      circle.setAttribute("fill",    g.dataset.partyColor);
-      circle.setAttribute("opacity", baseOpacity);
-    } else {
-      // Apply vote outcome color
-      circle.setAttribute("fill", g.dataset.voteColor);
-      // Option D: NAY senators fade so YEA senators pop;
-      // vacated seats (NOT_SENATOR) are gray and very faded
-      if (g.dataset.vote === "NAY") {
-        circle.setAttribute("opacity", "0.35");
-      } else if (g.dataset.vote === "NOT_SENATOR") {
-        circle.setAttribute("opacity", "0.4");
+      if (mode === "party") {
+        // Restore party affiliation color and default opacity
+        circle.setAttribute("fill",    g.dataset.partyColor);
+        circle.setAttribute("opacity", baseOpacity);
       } else {
-        // YEA — full opacity so they stand out against the faded NAY backdrop
-        circle.setAttribute("opacity", isProminent ? "1" : "0.9");
+        // Apply vote outcome color (falls back to party color if no vote data)
+        circle.setAttribute("fill", g.dataset.voteColor || g.dataset.partyColor);
+        // Option D: NAY fades; vacated seats fade further; YEA pops at full opacity
+        const v = g.dataset.vote;
+        if (v === "NAY") {
+          circle.setAttribute("opacity", "0.35");
+        } else if (v === "NOT_SENATOR" || v === "NOT_IN_HOUSE") {
+          circle.setAttribute("opacity", "0.4");
+        } else {
+          // YEA — full opacity so they stand out against the faded NAY backdrop
+          circle.setAttribute("opacity", isProminent ? "1" : "0.9");
+        }
       }
-    }
+    });
   });
 }
 
@@ -1177,8 +1440,10 @@ function showMemberDetail(memberId) {
   const badges = {
     "YEA":         { cls: "badge-yea", text: "✓ Voted Yea" },
     "NAY":         { cls: "badge-nay", text: "✗ Voted Nay" },
-    "PENDING":     { cls: "badge-na",  text: "⏳ Vote Pending" },
-    "NOT_SENATOR": { cls: "badge-ns",  text: "⚡ No Longer a Senator" }
+    "PENDING":      { cls: "badge-na",  text: "⏳ Vote Pending" },
+    "NOT_SENATOR":  { cls: "badge-ns",  text: "⚡ No Longer a Senator" },
+    // Covers House members who vacated their seat before the vote (e.g. MTG)
+    "NOT_IN_HOUSE": { cls: "badge-ns",  text: "⚡ No Longer in the House" }
   };
   const b = badges[m.vote] || badges["PENDING"];
   badgeEl.innerHTML = `<span class="vote-badge ${b.cls}">${b.text}</span>`;
@@ -1226,10 +1491,10 @@ function switchTab(billId) {
 
 /* ── INIT ────────────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", () => {
-  // Pass SENATE_SEAT_VOTES so each dot gets data-vote/data-vote-color attributes
-  // for the Party ↔ Vote toggle. House omits seatVotes — no recorded vote yet.
+  // Both chambers now have recorded votes — pass seat-vote arrays to both.
+  // This gives every dot data-vote / data-vote-color attributes for the toggle.
   renderChamber("senate-svg", 100, SENATE_COMPOSITION, SENATE_PROMINENT, 860, 370, SENATE_SEAT_VOTES);
-  renderChamber("house-svg",  435, HOUSE_COMPOSITION,  HOUSE_PROMINENT,  860, 380);
+  renderChamber("house-svg",  435, HOUSE_COMPOSITION,  HOUSE_PROMINENT,  860, 380, HOUSE_SEAT_VOTES);
 });
 
 // Close on Escape
