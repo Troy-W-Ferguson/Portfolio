@@ -8,6 +8,7 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     permissions:
       contents: write
 
@@ -23,8 +24,14 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-anthropic
+
       - name: Install Anthropic SDK
-        run: pip install anthropic
+        run: pip install "anthropic>=0.50"
 
       - name: Run updater
         env:
