@@ -4109,18 +4109,51 @@
   /*
     ═══════════════════════════════════════════════
     TIMELINE ORDER TOGGLE
-    Clicking the "↑ Oldest First / ↓ Newest First" pill
-    reverses the DOM order of all children inside the
-    timeline container. The .tl-line is position:absolute
-    so its DOM position has no visual effect — safe to reverse.
+    Reverses only the sortable content between two
+    pinned elements:
+      • .tl-line — stays FIRST (position:absolute;
+        being last in DOM would render it over entries)
+      • "Future entries" block — stays LAST (placeholder
+        should never float to the top in reverse mode)
+    Everything else (entries + phase-dividers) is reversed.
     ═══════════════════════════════════════════════
   */
   document.querySelectorAll('.order-toggle-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const timelineId = btn.dataset.timeline;
       const timeline = document.getElementById(timelineId);
-      const children = Array.from(timeline.children);
-      children.reverse().forEach(child => timeline.appendChild(child));
+      const all = Array.from(timeline.children);
+
+      // Pin 1: .tl-line — always stays at the very beginning
+      const tlLine = all.find(el => el.classList.contains('tl-line'));
+
+      // Pin 2: placeholder tail — the "↓ Future entries" phase-divider
+      //         and every sibling after it (the TBD entry block)
+      let placeholderIdx = -1;
+      all.forEach((el, i) => {
+        if (el.classList.contains('phase-divider') &&
+            el.textContent.includes('Future entries')) {
+          placeholderIdx = i;
+        }
+      });
+      const pinTail = placeholderIdx >= 0 ? all.slice(placeholderIdx) : [];
+
+      // Sortable content: everything that is not tl-line and not in pinTail
+      const pinTailSet = new Set(pinTail);
+      const sortable = all.filter(
+        el => el !== tlLine && !pinTailSet.has(el)
+      );
+
+      // Reverse the sortable slice
+      sortable.reverse();
+
+      // Re-append in order: tl-line → reversed sortable → pinned tail
+      const frag = document.createDocumentFragment();
+      if (tlLine) frag.appendChild(tlLine);
+      sortable.forEach(el => frag.appendChild(el));
+      pinTail.forEach(el => frag.appendChild(el));
+      timeline.appendChild(frag);
+
       if (btn.dataset.order === 'asc') {
         btn.dataset.order = 'desc';
         btn.textContent = '\u2193 Newest First';
