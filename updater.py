@@ -20,12 +20,13 @@ PANEL_START_MARKER = '<div class="panel" id="panel-epicfury">'
 PANEL_END_MARKER   = "</div><!-- /panel-epicfury -->"
 TIMELINE_INSERT_MARKER = "<!-- ── PLACEHOLDER — keep for next update ── -->"
 SEARCH_QUERIES = [
-    "Operation Epic Fury Iran Israel latest updates today",
-    "Iran war casualties killed injured 2026",
-    "CENTCOM Iran operation targets struck update",
-    "IDF intercepts missiles drones Iron Dome David's Sling today",
-    "Hezbollah Israel Lebanon strikes today",
-    "Iran US war ceasefire negotiations 2026",
+    "Operation Epic Fury Iran Israel latest updates today 2026",
+    "Iran war casualties killed injured March 2026",
+    "CENTCOM Iran operation targets struck update March 2026",
+    "IDF Israel strikes Iran March 2026 air superiority",
+    "Iran ceasefire negotiations unconditional surrender Trump March 2026",
+    "Iran IRGC missile drone launches March 2026 wave strikes",
+    "Lebanon displaced civilians Hezbollah March 2026",
 ]
 # ──────────────────────────────────────────────────────────────────────────────
 
