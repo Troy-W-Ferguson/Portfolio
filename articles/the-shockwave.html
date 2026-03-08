@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Shockwave | In the Style of The Atlantic</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;500&display=swap');
+
+  :root {
+    --bg: #FAF9F6;
+    --ink: #1B1B1B;
+    --red: #B8292F;
+    --red-light: #D4494E;
+    --gold: #C9A84C;
+    --muted: #6E6E6E;
+    --rule: #C8C4BA;
+    --cream: #F0EDE4;
+    --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --sans: 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'Source Code Pro', 'Courier New', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── RED BANNER ── */
+  .unpublished-banner {
+    background: var(--red);
+    color: #fff;
+    text-align: center;
+    padding: 8px 20px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    text-align: center;
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead-style-note {
+    font-family: var(--sans);
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .masthead-title {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 26px;
+    color: var(--ink);
+    letter-spacing: 0.5px;
+  }
+  .masthead-nav {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+
+  /* ── TAB BAR ── */
+  .tab-bar {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 14px 20px 0;
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--rule);
+    overflow-x: auto;
+  }
+  .tab {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 8px 18px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab.active { color: var(--red); }
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--red);
+  }
+
+  .section-tag {
+    max-width: 680px;
+    margin: 32px auto 0;
+    padding: 0 20px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+
+  .article-header {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 12px 20px 0;
+  }
+  .article-header h1 {
+    font-family: var(--serif);
+    font-size: clamp(30px, 5vw, 48px);
+    font-weight: 700;
+    line-height: 1.12;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .article-header .dek {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(16px, 2.2vw, 20px);
+    line-height: 1.5;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .byline { font-family: var(--sans); font-weight: 700; font-size: 15px; color: var(--ink); }
+  .dateline {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 2px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .article-body {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 28px 20px 0;
+  }
+  .article-body p {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.72;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+  .article-body p.lede { font-size: 20px; line-height: 1.68; }
+  .article-body p.lede::first-letter {
+    font-size: 3.6em;
+    float: left;
+    line-height: 0.8;
+    margin: 4px 8px 0 0;
+    font-weight: 700;
+    color: var(--red);
+  }
+
+  .pull-quote {
+    margin: 32px 0;
+    padding: 20px 0 20px 24px;
+    border-left: 3px solid var(--red);
+  }
+  .pull-quote p {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .pull-quote cite {
+    font-family: var(--sans);
+    font-style: normal;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .source-tag {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .source-tag a { color: var(--red); text-decoration: none; }
+  .source-tag a:hover { text-decoration: underline; }
+
+  .graphic-section {
+    max-width: 960px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  .graphic-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .graphic-title {
+    font-family: var(--serif);
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .graphic-subtitle {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .viz-wrap {
+    position: relative;
+    width: 100%;
+    background: #0B0F14;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+  }
+  .viz-wrap canvas { display: block; width: 100%; }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .controls button {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    padding: 7px 18px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .controls button:hover { background: var(--red); }
+  .phase-text { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .phase-text .hl { color: var(--red); font-weight: 500; }
+
+  .legend-row { display: flex; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-family: var(--sans); font-size: 11px; color: var(--muted); }
+  .ldot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .graphic-source { font-family: var(--sans); font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(11,15,20,0.94);
+    border: 1px solid rgba(184,41,47,0.4);
+    border-radius: 3px;
+    padding: 8px 12px;
+    font-family: var(--sans);
+    font-size: 12px;
+    color: #d6d2c8;
+    line-height: 1.4;
+    max-width: 210px;
+    opacity: 0;
+    transition: opacity 0.12s;
+    z-index: 20;
+  }
+  .tooltip .tt-name { font-weight: 600; color: #fff; }
+  .tooltip .tt-stat { color: var(--gold); }
+
+  .divider { max-width: 680px; margin: 40px auto; border: none; border-top: 1px solid var(--rule); }
+
+  .article-footer {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+    text-align: center;
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+  }
+</style>
+</head>
+<body>
+
+<!-- RED BANNER -->
+<div class="unpublished-banner">Unpublished Writing Sample · Not Affiliated With The Atlantic</div>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-style-note">in the style of</div>
+  <div class="masthead-title">The Atlantic</div>
+  <div class="masthead-nav">Data Journalism · Global Aviation</div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab active">The Shockwave</button>
+</div>
+
+<!-- SECTION TAG -->
+<div class="section-tag">Global Aviation · Conflict & Infrastructure</div>
+
+<!-- ARTICLE HEADER -->
+<div class="article-header">
+  <h1>The Shockwave</h1>
+  <div class="dek">Twenty-three thousand flights. One million stranded passengers. The bombs fell on Iran, but the blast radius was measured in missed connections, in the political economy of a president who watches the world burn from the safety of a gifted jet.</div>
+  <div class="byline">Troy W. Ferguson</div>
+  <div class="dateline">March 8, 2026 · Data Journalism</div>
+</div>
+
+<!-- ARTICLE BODY -->
+<div class="article-body">
+
+  <p class="lede">Wars announce themselves with explosions. Their consequences arrive on departure boards. When the United States and Israel struck Iran on February 28, the first-order effects were military: the killing of Ayatollah Ali Khamenei, the destruction of missile batteries and air defenses, the opening salvos of what the Pentagon branded Operation Epic Fury. But within hours, a second shockwave began radiating outward through the connective tissue of global aviation. It was quieter, slower, and in its own way just as devastating.</p>
+
+  <p>The mechanics of that collapse are worth understanding, because they reveal something about the fragility of the world we have built. Dubai International Airport, the busiest hub for international passengers on Earth, was physically struck during Iran's retaliation. Videos from inside the terminal showed shattered glass, blaring alarms, passengers running. Emirates, Qatar Airways, and Etihad, the three carriers that together function as the cardiovascular system of intercontinental travel, grounded their fleets. Eleven thousand flights were cancelled in the first seventy-two hours alone, according to the aviation analytics firm Cirium. <span class="source-tag">(Cirium, via <a href="https://theworld.org/stories/2026/03/02/war-in-iran-sparks-global-travel-chaos">PRX</a>)</span></p>
+
+  <p>That was merely the epicenter. The real story is what happened next: the cascading failure of a system in which everything depends on everything else. Hundreds of aircraft were stranded in the wrong cities. Pilots and cabin crews were displaced thousands of miles from their next scheduled rotation. At London Heathrow, more than a thousand flights were cancelled or delayed on a single day as British Airways and Gulf carriers struggled to recover their networks. <span class="source-tag">(<a href="https://www.thetraveler.org/europe-flight-chaos-hundreds-of-routes-hit-across-key-hubs/">The Traveler</a>)</span> The same pattern repeated at Paris CDG, at Frankfurt, at Amsterdam Schiphol. Budget carriers like Ryanair, which depend on tight aircraft turnaround windows, found that a single late-arriving inbound plane could torpedo an entire day's worth of point-to-point services across the continent.</p>
+
+  <div class="pull-quote">
+    <p>"We have not seen anything like this ever outside of, frankly, the COVID pandemic, and that was very different."</p>
+    <cite>Henry Harteveldt, founder of Atmosphere Research Group, via Fortune</cite>
+  </div>
+
+  <p>The contagion did not stop at Europe. At Miami International, already one of the most congested airports in America, Qatar Airways disruptions fed directly into Delta and American schedules, which cascaded into JFK, LaGuardia, Newark, and Los Angeles. Ground staff at LAX were forced to prioritize long-haul departures to Asia-Pacific, pushing domestic flights further behind. <span class="source-tag">(<a href="https://www.thetraveler.org/flight-disruptions-ripple-across-major-us-hubs/">The Traveler</a>)</span> In Bali, 1,600 tourists were stranded after five Middle East-bound flights vanished from the board. In Manila, Filipino migrant workers, the human infrastructure of the Gulf economy, waited at airport gates for flights to Kuwait that would never arrive. <span class="source-tag">(<a href="https://fortune.com/2026/03/01/air-fares-us-israel-iran-bombing-airlines-reroute-flights-fuel-airspace-closures-mideast/">Fortune</a>)</span></p>
+
+</div>
+
+<!-- ── GRAPHIC 1: GLOBE SHOCKWAVE ── -->
+<div class="graphic-section">
+  <div class="graphic-label">Figure 1</div>
+  <div class="graphic-title">Concentric Collapse</div>
+  <div class="graphic-subtitle">Disruption radiating outward from the Persian Gulf on a rotating globe, Feb 28 – Mar 8, 2026. Each ring represents one phase of cascading failure. Click Play and hover airports for details.</div>
+  <div class="viz-wrap" style="height:560px;">
+    <div id="globe-container" style="width:100%;height:100%;"></div>
+    <div class="tooltip" id="tooltip1"></div>
+  </div>
+  <div class="controls">
+    <button id="g-play">Play</button>
+    <button id="g-reset">Reset</button>
+    <span class="phase-text" id="g-phase">Phase: <span class="hl">Ready</span></span>
+  </div>
+  <div class="legend-row">
+    <div class="legend-item"><div class="ldot" style="background:#C1272D"></div> Epicenter: hubs closed/struck</div>
+    <div class="legend-item"><div class="ldot" style="background:#E07020"></div> Wave 2: connecting hubs severed</div>
+    <div class="legend-item"><div class="ldot" style="background:#D4A843"></div> Wave 3: European hub degradation</div>
+    <div class="legend-item"><div class="ldot" style="background:#4A90A4"></div> Wave 4: global knock-on delays</div>
+  </div>
+  <div class="graphic-source">Sources: Cirium, FlightAware, Flightradar24, AirHelp. Disruption magnitudes approximated from reported figures.</div>
+</div>
+
+<!-- ── GRAPHIC 1b: FLAT MERCATOR MAP ── -->
+<div class="graphic-section">
+  <div class="graphic-label">Figure 1b</div>
+  <div class="graphic-title">The Same Collapse, Flattened</div>
+  <div class="graphic-subtitle">A Mercator projection showing every affected airport at its true geographic coordinates, with the same four-phase shockwave animation. Hover any node for details.</div>
+  <div class="viz-wrap">
+    <canvas id="flatmap" width="960" height="520"></canvas>
+    <div class="tooltip" id="tooltip-flat"></div>
+  </div>
+  <div class="controls">
+    <button id="fm-play">Play</button>
+    <button id="fm-reset">Reset</button>
+    <span class="phase-text" id="fm-phase">Phase: <span class="hl">Ready</span></span>
+  </div>
+  <div class="legend-row">
+    <div class="legend-item"><div class="ldot" style="background:#C1272D"></div> Epicenter: hubs closed/struck</div>
+    <div class="legend-item"><div class="ldot" style="background:#E07020"></div> Wave 2: connecting hubs severed</div>
+    <div class="legend-item"><div class="ldot" style="background:#D4A843"></div> Wave 3: European hub degradation</div>
+    <div class="legend-item"><div class="ldot" style="background:#4A90A4"></div> Wave 4: global knock-on delays</div>
+  </div>
+  <div class="graphic-source">Sources: Cirium, FlightAware, Flightradar24, AirHelp.</div>
+</div>
+
+<!-- ARTICLE BODY CONTINUED -->
+<div class="article-body">
+
+  <p>The airline industry had entered 2026 with cautious optimism. The International Air Transport Association projected a record $41 billion in aggregate profits, welcome news against a backdrop of rising labor costs, supply-chain bottlenecks, and geopolitical uncertainty. But that projection assumed a world that no longer exists. The industry's net margin was expected to hold at 3.9 percent, a figure IATA's own director general, Willie Walsh, called "a pittance," noting that Apple earns more from a single iPhone cover than airlines make transporting the average passenger. <span class="source-tag">(<a href="https://www.iata.org/en/pressroom/2025-releases/2025-12-09-01/">IATA</a>)</span> Now, with fuel costs surging as Brent crude spikes to $92 a barrel and twelve percent of global air freight volume passing through a region that has effectively gone dark, even that pittance looks aspirational. Air cargo capacity has fallen eighteen percent worldwide. <span class="source-tag">(<a href="https://foreignpolicy.com/2026/03/04/trump-iran-war-aviation-cargo-air-travel-flights-economy/">Foreign Policy</a>)</span></p>
+
+  <p>There is, of course, a case for the military operation itself. The administration's stated objectives, degrading Iran's nuclear ambitions, eliminating the supreme leader's command structure, defanging a regime that has funded proxies across the region for decades, are not trivial. Military secrecy before a strike of this magnitude is not optional; it is a precondition for the survival of the pilots who fly the sorties and the sailors who launch the missiles. No serious person argues that the president should have tweeted his battle plan in advance.</p>
+
+  <p>But what happened in the hours and days after the first bombs fell is a different question, one of governance rather than secrecy. The State Department told Americans to "DEPART NOW" from more than a dozen countries even as the airspace they would need to depart through was closed. <span class="source-tag">(<a href="https://www.npr.org/2026/03/03/nx-s1-5732968/iran-us-trump-war">NPR</a>)</span> Secretary of State Marco Rubio acknowledged that evacuations would "take time, because we don't control airspace closures," an extraordinary admission from the government that had, in fact, triggered those closures. When asked why evacuation plans were not in place sooner, the president's answer was disarming in its candor: "It happened all very quickly."</p>
+
+  <p>The human reality behind that admission is bleak. As of Thursday, nearly 20,000 Americans had made it home, but tens of thousands more remained scattered across a region at war. U.S. citizens, diplomats, and embassy families were trapped in the UAE, Qatar, Bahrain, and Jordan with no commercial flights operating and only a trickle of military and chartered evacuations available. The State Department reported contact with 3,000 Americans seeking extraction but acknowledged that reaching them was a logistical nightmare, because the very airspace closures triggered by the strikes had eliminated the routes needed to get them out. <span class="source-tag">(<a href="https://www.pbs.org/newshour/world/live-updates-trump-says-iran-war-could-last-weeks">PBS</a>)</span> Romania scrambled to repatriate religious pilgrims. Germany ran emergency flights from Dubai. India and the Philippines mounted operations to rescue hundreds of thousands of migrant workers. For travelers delayed in Miami or stranded overnight at Heathrow, this was a champagne problem, an inconvenience measured in hours and rebooking fees. For the Americans, diplomats, and foreign nationals locked inside a war zone with no way out, it was something else entirely.</p>
+
+</div>
+
+<hr class="divider">
+
+<!-- ── GRAPHIC 2: NETWORK CONTAGION ── -->
+<div class="graphic-section">
+  <div class="graphic-label">Figure 2</div>
+  <div class="graphic-title">Contagion Tree</div>
+  <div class="graphic-subtitle">The global aviation network modeled as a disease. Nodes are airports; edges are flight routes. Red means infected. The epidemiological metaphor is deliberate: everyone keeps comparing this to COVID, so the visualization borrows the same grammar.</div>
+  <div class="viz-wrap">
+    <canvas id="network" width="960" height="580"></canvas>
+    <div class="tooltip" id="tooltip2"></div>
+  </div>
+  <div class="controls">
+    <button id="n-play">Play Contagion</button>
+    <button id="n-reset">Reset</button>
+    <span class="phase-text" id="n-phase">Phase: <span class="hl">Ready</span></span>
+  </div>
+  <div class="legend-row">
+    <div class="legend-item"><div class="ldot" style="background:#C1272D"></div> Critical: operations halted</div>
+    <div class="legend-item"><div class="ldot" style="background:#E07020"></div> Severe: mass cancellations</div>
+    <div class="legend-item"><div class="ldot" style="background:#D4A843"></div> Moderate: cascading delays</div>
+    <div class="legend-item"><div class="ldot" style="background:#4A90A4"></div> Peripheral: stranded pax</div>
+    <div class="legend-item"><div class="ldot" style="background:#1E2A33"></div> Not yet reached</div>
+  </div>
+  <div class="graphic-source">Sources: Cirium, Fortune, TIME, AP, Al Jazeera. Network topology simplified; edge weights reflect reported route significance.</div>
+</div>
+
+<!-- ARTICLE BODY FINAL -->
+<div class="article-body">
+
+  <p>The political economy of this disruption is, in its own way, as revealing as the military strategy. This is the third time in ten weeks that a Trump administration military operation has grounded large numbers of civilian flights, following the Venezuela strike in January, which shuttered Caribbean airspace, and the Mexico cartel operation in February, which halted flights to Puerto Vallarta and Guadalajara. <span class="source-tag">(<a href="https://www.cnbc.com/2026/03/05/iran-war-travel-flights-cruise-hotels.html">CNBC</a>)</span> Each time, the same pattern: military necessity cited, civilians stranded, airlines left to absorb the cost.</p>
+
+  <p>And then there is the matter of Miami. The president has been waging this war from Mar-a-Lago, his Florida estate, where a makeshift Situation Room was erected behind black curtains while a charity gala played out in the ballroom next door. <span class="source-tag">(<a href="https://www.cnn.com/2026/03/01/politics/mar-a-lago-trump-iran">CNN</a>)</span> Every time Air Force One touches down at Palm Beach International, a temporary flight restriction radiates outward, delaying commercial traffic across south Florida, layered atop an airport already buckling under the cascading effects of the very war the president is commanding from poolside. On Saturday, as Miami contended with 264 delayed flights and 17 cancellations from the Gulf fallout, the president was hosting Latin American leaders at his golf club nearby.</p>
+
+  <p>It is a dissonance difficult to articulate and impossible to ignore. The Qatari government, whose own capital's airport was shuttered by the retaliatory strikes the president's operation invited, gifted him a $400 million Boeing 747, now being retrofitted at taxpayer expense to become the next Air Force One. <span class="source-tag">(<a href="https://www.npr.org/2025/05/21/nx-s1-5406420/trump-accepts-qatar-plane-air-force-one">NPR</a>)</span> The conversion, funded in part with money pulled from the Sentinel nuclear missile program, could cost up to a billion dollars. It is expected to be ready by summer.</p>
+
+  <p>There is an image that keeps returning. The president, watching the strikes unfold on a monitor behind black drapes, wearing a white "USA" hat, while twenty-three thousand flights go dark across six continents. One million people shuffling through terminal corridors with no information and no plan, refreshing departure boards that offer nothing but red. Filipino workers sleeping on airport floors in Manila. German tourists weeping with relief upon landing in Frankfurt. A chef from Dallas, stranded in Doha, asking the question that millions were asking: "They say, 'Get out,' but how do you expect us to get out when airspaces are closed?" <span class="source-tag">(<a href="https://www.aljazeera.com/economy/2026/3/3/travellers-stranded-airlines-under-pressure-as-iran-war-escalates">Al Jazeera</a>)</span></p>
+
+  <p>And somewhere above it all, the Qatari jet sits in a hangar in Fort Worth, Texas. Not yet Air Force One, not yet stripped down for bugs and hardened for command and control, but soon. A flying palace, waiting for its passenger. A gift from the country whose airport his war just shut down, readied at the expense of the missile program his military might someday need. The shockwave, it turns out, moves in all directions.</p>
+
+</div>
+
+<!-- FOOTER -->
+<div class="article-footer">
+  Troy W. Ferguson · Data Journalism · March 2026<br>
+  <em>This is an unpublished writing sample and does not represent The Atlantic.</em>
+</div>
+
+<script>
+// ════════════════════════════════════════
+//  SHARED DATA
+// ════════════════════════════════════════
+const AIRPORTS = [
+  {code:'DXB',name:'Dubai Intl',lat:25.25,lon:55.36,phase:0,cancelled:'4,000+',note:'Struck by Iranian retaliation; terminal damage',tier:'epicenter'},
+  {code:'DOH',name:'Hamad Intl (Doha)',lat:25.26,lon:51.56,phase:0,cancelled:'2,500+',note:'Closed through Mon; Qatar Airways grounded',tier:'epicenter'},
+  {code:'AUH',name:'Abu Dhabi Zayed',lat:24.44,lon:54.65,phase:0,cancelled:'1,000+',note:'Limited emergency corridors only',tier:'epicenter'},
+  {code:'BAH',name:'Bahrain Intl',lat:26.27,lon:50.63,phase:0,cancelled:'800+',note:'Airspace closed; US base targeted',tier:'epicenter'},
+  {code:'KWI',name:'Kuwait Intl',lat:29.23,lon:47.97,phase:0,cancelled:'600+',note:'Airspace closed after strikes on US base',tier:'epicenter'},
+  {code:'IKA',name:'Tehran Imam Khomeini',lat:35.41,lon:51.15,phase:0,cancelled:'All',note:'Iranian airspace fully closed',tier:'epicenter'},
+  {code:'IST',name:'Istanbul',lat:41.26,lon:28.74,phase:1,cancelled:'500+',note:'Rerouting hub; ME-bound flights scrapped',tier:'severe'},
+  {code:'BEY',name:'Beirut',lat:33.82,lon:35.49,phase:1,cancelled:'300+',note:'Lebanon airspace restricted',tier:'severe'},
+  {code:'AMM',name:'Amman',lat:31.72,lon:35.99,phase:1,cancelled:'200+',note:'Jordan airspace intermittently closed',tier:'severe'},
+  {code:'TLV',name:'Ben Gurion',lat:32.01,lon:34.88,phase:1,cancelled:'All',note:'Israeli airspace on war footing',tier:'severe'},
+  {code:'DEL',name:'Delhi',lat:28.56,lon:77.10,phase:1,cancelled:'200+',note:'Air India Gulf routes suspended',tier:'severe'},
+  {code:'BOM',name:'Mumbai',lat:19.09,lon:72.87,phase:1,cancelled:'150+',note:'Indian worker corridor severed',tier:'severe'},
+  {code:'MNL',name:'Manila',lat:14.51,lon:121.02,phase:1,cancelled:'100+',note:'OFW flights to Kuwait stranded',tier:'severe'},
+  {code:'LHR',name:'London Heathrow',lat:51.47,lon:-0.46,phase:2,cancelled:'300+',note:'BA & Gulf carriers rotations disrupted',tier:'moderate'},
+  {code:'CDG',name:'Paris CDG',lat:49.01,lon:2.55,phase:2,cancelled:'250+',note:'Air France resumed then re-cancelled',tier:'moderate'},
+  {code:'FRA',name:'Frankfurt',lat:50.03,lon:8.57,phase:2,cancelled:'200+',note:'Lufthansa Gulf routes suspended',tier:'moderate'},
+  {code:'AMS',name:'Amsterdam Schiphol',lat:52.31,lon:4.77,phase:2,cancelled:'200+',note:'KLM suspended Dubai, Riyadh, Dammam',tier:'moderate'},
+  {code:'FCO',name:'Rome Fiumicino',lat:41.80,lon:12.25,phase:2,cancelled:'80+',note:'Alitalia rerouting Asia flights',tier:'moderate'},
+  {code:'JFK',name:'New York JFK',lat:40.64,lon:-73.78,phase:3,cancelled:'100+',note:'Qatar, Emirates arrivals gone; cascading',tier:'peripheral'},
+  {code:'MIA',name:'Miami Intl',lat:25.79,lon:-80.29,phase:3,cancelled:'80+',note:'Qatar ops disrupted; feeding Delta/AA delays',tier:'peripheral'},
+  {code:'LAX',name:'Los Angeles',lat:33.94,lon:-118.41,phase:3,cancelled:'60+',note:'Asia-Pacific long-hauls reprioritized',tier:'peripheral'},
+  {code:'EWR',name:'Newark',lat:40.69,lon:-74.17,phase:3,cancelled:'50+',note:'United waivers through Mar 31',tier:'peripheral'},
+  {code:'DPS',name:'Bali Ngurah Rai',lat:-8.75,lon:115.17,phase:3,cancelled:'5 (1,600 stranded)',note:'ME-bound flights cancelled outright',tier:'peripheral'},
+  {code:'DAC',name:'Dhaka Shahjalal',lat:23.84,lon:90.40,phase:3,cancelled:'100+',note:'Migrant workers stranded',tier:'peripheral'},
+  {code:'NRT',name:'Tokyo Narita',lat:35.76,lon:140.39,phase:3,cancelled:'30+',note:'ME connecting pax rerouted',tier:'peripheral'},
+];
+const EDGES = [
+  ['DXB','LHR'],['DXB','CDG'],['DXB','FRA'],['DXB','DEL'],['DXB','BOM'],['DXB','MNL'],['DXB','DPS'],['DXB','JFK'],['DXB','LAX'],
+  ['DOH','LHR'],['DOH','CDG'],['DOH','JFK'],['DOH','MIA'],['DOH','DAC'],['DOH','MNL'],['DOH','NRT'],
+  ['AUH','LHR'],['AUH','FRA'],['AUH','AMS'],['AUH','DEL'],
+  ['BAH','DEL'],['BAH','BOM'],['BAH','MNL'],['KWI','MNL'],['KWI','DEL'],['KWI','DAC'],
+  ['IKA','IST'],['IKA','BEY'],
+  ['IST','LHR'],['IST','CDG'],['IST','FRA'],['IST','FCO'],['IST','JFK'],
+  ['BEY','CDG'],['BEY','FCO'],['TLV','LHR'],['TLV','JFK'],['TLV','EWR'],['AMM','LHR'],['AMM','FRA'],
+  ['LHR','JFK'],['LHR','MIA'],['LHR','LAX'],['LHR','EWR'],
+  ['CDG','JFK'],['CDG','MIA'],['FRA','JFK'],['FRA','EWR'],['FRA','NRT'],['AMS','JFK'],
+  ['DEL','NRT'],['DEL','DPS'],['MIA','LAX'],['JFK','LAX'],
+];
+const TIER_COLORS = {epicenter:'#C1272D',severe:'#E07020',moderate:'#D4A843',peripheral:'#4A90A4'};
+
+// ═══════════════════════════════════════════════════════════
+//  LOAD NATURAL EARTH 110m LAND DATA (real coastlines)
+//  then init all three visualizations
+// ═══════════════════════════════════════════════════════════
+let LAND_POLYGONS = []; // will hold arrays of [lon, lat] rings
+
+async function loadLandData() {
+  try {
+    const resp = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json');
+    const topo = await resp.json();
+    const geo = topojson.feature(topo, topo.objects.land);
+    geo.features.forEach(f => {
+      if (f.geometry.type === 'Polygon') {
+        f.geometry.coordinates.forEach(ring => LAND_POLYGONS.push(ring));
+      } else if (f.geometry.type === 'MultiPolygon') {
+        f.geometry.coordinates.forEach(poly => poly.forEach(ring => LAND_POLYGONS.push(ring)));
+      }
+    });
+  } catch(e) {
+    console.warn('Could not load Natural Earth data, falling back to basic outlines');
+  }
+  // Init all visualizations once data is ready
+  initGlobe();
+  initFlatMap();
+  initNetwork();
+}
+
+// Helper: draw all land polygons onto a 2D canvas context
+// projFn: (lon, lat) => [x, y]
+function drawLandOnCanvas(ctx, projFn, fillStyle, strokeStyle, lineWidth) {
+  LAND_POLYGONS.forEach(ring => {
+    if (ring.length < 3) return;
+    ctx.beginPath();
+    ring.forEach(([lon, lat], i) => {
+      const [x, y] = projFn(lon, lat);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = fillStyle;
+    ctx.fill();
+    if (strokeStyle) {
+      ctx.strokeStyle = strokeStyle;
+      ctx.lineWidth = lineWidth || 0.8;
+      ctx.stroke();
+    }
+  });
+}
+
+// ════════════════════════════════════════
+//  GLOBE (VIZ 1)
+// ════════════════════════════════════════
+function initGlobe(){
+  const container = document.getElementById('globe-container');
+  const W = container.clientWidth, H = container.clientHeight || 560;
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0B0F14);
+
+  // Camera starts looking at Dubai (lat 25, lon 55)
+  // Convert to sphere coords for camera position
+  const dubaiLat = 25, dubaiLon = 55;
+  const phi = (90 - dubaiLat) * Math.PI / 180;
+  const theta = (dubaiLon + 180) * Math.PI / 180;
+  const camDist = 3.0;
+  const camX = -camDist * Math.sin(phi) * Math.cos(theta);
+  const camY = camDist * Math.cos(phi) * 0.35; // slight elevation
+  const camZ = camDist * Math.sin(phi) * Math.sin(theta);
+
+  const camera = new THREE.PerspectiveCamera(45, W/H, 0.1, 1000);
+  camera.position.set(camX, camY, camZ);
+  camera.lookAt(0, 0, 0);
+
+  const renderer = new THREE.WebGLRenderer({antialias:true});
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  container.appendChild(renderer.domElement);
+
+  // Build continent texture on a 2D canvas
+  const texW = 2048, texH = 1024;
+  const texCanvas = document.createElement('canvas');
+  texCanvas.width = texW; texCanvas.height = texH;
+  const tc = texCanvas.getContext('2d');
+
+  tc.fillStyle = '#0A1628';
+  tc.fillRect(0, 0, texW, texH);
+
+  // Lat/lon grid
+  tc.strokeStyle = 'rgba(255,255,255,0.035)';
+  tc.lineWidth = 0.5;
+  for (let lon = -180; lon <= 180; lon += 30) {
+    const x = ((lon + 180) / 360) * texW;
+    tc.beginPath(); tc.moveTo(x, 0); tc.lineTo(x, texH); tc.stroke();
+  }
+  for (let lat = -90; lat <= 90; lat += 30) {
+    const y = ((90 - lat) / 180) * texH;
+    tc.beginPath(); tc.moveTo(0, y); tc.lineTo(texW, y); tc.stroke();
+  }
+
+  // Draw Natural Earth land onto texture
+  drawLandOnCanvas(tc, (lon, lat) => [((lon+180)/360)*texW, ((90-lat)/180)*texH],
+    'rgba(18,36,58,0.9)', 'rgba(55,95,135,0.4)', 1.2);
+
+  const globeTexture = new THREE.CanvasTexture(texCanvas);
+  const globeGeo = new THREE.SphereGeometry(1, 64, 64);
+  const globeMat = new THREE.MeshPhongMaterial({ map: globeTexture, specular: 0x111111, shininess: 5, transparent: true, opacity: 0.97 });
+  const globe = new THREE.Mesh(globeGeo, globeMat);
+  scene.add(globe);
+
+  const wireGeo = new THREE.SphereGeometry(1.002, 36, 18);
+  const wireMat = new THREE.MeshBasicMaterial({color:0x1a2a3a, wireframe:true, transparent:true, opacity:0.05});
+  scene.add(new THREE.Mesh(wireGeo, wireMat));
+
+  const atmosGeo = new THREE.SphereGeometry(1.06, 64, 64);
+  const atmosMat = new THREE.MeshBasicMaterial({color:0x3366aa, transparent:true, opacity:0.06, side:THREE.BackSide});
+  scene.add(new THREE.Mesh(atmosGeo, atmosMat));
+
+  const ambient = new THREE.AmbientLight(0x445566, 0.7);
+  scene.add(ambient);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+  dirLight.position.set(3, 2, 4);
+  scene.add(dirLight);
+
+  function latLonToVec3(lat, lon, r=1.01) {
+    const p = (90 - lat) * Math.PI / 180;
+    const t = (lon + 180) * Math.PI / 180;
+    return new THREE.Vector3(-r*Math.sin(p)*Math.cos(t), r*Math.cos(p), r*Math.sin(p)*Math.sin(t));
+  }
+
+  const markerGroup = new THREE.Group();
+  scene.add(markerGroup);
+
+  const airportMeshes = [];
+  AIRPORTS.forEach(a => {
+    const pos = latLonToVec3(a.lat, a.lon);
+    const col = new THREE.Color(TIER_COLORS[a.tier]||'#4A90A4');
+    const size = a.tier==='epicenter'?0.022:0.015;
+    const geo = new THREE.SphereGeometry(size, 12, 12);
+    const mat = new THREE.MeshBasicMaterial({color:0x1E2A33, transparent:true, opacity:0.3});
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.copy(pos);
+    mesh.userData = {...a, activeColor:col, active:false};
+    markerGroup.add(mesh);
+    airportMeshes.push(mesh);
+    const spriteMat = new THREE.SpriteMaterial({color:col, transparent:true, opacity:0, blending:THREE.AdditiveBlending});
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.position.copy(pos);
+    sprite.scale.set(0.06, 0.06, 1);
+    mesh.userData.glow = sprite;
+    markerGroup.add(sprite);
+  });
+
+  const ringGroup = new THREE.Group();
+  scene.add(ringGroup);
+
+  function createShockRing(cLat, cLon, maxAngle, color) {
+    const segs = 96;
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(segs*3), 3));
+    const mat = new THREE.LineBasicMaterial({color, transparent:true, opacity:0.6});
+    const ring = new THREE.LineLoop(geo, mat);
+    ring.userData = {centerLat:cLat, centerLon:cLon, maxAngle, segments:segs};
+    ringGroup.add(ring);
+    return ring;
+  }
+
+  function updateRingGeo(ring, angleDeg) {
+    const {centerLat, centerLon, segments} = ring.userData;
+    const pos = ring.geometry.attributes.position.array;
+    const ar = angleDeg * Math.PI / 180;
+    for (let i = 0; i < segments; i++) {
+      const b = (i / segments) * Math.PI * 2;
+      const lat2 = Math.asin(Math.sin(centerLat*Math.PI/180)*Math.cos(ar)+Math.cos(centerLat*Math.PI/180)*Math.sin(ar)*Math.cos(b));
+      const lon2 = centerLon*Math.PI/180+Math.atan2(Math.sin(b)*Math.sin(ar)*Math.cos(centerLat*Math.PI/180),Math.cos(ar)-Math.sin(centerLat*Math.PI/180)*Math.sin(lat2));
+      const p = latLonToVec3(lat2*180/Math.PI, lon2*180/Math.PI, 1.015);
+      pos[i*3]=p.x; pos[i*3+1]=p.y; pos[i*3+2]=p.z;
+    }
+    ring.geometry.attributes.position.needsUpdate = true;
+  }
+
+  const arcGroup = new THREE.Group();
+  scene.add(arcGroup);
+  const arcLines = [];
+  const nodeMapG = {};
+  AIRPORTS.forEach(a => nodeMapG[a.code]=a);
+  EDGES.forEach(([fc,tc_])=>{
+    const f=nodeMapG[fc],t=nodeMapG[tc_];
+    if(f&&t){
+      const s=latLonToVec3(f.lat,f.lon),e=latLonToVec3(t.lat,t.lon);
+      const m=s.clone().add(e).multiplyScalar(0.5).normalize().multiplyScalar(1.15);
+      const curve=new THREE.QuadraticBezierCurve3(s,m,e);
+      const geo=new THREE.BufferGeometry().setFromPoints(curve.getPoints(32));
+      const mat=new THREE.LineBasicMaterial({color:0xC1272D,transparent:true,opacity:0});
+      const line=new THREE.Line(geo,mat);
+      line.userData={from:f,to:t,active:false};
+      arcGroup.add(line);
+      arcLines.push(line);
+    }
+  });
+
+  let animTime=0, playing=false, animPhase=-1;
+  const rings=[];
+  const PL_G=['Feb 28: Gulf airspace collapses','Mar 1-2: Connecting hubs severed','Mar 3-5: European hubs degrade','Mar 5-8: Global knock-on delays','Cascade complete'];
+
+  function easeOut(t){return 1-Math.pow(1-t,3);}
+
+  function activatePhase(p){
+    airportMeshes.forEach(m=>{if(m.userData.phase===p){m.userData.active=true;m.material.color.copy(m.userData.activeColor);m.material.opacity=1;m.userData.glow.material.opacity=0.5;}});
+    arcLines.forEach(l=>{
+      const fa=airportMeshes.find(m=>m.userData.code===l.userData.from.code);
+      const ta=airportMeshes.find(m=>m.userData.code===l.userData.to.code);
+      if(fa?.userData.active&&ta?.userData.active&&!l.userData.active){l.userData.active=true;l.material.opacity=0.15;}
+    });
+  }
+
+  function tick(){
+    if(!playing){renderer.render(scene,camera);return;}
+    animTime+=0.016;
+    if(animPhase<0&&animTime>0.3){animPhase=0;activatePhase(0);rings.push({ring:createShockRing(27,52,8,0xC1272D),st:animTime,dur:2,ma:8});}
+    if(animPhase<1&&animTime>2.5){animPhase=1;activatePhase(1);rings.push({ring:createShockRing(27,52,25,0xE07020),st:animTime,dur:2.5,ma:25});}
+    if(animPhase<2&&animTime>5){animPhase=2;activatePhase(2);rings.push({ring:createShockRing(27,52,45,0xD4A843),st:animTime,dur:3,ma:45});}
+    if(animPhase<3&&animTime>7.5){animPhase=3;activatePhase(3);rings.push({ring:createShockRing(27,52,80,0x4A90A4),st:animTime,dur:4,ma:80});}
+    rings.forEach(r=>{const p=Math.min(1,(animTime-r.st)/r.dur);updateRingGeo(r.ring,r.ma*easeOut(p));r.ring.material.opacity=0.5*(1-p*0.7);});
+    airportMeshes.forEach(m=>{if(m.userData.active&&m.userData.tier==='epicenter'){const p=(Math.sin(animTime*3+m.userData.lon*0.1)+1)/2;m.userData.glow.material.opacity=0.3+p*0.4;m.scale.setScalar(1+p*0.3);}});
+    // Slow rotation
+    [markerGroup,ringGroup,arcGroup,globe].forEach(g=>g.rotation.y+=0.0008);
+    document.querySelector('#g-phase .hl').textContent=animPhase>=0?PL_G[Math.min(animPhase,4)]:'Ready';
+    renderer.render(scene,camera);
+    requestAnimationFrame(tick);
+  }
+
+  function resetGlobe(){
+    playing=false;animTime=0;animPhase=-1;
+    airportMeshes.forEach(m=>{m.userData.active=false;m.material.color.set(0x1E2A33);m.material.opacity=0.3;m.userData.glow.material.opacity=0;m.scale.setScalar(1);});
+    arcLines.forEach(l=>{l.userData.active=false;l.material.opacity=0;});
+    rings.forEach(r=>ringGroup.remove(r.ring));rings.length=0;
+    document.querySelector('#g-phase .hl').textContent='Ready';
+    renderer.render(scene,camera);
+  }
+
+  document.getElementById('g-play').addEventListener('click',()=>{if(!playing){playing=true;tick();}});
+  document.getElementById('g-reset').addEventListener('click',resetGlobe);
+
+  let isDragging=false, prevMouse={x:0,y:0};
+  renderer.domElement.addEventListener('mousedown',e=>{isDragging=true;prevMouse={x:e.clientX,y:e.clientY};});
+  window.addEventListener('mouseup',()=>isDragging=false);
+  renderer.domElement.addEventListener('mousemove',e=>{
+    if(isDragging){
+      const dx=(e.clientX-prevMouse.x)*0.005;
+      [markerGroup,ringGroup,arcGroup,globe].forEach(g=>g.rotation.y+=dx);
+      camera.position.y=Math.max(-1.5,Math.min(1.5,camera.position.y+(e.clientY-prevMouse.y)*0.0015));
+      camera.lookAt(0,0,0);
+      prevMouse={x:e.clientX,y:e.clientY};
+      if(!playing)renderer.render(scene,camera);
+    }
+    const rect=renderer.domElement.getBoundingClientRect();
+    const mouse=new THREE.Vector2(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);
+    const ray=new THREE.Raycaster();
+    ray.set(camera.position,mouse.clone().unproject(camera).sub(camera.position).normalize());
+    const hits=ray.intersectObjects(airportMeshes);
+    const tip=document.getElementById('tooltip1');
+    if(hits.length>0&&hits[0].object.userData.active){
+      const d=hits[0].object.userData;
+      tip.style.opacity=1;
+      tip.innerHTML=`<div class="tt-name">${d.name} (${d.code})</div><div class="tt-stat">Cancelled: ${d.cancelled}</div><div>${d.note}</div>`;
+      tip.style.left=Math.min(e.clientX-rect.left+12,rect.width-220)+'px';
+      tip.style.top=(e.clientY-rect.top-10)+'px';
+    } else tip.style.opacity=0;
+  });
+  renderer.domElement.addEventListener('mouseleave',()=>document.getElementById('tooltip1').style.opacity=0);
+  renderer.render(scene,camera);
+  window.addEventListener('resize',()=>{const w=container.clientWidth,h=container.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);if(!playing)renderer.render(scene,camera);});
+}
+
+
+// ════════════════════════════════════════
+//  FLAT MERCATOR MAP (VIZ 1b)
+// ════════════════════════════════════════
+function initFlatMap(){
+  const canvas=document.getElementById('flatmap');
+  const ctx=canvas.getContext('2d');
+  const tooltip=document.getElementById('tooltip-flat');
+  const W=canvas.width, H=canvas.height;
+  const lonMin=-135,lonMax=155,latMin=-20,latMax=72;
+
+  function project(lat,lon){return[((lon-lonMin)/(lonMax-lonMin))*W,((latMax-lat)/(latMax-latMin))*H];}
+
+  const epicenter=project(27,52);
+  let animPhase=-1, animTime=0, playing=false;
+  const rings=[];
+  const PL=['Feb 28: Gulf airspace collapses','Mar 1-2: Connecting hubs severed','Mar 3-5: European hubs degrade','Mar 5-8: Global knock-on delays','Cascade complete'];
+
+  function easeOut(t){return 1-Math.pow(1-t,3);}
+
+  function drawBase(){
+    ctx.fillStyle='#0B0F14';ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(255,255,255,0.03)';ctx.lineWidth=0.5;
+    for(let lon=-120;lon<=150;lon+=30){const[x]=project(0,lon);ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let lat=-10;lat<=70;lat+=15){const[,y]=project(lat,0);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    // Natural Earth land
+    drawLandOnCanvas(ctx, (lon, lat) => project(lat, lon),
+      'rgba(18,36,58,0.7)', 'rgba(55,95,135,0.3)', 0.8);
+  }
+
+  function drawRings(){
+    rings.forEach(r=>{
+      const p=Math.min(1,(animTime-r.st)/r.dur);if(p<0)return;
+      const radius=r.mr*easeOut(p);
+      ctx.beginPath();ctx.arc(epicenter[0],epicenter[1],radius,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(184,41,47,${(1-p)*r.ba})`;ctx.lineWidth=2.5-p*1.5;ctx.stroke();
+    });
+  }
+
+  function drawEdges(){
+    EDGES.forEach(([fc,tc])=>{
+      const f=AIRPORTS.find(a=>a.code===fc),t=AIRPORTS.find(a=>a.code===tc);
+      if(!f||!t||f.phase>animPhase||t.phase>animPhase)return;
+      const[x1,y1]=project(f.lat,f.lon),[x2,y2]=project(t.lat,t.lon);
+      const mx=(x1+x2)/2,my=(y1+y2)/2-Math.abs(x2-x1)*0.08;
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.quadraticCurveTo(mx,my,x2,y2);
+      ctx.strokeStyle='rgba(184,41,47,0.1)';ctx.lineWidth=0.8;ctx.stroke();
+    });
+  }
+
+  function drawAirports(){
+    AIRPORTS.forEach(a=>{
+      const[x,y]=project(a.lat,a.lon);a._fx=x;a._fy=y;
+      const active=a.phase<=animPhase, hex=TIER_COLORS[a.tier]||'#4A90A4';
+      if(active){
+        const grd=ctx.createRadialGradient(x,y,0,x,y,a.tier==='epicenter'?20:14);
+        grd.addColorStop(0,hex+'66');grd.addColorStop(1,hex+'00');ctx.fillStyle=grd;ctx.fillRect(x-22,y-22,44,44);
+        ctx.beginPath();ctx.arc(x,y,a.tier==='epicenter'?5:3.5,0,Math.PI*2);ctx.fillStyle=hex;ctx.fill();
+        if(a.tier==='epicenter'&&animPhase>=0){const p=(Math.sin(animTime*3+a.lon)+1)/2;ctx.beginPath();ctx.arc(x,y,5+p*8,0,Math.PI*2);ctx.strokeStyle=hex+'44';ctx.lineWidth=1;ctx.stroke();}
+        ctx.font='600 10px "Source Sans 3",sans-serif';ctx.fillStyle=hex+'dd';ctx.textAlign='left';ctx.fillText(a.code,x+(a.tier==='epicenter'?8:6),y+3);
+      } else {ctx.beginPath();ctx.arc(x,y,2,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.12)';ctx.fill();}
+    });
+  }
+
+  function render(){drawBase();drawEdges();drawRings();drawAirports();}
+
+  function tick(){
+    if(!playing)return;animTime+=0.016;
+    if(animPhase<0&&animTime>0.3){animPhase=0;rings.push({st:animTime,dur:2.5,mr:50,ba:0.55});}
+    if(animPhase<1&&animTime>2){animPhase=1;rings.push({st:animTime,dur:3,mr:140,ba:0.4});}
+    if(animPhase<2&&animTime>4){animPhase=2;rings.push({st:animTime,dur:3.5,mr:280,ba:0.25});}
+    if(animPhase<3&&animTime>6.5){animPhase=3;rings.push({st:animTime,dur:4,mr:480,ba:0.15});}
+    document.querySelector('#fm-phase .hl').textContent=animPhase>=0?PL[Math.min(animPhase,4)]:'Ready';
+    render();requestAnimationFrame(tick);
+  }
+
+  document.getElementById('fm-play').addEventListener('click',()=>{if(!playing){playing=true;tick();}});
+  document.getElementById('fm-reset').addEventListener('click',()=>{playing=false;animPhase=-1;animTime=0;rings.length=0;document.querySelector('#fm-phase .hl').textContent='Ready';render();});
+
+  canvas.addEventListener('mousemove',e=>{
+    const rect=canvas.getBoundingClientRect(),sx=W/rect.width,sy=H/rect.height;
+    const mx=(e.clientX-rect.left)*sx,my=(e.clientY-rect.top)*sy;
+    let hit=null;AIRPORTS.forEach(a=>{if(a._fx!==undefined&&Math.hypot(mx-a._fx,my-a._fy)<14)hit=a;});
+    if(hit&&hit.phase<=animPhase){tooltip.style.opacity=1;tooltip.innerHTML=`<div class="tt-name">${hit.name} (${hit.code})</div><div class="tt-stat">Cancelled: ${hit.cancelled}</div><div>${hit.note}</div>`;
+    tooltip.style.left=Math.min(e.clientX-rect.left+14,rect.width-220)+'px';tooltip.style.top=(e.clientY-rect.top-10)+'px';}else tooltip.style.opacity=0;
+  });
+  canvas.addEventListener('mouseleave',()=>tooltip.style.opacity=0);
+  render();
+}
+
+
+// ════════════════════════════════════════
+//  NETWORK CONTAGION (VIZ 2)
+// ════════════════════════════════════════
+function initNetwork(){
+  const canvas=document.getElementById('network');
+  const ctx=canvas.getContext('2d');
+  const tooltip=document.getElementById('tooltip2');
+  const W=canvas.width, H=canvas.height, cx=W/2, cy=H/2;
+
+  const nodeMap={};
+  const nodes=AIRPORTS.map((a,i)=>{
+    const pa=AIRPORTS.filter(b=>b.phase===a.phase);const idx=pa.indexOf(a);
+    const spread=(Math.PI*2)/Math.max(pa.length,1);const angle=a.phase*0.5+idx*spread;
+    let r=a.phase===0?40+Math.random()*20:a.phase===1?135+Math.random()*25:a.phase===2?225+Math.random()*20:300+Math.random()*20;
+    const n={...a,x:cx+Math.cos(angle)*r,y:cy+Math.sin(angle)*r,infected:false,idx:i};nodeMap[a.code]=n;return n;
+  });
+  const edges=EDGES.map(([f,t])=>({from:nodeMap[f],to:nodeMap[t],active:false,at:-1})).filter(e=>e.from&&e.to);
+  let animTime=0,playing=false,currentPhase=-1;
+  const PL=['Hour 0: Gulf airspace collapses','Hours 1-24: Connecting routes sever','Days 2-5: European hub degradation','Days 5-8: Global cascade','Contagion complete: 23,000+ flights lost'];
+  function ease(t){return 1-Math.pow(1-t,3);}
+  function infectPhase(p){nodes.forEach(n=>{if(n.phase===p&&!n.infected){n.infected=true;n.it=animTime;}});edges.forEach(e=>{if(e.from.infected&&e.to.infected&&!e.active){e.active=true;e.at=animTime+Math.random()*0.5;}});}
+  function draw(){
+    ctx.fillStyle='#0B0F14';ctx.fillRect(0,0,W,H);
+    [40,135,225,300].forEach(r=>{ctx.beginPath();ctx.arc(cx,cy,r+15,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,0.025)';ctx.lineWidth=0.5;ctx.stroke();});
+    edges.forEach(e=>{
+      if(e.active){const p=Math.min(1,(animTime-e.at)/0.8);const mx=e.from.x+(e.to.x-e.from.x)*ease(p),my=e.from.y+(e.to.y-e.from.y)*ease(p);ctx.beginPath();ctx.moveTo(e.from.x,e.from.y);ctx.lineTo(mx,my);ctx.strokeStyle=`rgba(184,41,47,${0.12+0.2*(1-p)})`;ctx.lineWidth=1+(1-p);ctx.stroke();}
+      else if(!e.from.infected&&!e.to.infected){ctx.beginPath();ctx.moveTo(e.from.x,e.from.y);ctx.lineTo(e.to.x,e.to.y);ctx.strokeStyle='rgba(255,255,255,0.02)';ctx.lineWidth=0.5;ctx.stroke();}
+    });
+    nodes.forEach(n=>{
+      const col=TIER_COLORS[n.tier]||'#1E2A33';
+      if(n.infected){
+        const grd=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.tier==='epicenter'?26:16);grd.addColorStop(0,col+'55');grd.addColorStop(1,col+'00');ctx.fillStyle=grd;ctx.beginPath();ctx.arc(n.x,n.y,n.tier==='epicenter'?26:16,0,Math.PI*2);ctx.fill();
+        const r=n.tier==='epicenter'?7:n.tier==='severe'?5.5:4.5;ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);ctx.fillStyle=col;ctx.fill();
+        if(n.tier==='epicenter'){const p=(Math.sin(animTime*2.5+n.idx)+1)/2;ctx.beginPath();ctx.arc(n.x,n.y,7+p*10,0,Math.PI*2);ctx.strokeStyle=col+'44';ctx.lineWidth=1;ctx.stroke();}
+        ctx.font='600 10px "Source Sans 3",sans-serif';ctx.fillStyle=col;ctx.textAlign='center';ctx.fillText(n.code,n.x,n.y-(n.tier==='epicenter'?13:9));
+      }else{ctx.beginPath();ctx.arc(n.x,n.y,2.5,0,Math.PI*2);ctx.fillStyle='#1E2A33';ctx.fill();ctx.font='400 9px "Source Sans 3",sans-serif';ctx.fillStyle='rgba(255,255,255,0.12)';ctx.textAlign='center';ctx.fillText(n.code,n.x,n.y-6);}
+    });
+    ctx.font='500 12px "Source Code Pro",monospace';ctx.fillStyle='rgba(255,255,255,0.4)';ctx.textAlign='left';ctx.fillText(`Nodes infected: ${nodes.filter(n=>n.infected).length} / ${nodes.length}`,14,H-14);
+  }
+  function tick(){if(!playing)return;animTime+=0.016;
+    if(currentPhase<0&&animTime>0.3){currentPhase=0;infectPhase(0);}
+    if(currentPhase<1&&animTime>2.5){currentPhase=1;infectPhase(1);}
+    if(currentPhase<2&&animTime>5){currentPhase=2;infectPhase(2);}
+    if(currentPhase<3&&animTime>7.5){currentPhase=3;infectPhase(3);}
+    document.querySelector('#n-phase .hl').textContent=currentPhase>=0?PL[Math.min(currentPhase,4)]:'Ready';
+    draw();requestAnimationFrame(tick);
+  }
+  document.getElementById('n-play').addEventListener('click',()=>{if(!playing){playing=true;tick();}});
+  document.getElementById('n-reset').addEventListener('click',()=>{playing=false;currentPhase=-1;animTime=0;nodes.forEach(n=>{n.infected=false;});edges.forEach(e=>{e.active=false;e.at=-1;});document.querySelector('#n-phase .hl').textContent='Ready';draw();});
+  canvas.addEventListener('mousemove',e=>{const rect=canvas.getBoundingClientRect(),sx=W/rect.width,sy=H/rect.height,mx=(e.clientX-rect.left)*sx,my=(e.clientY-rect.top)*sy;let hit=null;nodes.forEach(n=>{if(Math.hypot(mx-n.x,my-n.y)<14)hit=n;});if(hit&&hit.infected){tooltip.style.opacity=1;tooltip.innerHTML=`<div class="tt-name">${hit.name} (${hit.code})</div><div class="tt-stat">Cancelled: ${hit.cancelled}</div><div>${hit.note}</div>`;tooltip.style.left=Math.min(e.clientX-rect.left+12,rect.width-220)+'px';tooltip.style.top=(e.clientY-rect.top-10)+'px';}else tooltip.style.opacity=0;});
+  canvas.addEventListener('mouseleave',()=>tooltip.style.opacity=0);
+  draw();
+}
+
+// ════════════════════════════════════════
+//  BOOT: load Natural Earth, then init all
+// ════════════════════════════════════════
+loadLandData();
+</script>
+</body>
+</html>
