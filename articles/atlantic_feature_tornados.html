@@ -26,18 +26,42 @@
     font-size: 19px;
     -webkit-font-smoothing: antialiased;
   }
+  .writing-sample-banner {
+    background: var(--atlantic-red);
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    font-family: 'Source Sans 3', Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
   .masthead {
     text-align: center;
-    padding: 18px 20px;
+    padding: 14px 20px;
     border-bottom: 1px solid var(--atlantic-rule);
     font-family: 'Source Sans 3', Helvetica, sans-serif;
+  }
+  .masthead .in-style-of {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    letter-spacing: 5px;
-    font-size: 13px;
+    color: var(--atlantic-light);
+    margin-bottom: 4px;
+  }
+  .masthead .pub-name {
+    display: block;
+    font-size: 22px;
     font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
     color: var(--atlantic-text);
   }
-  .masthead span { color: var(--atlantic-red); }
   .hero {
     max-width: 780px;
     margin: 0 auto;
@@ -251,12 +275,20 @@
     .hero h1 { font-size: 32px; }
     .pullquote { font-size: 20px; margin-left: 0; }
     .dashboard-frame { height: 400px; }
+    .writing-sample-banner { font-size: 10px; letter-spacing: 1px; padding: 9px 12px; }
+    .masthead .pub-name { font-size: 18px; letter-spacing: 4px; }
+    .masthead .in-style-of { font-size: 10px; }
   }
 </style>
 </head>
 <body>
 
-<div class="masthead">The Atlantic <span>·</span> Planet</div>
+<div class="writing-sample-banner">Unpublished Writing Sample · Not Affiliated With The Atlantic</div>
+
+<div class="masthead">
+  <p class="in-style-of">in the style of</p>
+  <span class="pub-name">The Atlantic</span>
+</div>
 
 <div class="hero">
   <div class="hero-section-label">Climate &amp; Politics</div>

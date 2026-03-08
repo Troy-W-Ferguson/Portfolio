@@ -488,6 +488,9 @@
      To add a new tab: add a button here AND a matching div below.
      ================================================================ -->
 <nav class="tab-nav">
+    <button class="tab-btn" data-tab="data">
+        <span class="tab-icon">▦</span>Data Journalism
+    </button>
     <button class="tab-btn active" data-tab="business">
         <span class="tab-icon">◇</span>US Business
     </button>
@@ -500,15 +503,73 @@
     <button class="tab-btn" data-tab="environment">
         <span class="tab-icon">◉</span>Environment
     </button>
-    <button class="tab-btn" data-tab="justice">
-        <span class="tab-icon">◈</span>Justice
-    </button>
-    <button class="tab-btn" data-tab="data">
-        <span class="tab-icon">▦</span>Data Journalism
+    <button class="tab-btn" data-tab="government">
+        <span class="tab-icon">◈</span>Government
     </button>
 </nav>
 
 <main>
+
+    <!-- ================================================================
+         DATA JOURNALISM TAB
+         These cards link to interactive dashboards (separate HTML files).
+         Each dashboard lives in the /dashboards/ folder of your GitHub repo.
+         The "dashboard-hint" gives recruiters a visual cue that a click
+         opens a live interactive project, not a static article.
+         ================================================================ -->
+    <div class="tab-panel" id="data">
+        <p class="section-intro">
+            Interactive data projects that combine investigative reporting with visualization and analysis.
+            Each project links to a live dashboard — built with R, JavaScript, and open-source mapping tools.
+        </p>
+
+        <div class="article-grid">
+
+            <!-- FEATURED: Iran-Israel Conflict Dashboards -->
+            <div class="article-card featured">
+                <div>
+                    <div class="article-meta">
+                        <span class="publication">Interactive Dashboard · Conflict Analysis</span>
+                        <span>2026</span>
+                    </div>
+                    <h3><a href="dashboards/iran-israel-conflict-dashboards.html" target="_blank">Iran–Israel Conflict Dashboards 2024-2026: Operation True Promise I, the Twelve-Day War & Epic Fury</a></h3>
+                    <p class="article-excerpt">
+                        Interactive dashboards mapping Iran's first direct attack on Israel in April 2024
+                        the subsequent Twelve-Day War and the current war — tracking 320+ projectiles, coalition intercept rates,
+                        escalation timelines, and the multinational defensive response across three unprecedented
+                        episodes of direct state-on-state conflict in the Middle East.
+                    </p>
+                    <div class="dashboard-hint">
+                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        Opens interactive dashboard
+                    </div>
+                </div>
+                <span class="article-tag interactive">Dashboard</span>
+            </div>
+
+            <!-- Bristol trolley pollution dashboard -->
+            <div class="article-card">
+                <div>
+                    <div class="article-meta">
+                        <span class="publication">Interactive Dashboard</span>
+                        <span>2026</span>
+                    </div>
+                    <h3><a href="dashboards/bristol-trolley-dashboard.html" target="_blank">Bristol River Trolley Survey: Mapping Urban Pollution in Waterways</a></h3>
+                    <p class="article-excerpt">
+                        An interactive map and data analysis tracking the scale and distribution of shopping trolley
+                        dumping across Bristol's river systems from 2005 to 2011 — revealing spatial patterns tied to
+                        retail proximity, urban density, and municipal enforcement gaps.
+                    </p>
+                    <div class="dashboard-hint">
+                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        Opens interactive dashboard
+                    </div>
+                </div>
+                <span class="article-tag interactive">Dashboard</span>
+            </div>
+
+        </div>
+    </div>
 
     <!-- ================================================================
          US BUSINESS TAB
@@ -524,8 +585,27 @@
 
         <div class="article-grid">
 
-            <!-- FEATURED: Playing with Fire (insurance/CME piece) -->
+            <!-- FEATURED: The Shockwave (global aviation / conflict infrastructure) -->
             <div class="article-card featured">
+                <div>
+                    <div class="article-meta">
+                        <span class="publication">Style of The Atlantic · Global Aviation</span>
+                        <span>2026</span>
+                    </div>
+                    <h3><a href="articles/the-shockwave.html" target="_blank">The Shockwave</a></h3>
+                    <p class="article-excerpt">
+                        When conflict closed the airspace over Ukraine, insurers stopped writing policies and
+                        airlines rerouted around a continent. An investigation into how a cascade of geopolitical
+                        shocks — from the Black Sea to the Red Sea to the Strait of Hormuz — has permanently
+                        redrawn the map of global aviation, who absorbs the cost when routes disappear, and why
+                        the industry that once priced catastrophic risk has quietly stopped trying.
+                    </p>
+                </div>
+                <span class="article-tag">Investigation</span>
+            </div>
+
+            <!-- Playing with Fire (insurance/CME piece) -->
+            <div class="article-card">
                 <div>
                     <div class="article-meta">
                         <span class="publication">Style of The Economist · Finance & Economics</span>
@@ -533,9 +613,9 @@
                     </div>
                     <h3><a href="articles/economist-playing-with-fire.html" target="_blank">Playing with Fire</a></h3>
                     <p class="article-excerpt">
-                        From the Great Chicago Fire to CME Group's data-centre meltdown, insurers have always 
-                        grappled with risks they cannot model. An examination of how AI is automating the insurance 
-                        industry's oldest delusion — that historical data predicts the future — while catastrophic 
+                        From the Great Chicago Fire to CME Group's data-centre meltdown, insurers have always
+                        grappled with risks they cannot model. An examination of how AI is automating the insurance
+                        industry's oldest delusion — that historical data predicts the future — while catastrophic
                         risk migrates to public backstops ill-equipped to absorb it.
                     </p>
                 </div>
@@ -693,76 +773,18 @@
     </div>
 
     <!-- ================================================================
-         JUSTICE TAB
-         Still in development — placeholder cards only.
-         Replace href="#" with real links when articles are ready.
+         GOVERNMENT TAB
+         Accountability and government reporting.
          ================================================================ -->
-    <div class="tab-panel" id="justice">
+    <div class="tab-panel" id="government">
         <p class="section-intro">
-            Accountability journalism focused on institutional failures, infrastructure neglect, 
-            and the communities left behind by policy decisions.
+            Reporting on government institutions, policy accountability, and the communities left
+            behind by decisions made in Washington — including congressional oversight and infrastructure neglect.
         </p>
 
         <div class="article-grid">
 
-            <div class="article-card">
-                <div>
-                    <div class="article-meta">
-                        <span class="publication">In Progress</span>
-                        <span>2026</span>
-                    </div>
-                    <h3><a href="#">Broken Pipes, Broken Promises: Water Infrastructure Failures in the American South</a></h3>
-                    <p class="article-excerpt">
-                        An investigative pitch examining how decades of disinvestment in water systems 
-                        across Southern cities have created a slow-moving public health crisis — and who profits 
-                        from inaction.
-                    </p>
-                </div>
-                <span class="article-tag">In Progress</span>
-            </div>
-
-        </div>
-        <div class="placeholder-note">Additional pieces in development — check back soon.</div>
-    </div>
-
-    <!-- ================================================================
-         DATA JOURNALISM TAB
-         These cards link to interactive dashboards (separate HTML files).
-         Each dashboard lives in the /dashboards/ folder of your GitHub repo.
-         The "dashboard-hint" gives recruiters a visual cue that a click
-         opens a live interactive project, not a static article.
-         ================================================================ -->
-    <div class="tab-panel" id="data">
-        <p class="section-intro">
-            Interactive data projects that combine investigative reporting with visualization and analysis. 
-            Each project links to a live dashboard — built with R, JavaScript, and open-source mapping tools.
-        </p>
-
-        <div class="article-grid">
-
-            <!-- FEATURED: Iran-Israel Conflict Dashboards -->
-            <div class="article-card featured">
-                <div>
-                    <div class="article-meta">
-                        <span class="publication">Interactive Dashboard · Conflict Analysis</span>
-                        <span>2026</span>
-                    </div>
-                    <h3><a href="dashboards/iran-israel-conflict-dashboards.html" target="_blank">Iran–Israel Conflict Dashboards 2024-2026: Operation True Promise I, the Twelve-Day War & Epic Fury</a></h3>
-                    <p class="article-excerpt">
-                        Interactive dashboards mapping Iran's first direct attack on Israel in April 2024
-                        the subsequent Twelve-Day War and the current war — tracking 320+ projectiles, coalition intercept rates,
-                        escalation timelines, and the multinational defensive response across three unprecedented
-                        episodes of direct state-on-state conflict in the Middle East.
-                    </p>
-                    <div class="dashboard-hint">
-                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                        Opens interactive dashboard
-                    </div>
-                </div>
-                <span class="article-tag interactive">Dashboard</span>
-            </div>
-
-            <!-- Congress Bill Tracker -->
+            <!-- War Powers / Congress Bill Tracker (moved from Data Journalism) -->
             <div class="article-card">
                 <div>
                     <div class="article-meta">
@@ -774,7 +796,6 @@
                         Atlantic-style data journalism dashboard tracking S.J.Res. 104 — the bipartisan war powers
                         resolution that failed 47–53 in the Senate. Features an interactive congressional chamber
                         visualization, public opinion gauge, and clickable profiles of 10 prominent lawmakers.
-                        
                     </p>
                     <div class="dashboard-hint">
                         <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -784,29 +805,26 @@
                 <span class="article-tag interactive">Dashboard</span>
             </div>
 
-            <!-- Bristol trolley pollution dashboard -->
             <div class="article-card">
                 <div>
                     <div class="article-meta">
-                        <span class="publication">Interactive Dashboard</span>
+                        <span class="publication">In Progress</span>
                         <span>2026</span>
                     </div>
-                    <h3><a href="dashboards/bristol-trolley-dashboard.html" target="_blank">Bristol River Trolley Survey: Mapping Urban Pollution in Waterways</a></h3>
+                    <h3><a href="#">Broken Pipes, Broken Promises: Water Infrastructure Failures in the American South</a></h3>
                     <p class="article-excerpt">
-                        An interactive map and data analysis tracking the scale and distribution of shopping trolley
-                        dumping across Bristol's river systems from 2005 to 2011 — revealing spatial patterns tied to
-                        retail proximity, urban density, and municipal enforcement gaps.
+                        An investigative pitch examining how decades of disinvestment in water systems
+                        across Southern cities have created a slow-moving public health crisis — and who profits
+                        from inaction.
                     </p>
-                    <div class="dashboard-hint">
-                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                        Opens interactive dashboard
-                    </div>
                 </div>
-                <span class="article-tag interactive">Dashboard</span>
+                <span class="article-tag">In Progress</span>
             </div>
 
         </div>
+        <div class="placeholder-note">Additional pieces in development — check back soon.</div>
     </div>
+
 
 </main>
 
