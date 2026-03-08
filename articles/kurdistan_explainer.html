@@ -800,23 +800,27 @@ var kurdEthnic = [
 var tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 var tileAttr = '&copy; <a href="https://openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>';
 
-document.addEventListener('DOMContentLoaded', function() {
+function initMaps() {
 
   // MAP 1: REGIONAL
   window.map1 = L.map('map1').setView([36.5, 43.0], 6);
   L.tileLayer(tileUrl, {attribution:tileAttr, subdomains:'abcd'}).addTo(map1);
 
-  L.geoJSON(ADMIN_DATA, {
+  // Create elevated pane so KRG provinces always render on top
+  map1.createPane('krgPane');
+  map1.getPane('krgPane').style.zIndex = 450;
+
+  // Non-KRG context regions (Turkey, Iran, Syria Kurdish areas + Iraq context)
+  L.geoJSON({type:'FeatureCollection', features: ADMIN_DATA.features.filter(function(f){ return f.properties._type !== 'krg'; })}, {
     style: function(feature) {
       var p = feature.properties;
-      var isKRG = p._type === 'krg';
       var isCtx = p._type === 'iraq-other';
       return {
         color: p._color || '#333',
-        weight: isKRG ? 2.5 : (isCtx ? 0.8 : 2),
-        opacity: isCtx ? 0.3 : 0.8,
+        weight: isCtx ? 0.8 : 2,
+        opacity: isCtx ? 0.3 : 0.85,
         fillColor: p._color || '#333',
-        fillOpacity: isKRG ? 0.18 : (isCtx ? 0 : 0.12)
+        fillOpacity: isCtx ? 0 : 0.20
       };
     },
     onEachFeature: function(feature, layer) {
@@ -826,6 +830,16 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
         layer.bindPopup('<b style="color:' + p._color + ';">' + p._name + '</b><br>' + p._label + '<br><i style="color:#888;">geoBoundaries CC BY 4.0</i>');
       }
+    }
+  }).addTo(map1);
+
+  // KRG provinces — rendered in elevated pane, stronger styling
+  L.geoJSON({type:'FeatureCollection', features: ADMIN_DATA.features.filter(function(f){ return f.properties._type === 'krg'; })}, {
+    pane: 'krgPane',
+    style: { color:'#5ba3e8', weight:3, opacity:0.95, fillColor:'#5ba3e8', fillOpacity:0.30 },
+    onEachFeature: function(feature, layer) {
+      var p = feature.properties;
+      layer.bindPopup('<b style="color:#5ba3e8;">' + p._name + '</b><br>' + p._label + '<br><i style="color:#888;">geoBoundaries CC BY 4.0</i>');
     }
   }).addTo(map1);
 
@@ -892,6 +906,25 @@ document.addEventListener('DOMContentLoaded', function() {
       L.circleMarker([c[1],c[2]],{radius:4,color:'#c41e3a',fillColor:'#c41e3a',fillOpacity:0.9,weight:1}).addTo(map2).bindPopup('<b>'+c[0]+'</b><br>'+c[3]);
     }
   });
+
+  // Invalidate sizes after layout settles (handles font/image reflow)
+  setTimeout(function() {
+    if (window.map1) map1.invalidateSize();
+    if (window.map2) map2.invalidateSize();
+  }, 200);
+}
+
+// Robust init: works whether DOMContentLoaded has already fired or not
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initMaps);
+} else {
+  initMaps();
+}
+
+// Re-invalidate after all resources (web fonts, images) finish loading
+window.addEventListener('load', function() {
+  if (window.map1) map1.invalidateSize();
+  if (window.map2) map2.invalidateSize();
 });
 </script>
 
