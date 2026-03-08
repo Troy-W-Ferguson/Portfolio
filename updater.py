@@ -200,7 +200,7 @@ def build_timeline_entry(entry: dict) -> str:
         f'            <a class="source-link" href="{s["url"]}" target="_blank">{s["label"]}</a>'
         for s in entry.get("sources", [])
     )
-    data_fury = entry['data_fury']
+    data_fury = entry.get('data_fury', '')
     dot_color = (
         'var(--iran)'     if 'iran' in data_fury else
         'var(--israel)'   if 'us-israel' in data_fury else

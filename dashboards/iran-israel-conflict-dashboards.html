@@ -1727,7 +1727,7 @@
       <button class="filter-btn" data-filter-fury="iran">Iran Retaliation</button>
       <button class="filter-btn" data-filter-fury="regional">Regional Spillover</button>
       <button class="filter-btn" data-filter-fury="diplomatic">Diplomatic</button>
-      <button class="order-toggle-btn" data-timeline="timeline-fury" data-order="asc">↑ Oldest First</button>
+      <button class="order-toggle-btn" data-timeline="timeline-fury" data-order="asc">Sort by Date ↑</button>
     </div>
 
     <div class="timeline" id="timeline-fury">
@@ -3131,6 +3131,9 @@
             <a class="source-link" href="https://www.foxnews.com/politics/house-votes-let-trumps-operation-epic-fury-continue-iran" target="_blank">Fox News</a>
             <a class="source-link" href="https://www.cnbc.com/2026/03/05/iran-us-war-invasion-abbas-araghchi.html" target="_blank">CNBC (Araghchi/NBC)</a>
             <a class="source-link" href="https://www.npr.org/2026/03/04/nx-s1-5735867/war-powers-congress-iran" target="_blank">NPR</a>
+          </div>
+        </div>
+      </div>
 
       <div class="phase-divider"><span>Day 7 — March 6, 2026</span></div>
 
@@ -3389,6 +3392,9 @@
             <a class="source-link" href="https://www.newsweek.com/iran-war-news-live-updates-trump-israel-11631659" target="_blank">Newsweek Live</a>
             <a class="source-link" href="https://www.cnn.com/2026/03/05/middleeast/us-israel-iran-war-what-we-know-intl-hnk" target="_blank">CNN Day 7</a>
             <a class="source-link" href="https://israel-alma.org/daily-report-the-second-iran-war-march-6-2026-1600/" target="_blank">Alma Research Center Mar 6</a>
+          </div>
+        </div>
+      </div>
 
       <div class="tl-entry" data-fury="iran">
         <div class="tl-date"><div class="tl-day">6</div><div class="tl-month">Mar</div></div>
@@ -3435,6 +3441,9 @@
             <a class="source-link" href="https://www.timesofisrael.com/officer-seriously-wounded-in-lebanon-as-strikes-pound-hezbollah-bastion-near-beirut/" target="_blank">Times of Israel (IDF wounded)</a>
             <a class="source-link" href="https://israel-alma.org/daily-report-the-second-iran-war-march-6-2026-1600/" target="_blank">Alma Research Center Mar 6</a>
             <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Hezbollah%E2%80%93Israel_strikes" target="_blank">UNIFIL / Wikipedia</a>
+          </div>
+        </div>
+      </div>
 
       <div class="phase-divider"><span>Day 8 — March 7, 2026</span></div>
 
@@ -3781,7 +3790,7 @@
          are not yet publicly available with the same granularity as True Promise I.
          Gulf-state intercept totals are confirmed; Israeli system-level data is pending.
          This chart will be updated as IDF releases figures. -->
-    <div class="bar-chart-card">
+    <div class="bar-chart-card" id="card-fury-intercepts">
       <div class="section-title">Intercepts by country/system — Feb 28 · Preliminary
         <span style="display:block;font-size:9px;color:var(--iran);letter-spacing:1px;margin-top:3px;">⚠ INCOMPLETE · Per-system IDF data not yet released</span>
       </div>
@@ -3838,7 +3847,7 @@
          These are Iran's RETALIATORY launches only (Iran was not the first to strike).
          Update this chart daily as new figures are released.
     ── -->
-    <div class="bar-chart-card">
+    <div class="bar-chart-card" id="card-fury-iran-launches">
       <div class="section-title">Iranian missiles / drones launched per day — Feb–Mar 2026
         <span style="display:block;font-size:9px;color:var(--iran);letter-spacing:1px;margin-top:3px;">⚠ PRELIMINARY · Update daily</span>
       </div>
@@ -3960,7 +3969,7 @@
          Day 2 (Mar 1): Israel strikes 30+ targets in "heart of Tehran"; US B-2s continue.
          Update this chart daily. US strikes are shown in gold per the color system.
     ── -->
-    <div class="bar-chart-card">
+    <div class="bar-chart-card" id="card-fury-coalition-strikes">
       <div class="section-title">US &amp; Israeli strikes launched per day — Feb–Mar 2026
         <span style="display:block;font-size:9px;color:var(--iran);letter-spacing:1px;margin-top:3px;">⚠ PRELIMINARY · Update daily</span>
       </div>
@@ -4321,10 +4330,10 @@
 
       if (btn.dataset.order === 'asc') {
         btn.dataset.order = 'desc';
-        btn.textContent = '\u2193 Newest First';
+        btn.textContent = 'Sort by Date \u2193';
       } else {
         btn.dataset.order = 'asc';
-        btn.textContent = '\u2191 Oldest First';
+        btn.textContent = 'Sort by Date \u2191';
       }
     });
   });
