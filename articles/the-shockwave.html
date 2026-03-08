@@ -77,42 +77,6 @@
     margin-top: 12px;
   }
 
-  /* ── TAB BAR ── */
-  .tab-bar {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 14px 20px 0;
-    display: flex;
-    gap: 0;
-    border-bottom: 2px solid var(--rule);
-    overflow-x: auto;
-  }
-  .tab {
-    font-family: var(--sans);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 8px 18px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    position: relative;
-    white-space: nowrap;
-    transition: color 0.2s;
-  }
-  .tab:hover { color: var(--ink); }
-  .tab.active { color: var(--red); }
-  .tab.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0; right: 0;
-    height: 2px;
-    background: var(--red);
-  }
-
   .section-tag {
     max-width: 680px;
     margin: 32px auto 0;
@@ -320,11 +284,6 @@
   <div class="masthead-style-note">in the style of</div>
   <div class="masthead-title">The Atlantic</div>
   <div class="masthead-nav">Data Journalism · Global Aviation</div>
-</div>
-
-<!-- TAB BAR -->
-<div class="tab-bar">
-  <button class="tab active">The Shockwave</button>
 </div>
 
 <!-- SECTION TAG -->

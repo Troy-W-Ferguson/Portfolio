@@ -42,8 +42,17 @@
         /* === SITE HEADER === */
         .site-header {
             border-bottom: 1px solid var(--rule-color);
-            padding: 16px 0;
+            padding: 14px 0;
             text-align: center;
+        }
+        .site-header .in-style-of {
+            font-family: var(--section-font);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 4px;
         }
         .site-header .logo {
             font-family: var(--section-font);
@@ -53,6 +62,7 @@
             text-transform: uppercase;
             color: var(--text-black);
             text-decoration: none;
+            display: block;
         }
 
         body {
@@ -300,6 +310,7 @@
             .article-title { font-size: 28px; }
             .article-dek { font-size: 17px; }
             .site-header .logo { font-size: 22px; letter-spacing: 4px; }
+            .site-header .in-style-of { font-size: 10px; letter-spacing: 1.5px; }
         }
     </style>
 </head>
@@ -307,11 +318,12 @@
 
 <!-- UNPUBLISHED BANNER -->
 <div class="writing-sample-banner">
-    Unpublished Writing Sample
+    Unpublished Writing Sample · Not Affiliated With The Atlantic
 </div>
 
 <!-- SITE HEADER -->
 <header class="site-header">
+    <p class="in-style-of">in the style of</p>
     <span class="logo">The Atlantic</span>
 </header>
 

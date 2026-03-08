@@ -62,11 +62,20 @@ body {
   z-index: 100;
 }
 .masthead em { font-style: normal; color: var(--atlantic-red); }
+.masthead-in-style {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--atlantic-light);
+  margin-bottom: 4px;
+  font-weight: 400;
+  display: block;
+}
 .masthead-sub {
   font-size: 11px;
   letter-spacing: 3px;
   color: var(--atlantic-light);
-  margin-top: 2px;
+  margin-top: 4px;
   font-weight: 400;
 }
 
@@ -606,11 +615,15 @@ body {
   /* Typography scale-down */
   body { font-size: 16px; }
 
+  /* Banner shrinks to prevent wrapping */
+  .writing-sample-banner { font-size: 10px; letter-spacing: 1px; padding: 9px 12px; }
+
   /* Masthead shrinks so the sticky stack is shorter */
   .masthead       { font-size: 15px; letter-spacing: 3px; padding: 12px 16px; }
   .masthead-sub   { font-size: 9px;  letter-spacing: 1.5px; }
+  .masthead-in-style { font-size: 9px; }
 
-  /* Recalculated sticky offset: banner ≈ 35px + masthead ≈ 52px = 87px */
+  /* Recalculated sticky offset: banner ≈ 31px + masthead ≈ 56px = 87px */
   .bill-tabs-wrap { top: 87px; }
 
   /* Tab bar tighter */
@@ -662,10 +675,12 @@ body {
 
 /* ── ≤ 420 px (small phones, SE, Galaxy A-series) ───────────────── */
 @media (max-width: 420px) {
+  .writing-sample-banner { font-size: 9px; letter-spacing: 0.5px; }
   .masthead     { font-size: 13px; letter-spacing: 2px; padding: 10px 12px; }
   .masthead-sub { font-size: 8px;  letter-spacing: 1px; }
+  .masthead-in-style { font-size: 8px; }
 
-  /* Recalculated sticky offset: banner ≈ 31px + masthead ≈ 45px = 76px */
+  /* Recalculated sticky offset: banner ≈ 29px + masthead ≈ 47px = 76px */
   .bill-tabs-wrap { top: 76px; }
 
   .tab-btn { font-size: 9px; padding: 10px 10px 8px; letter-spacing: .8px; }
@@ -701,10 +716,11 @@ body {
 </head>
 <body>
 
-<div class="writing-sample-banner">Unpublished Writing Sample</div>
+<div class="writing-sample-banner">Unpublished Writing Sample · Not Affiliated With The Atlantic</div>
 
 <!-- MASTHEAD -->
 <header class="masthead">
+  <span class="masthead-in-style">in the style of</span>
   <div>The <em>Atlantic</em></div>
   <div class="masthead-sub">Data Journalism · Congress Tracker</div>
 </header>
