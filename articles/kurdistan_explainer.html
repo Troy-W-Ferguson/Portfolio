@@ -139,6 +139,8 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
   color: var(--gold); margin-bottom: 14px;
 }
 .map-container svg { width: 100%; height: auto; display: block; }
+/* Dark inversion for OSM tiles — turns the light OSM basemap dark to match the article theme */
+.leaflet-tile-pane { filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%); }
 .map-legend {
   display: flex; flex-wrap: wrap; gap: 16px;
   margin-top: 14px; padding-top: 14px;
@@ -150,6 +152,15 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
   color: var(--white-dim); letter-spacing: 0.5px;
 }
 .legend-swatch { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+.map-inline-legend {
+  background: rgba(10,10,10,0.88); border: 1px solid #2a2a2a; border-radius: 4px;
+  padding: 10px 12px; color: #f0ece4; font-family: var(--font-body); font-size: 0.78rem;
+  line-height: 1.6; backdrop-filter: blur(4px);
+}
+.map-inline-legend b { display: block; font-family: var(--font-mono); font-size: 0.62rem;
+  letter-spacing: 1px; text-transform: uppercase; color: #888; margin-bottom: 6px; }
+.map-inline-legend .leg { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
+.map-inline-legend .swatch { display:inline-block; width:12px; height:12px; border-radius:2px; flex-shrink:0; }
 
 /* TABLE */
 .groups-table-wrap {
@@ -353,9 +364,9 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 <!-- INTRO -->
 <div class="section-label">Overview</div>
 <h2>What Is Kurdistan?</h2>
-<p>Kurdistan is not a country. It is a geographic and cultural region stretching across parts of four sovereign states — Turkey, Iraq, Iran, and Syria — home to an estimated 30 to 40 million ethnic Kurds, the world's largest stateless nation (<a href="https://www.cfr.org/global-conflict-tracker/conflict/conflict-between-turkey-and-armed-kurdish-groups" target="_blank">CFR</a>). The Kurds share a common Indo-European language, a largely Sunni Muslim identity (with significant Yazidi and Alevi minorities), and a centuries-old aspiration for self-governance that has been systematically denied by the region's dominant powers.</p>
+<p>Kurdistan is not a country. It is a geographic and cultural region stretching across parts of four sovereign states: Turkey, Iraq, Iran, and Syria, home to an estimated 30 to 40 million ethnic Kurds, the world's largest stateless nation (<a href="https://www.cfr.org/global-conflict-tracker/conflict/conflict-between-turkey-and-armed-kurdish-groups" target="_blank">CFR</a>). The Kurds share a common Indo-European language, a largely Sunni Muslim identity (with significant Yazidi and Alevi minorities), and a centuries-old aspiration for self-governance that has been systematically denied by the region's dominant powers.</p>
 
-<p>Today, Kurdish political life is fractured across dozens of armed factions and political parties that frequently clash with one another as much as with their host states. In Turkey, the Kurdistan Workers' Party (PKK) waged a four-decade insurgency before announcing its intent to disband in May 2025 (<a href="https://www.cfr.org/global-conflict-tracker/conflict/conflict-between-turkey-and-armed-kurdish-groups" target="_blank">CFR</a>). In Syria, the People's Protection Units (YPG) — the military backbone of the Syrian Democratic Forces (SDF) — served as America's primary partner against ISIS before being sidelined by the fall of Assad and the rise of the new Syrian government (<a href="https://www.aljazeera.com/news/2026/3/5/which-kurdish-groups-is-the-us-rallying-to-fight" target="_blank">Al Jazeera</a>). In Iran, groups including PJAK, KDPI, PAK, Khabat, and Komala formally united in February 2026 as the Coalition of Political Forces of Iranian Kurdistan (CPFIK) (<a href="https://en.wikipedia.org/wiki/Coalition_of_Political_Forces_of_Iranian_Kurdistan" target="_blank">Wikipedia</a>). In Iraq, the Kurdistan Regional Government (KRG) operates a semi-autonomous federal region with its own parliament, Peshmerga security forces, and oil industry — but remains locked in a bitter revenue dispute with Baghdad (<a href="https://www.hrw.org/news/2025/07/29/iraq-damage-to-kurdistan-region-oil-fields-puts-rights-at-risk" target="_blank">HRW</a>).</p>
+<p>Today, Kurdish political life is fractured across dozens of armed factions and political parties that frequently clash with one another as much as with their host states. In Turkey, the Kurdistan Workers' Party (PKK) waged a four-decade insurgency before announcing its intent to disband in May 2025 (<a href="https://www.cfr.org/global-conflict-tracker/conflict/conflict-between-turkey-and-armed-kurdish-groups" target="_blank">CFR</a>). In Syria, the People's Protection Units (YPG), the military backbone of the Syrian Democratic Forces (SDF), served as America's primary partner against ISIS before being sidelined by the fall of Assad and the rise of the new Syrian government (<a href="https://www.aljazeera.com/news/2026/3/5/which-kurdish-groups-is-the-us-rallying-to-fight" target="_blank">Al Jazeera</a>). In Iran, groups including PJAK, KDPI, PAK, Khabat, and Komala formally united in February 2026 as the Coalition of Political Forces of Iranian Kurdistan (CPFIK) (<a href="https://en.wikipedia.org/wiki/Coalition_of_Political_Forces_of_Iranian_Kurdistan" target="_blank">Wikipedia</a>). In Iraq, the Kurdistan Regional Government (KRG) operates a semi-autonomous federal region with its own parliament, Peshmerga security forces, and oil industry, but remains locked in a bitter revenue dispute with Baghdad (<a href="https://www.hrw.org/news/2025/07/29/iraq-damage-to-kurdistan-region-oil-fields-puts-rights-at-risk" target="_blank">HRW</a>).</p>
 
 <!-- ============ MAP 1: REGIONAL OVERVIEW ============ -->
 <!--
@@ -378,9 +389,9 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 <!-- ============ GEOGRAPHY SECTION ============ -->
 <div class="section-label">Geography &amp; Terrain</div>
 <h2>The Zagros Wall</h2>
-<p>The Kurdish heartland is defined by the Zagros Mountains, a 1,600-kilometer chain running from southeastern Turkey to the Strait of Hormuz along Iran's western border (<a href="https://en.wikipedia.org/wiki/Zagros_Mountains" target="_blank">Wikipedia</a>). The range's northern reaches — where Kurdistan sits — feature peaks exceeding 3,500 meters, steep interlocking valleys, and passes above 1,500 meters that have served as natural fortifications for millennia (<a href="https://www.britannica.com/place/Zagros-Mountains" target="_blank">Britannica</a>). The Qandil Mountains, a subrange straddling the Iraq-Iran border, are the nerve center of Kurdish militant operations: peaks reach 3,587 meters at Haji Ebrahim, terrain remains snow-covered for much of the year, and the area is described as "virtually impenetrable" by military analysts (<a href="https://english.noonpost.com/p/qandil-mountains-how-a-remote-stronghold" target="_blank">Noonpost</a>). Roughly 5,000 PKK and allied fighters have operated in an area of approximately 50 km² here, accessible only via limited mountain roads guarded by Peshmerga checkpoints (<a href="https://en.wikipedia.org/wiki/Qandil_Mountains" target="_blank">Wikipedia</a>).</p>
+<p>The Kurdish heartland is defined by the Zagros Mountains, a 1,600-kilometer chain running from southeastern Turkey to the Strait of Hormuz along Iran's western border (<a href="https://en.wikipedia.org/wiki/Zagros_Mountains" target="_blank">Wikipedia</a>). The range's northern reaches, where Kurdistan sits, feature peaks exceeding 3,500 meters, steep interlocking valleys, and passes above 1,500 meters that have served as natural fortifications for millennia (<a href="https://www.britannica.com/place/Zagros-Mountains" target="_blank">Britannica</a>). The Qandil Mountains, a subrange straddling the Iraq-Iran border, are the nerve center of Kurdish militant operations: peaks reach 3,587 meters at Haji Ebrahim, terrain remains snow-covered for much of the year, and the area is described as "virtually impenetrable" by military analysts (<a href="https://english.noonpost.com/p/qandil-mountains-how-a-remote-stronghold" target="_blank">Noonpost</a>). Roughly 5,000 PKK and allied fighters have operated in an area of approximately 50 km² here, accessible only via limited mountain roads guarded by Peshmerga checkpoints (<a href="https://en.wikipedia.org/wiki/Qandil_Mountains" target="_blank">Wikipedia</a>).</p>
 
-<p>This geography matters militarily. Iran must defend a western border stretching over 1,600 kilometers from Turkey to the Persian Gulf, with its 610,000 active troops spread across the entire country — not concentrated in the Kurdish west (<a href="https://www.aa.com.tr/en/middle-east/factbox-iran-s-military-power-missiles-drones-and-deterrence/3822798" target="_blank">Anadolu Agency/IISS</a>). Kurdish fighters, by contrast, know every pass, cave, and ridgeline in a relatively compact zone where mechanized forces cannot maneuver and airpower is degraded by terrain masking.</p>
+<p>This geography matters militarily. Iran must defend a western border stretching over 1,600 kilometers from Turkey to the Persian Gulf, with its 610,000 active troops spread across the entire country: not concentrated in the Kurdish west (<a href="https://www.aa.com.tr/en/middle-east/factbox-iran-s-military-power-missiles-drones-and-deterrence/3822798" target="_blank">Anadolu Agency/IISS</a>). Kurdish fighters, by contrast, know every pass, cave, and ridgeline in a relatively compact zone where mechanized forces cannot maneuver and airpower is degraded by terrain masking.</p>
 
 <!-- ELEVATION PROFILE DIAGRAM -->
 <div class="map-container">
@@ -392,7 +403,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 <!-- GROUPS TABLE -->
 <div class="section-label">Order of Battle</div>
 <h2>Kurdish Armed Groups &amp; Parties</h2>
-<p>The following table catalogs the major armed Kurdish factions operating across the region. Note the critical distinction between the Kurdistan Regional Government — a recognized, semi-autonomous political entity in Iraq with formal security forces — and the various militia and insurgent organizations operating in Turkey, Syria, and Iran.</p>
+<p>The following table catalogs the major armed Kurdish factions operating across the region. Note the critical distinction between the Kurdistan Regional Government, a recognized, semi-autonomous political entity in Iraq with formal security forces, and the various militia and insurgent organizations operating in Turkey, Syria, and Iran.</p>
 
 <div class="groups-table-wrap">
 <table class="groups-table">
@@ -405,7 +416,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <tr>
   <td class="flag-cell"><div class="flag-placeholder">KRG</div></td>
-  <td><div class="group-name">Kurdistan Regional Government</div><div class="group-aka">KRG — Erbil-based</div><span class="tag tag-gov">GOVT</span></td>
+  <td><div class="group-name">Kurdistan Regional Government</div><div class="group-aka">KRG / Erbil-based</div><span class="tag tag-gov">GOVT</span></td>
   <td>Semi-autonomous governance in Iraq; control of oil revenues; constitutional federalism.</td>
   <td>United States, Turkey (trade), European states. Oil companies (DNO, Genel, HKN). <span class="tag tag-us">US ALLY</span></td>
   <td>Internally split between KDP and PUK factions. KDP (Barzani) controls Erbil/Duhok; PUK (Talabani) controls Sulaimaniyah. Fought civil war 1994–98.</td>
@@ -414,7 +425,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <tr>
   <td class="flag-cell"><div class="flag-placeholder">KDP</div></td>
-  <td><div class="group-name">Kurdistan Democratic Party</div><div class="group-aka">KDP — Barzani faction</div><span class="tag tag-gov">KRG PARTY</span></td>
+  <td><div class="group-name">Kurdistan Democratic Party</div><div class="group-aka">KDP / Barzani faction</div><span class="tag tag-gov">KRG PARTY</span></td>
   <td>Dominant party in KRG. Controls Erbil, Duhok provinces. Strong trade ties with Turkey. Conservative nationalist.</td>
   <td>Turkey (primary trade partner), US, Israel (historical). <span class="tag tag-turkey">TURKEY TRADE</span></td>
   <td>Opposes PKK presence in Sinjar. Hostile to PJAK. Competes with PUK for Peshmerga control and oil revenues.</td>
@@ -423,7 +434,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <tr>
   <td class="flag-cell"><div class="flag-placeholder">PUK</div></td>
-  <td><div class="group-name">Patriotic Union of Kurdistan</div><div class="group-aka">PUK — Talabani faction</div><span class="tag tag-gov">KRG PARTY</span></td>
+  <td><div class="group-name">Patriotic Union of Kurdistan</div><div class="group-aka">PUK / Talabani faction</div><span class="tag tag-gov">KRG PARTY</span></td>
   <td>Controls Sulaimaniyah and Halabja. More leftist orientation. Historically closer to Iran than KDP.</td>
   <td>Iran (historical relationship), US. <span class="tag tag-iran">IRAN TIES</span></td>
   <td>Accused of cooperating with Baghdad/Iran during 2017 Kirkuk withdrawal. Tension with KDP over revenue sharing.</td>
@@ -434,7 +445,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <tr>
   <td class="flag-cell"><div class="flag-placeholder">PKK</div></td>
-  <td><div class="group-name">Kurdistan Workers' Party</div><div class="group-aka">PKK — Founded 1978</div><span class="tag tag-turkey">TURKEY INSURGENCY</span></td>
+  <td><div class="group-name">Kurdistan Workers' Party</div><div class="group-aka">PKK / Founded 1978</div><span class="tag tag-turkey">TURKEY INSURGENCY</span></td>
   <td>Originally sought independent Kurdish state in Turkey; shifted to autonomy after 2005. Öcalan called for disarmament Feb 2025; PKK voted to disband May 2025. <a href="https://www.cfr.org/global-conflict-tracker/conflict/conflict-between-turkey-and-armed-kurdish-groups" target="_blank">CFR</a></td>
   <td>Ideological parent of PJAK, YPG/PYD. Part of KCK umbrella. <span class="tag tag-us">US-DESIGNATED FTO</span></td>
   <td>KDP opposes PKK in KRG territory. PJAK/SDF refused Öcalan's disarmament call.</td>
@@ -443,7 +454,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <tr>
   <td class="flag-cell"><div class="flag-placeholder">YPG</div></td>
-  <td><div class="group-name">People's Protection Units</div><div class="group-aka">YPG / SDF — Syria</div><span class="tag tag-us">US PARTNER (2017–2025)</span></td>
+  <td><div class="group-name">People's Protection Units</div><div class="group-aka">YPG / SDF / Syria</div><span class="tag tag-us">US PARTNER (2017–2025)</span></td>
   <td>Main component of SDF. Led anti-ISIS campaign, captured Raqqa. Now integrating into Syrian govt forces. <a href="https://www.aljazeera.com/news/2026/3/5/which-kurdish-groups-is-the-us-rallying-to-fight" target="_blank">Al Jazeera</a></td>
   <td>US (trained &amp; armed since 2017). PYD political wing. <span class="tag tag-us">US TRAINED</span></td>
   <td>Turkey considers YPG a terrorist extension of PKK. Refused Öcalan's disarmament call.</td>
@@ -452,7 +463,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <tr>
   <td class="flag-cell"><div class="flag-placeholder">PJAK</div></td>
-  <td><div class="group-name">Kurdistan Free Life Party</div><div class="group-aka">PJAK — Armed wing: YRK</div><span class="tag tag-iran">IRAN INSURGENCY</span></td>
+  <td><div class="group-name">Kurdistan Free Life Party</div><div class="group-aka">PJAK / Armed wing: YRK</div><span class="tag tag-iran">IRAN INSURGENCY</span></td>
   <td>Self-determination in Iran. PKK offshoot. Based in Qandil Mtns. Part of CPFIK (Feb 2026). Assessed as fielding the most capable fighters among Iranian Kurdish groups. <a href="https://www.atlanticcouncil.org/dispatches/how-would-a-kurdish-offensive-change-the-war-in-iran/" target="_blank">Atlantic Council</a></td>
   <td>PKK (ideological parent). CPFIK alliance. <span class="tag tag-us">US-DESIGNATED (Treasury 2009)</span></td>
   <td>Critical of both KDP and PUK. Turkey opposes any support for PJAK due to PKK links.</td>
@@ -461,10 +472,10 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <tr>
   <td class="flag-cell"><div class="flag-placeholder">KDPI</div></td>
-  <td><div class="group-name">Democratic Party of Iranian Kurdistan</div><div class="group-aka">KDPI / PDKI — Founded 1945</div><span class="tag tag-iran">IRAN OPPOSITION</span></td>
+  <td><div class="group-name">Democratic Party of Iranian Kurdistan</div><div class="group-aka">KDPI / PDKI / Founded 1945</div><span class="tag tag-iran">IRAN OPPOSITION</span></td>
   <td>Oldest Iranian Kurdish party. Advocates autonomy/federalism. Led 1946 Mahabad Republic. Currently led by Mustafa Hijri. Trump called Hijri March 3, 2026. <a href="https://en.wikipedia.org/wiki/Democratic_Party_of_Iranian_Kurdistan" target="_blank">Wikipedia</a></td>
   <td>US (Trump admin outreach 2026). CPFIK coalition. <span class="tag tag-us">US OUTREACH</span></td>
-  <td>Designated "compliant rebels" — avoids civilian casualties. Relations with KDP generally positive.</td>
+  <td>Designated "compliant rebels," avoids civilian casualties. Relations with KDP generally positive.</td>
   <td>1,000–1,500 fighters (own Peshmerga). Based near Koya. Targeted by IRGC in 2022 &amp; 2026. <a href="https://ctc.westpoint.edu/iranian-kurdish-militias-terrorist-insurgents-ethno-freedom-fighters-or-knights-on-the-regional-chessboard/" target="_blank">CTC West Point</a></td>
 </tr>
 
@@ -497,7 +508,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <tr>
   <td class="flag-cell"><div class="flag-placeholder">YBŞ</div></td>
-  <td><div class="group-name">Sinjar Resistance Units</div><div class="group-aka">YBŞ — Yazidi militia</div><span class="tag tag-isis">ANTI-ISIS</span></td>
+  <td><div class="group-name">Sinjar Resistance Units</div><div class="group-aka">YBŞ / Yazidi militia</div><span class="tag tag-isis">ANTI-ISIS</span></td>
   <td>Yazidi self-defense force, Sinjar. Est. 2014 with PKK/YPG support after ISIS genocide. Refused Öcalan's disarmament call. <a href="https://jamestown.org/impact-of-turkish-pkk-peace-process-on-iraqi-yezidis/" target="_blank">Jamestown</a></td>
   <td>PKK, YPG. Has female wing (YJŞ). <span class="tag tag-turkey">TURKEY TARGET</span></td>
   <td>KDP opposes YBŞ in Sinjar. Turkey views YBŞ as PKK offshoot.</td>
@@ -514,7 +525,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <div class="info-callout">
 <p>The KRG sits atop enormous hydrocarbon reserves central to a decades-long power struggle with Baghdad. The KRG independently exported oil via the Kirkuk-Ceyhan pipeline until March 2023, when an ICC arbitration ruling shut it down and awarded Baghdad $1.5 billion from Turkey (<a href="https://www.atlanticcouncil.org/blogs/menasource/is-the-baghdad-erbil-oil-deal-a-blueprint-for-settlement-or-a-stopgap/" target="_blank">Atlantic Council</a>). The two-and-a-half-year shutdown cost Iraq over $35 billion in lost revenue and plunged the KRG into fiscal crisis, with Baghdad withholding public-sector salaries as leverage (<a href="https://www.hrw.org/news/2025/07/29/iraq-damage-to-kurdistan-region-oil-fields-puts-rights-at-risk" target="_blank">HRW</a>).</p>
-<p>Exports resumed in September 2025 under an interim deal placing Baghdad's SOMO as sole marketer, producing ~220,000 bpd and generating $1.2 billion by year-end (<a href="https://www.aljazeera.com/news/2025/9/27/iraq-resumes-kurdish-oil-exports-to-turkiye-after-two-and-a-half-year-halt" target="_blank">Al Jazeera</a>). Analysts described the deal as a "transitional truce" (<a href="https://www.atlanticcouncil.org/blogs/menasource/is-the-baghdad-erbil-oil-deal-a-blueprint-for-settlement-or-a-stopgap/" target="_blank">Atlantic Council</a>). In May 2025, the KRG signed separate $110 billion gas agreements with US firms HKN Energy and WesternZagros — immediately condemned by Baghdad as unconstitutional (<a href="https://www.iraq-businessnews.com/2025/05/21/krgs-us-energy-deals-spark-fresh-dispute-with-baghdad/" target="_blank">Iraq Business News</a>). Drone strikes on five KRG oil fields in July 2025 cut production by 70%, with officials blaming Iran-backed militias (<a href="https://www.hrw.org/news/2025/07/29/iraq-damage-to-kurdistan-region-oil-fields-puts-rights-at-risk" target="_blank">HRW</a>).</p>
+<p>Exports resumed in September 2025 under an interim deal placing Baghdad's SOMO as sole marketer, producing ~220,000 bpd and generating $1.2 billion by year-end (<a href="https://www.aljazeera.com/news/2025/9/27/iraq-resumes-kurdish-oil-exports-to-turkiye-after-two-and-a-half-year-halt" target="_blank">Al Jazeera</a>). Analysts described the deal as a "transitional truce" (<a href="https://www.atlanticcouncil.org/blogs/menasource/is-the-baghdad-erbil-oil-deal-a-blueprint-for-settlement-or-a-stopgap/" target="_blank">Atlantic Council</a>). In May 2025, the KRG signed separate $110 billion gas agreements with US firms HKN Energy and WesternZagros, immediately condemned by Baghdad as unconstitutional (<a href="https://www.iraq-businessnews.com/2025/05/21/krgs-us-energy-deals-spark-fresh-dispute-with-baghdad/" target="_blank">Iraq Business News</a>). Drone strikes on five KRG oil fields in July 2025 cut production by 70%, with officials blaming Iran-backed militias (<a href="https://www.hrw.org/news/2025/07/29/iraq-damage-to-kurdistan-region-oil-fields-puts-rights-at-risk" target="_blank">HRW</a>).</p>
 </div>
 
 <!-- MAP 2: TERRITORIAL CONTROL & OIL — Interactive -->
@@ -532,7 +543,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 <h2>Timeline: Kurdish Military History &amp; Foreign Partnerships</h2>
 
 <div class="timeline">
-<div class="tl-item"><div class="tl-year">1946</div><div class="tl-text">Qazi Muhammad declares the Republic of Kurdistan in Mahabad, Iran — the first modern Kurdish state. Soviet-backed, it collapses within a year. Muhammad is executed. (<a href="https://en.wikipedia.org/wiki/Democratic_Party_of_Iranian_Kurdistan" target="_blank">Wikipedia</a>)</div></div>
+<div class="tl-item"><div class="tl-year">1946</div><div class="tl-text">Qazi Muhammad declares the Republic of Kurdistan in Mahabad, Iran, the first modern Kurdish state. Soviet-backed, it collapses within a year. Muhammad is executed. (<a href="https://en.wikipedia.org/wiki/Democratic_Party_of_Iranian_Kurdistan" target="_blank">Wikipedia</a>)</div></div>
 
 <div class="tl-item"><div class="tl-year">1978–1984</div><div class="tl-text">Abdullah Öcalan founds the PKK in 1978. Armed insurgency against Turkey begins in 1984, a conflict that will claim over 40,000 lives. (<a href="https://www.cfr.org/global-conflict-tracker/conflict/conflict-between-turkey-and-armed-kurdish-groups" target="_blank">CFR</a>)</div></div>
 
@@ -552,7 +563,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <div class="tl-item"><div class="tl-year">2015–2017</div><div class="tl-text">US creates and arms SDF (YPG backbone) to fight ISIS in Syria. SDF captures Raqqa, 2017. (<a href="https://www.cfr.org/global-conflict-tracker/conflict/conflict-between-turkey-and-armed-kurdish-groups" target="_blank">CFR</a>)</div></div>
 
-<div class="tl-item"><div class="tl-year">2017</div><div class="tl-text">KRG independence referendum — 93% yes. Baghdad retaliates: Iraqi forces + Iran-backed PMF recapture Kirkuk. PUK Peshmerga withdraw. (<a href="https://acleddata.com/methodology/kurdish-forces-iraq-syria-and-iran" target="_blank">ACLED</a>)</div></div>
+<div class="tl-item"><div class="tl-year">2017</div><div class="tl-text">KRG independence referendum: 93% yes. Baghdad retaliates: Iraqi forces + Iran-backed PMF recapture Kirkuk. PUK Peshmerga withdraw. (<a href="https://acleddata.com/methodology/kurdish-forces-iraq-syria-and-iran" target="_blank">ACLED</a>)</div></div>
 
 <div class="tl-item"><div class="tl-year">2022</div><div class="tl-text">US-KRG MoU for unified 138,000-strong Peshmerga by 2026. IRGC missiles strike KDPI HQ in Koya, killing 18. Mahsa Amini protests rock Iranian Kurdistan. (<a href="https://en.wikipedia.org/wiki/Peshmerga" target="_blank">Wikipedia</a>)</div></div>
 
@@ -648,7 +659,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
     <div class="force-entry force-total">
       <div class="force-entry-name">TOTAL ACTIVE MILITARY (ALL BRANCHES)</div>
       <div class="force-entry-number" style="color:#e06070;">~610,000</div>
-      <div class="force-entry-detail">+350,000 reserves. Includes navy, air force, air defense. Ranked 16th globally by Global Firepower. Spread across 1,648,195 km² — not concentrated in Kurdistan. <a href="https://www.aa.com.tr/en/middle-east/factbox-iran-s-military-power-missiles-drones-and-deterrence/3822798" target="_blank">Anadolu/IISS 2025</a></div>
+      <div class="force-entry-detail">+350,000 reserves. Includes navy, air force, air defense. Ranked 16th globally by Global Firepower. Spread across 1,648,195 km², not concentrated in Kurdistan. <a href="https://www.aa.com.tr/en/middle-east/factbox-iran-s-military-power-missiles-drones-and-deterrence/3822798" target="_blank">Anadolu/IISS 2025</a></div>
     </div>
 
     <div class="force-entry" style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
@@ -659,7 +670,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
   <!-- BOTTOM ANALYST NOTE -->
   <div class="force-note">
-    <strong style="color:var(--gold);">Analyst Note:</strong> Raw numbers overwhelmingly favor Iran at roughly 75:1 (total active vs. CPFIK). However, Kurdish militia strategy relies on asymmetric advantages that raw numbers cannot capture: the Zagros terrain (3,000m+ peaks, snow-covered passes, no mechanized maneuver space), decades of guerrilla expertise, cross-border sanctuary in Iraqi Kurdistan, and the reported potential for US/Israeli weapons supply and air cover. Iran's forces are dispersed across 1.65 million km² — not concentrated against the Kurdish west — and are simultaneously being struck by American and Israeli airpower nationwide. Kurdish groups also draw on potential sympathy among Iran's ~12 million ethnic Kurds, who led a general strike across 50+ cities in January 2026.
+    <strong style="color:var(--gold);">Analyst Note:</strong> Raw numbers overwhelmingly favor Iran at roughly 75:1 (total active vs. CPFIK). However, Kurdish militia strategy relies on asymmetric advantages that raw numbers cannot capture: the Zagros terrain (3,000m+ peaks, snow-covered passes, no mechanized maneuver space), decades of guerrilla expertise, cross-border sanctuary in Iraqi Kurdistan, and the reported potential for US/Israeli weapons supply and air cover. Iran's forces are dispersed across 1.65 million km², not concentrated against the Kurdish west, and are simultaneously being struck by American and Israeli airpower nationwide. Kurdish groups also draw on potential sympathy among Iran's ~12 million ethnic Kurds, who led a general strike across 50+ cities in January 2026.
     Sources: <a href="https://www.aa.com.tr/en/middle-east/factbox-iran-s-military-power-missiles-drones-and-deterrence/3822798" target="_blank">Anadolu/IISS</a>, <a href="https://en.wikipedia.org/wiki/Islamic_Revolutionary_Guard_Corps_Ground_Forces" target="_blank">Wikipedia</a>, <a href="https://www.atlanticcouncil.org/dispatches/how-would-a-kurdish-offensive-change-the-war-in-iran/" target="_blank">Atlantic Council</a>, <a href="https://ctc.westpoint.edu/iranian-kurdish-militias-terrorist-insurgents-ethno-freedom-fighters-or-knights-on-the-regional-chessboard/" target="_blank">CTC West Point</a>, <a href="https://en.wikipedia.org/wiki/2026_Kurdish_rebellion_in_Iran" target="_blank">Wikipedia/2026 Rebellion</a>.
   </div>
 </div>
@@ -680,68 +691,68 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <div class="cite-topic">Kurdish Groups — Overview &amp; Identification</div>
 <ol class="cite-list">
-  <li>"Which Kurdish groups is the US rallying to fight Iran?" — <a href="https://www.aljazeera.com/news/2026/3/5/which-kurdish-groups-is-the-us-rallying-to-fight" target="_blank">Al Jazeera</a>, March 5, 2026.</li>
-  <li>"Conflict Between Turkey and Armed Kurdish Groups" — <a href="https://www.cfr.org/global-conflict-tracker/conflict/conflict-between-turkey-and-armed-kurdish-groups" target="_blank">Council on Foreign Relations (CFR)</a>, Global Conflict Tracker. Updated Feb 2026.</li>
-  <li>"Understanding the Kurdish Peshmerga" — <a href="https://kurdistanchronicle.com/babat/2739" target="_blank">Kurdistan Chronicle</a>.</li>
-  <li>"Kurdish Forces in Iraq, Syria, and Iran" — <a href="https://acleddata.com/methodology/kurdish-forces-iraq-syria-and-iran" target="_blank">ACLED</a>.</li>
-  <li>"Evidence on Kurdish aspirations and the interests of the UK" — <a href="https://committees.parliament.uk/writtenevidence/83851/html/" target="_blank">UK Parliament Written Evidence, KUR0022</a>.</li>
-  <li>"How would a Kurdish offensive change the war in Iran?" — <a href="https://www.atlanticcouncil.org/dispatches/how-would-a-kurdish-offensive-change-the-war-in-iran/" target="_blank">Atlantic Council</a>, March 6, 2026.</li>
+  <li>"Which Kurdish groups is the US rallying to fight Iran?." <a href="https://www.aljazeera.com/news/2026/3/5/which-kurdish-groups-is-the-us-rallying-to-fight" target="_blank">Al Jazeera</a>, March 5, 2026.</li>
+  <li>"Conflict Between Turkey and Armed Kurdish Groups." <a href="https://www.cfr.org/global-conflict-tracker/conflict/conflict-between-turkey-and-armed-kurdish-groups" target="_blank">Council on Foreign Relations (CFR)</a>, Global Conflict Tracker. Updated Feb 2026.</li>
+  <li>"Understanding the Kurdish Peshmerga." <a href="https://kurdistanchronicle.com/babat/2739" target="_blank">Kurdistan Chronicle</a>.</li>
+  <li>"Kurdish Forces in Iraq, Syria, and Iran." <a href="https://acleddata.com/methodology/kurdish-forces-iraq-syria-and-iran" target="_blank">ACLED</a>.</li>
+  <li>"Evidence on Kurdish aspirations and the interests of the UK." <a href="https://committees.parliament.uk/writtenevidence/83851/html/" target="_blank">UK Parliament Written Evidence, KUR0022</a>.</li>
+  <li>"How would a Kurdish offensive change the war in Iran?." <a href="https://www.atlanticcouncil.org/dispatches/how-would-a-kurdish-offensive-change-the-war-in-iran/" target="_blank">Atlantic Council</a>, March 6, 2026.</li>
 </ol>
 
 <div class="cite-topic">PJAK &amp; Iranian Kurdish Opposition</div>
 <ol class="cite-list" style="counter-reset: cite 6;">
-  <li>"Kurdistan Free Life Party" — <a href="https://en.wikipedia.org/wiki/Kurdistan_Free_Life_Party" target="_blank">Wikipedia</a>.</li>
-  <li>"Iranian Kurdish Militias" — <a href="https://ctc.westpoint.edu/iranian-kurdish-militias-terrorist-insurgents-ethno-freedom-fighters-or-knights-on-the-regional-chessboard/" target="_blank">CTC West Point</a>, November 2017.</li>
-  <li>"Coalition of Political Forces of Iranian Kurdistan" — <a href="https://en.wikipedia.org/wiki/Coalition_of_Political_Forces_of_Iranian_Kurdistan" target="_blank">Wikipedia</a>.</li>
-  <li>"Democratic Party of Iranian Kurdistan" — <a href="https://en.wikipedia.org/wiki/Democratic_Party_of_Iranian_Kurdistan" target="_blank">Wikipedia</a>.</li>
-  <li>"2026 Kurdish rebellion in Iran" — <a href="https://en.wikipedia.org/wiki/2026_Kurdish_rebellion_in_Iran" target="_blank">Wikipedia</a>.</li>
+  <li>"Kurdistan Free Life Party." <a href="https://en.wikipedia.org/wiki/Kurdistan_Free_Life_Party" target="_blank">Wikipedia</a>.</li>
+  <li>"Iranian Kurdish Militias." <a href="https://ctc.westpoint.edu/iranian-kurdish-militias-terrorist-insurgents-ethno-freedom-fighters-or-knights-on-the-regional-chessboard/" target="_blank">CTC West Point</a>, November 2017.</li>
+  <li>"Coalition of Political Forces of Iranian Kurdistan." <a href="https://en.wikipedia.org/wiki/Coalition_of_Political_Forces_of_Iranian_Kurdistan" target="_blank">Wikipedia</a>.</li>
+  <li>"Democratic Party of Iranian Kurdistan." <a href="https://en.wikipedia.org/wiki/Democratic_Party_of_Iranian_Kurdistan" target="_blank">Wikipedia</a>.</li>
+  <li>"2026 Kurdish rebellion in Iran." <a href="https://en.wikipedia.org/wiki/2026_Kurdish_rebellion_in_Iran" target="_blank">Wikipedia</a>.</li>
 </ol>
 
 <div class="cite-topic">Peshmerga, PKK &amp; Sinjar</div>
 <ol class="cite-list" style="counter-reset: cite 11;">
-  <li>"Peshmerga" — <a href="https://en.wikipedia.org/wiki/Peshmerga" target="_blank">Wikipedia</a>.</li>
-  <li>"Impact of Turkish-PKK Peace Process on Iraqi Yezidis" — <a href="https://jamestown.org/impact-of-turkish-pkk-peace-process-on-iraqi-yezidis/" target="_blank">Jamestown Foundation</a>.</li>
+  <li>"Peshmerga." <a href="https://en.wikipedia.org/wiki/Peshmerga" target="_blank">Wikipedia</a>.</li>
+  <li>"Impact of Turkish-PKK Peace Process on Iraqi Yezidis." <a href="https://jamestown.org/impact-of-turkish-pkk-peace-process-on-iraqi-yezidis/" target="_blank">Jamestown Foundation</a>.</li>
 </ol>
 
 <div class="cite-topic">Oil Disputes &amp; KRG Economy</div>
 <ol class="cite-list" style="counter-reset: cite 13;">
-  <li>"Iraq: Damage to Kurdistan Region Oil Fields" — <a href="https://www.hrw.org/news/2025/07/29/iraq-damage-to-kurdistan-region-oil-fields-puts-rights-at-risk" target="_blank">Human Rights Watch</a>, July 2025.</li>
-  <li>"Iraq resumes Kurdish oil exports" — <a href="https://www.aljazeera.com/news/2025/9/27/iraq-resumes-kurdish-oil-exports-to-turkiye-after-two-and-a-half-year-halt" target="_blank">Al Jazeera</a>, Sep 2025.</li>
-  <li>"Is the Baghdad-Erbil oil deal a blueprint or a stopgap?" — <a href="https://www.atlanticcouncil.org/blogs/menasource/is-the-baghdad-erbil-oil-deal-a-blueprint-for-settlement-or-a-stopgap/" target="_blank">Atlantic Council</a>, Sep 2025.</li>
-  <li>"KRG's US Energy Deals Spark Fresh Dispute" — <a href="https://www.iraq-businessnews.com/2025/05/21/krgs-us-energy-deals-spark-fresh-dispute-with-baghdad/" target="_blank">Iraq Business News</a>, May 2025.</li>
-  <li>"The Kurdish Gas Gambit" — <a href="https://newlinesinstitute.org/geo-economics/the-kurdish-gas-gambit/" target="_blank">New Lines Institute</a>, July 2025.</li>
-  <li>"Baghdad–Erbil Pipeline Politics in 2025" — <a href="https://gulfif.org/the-geopolitics-of-oil-and-governance-baghdad-erbil-pipeline-politics-in-2025/" target="_blank">Gulf International Forum</a>, Nov 2025.</li>
-  <li>"Country Analysis Brief: Iraq" — <a href="https://www.eia.gov/international/content/analysis/countries_long/Iraq/Iraq_2025.pdf" target="_blank">U.S. EIA</a>, July 2025.</li>
-  <li>"Baghdad and Erbil Exchange Sharp Words" — <a href="https://www.iraq-businessnews.com/2025/06/06/baghdad-and-erbil-exchange-sharp-words-over-oil-revenue-dispute/" target="_blank">Iraq Business News</a>, June 2025.</li>
-  <li>"Kurdistan Oil Exports Resume" — <a href="https://www.iraq-businessnews.com/2025/09/26/kurdistan-oil-exports-resume-after-multi-party-agreement/" target="_blank">Iraq Business News</a>, Sep 2025.</li>
-  <li>"Kurdistan Region exported over 19.5M barrels" — <a href="https://thenewregion.com/posts/4181" target="_blank">The New Region</a>.</li>
+  <li>"Iraq: Damage to Kurdistan Region Oil Fields." <a href="https://www.hrw.org/news/2025/07/29/iraq-damage-to-kurdistan-region-oil-fields-puts-rights-at-risk" target="_blank">Human Rights Watch</a>, July 2025.</li>
+  <li>"Iraq resumes Kurdish oil exports." <a href="https://www.aljazeera.com/news/2025/9/27/iraq-resumes-kurdish-oil-exports-to-turkiye-after-two-and-a-half-year-halt" target="_blank">Al Jazeera</a>, Sep 2025.</li>
+  <li>"Is the Baghdad-Erbil oil deal a blueprint or a stopgap?." <a href="https://www.atlanticcouncil.org/blogs/menasource/is-the-baghdad-erbil-oil-deal-a-blueprint-for-settlement-or-a-stopgap/" target="_blank">Atlantic Council</a>, Sep 2025.</li>
+  <li>"KRG's US Energy Deals Spark Fresh Dispute." <a href="https://www.iraq-businessnews.com/2025/05/21/krgs-us-energy-deals-spark-fresh-dispute-with-baghdad/" target="_blank">Iraq Business News</a>, May 2025.</li>
+  <li>"The Kurdish Gas Gambit." <a href="https://newlinesinstitute.org/geo-economics/the-kurdish-gas-gambit/" target="_blank">New Lines Institute</a>, July 2025.</li>
+  <li>"Baghdad–Erbil Pipeline Politics in 2025." <a href="https://gulfif.org/the-geopolitics-of-oil-and-governance-baghdad-erbil-pipeline-politics-in-2025/" target="_blank">Gulf International Forum</a>, Nov 2025.</li>
+  <li>"Country Analysis Brief: Iraq." <a href="https://www.eia.gov/international/content/analysis/countries_long/Iraq/Iraq_2025.pdf" target="_blank">U.S. EIA</a>, July 2025.</li>
+  <li>"Baghdad and Erbil Exchange Sharp Words." <a href="https://www.iraq-businessnews.com/2025/06/06/baghdad-and-erbil-exchange-sharp-words-over-oil-revenue-dispute/" target="_blank">Iraq Business News</a>, June 2025.</li>
+  <li>"Kurdistan Oil Exports Resume." <a href="https://www.iraq-businessnews.com/2025/09/26/kurdistan-oil-exports-resume-after-multi-party-agreement/" target="_blank">Iraq Business News</a>, Sep 2025.</li>
+  <li>"Kurdistan Region exported over 19.5M barrels." <a href="https://thenewregion.com/posts/4181" target="_blank">The New Region</a>.</li>
 </ol>
 
 <div class="cite-topic">Iranian Military Strength</div>
 <ol class="cite-list" style="counter-reset: cite 24;">
-  <li>"FACTBOX – Iran's military power" — <a href="https://www.aa.com.tr/en/middle-east/factbox-iran-s-military-power-missiles-drones-and-deterrence/3822798" target="_blank">Anadolu Agency</a>, citing IISS Military Balance 2025.</li>
-  <li>"Islamic Revolutionary Guard Corps" — <a href="https://en.wikipedia.org/wiki/Islamic_Revolutionary_Guard_Corps" target="_blank">Wikipedia</a>.</li>
-  <li>"IRGC Ground Forces" — <a href="https://en.wikipedia.org/wiki/Islamic_Revolutionary_Guard_Corps_Ground_Forces" target="_blank">Wikipedia</a>.</li>
-  <li>"Iran Armed Forces" — <a href="https://en.wikipedia.org/wiki/Islamic_Republic_of_Iran_Armed_Forces" target="_blank">Wikipedia</a>.</li>
-  <li>"Iran Army Ground Forces" — <a href="https://en.wikipedia.org/wiki/Islamic_Republic_of_Iran_Army_Ground_Forces" target="_blank">Wikipedia</a>.</li>
-  <li>"2026 Iran Military Strength" — <a href="https://www.globalfirepower.com/country-military-strength-detail.php?country_id=iran" target="_blank">Global Firepower</a>.</li>
+  <li>"FACTBOX – Iran's military power." <a href="https://www.aa.com.tr/en/middle-east/factbox-iran-s-military-power-missiles-drones-and-deterrence/3822798" target="_blank">Anadolu Agency</a>, citing IISS Military Balance 2025.</li>
+  <li>"Islamic Revolutionary Guard Corps." <a href="https://en.wikipedia.org/wiki/Islamic_Revolutionary_Guard_Corps" target="_blank">Wikipedia</a>.</li>
+  <li>"IRGC Ground Forces." <a href="https://en.wikipedia.org/wiki/Islamic_Revolutionary_Guard_Corps_Ground_Forces" target="_blank">Wikipedia</a>.</li>
+  <li>"Iran Armed Forces." <a href="https://en.wikipedia.org/wiki/Islamic_Republic_of_Iran_Armed_Forces" target="_blank">Wikipedia</a>.</li>
+  <li>"Iran Army Ground Forces." <a href="https://en.wikipedia.org/wiki/Islamic_Republic_of_Iran_Army_Ground_Forces" target="_blank">Wikipedia</a>.</li>
+  <li>"2026 Iran Military Strength." <a href="https://www.globalfirepower.com/country-military-strength-detail.php?country_id=iran" target="_blank">Global Firepower</a>.</li>
 </ol>
 
 <div class="cite-topic">Geography &amp; Terrain</div>
 <ol class="cite-list" style="counter-reset: cite 30;">
-  <li>"Zagros Mountains" — <a href="https://en.wikipedia.org/wiki/Zagros_Mountains" target="_blank">Wikipedia</a>.</li>
-  <li>"Zagros Mountains" — <a href="https://www.britannica.com/place/Zagros-Mountains" target="_blank">Britannica</a>.</li>
-  <li>"Qandil Mountains" — <a href="https://en.wikipedia.org/wiki/Qandil_Mountains" target="_blank">Wikipedia</a>.</li>
-  <li>"How a Remote Stronghold Became a Kurdish Militants' Fortress" — <a href="https://english.noonpost.com/p/qandil-mountains-how-a-remote-stronghold" target="_blank">Noonpost</a>, Jan 2026.</li>
-  <li>"Iraqi Kurdistan" — <a href="https://en.wikipedia.org/wiki/Iraqi_Kurdistan" target="_blank">Wikipedia</a>.</li>
+  <li>"Zagros Mountains." <a href="https://en.wikipedia.org/wiki/Zagros_Mountains" target="_blank">Wikipedia</a>.</li>
+  <li>"Zagros Mountains." <a href="https://www.britannica.com/place/Zagros-Mountains" target="_blank">Britannica</a>.</li>
+  <li>"Qandil Mountains." <a href="https://en.wikipedia.org/wiki/Qandil_Mountains" target="_blank">Wikipedia</a>.</li>
+  <li>"How a Remote Stronghold Became a Kurdish Militants' Fortress." <a href="https://english.noonpost.com/p/qandil-mountains-how-a-remote-stronghold" target="_blank">Noonpost</a>, Jan 2026.</li>
+  <li>"Iraqi Kurdistan." <a href="https://en.wikipedia.org/wiki/Iraqi_Kurdistan" target="_blank">Wikipedia</a>.</li>
 </ol>
 
 <div class="cite-topic">2026 Iran War &amp; Kurdish Involvement</div>
 <ol class="cite-list" style="counter-reset: cite 35;">
-  <li>"CIA working to arm Kurdish forces" — <a href="https://www.cnn.com/2026/03/03/politics/cia-arming-kurds-iran" target="_blank">CNN</a>, March 3, 2026.</li>
-  <li>"Is the CIA planning to arm Kurdish forces?" — <a href="https://www.aljazeera.com/news/2026/3/4/is-the-cia-planning-to-arm-kurdish-forces-to-spark-an-uprising-in-iran" target="_blank">Al Jazeera</a>, March 4, 2026.</li>
-  <li>"Thousands of Kurdish fighters launch ground offensive" — <a href="https://www.i24news.tv/en/news/middle-east/iran-eastern-states/artc-exclusive-thousands-of-kurdish-fighters-launch-ground-offensive-into-iran-against-regime-official-says" target="_blank">i24NEWS</a>, March 6, 2026.</li>
-  <li>"From Mahabad to the 2026 war" — <a href="https://www.voiceofemirates.com/en/news/2026/03/05/exclusive-from-mahabad-to-the-2026-war-irans-kurds-at-the-heart-of-the-conflict-who-are-they-and-what-is-their-role/" target="_blank">Voice of Emirates</a>, March 5, 2026.</li>
+  <li>"CIA working to arm Kurdish forces." <a href="https://www.cnn.com/2026/03/03/politics/cia-arming-kurds-iran" target="_blank">CNN</a>, March 3, 2026.</li>
+  <li>"Is the CIA planning to arm Kurdish forces?." <a href="https://www.aljazeera.com/news/2026/3/4/is-the-cia-planning-to-arm-kurdish-forces-to-spark-an-uprising-in-iran" target="_blank">Al Jazeera</a>, March 4, 2026.</li>
+  <li>"Thousands of Kurdish fighters launch ground offensive." <a href="https://www.i24news.tv/en/news/middle-east/iran-eastern-states/artc-exclusive-thousands-of-kurdish-fighters-launch-ground-offensive-into-iran-against-regime-official-says" target="_blank">i24NEWS</a>, March 6, 2026.</li>
+  <li>"From Mahabad to the 2026 war." <a href="https://www.voiceofemirates.com/en/news/2026/03/05/exclusive-from-mahabad-to-the-2026-war-irans-kurds-at-the-heart-of-the-conflict-who-are-they-and-what-is-their-role/" target="_blank">Voice of Emirates</a>, March 5, 2026.</li>
 </ol>
 
 </div>
@@ -797,14 +808,14 @@ var kurdEthnic = [
   [38.20,37.55],[38.00,37.95],[37.90,38.25],[38.30,38.55]
 ].map(function(c){return [c[1],c[0]];});
 
-var tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
-var tileAttr = '&copy; <a href="https://openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>';
+var tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+var tileAttr = '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 function initMaps() {
 
   // MAP 1: REGIONAL
   window.map1 = L.map('map1').setView([36.5, 43.0], 6);
-  L.tileLayer(tileUrl, {attribution:tileAttr, subdomains:'abcd'}).addTo(map1);
+  L.tileLayer(tileUrl, {attribution:tileAttr, subdomains:'abc', maxZoom:19}).addTo(map1);
 
   // Create elevated pane so KRG provinces always render on top
   map1.createPane('krgPane');
@@ -875,35 +886,117 @@ function initMaps() {
     radius:8, color:'#d4a843', fillColor:'#d4a843', fillOpacity:0.3, weight:2
   }).addTo(map1).bindPopup('<b style="color:#d4a843;">Qandil Mtns</b><br>3,587m — PKK/PJAK HQ');
 
-  // MAP 2: OPERATIONAL
-  window.map2 = L.map('map2').setView([35.8, 44.8], 7);
-  L.tileLayer(tileUrl, {attribution:tileAttr, subdomains:'abcd'}).addTo(map2);
+  // MAP 1: LEGEND
+  var legend1 = L.control({position:'bottomright'});
+  legend1.onAdd = function() {
+    var d = L.DomUtil.create('div','map-inline-legend');
+    d.innerHTML = '<b>Legend</b>'
+      + '<div class="leg"><span class="swatch" style="background:#5ba3e8;"></span>KRG — Iraq</div>'
+      + '<div class="leg"><span class="swatch" style="background:#d4a843;"></span>Turkey</div>'
+      + '<div class="leg"><span class="swatch" style="background:#cc5555;"></span>Iran</div>'
+      + '<div class="leg"><span class="swatch" style="background:#55aa55;"></span>Syria (Rojava)</div>'
+      + '<div class="leg" style="margin-top:4px;opacity:0.7;font-size:0.72rem;">Ethnic boundary (approx.)</div>';
+    return d;
+  };
+  legend1.addTo(map1);
 
-  var krgF = {type:'FeatureCollection', features: ADMIN_DATA.features.filter(function(f){ return f.properties._type === 'krg'; })};
-  L.geoJSON(krgF, {
-    style: { color:'#5ba3e8', weight:2, opacity:0.6, fillColor:'#5ba3e8', fillOpacity:0.08, dashArray:'6,3' },
-    onEachFeature: function(f, l) { l.bindPopup('<b style="color:#5ba3e8;">'+f.properties._name+'</b><br>KRG Gov.'); }
+  // MAP 2: OPERATIONAL — Groups, Bases, Oil
+  window.map2 = L.map('map2').setView([36.0, 44.0], 6);
+  L.tileLayer(tileUrl, {attribution:tileAttr, subdomains:'abc', maxZoom:19}).addTo(map2);
+
+  // Panes for z-ordering: territories below KRG boundary
+  map2.createPane('territoriesPane');
+  map2.getPane('territoriesPane').style.zIndex = 390;
+  map2.createPane('krgPane2');
+  map2.getPane('krgPane2').style.zIndex = 420;
+
+  // Pull KRG province features
+  var krgFeatures = ADMIN_DATA.features.filter(function(f){ return f.properties._type === 'krg'; });
+
+  // KDP: Dohuk + Erbil provinces (Barzani-controlled)
+  var kdpF = {type:'FeatureCollection', features: krgFeatures.filter(function(f){ return f.properties._name === 'Dohuk' || f.properties._name === 'Erbil'; })};
+  L.geoJSON(kdpF, {
+    pane: 'krgPane2',
+    style: { color:'#5ba3e8', weight:2.5, opacity:0.9, dashArray:'8,5', fillColor:'#5ba3e8', fillOpacity:0.20 },
+    onEachFeature: function(f,l) { l.bindPopup('<b style="color:#5ba3e8;">'+f.properties._name+'</b><br><b>KDP</b> / Kurdistan Democratic Party<br>Barzani faction<br><i style="color:#888;">KRG province</i>'); }
   }).addTo(map2);
 
-  var pjak = [[45.15,36.50],[45.55,36.52],[45.92,36.35],[46.12,36.08],[45.98,35.78],[45.65,35.58],[45.32,35.68],[45.10,35.95],[45.15,36.50]].map(function(c){return [c[1],c[0]];});
-  L.polygon(pjak, {color:'#cc3344',weight:2.5,opacity:0.6,fillColor:'#cc3344',fillOpacity:0.10}).addTo(map2).bindPopup('<b style="color:#cc3344;">PJAK/YRK Zone</b><br>Qandil Mtns<br>1,000-3,000 fighters');
+  // PUK: Sulaimaniyah province (Talabani-controlled)
+  var pukF = {type:'FeatureCollection', features: krgFeatures.filter(function(f){ return f.properties._name.indexOf('Sulaimaniyah') > -1; })};
+  L.geoJSON(pukF, {
+    pane: 'krgPane2',
+    style: { color:'#7bb8f0', weight:2.5, opacity:0.9, dashArray:'8,5', fillColor:'#7bb8f0', fillOpacity:0.20 },
+    onEachFeature: function(f,l) { l.bindPopup('<b style="color:#7bb8f0;">'+f.properties._name+'</b><br><b>PUK</b> / Patriotic Union of Kurdistan<br>Talabani faction<br><i style="color:#888;">KRG province</i>'); }
+  }).addTo(map2);
 
-  L.circle([36.08,44.63], {radius:15000,color:'#d4a843',weight:1.5,opacity:0.5,fillColor:'#d4a843',fillOpacity:0.06,dashArray:'5,4'}).addTo(map2).bindPopup('<b style="color:#d4a843;">KDPI/PAK Bases</b><br>Nr. Koya');
-  L.circle([36.32,41.87], {radius:12000,color:'#a070b0',weight:1.5,opacity:0.5,fillColor:'#a070b0',fillOpacity:0.06,dashArray:'5,4'}).addTo(map2).bindPopup('<b style="color:#a070b0;">YBS Sinjar</b>');
+  // PKK / PJAK: Qandil Mountains operational zone (straddles Iraq–Iran border)
+  var qandil = [[36.65,45.1],[36.55,45.55],[36.3,46.05],[35.95,46.25],[35.65,45.95],[35.58,45.5],[35.72,45.1],[36.0,44.85],[36.35,44.9],[36.65,45.1]];
+  L.polygon(qandil, {
+    pane: 'territoriesPane',
+    color:'#cc3344', weight:2, dashArray:'6,4', opacity:0.75,
+    fillColor:'#cc3344', fillOpacity:0.13
+  }).addTo(map2).bindPopup('<b style="color:#cc3344;">PKK / PJAK</b><br>Qandil Mountains stronghold<br>Iraq–Iran border | ~36°N 45.8°E<br>Est. 3,000–5,000 fighters<br><i style="color:#888;">Approximate operational zone</i>');
 
-  [["Kirkuk",35.47,44.39,"oil"],["Tawke",37.00,43.10,"oil"],["Shaikan",36.75,43.50,"oil"],["Khor Mor Gas",35.10,45.30,"gas"],["Miran",36.30,44.80,"oil"],["Taq Taq",35.90,44.60,"oil"],["Khurmala",36.05,44.15,"oil"],["Bai Hassan",35.58,44.20,"oil"]].forEach(function(f){
-    var c=f[3]==='gas'?'#9a7a30':'#d4a843';
-    L.circleMarker([f[1],f[2]],{radius:6,color:c,fillColor:c,fillOpacity:0.8,weight:1.5}).addTo(map2).bindPopup('<b style="color:'+c+';">'+f[0]+'</b><br>'+(f[3]==='gas'?'Gas':'Oil'));
+  // PJAK / KDPI zone: Iranian Kurdish provinces
+  var iranKurdF = {type:'FeatureCollection', features: ADMIN_DATA.features.filter(function(f){ return f.properties._type === 'iranian-kurdish'; })};
+  L.geoJSON(iranKurdF, {
+    pane: 'territoriesPane',
+    style: { color:'#cc5555', weight:1.5, dashArray:'6,4', opacity:0.7, fillColor:'#cc5555', fillOpacity:0.12 },
+    onEachFeature: function(f,l) {
+      l.bindPopup('<b style="color:#cc5555;">'+f.properties._name+'</b><br>Eastern Kurdistan (Iran)<br>PJAK + KDPI operations<br><i style="color:#888;">Province</i>');
+    }
+  }).addTo(map2);
+
+  // YPG / SDF: Rojava (NE Syria)
+  var rojavF = {type:'FeatureCollection', features: ADMIN_DATA.features.filter(function(f){ return f.properties._type === 'syrian-kurdish'; })};
+  L.geoJSON(rojavF, {
+    pane: 'territoriesPane',
+    style: { color:'#55aa55', weight:1.5, dashArray:'6,4', opacity:0.7, fillColor:'#55aa55', fillOpacity:0.12 },
+    onEachFeature: function(f,l) { l.bindPopup('<b style="color:#55aa55;">'+f.properties._name+'</b><br>Rojava / NE Syria<br>YPG / SDF<br><i style="color:#888;">Governorate</i>'); }
+  }).addTo(map2);
+
+  // YBŞ Sinjar (Yazidi)
+  L.circleMarker([36.32,41.87], {radius:7, color:'#a070b0', fillColor:'#a070b0', fillOpacity:0.85, weight:2})
+    .addTo(map2).bindPopup('<b style="color:#a070b0;">Sinjar / YBŞ</b><br>Yazidi Resistance Units<br>Anti-ISIS, PKK-affiliated');
+
+  // US Military Bases
+  [
+    ["Erbil Air Base",        36.24, 44.00, true,  "Primary US hub in KRG since 2014"],
+    ["Al-Harir (Bashur)",     36.63, 44.38, true,  "SOCOM / special operations hub"],
+    ["Q-West / Qayyarah",     35.76, 43.12, false, "US airfield 2003–2017, Iraqi control"],
+    ["FOB Warrior / Kirkuk",  35.47, 44.39, false, "Coalition base 2003–2011"],
+    ["Incirlik AB (Turkey)",  37.00, 35.43, true,  "NATO; US nuclear storage; F-16 ops"]
+  ].forEach(function(b) {
+    var col = b[3] ? '#f0ece4' : '#888';
+    L.circleMarker([b[1],b[2]], {radius:8, color:col, fillColor:col, fillOpacity: b[3] ? 0.9 : 0.45, weight:2})
+      .addTo(map2).bindPopup('<b style="color:'+col+';">'+b[0]+'</b><br>'
+        +(b[3]?'<span style="color:#55cc55;">● Active</span>':'<span style="color:#888;">◌ Former</span>')
+        +'<br>'+b[4]);
   });
 
-  [["Erbil Air Base",36.24,44.00],["Al-Harir",36.63,44.38]].forEach(function(b){
-    L.circleMarker([b[1],b[2]],{radius:7,color:'#f0ece4',fillColor:'#f0ece4',fillOpacity:0.9,weight:2}).addTo(map2).bindPopup('<b>US: '+b[0]+'</b>');
+  // Oil & Gas Fields
+  [
+    ["Kirkuk",    35.47, 44.39, "oil", "Disputed; ~200k bbl/day"],
+    ["Tawke",     37.00, 43.10, "oil", "KRG / DNO operator"],
+    ["Shaikan",   36.75, 43.50, "oil", "KRG / Gulf Keystone"],
+    ["Khor Mor",  35.10, 45.30, "gas", "KRG / Dana Gas"],
+    ["Taq Taq",   35.90, 44.60, "oil", "KRG / Genel Energy"],
+    ["Khurmala",  36.05, 44.15, "oil", "KRG / KNOC"],
+    ["Bai Hassan",35.58, 44.20, "oil", "Disputed / North Oil Co."],
+    ["Miran",     36.30, 44.80, "oil", "KRG / Genel Energy"]
+  ].forEach(function(f) {
+    var c = f[3]==='gas' ? '#aaa830' : '#d4a843';
+    L.circleMarker([f[1],f[2]], {radius:6, color:c, fillColor:c, fillOpacity:0.85, weight:1.5})
+      .addTo(map2).bindPopup('<b style="color:'+c+';">'+f[0]+'</b><br>'
+        +(f[3]==='gas'?'⬡ Gas field':'◈ Oil field')+'<br>'+f[4]);
   });
 
-  cities.forEach(function(c){
-    var cap=(c[0]==='Baghdad'||c[0]==='Ankara'||c[0]==='Tehran'||c[0]==='Damascus');
-    if(c[2]>41&&c[2]<48&&c[1]>33.5&&c[1]<38.5&&!cap){
-      L.circleMarker([c[1],c[2]],{radius:4,color:'#c41e3a',fillColor:'#c41e3a',fillOpacity:0.9,weight:1}).addTo(map2).bindPopup('<b>'+c[0]+'</b><br>'+c[3]);
+  // City markers (visible in this view)
+  cities.forEach(function(c) {
+    var cap = (c[0]==='Baghdad'||c[0]==='Ankara'||c[0]==='Tehran'||c[0]==='Damascus');
+    if (c[2]>38 && c[2]<50 && c[1]>33.5 && c[1]<39.5 && !cap) {
+      L.circleMarker([c[1],c[2]], {radius:4, color:'#c41e3a', fillColor:'#c41e3a', fillOpacity:0.9, weight:1})
+        .addTo(map2).bindPopup('<b>'+c[0]+'</b><br>'+c[3]);
     }
   });
 
