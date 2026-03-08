@@ -279,6 +279,11 @@ def generate_map1(countries: gpd.GeoDataFrame, admin: gpd.GeoDataFrame) -> None:
 
 
 # ─── MAP 2: Operational ───────────────────────────────────────────────────────
+def lbox(bg: str = '#f0e6cc', alpha: float = 0.80):
+    """Clean parchment-backed label box — replaces rough stroke halos."""
+    return dict(boxstyle='round,pad=0.25', facecolor=bg, alpha=alpha, edgecolor='none')
+
+
 def generate_map2(countries: gpd.GeoDataFrame, admin: gpd.GeoDataFrame) -> None:
     LON_MIN, LON_MAX, LAT_MIN, LAT_MAX = 38.5, 48.5, 33.5, 38.5
     vbox = box(LON_MIN, LAT_MIN, LON_MAX, LAT_MAX)
@@ -331,17 +336,17 @@ def generate_map2(countries: gpd.GeoDataFrame, admin: gpd.GeoDataFrame) -> None:
     qgdf.plot(ax=ax, facecolor=C['pkk'], edgecolor='none', alpha=0.28, zorder=3)
     qgdf.boundary.plot(ax=ax, color='#6a2a2a', linewidth=1.8,
                        linestyle=(0, (4, 3)), alpha=0.90, zorder=3)
-    ax.text(45.55, 36.28, 'PKK / PJAK\nQandil Zone', fontsize=7.5,
+    ax.text(45.55, 36.28, 'PKK / PJAK\nQandil Zone', fontsize=9.5,
             color='#6a2a2a', ha='center', va='center',
-            fontstyle='italic', path_effects=halo(2.5), zorder=9)
+            fontstyle='italic', bbox=lbox(), zorder=9)
 
     # ── Sinjar / YBŞ ──────────────────────────────────────────────────────────
-    ax.plot(41.87, 36.32, 'o', markersize=10, color=C['sinjar'],
-            markeredgecolor='white', markeredgewidth=0.9,
+    ax.plot(41.87, 36.32, 'o', markersize=11, color=C['sinjar'],
+            markeredgecolor='white', markeredgewidth=1.0,
             zorder=8, linestyle='none')
-    ax.text(42.05, 36.50, 'Sinjar\n(YBŞ)', fontsize=7,
+    ax.text(42.08, 36.50, 'Sinjar\n(YBŞ)', fontsize=9,
             color=C['sinjar'], ha='left', va='bottom',
-            path_effects=halo(2.5), zorder=10)
+            bbox=lbox(), zorder=10)
 
     ax.set_xlim(LON_MIN, LON_MAX)
     ax.set_ylim(LAT_MIN, LAT_MAX)
@@ -360,13 +365,13 @@ def generate_map2(countries: gpd.GeoDataFrame, admin: gpd.GeoDataFrame) -> None:
     ]
     for name, lat, lon, (dx, dy) in cities:
         if LON_MIN < lon < LON_MAX and LAT_MIN < lat < LAT_MAX:
-            ax.plot(lon, lat, 'o', markersize=4.5, color=C['text_dark'],
-                    markeredgecolor='white', markeredgewidth=0.7,
+            ax.plot(lon, lat, 'o', markersize=5.5, color=C['text_dark'],
+                    markeredgecolor='white', markeredgewidth=0.8,
                     zorder=8, linestyle='none')
-            ax.text(lon + dx, lat + dy, name, fontsize=7,
+            ax.text(lon + dx, lat + dy, name, fontsize=9,
                     color=C['text_dark'], ha='left' if dx > 0 else 'right',
                     va='bottom' if dy > 0 else 'top',
-                    path_effects=halo(2.5), zorder=9)
+                    bbox=lbox(), zorder=9)
 
     # ── US Military Bases ─────────────────────────────────────────────────────
     bases = [
@@ -382,12 +387,12 @@ def generate_map2(countries: gpd.GeoDataFrame, admin: gpd.GeoDataFrame) -> None:
             ax.plot(lon, lat, marker='*', markersize=16, linestyle='none',
                     markerfacecolor=fc, markeredgecolor=C['border'],
                     markeredgewidth=0.9, zorder=11)
-            dy = 0.17 if active else -0.20
-            ax.text(lon, lat + dy, name, fontsize=6.5,
+            dy = 0.20 if active else -0.23
+            ax.text(lon, lat + dy, name, fontsize=9,
                     color=C['text_dark'] if active else C['base_old'],
                     ha='center', va='bottom' if dy > 0 else 'top',
                     fontstyle='normal' if active else 'italic',
-                    path_effects=halo(2.5), zorder=12)
+                    bbox=lbox(), zorder=12)
 
     # ── Oil & Gas Fields ──────────────────────────────────────────────────────
     oil_fields = [
@@ -406,9 +411,9 @@ def generate_map2(countries: gpd.GeoDataFrame, admin: gpd.GeoDataFrame) -> None:
             ax.plot(lon, lat, marker='D', markersize=9, linestyle='none',
                     color=col, markeredgecolor=C['border'],
                     markeredgewidth=0.7, zorder=10)
-            ax.text(lon + 0.13, lat + 0.13, name, fontsize=6.5,
+            ax.text(lon + 0.14, lat + 0.14, name, fontsize=9,
                     color=col, ha='left', va='bottom',
-                    path_effects=halo(2.5), zorder=11)
+                    bbox=lbox(), zorder=11)
 
     # ── title ──────────────────────────────────────────────────────────────────
     fig.text(0.02, 0.97, 'KURDISH GROUPS, BASES & OIL',

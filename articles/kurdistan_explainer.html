@@ -352,7 +352,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 <nav class="tab-nav">
   <button class="tab-btn active" onclick="switchTab('tab1')">Kurdistan Background</button>
   <button class="tab-btn" onclick="switchTab('tab2')">Works Cited</button>
-  <button class="tab-btn" onclick="switchTab('tab3')">Coming Soon</button>
+  <button class="tab-btn" onclick="switchTab('tab3')">Interactive Maps</button>
 </nav>
 
 <!-- ===================== TAB 1 ===================== -->
@@ -379,10 +379,10 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
   Borders are traced from approximate real-world coordinates.
 -->
 <div class="map-container">
-  <div class="map-title">Greater Kurdistan Region — Four-Country Overlap (Interactive)</div>
-  <div id="map1" style="width:100%; height:550px; border-radius:4px; background:#0e0e0e;"></div>
+  <div class="map-title">Greater Kurdistan Region — Four-Country Overlap</div>
+  <img src="../maps/kurdistan_map1.png" alt="Kurdish Regions Across Four States — provincial and administrative extent across Turkey, Iraq, Iran, and Syria" style="width:100%; display:block; border-radius:4px;">
   <div style="font-family:var(--font-mono); font-size:0.6rem; color:#555; margin-top:8px; letter-spacing:0.5px;">
-    Map tiles: OpenStreetMap. Kurdistan ethnic boundary: Kurdish Institute Paris / CIA ethnographic references. KRG admin boundary: OCHA Iraq COD-AB (HDX). Country borders: Natural Earth via OpenStreetMap.
+    Sources: geoBoundaries CC BY 4.0 · Natural Earth · Kurdish Institute Paris / CIA ethnographic references.
   </div>
 </div>
 
@@ -528,12 +528,12 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 <p>Exports resumed in September 2025 under an interim deal placing Baghdad's SOMO as sole marketer, producing ~220,000 bpd and generating $1.2 billion by year-end (<a href="https://www.aljazeera.com/news/2025/9/27/iraq-resumes-kurdish-oil-exports-to-turkiye-after-two-and-a-half-year-halt" target="_blank">Al Jazeera</a>). Analysts described the deal as a "transitional truce" (<a href="https://www.atlanticcouncil.org/blogs/menasource/is-the-baghdad-erbil-oil-deal-a-blueprint-for-settlement-or-a-stopgap/" target="_blank">Atlantic Council</a>). In May 2025, the KRG signed separate $110 billion gas agreements with US firms HKN Energy and WesternZagros, immediately condemned by Baghdad as unconstitutional (<a href="https://www.iraq-businessnews.com/2025/05/21/krgs-us-energy-deals-spark-fresh-dispute-with-baghdad/" target="_blank">Iraq Business News</a>). Drone strikes on five KRG oil fields in July 2025 cut production by 70%, with officials blaming Iran-backed militias (<a href="https://www.hrw.org/news/2025/07/29/iraq-damage-to-kurdistan-region-oil-fields-puts-rights-at-risk" target="_blank">HRW</a>).</p>
 </div>
 
-<!-- MAP 2: TERRITORIAL CONTROL & OIL — Interactive -->
+<!-- MAP 2: OPERATIONAL -->
 <div class="map-container">
-  <div class="map-title">Kurdish Group Territories, US Bases &amp; Oil Infrastructure — Iraq/Iran Border Region (Interactive)</div>
-  <div id="map2" style="width:100%; height:600px; border-radius:4px; background:#0e0e0e;"></div>
+  <div class="map-title">Kurdish Groups, Bases &amp; Oil — Iraq/Iran Border Region</div>
+  <img src="../maps/kurdistan_map2.png" alt="Kurdish faction territories, US military bases, and oil infrastructure in the Iraq/Iran border region" style="width:100%; display:block; border-radius:4px;">
   <div style="font-family:var(--font-mono); font-size:0.6rem; color:#555; margin-top:8px; letter-spacing:0.5px;">
-    Map tiles: OpenStreetMap. Group territories approximate from open-source reporting. Oil field &amp; base coordinates from public geographic data. KRG boundary: OCHA Iraq COD-AB (HDX).
+    Sources: geoBoundaries CC BY 4.0 · Natural Earth · CENTCOM public data. Group territories approximate from open-source reporting.
   </div>
 </div>
 
@@ -761,10 +761,26 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <!-- ===================== TAB 3 ===================== -->
 <div id="tab3" class="tab-content">
-<div class="coming-soon">
-  <h2>Coming Soon</h2>
-  <p>This section is under development. Check back for updates.</p>
-  <div style="margin-top: 40px; width: 60px; height: 2px; background: var(--gold-dim); margin-left: auto; margin-right: auto;"></div>
+<div style="max-width:960px; margin:0 auto; padding:32px 20px;">
+  <div class="section-label">Interactive</div>
+  <h2>Dynamic Maps</h2>
+  <p style="color:var(--white-dim); margin-bottom:32px; font-size:0.95rem;">Pan, zoom, and click any region or marker for details. Maps initialize on first load of this tab.</p>
+
+  <div class="map-container">
+    <div class="map-title">Greater Kurdistan Region — Four-Country Overlap (Interactive)</div>
+    <div id="map1" style="width:100%; height:550px; border-radius:4px; background:#0e0e0e;"></div>
+    <div style="font-family:var(--font-mono); font-size:0.6rem; color:#555; margin-top:8px; letter-spacing:0.5px;">
+      Map tiles: OpenStreetMap. Kurdistan ethnic boundary: Kurdish Institute Paris / CIA. KRG boundary: OCHA Iraq COD-AB.
+    </div>
+  </div>
+
+  <div class="map-container" style="margin-top:40px;">
+    <div class="map-title">Kurdish Group Territories, US Bases &amp; Oil Infrastructure (Interactive)</div>
+    <div id="map2" style="width:100%; height:600px; border-radius:4px; background:#0e0e0e;"></div>
+    <div style="font-family:var(--font-mono); font-size:0.6rem; color:#555; margin-top:8px; letter-spacing:0.5px;">
+      Map tiles: OpenStreetMap. Group territories approximate from open-source reporting. Oil field &amp; base coordinates from public geographic data.
+    </div>
+  </div>
 </div>
 </div>
 
@@ -775,6 +791,7 @@ p a:hover, .source-link:hover { color: var(--white); border-bottom-color: var(--
 
 <script>
 // TAB SWITCHING
+var mapsInitialized = false;
 function switchTab(tabId) {
   document.querySelectorAll(".tab-content").forEach(function(t){ t.classList.remove("active"); });
   document.querySelectorAll(".tab-btn").forEach(function(b){ b.classList.remove("active"); });
@@ -783,7 +800,13 @@ function switchTab(tabId) {
   var tabs = ["tab1","tab2","tab3"];
   btns[tabs.indexOf(tabId)].classList.add("active");
   window.scrollTo({ top: 0, behavior: "smooth" });
-  setTimeout(function(){ if(window.map1) map1.invalidateSize(); if(window.map2) map2.invalidateSize(); }, 300);
+  // Lazy-init interactive maps the first time Tab 3 is opened
+  if (tabId === 'tab3' && !mapsInitialized) {
+    mapsInitialized = true;
+    setTimeout(initMaps, 50);
+  } else {
+    setTimeout(function(){ if(window.map1) map1.invalidateSize(); if(window.map2) map2.invalidateSize(); }, 300);
+  }
 }
 
 // EMBEDDED ADMIN BOUNDARIES (geoBoundaries CC BY 4.0)
@@ -998,14 +1021,8 @@ function initMaps() {
   }, 200);
 }
 
-// Robust init: works whether DOMContentLoaded has already fired or not
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initMaps);
-} else {
-  initMaps();
-}
-
-// Re-invalidate after all resources (web fonts, images) finish loading
+// Interactive maps initialize lazily when Tab 3 is first opened (see switchTab).
+// Re-invalidate on full page load in case tab3 was already active.
 window.addEventListener('load', function() {
   if (window.map1) map1.invalidateSize();
   if (window.map2) map2.invalidateSize();
