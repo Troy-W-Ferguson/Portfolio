@@ -991,15 +991,6 @@ function initMaps() {
         +(f[3]==='gas'?'⬡ Gas field':'◈ Oil field')+'<br>'+f[4]);
   });
 
-  // City markers (visible in this view)
-  cities.forEach(function(c) {
-    var cap = (c[0]==='Baghdad'||c[0]==='Ankara'||c[0]==='Tehran'||c[0]==='Damascus');
-    if (c[2]>38 && c[2]<50 && c[1]>33.5 && c[1]<39.5 && !cap) {
-      L.circleMarker([c[1],c[2]], {radius:4, color:'#c41e3a', fillColor:'#c41e3a', fillOpacity:0.9, weight:1})
-        .addTo(map2).bindPopup('<b>'+c[0]+'</b><br>'+c[3]);
-    }
-  });
-
   // Invalidate sizes after layout settles (handles font/image reflow)
   setTimeout(function() {
     if (window.map1) map1.invalidateSize();
