@@ -348,17 +348,7 @@
     flex-direction: column;
     gap: 28px;
     align-self: start;
-    position: sticky;
-    top: 20px;
-    max-height: calc(100vh - 40px);
-    overflow-y: auto;
-    /* Thin scrollbar for overflow content */
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
   }
-  .sidebar::-webkit-scrollbar { width: 4px; }
-  .sidebar::-webkit-scrollbar-track { background: transparent; }
-  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   .legend-card, .stats-grid-wrap, .bar-chart-card, .context-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -510,7 +500,8 @@
     .tab-nav-brand { display: none; }
     header { padding: 32px 20px 28px; }
     .main { grid-template-columns: 1fr; padding: 20px; }
-    .sidebar { grid-column: 1; position: static; max-height: none; overflow-y: visible; }
+    .sidebar { grid-column: 1; order: 1; }
+    .timeline-wrap { grid-column: 1; order: 2; }
     /* Munition tables: enable horizontal scroll on tablet */
     .munition-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .munition-table { min-width: 520px; }
@@ -4696,37 +4687,32 @@
         US total strike count not yet publicly broken out by day · update when CENTCOM releases<br>
         <span style="color:var(--border);">IAF/US daily figures will be updated as ops continue · this is a live conflict</span>
       </div>
-    
-      <div class="context-item">Rahman Mokaddam — Head of IRGC Special Operations Unit & planner of Trump assassination plot. Confirmed killed Mar 4 per IDF.</div>
-      <div class="context-item">Aziz Nasirzadeh — Iranian Defense Minister (Brigadier General). Killed Feb 28; confirmed by Israeli military and regional sources.</div>
-      <div class="context-item">Mohammad Pakpour — IRGC Ground Forces Commander. Killed; confirmed by Israeli military and regional sources.</div>
-      <div class="context-item">Ali Shamkhani — Defense Council Secretary. Killed; confirmed by Iran International and IDF (7 security leaders total confirmed).</div>
-      <div class="context-item">Hussein Makled — Head of Hezbollah's Intelligence Headquarters in Beirut. Killed Mar 2 in IDF precision strike.</div>
-      <div class="context-item">Zaid Ali Jamaa — Hezbollah fire and artillery commander, southern Lebanon. Killed by IDF (Critical Threats / CTP-ISW Mar 5).</div>
-      <div class="context-item">Wasim Attallah Ali — Hamas commander for training/exercises in Lebanon. Killed by IDF Navy strike in Tripoli, Mar 5.</div>
-      <div class="context-item">Abolqasem Babaian — Head of the Military Office of the Supreme Leader. Killed in an IDF strike on Saturday, March 7, 2026, per Reuters/Times of Israel reporting.</div>
-      <div class="context-item">Majid Hassini — IRGC Quds Force Lebanon Corps Senior Financier (proxy funds to Hezbollah/Hamas). Killed in IDF targeted strike on hotel in Beirut, March 8, 2026.</div>
-      <div class="context-item">Ali Reza Bi-Azar — Chief of Intelligence, IRGC Quds Force Lebanon Corps. Killed in IDF Beirut hotel strike, March 8, 2026.</div>
-      <div class="context-item">Ahmad Rasouli — Chief of Intelligence, IRGC Quds Force Palestine Corps. Killed in IDF Beirut hotel strike, March 8, 2026.</div>
-      <div class="context-item">Hossein Ahmadlou — Intelligence Operative, IRGC Quds Force Lebanon Corps. Killed in IDF Beirut hotel strike, March 8, 2026.</div>
-      <div class="context-item">Abu Muhammad Ali — Hezbollah's representative in the IRGC Quds Force Palestine Corps. Killed in IDF Beirut hotel strike, March 8, 2026.</div>
-      <div class="context-item">Mojtaba Khamenei — Elected as new Supreme Leader of Iran (NOT killed; elected Mar 8 to replace his father Ali Khamenei; Israel has warned he is 'a target')</div></div>
+    </div>
 
     <!-- Key assassinations -->
     <div class="context-card">
       <!-- Add dead leaders to this section -->
       <div class="section-title">Confirmed leadership killed</div>
       <div class="context-item"><strong style="color:var(--accent);">Ali Khamenei</strong> — Supreme Leader of Iran (86). Killed at his Tehran compound by Israeli precision strike. Daughter, son-in-law, grandson also killed. <a class="source-link" href="https://www.npr.org/2026/02/28/nx-s1-5730158/israel-iran-strikes-trump-us" target="_blank">NPR</a></div>
-      <div class="context-item"><strong>Ali Shamkhani</strong> — Secretary, Supreme National Security Council. Confirmed killed. <a class="source-link" href="https://www.cbsnews.com/live-updates/israel-us-attack-iran-trump-says-major-combat-operations/" target="_blank">CBS</a></div>
-      <div class="context-item"><strong>Aziz Nasirzadeh</strong> — Defense Minister, oversaw missile industry and SPND nuclear/CBW research. <a class="source-link" href="https://www.foxnews.com/live-news/israel-us-launch-attack-on-iran-amid-escalating-protests" target="_blank">Fox News</a></div>
-      <div class="context-item"><strong>Hossein Jabal Amelian</strong> — SPND Director (Organization of Defensive Innovation and Research — nuclear/biological/chemical weapons). <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
-      <div class="context-item"><strong>Abdolrahim Mousavi</strong> — Chief of Staff of Iranian Armed Forces. Confirmed 1 March by Iranian state media. <a class="source-link" href="https://www.aljazeera.com/news/2026/3/1/us-israel-attacks-on-iran-day-2-khamenei-is-killed-iran-retaliates" target="_blank">Al Jazeera</a></div>
-      <div class="context-item"><strong>Reza Mozaffari-Nia</strong> · <strong>Mohammad Shirazi</strong> · <strong>Salah Asadi</strong> — Former SPND head, Khamenei's military office chief, intelligence chief. <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
-      <div class="context-item"><strong>Hussein Makled</strong> — Head of Hezbollah's Intelligence Headquarters, Beirut. Killed in a precise IDF airstrike on Beirut's southern suburbs, confirmed by the IDF on March 2, 2026. (CBS News / Times of Israel)</div>
-      <div class="context-item"><strong>Mohammad Pakpour</strong> — IRGC Ground Forces Commander. Confirmed killed in opening strikes, per IDF's official list of regime officials killed Feb 28–Mar 1. <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
-      <div class="context-item"><strong>Khamenei's wife</strong> — Confirmed by Iranian sources to have died of injuries sustained in the strike on Khamenei's compound. <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
-      <div class="context-item"><strong>Mojtaba Khamenei</strong> <em>(elected, not killed)</em> — Son of Ali Khamenei, reportedly elected 3rd Supreme Leader of Iran by Assembly of Experts under IRGC pressure on March 4. Not yet publicly announced by Iranian state media. Israel has warned he is 'an unequivocal target for elimination.' <a class="source-link" href="https://www.iranintl.com/en/202603030390" target="_blank">Iran International</a></div>
-      <div class="context-item"><strong>Daoud Alizadeh</strong> — Acting Commander, IRGC Quds Force Lebanon Corps. Killed in an Israeli airstrike in Tehran on March 3, 2026, per IDF announcement. Described by the IDF as 'the highest-ranking Iranian commander responsible for Lebanon.' <a class="source-link" href="https://www.timesofisrael.com/liveblog_entry/idf-kills-head-of-irgcs-lebanon-corps-in-tehran/" target="_blank">Times of Israel</a></div>
+      <div class="context-item"><strong style="color:var(--accent);">Ali Shamkhani</strong> — Secretary, Supreme National Security Council. Confirmed killed. <a class="source-link" href="https://www.cbsnews.com/live-updates/israel-us-attack-iran-trump-says-major-combat-operations/" target="_blank">CBS</a></div>
+      <div class="context-item"><strong style="color:var(--accent);">Aziz Nasirzadeh</strong> — Defense Minister, oversaw missile industry and SPND nuclear/CBW research. <a class="source-link" href="https://www.foxnews.com/live-news/israel-us-launch-attack-on-iran-amid-escalating-protests" target="_blank">Fox News</a></div>
+      <div class="context-item"><strong style="color:var(--accent);">Hossein Jabal Amelian</strong> — SPND Director (Organization of Defensive Innovation and Research — nuclear/biological/chemical weapons). <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
+      <div class="context-item"><strong style="color:var(--accent);">Abdolrahim Mousavi</strong> — Chief of Staff of Iranian Armed Forces. Confirmed 1 March by Iranian state media. <a class="source-link" href="https://www.aljazeera.com/news/2026/3/1/us-israel-attacks-on-iran-day-2-khamenei-is-killed-iran-retaliates" target="_blank">Al Jazeera</a></div>
+      <div class="context-item"><strong style="color:var(--accent);">Reza Mozaffari-Nia</strong> · <strong style="color:var(--accent);">Mohammad Shirazi</strong> · <strong style="color:var(--accent);">Salah Asadi</strong> — Former SPND head, Khamenei's military office chief, intelligence chief. <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
+      <div class="context-item"><strong style="color:var(--accent);">Hussein Makled</strong> — Head of Hezbollah's Intelligence Headquarters, Beirut. Killed in a precise IDF airstrike on Beirut's southern suburbs, confirmed by the IDF on March 2, 2026. (CBS News / Times of Israel)</div>
+      <div class="context-item"><strong style="color:var(--accent);">Mohammad Pakpour</strong> — IRGC Ground Forces Commander. Confirmed killed in opening strikes, per IDF's official list of regime officials killed Feb 28–Mar 1. <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
+      <div class="context-item"><strong style="color:var(--accent);">Khamenei's wife</strong> — Confirmed by Iranian sources to have died of injuries sustained in the strike on Khamenei's compound. <a class="source-link" href="https://en.wikipedia.org/wiki/2026_Israeli%E2%80%93United_States_strikes_on_Iran" target="_blank">Wikipedia</a></div>
+      <div class="context-item"><strong style="color:var(--accent);">Mojtaba Khamenei</strong> <em>(elected, not killed)</em> — Son of Ali Khamenei, reportedly elected 3rd Supreme Leader of Iran by Assembly of Experts under IRGC pressure on March 4. Not yet publicly announced by Iranian state media. Israel has warned he is 'an unequivocal target for elimination.' <a class="source-link" href="https://www.iranintl.com/en/202603030390" target="_blank">Iran International</a></div>
+      <div class="context-item"><strong style="color:var(--accent);">Rahman Mokaddam</strong> — Head of IRGC Special Operations Unit &amp; planner of Trump assassination plot. Confirmed killed Mar 4 per IDF.</div>
+      <div class="context-item"><strong style="color:var(--accent);">Zaid Ali Jamaa</strong> — Hezbollah fire and artillery commander, southern Lebanon. Killed by IDF (Critical Threats / CTP-ISW Mar 5).</div>
+      <div class="context-item"><strong style="color:var(--accent);">Wasim Attallah Ali</strong> — Hamas commander for training/exercises in Lebanon. Killed by IDF Navy strike in Tripoli, Mar 5.</div>
+      <div class="context-item"><strong style="color:var(--accent);">Abolqasem Babaian</strong> — Head of the Military Office of the Supreme Leader. Killed in an IDF strike, March 7, 2026, per Reuters/Times of Israel.</div>
+      <div class="context-item"><strong style="color:var(--accent);">Majid Hassini</strong> — IRGC Quds Force Lebanon Corps Senior Financier (proxy funds to Hezbollah/Hamas). Killed in IDF Beirut hotel strike, March 8, 2026.</div>
+      <div class="context-item"><strong style="color:var(--accent);">Ali Reza Bi-Azar</strong> — Chief of Intelligence, IRGC Quds Force Lebanon Corps. Killed in IDF Beirut hotel strike, March 8, 2026.</div>
+      <div class="context-item"><strong style="color:var(--accent);">Ahmad Rasouli</strong> — Chief of Intelligence, IRGC Quds Force Palestine Corps. Killed in IDF Beirut hotel strike, March 8, 2026.</div>
+      <div class="context-item"><strong style="color:var(--accent);">Hossein Ahmadlou</strong> — Intelligence Operative, IRGC Quds Force Lebanon Corps. Killed in IDF Beirut hotel strike, March 8, 2026.</div>
+      <div class="context-item"><strong style="color:var(--accent);">Abu Muhammad Ali</strong> — Hezbollah’s representative in the IRGC Quds Force Palestine Corps. Killed in IDF Beirut hotel strike, March 8, 2026.</div>
+            <div class="context-item"><strong style="color:var(--accent);">Daoud Alizadeh</strong> — Acting Commander, IRGC Quds Force Lebanon Corps. Killed in an Israeli airstrike in Tehran on March 3, 2026, per IDF announcement. Described by the IDF as 'the highest-ranking Iranian commander responsible for Lebanon.' <a class="source-link" href="https://www.timesofisrael.com/liveblog_entry/idf-kills-head-of-irgcs-lebanon-corps-in-tehran/" target="_blank">Times of Israel</a></div>
     </div>
 
     <div class="context-card" style="font-size:11px;">
@@ -4770,60 +4756,6 @@
     -->
 
 
-    <!-- ── QUICK EVENT ADDER ───────────────────────────────
-         Paste a new entry directly into the live timeline.
-         The entry slides into the correct chronological
-         position based on the current Sort direction.
-    ──────────────────────────────────────────────────── -->
-    <div class="context-card" id="quick-adder" style="padding:18px;">
-      <div class="section-title">Quick Event Adder</div>
-      <div style="display:flex;gap:8px;margin-bottom:10px;">
-        <div style="flex:1;">
-          <label style="display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Day</label>
-          <input id="adder-day" type="number" min="1" max="31" placeholder="9"
-            style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:6px 8px;border-radius:2px;outline:none;">
-        </div>
-        <div style="flex:1;">
-          <label style="display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Month</label>
-          <select id="adder-month"
-            style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:6px 8px;border-radius:2px;outline:none;cursor:pointer;">
-            <option>Feb</option>
-            <option selected>Mar</option>
-            <option>Apr</option>
-          </select>
-        </div>
-      </div>
-      <div style="margin-bottom:10px;">
-        <label style="display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Actor / Category</label>
-        <select id="adder-actor"
-          style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:6px 8px;border-radius:2px;outline:none;cursor:pointer;">
-          <option value="us-israel">US / Israel Offensive</option>
-          <option value="iran">Iran Retaliation</option>
-          <option value="regional">Regional Spillover</option>
-          <option value="diplomatic">Diplomatic</option>
-        </select>
-      </div>
-      <div style="margin-bottom:10px;">
-        <label style="display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Title <span style="color:var(--iran);">*</span></label>
-        <input id="adder-title" type="text" placeholder="Event headline..."
-          style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:13px;padding:6px 8px;border-radius:2px;outline:none;">
-      </div>
-      <div style="margin-bottom:12px;">
-        <label style="display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Details</label>
-        <textarea id="adder-details" rows="4" placeholder="Event details, sourced facts..."
-          style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:12px;padding:6px 8px;border-radius:2px;outline:none;resize:vertical;line-height:1.5;"></textarea>
-      </div>
-      <div id="adder-error" style="display:none;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--iran);margin-bottom:8px;"></div>
-      <button id="adder-submit"
-        style="width:100%;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:10px;border:1px solid var(--accent);background:transparent;color:var(--accent);border-radius:2px;cursor:pointer;transition:all 0.15s;"
-        onmouseover="this.style.background='rgba(200,169,110,0.12)'"
-        onmouseout="this.style.background='transparent'">
-        + Add to Timeline
-      </button>
-      <div style="margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);line-height:1.5;">
-        Entry slides into the timeline in the correct date position. Use <em>Sort by Date ↓</em> to move newest events to the top.
-      </div>
-    </div>
   </div><!-- /sidebar -->
 </div><!-- /main -->
 
@@ -5012,122 +4944,6 @@
     });
   });
 
-  /*
-    ═══════════════════════════════════════════════
-    QUICK EVENT ADDER (Epic Fury tab)
-    Renders a new .tl-entry from the sidebar form and
-    slides it into the correct chronological position.
-    If the timeline is currently sorted newest-first
-    (desc) the new entry goes at the TOP of the list;
-    otherwise it is inserted in date order.
-    ═══════════════════════════════════════════════
-  */
-  (function () {
-    const addBtn = document.getElementById('adder-submit');
-    if (!addBtn) return;
-
-    addBtn.addEventListener('click', () => {
-      const dayInput     = document.getElementById('adder-day');
-      const monthSelect  = document.getElementById('adder-month');
-      const actorSelect  = document.getElementById('adder-actor');
-      const titleInput   = document.getElementById('adder-title');
-      const detailsInput = document.getElementById('adder-details');
-      const errBox       = document.getElementById('adder-error');
-
-      const day     = dayInput.value.trim();
-      const month   = monthSelect.value;
-      const actor   = actorSelect.value;
-      const title   = titleInput.value.trim();
-      const details = detailsInput.value.trim();
-
-      if (!day || !title) {
-        errBox.textContent = 'Day and Title are required.';
-        errBox.style.display = 'block';
-        return;
-      }
-      errBox.style.display = 'none';
-
-      // Badge / dot config per actor
-      const cfg = {
-        'us-israel': { badge: 'badge-us-israel', text: 'US + Israel',   dot: 'dot-us-israel' },
-        'iran':      { badge: 'badge-iran',       text: 'Iran (IRGC)',   dot: 'dot-iran'      },
-        'regional':  { badge: 'badge-coalition',  text: 'Regional',      dot: 'dot-defensive' },
-        'diplomatic':{ badge: 'badge-ceasefire',  text: 'Diplomatic',    dot: 'dot-ceasefire' },
-      };
-      const c = cfg[actor] || cfg['diplomatic'];
-
-      // Escape HTML in user text
-      const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-      const entry = document.createElement('div');
-      entry.className    = 'tl-entry';
-      entry.dataset.fury = actor;
-      entry.innerHTML = `
-        <div class="tl-date">
-          <div class="tl-day">${esc(day)}</div>
-          <div class="tl-month">${esc(month)}</div>
-        </div>
-        <div class="tl-dot ${c.dot}"></div>
-        <div class="tl-content">
-          <div class="tl-header">
-            <span class="tl-actor-badge ${c.badge}">${c.text}</span>
-          </div>
-          <div class="tl-title">${esc(title)}</div>
-          ${details ? '<div class="tl-details">' + esc(details) + '</div>' : ''}
-        </div>`;
-
-      // Find insertion point in timeline-fury
-      const timeline   = document.getElementById('timeline-fury');
-      const sortBtn    = document.querySelector('[data-timeline="timeline-fury"]');
-      const sortOrder  = sortBtn ? (sortBtn.dataset.order || 'asc') : 'asc';
-      const months     = {Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,
-                          Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
-      const newKey     = (months[month] || 0) * 100 + (parseInt(day) || 0);
-
-      // Find "Future entries" placeholder divider
-      let placeholder = null;
-      Array.from(timeline.children).forEach(el => {
-        if (el.classList.contains('phase-divider') &&
-            el.textContent.includes('Future entries')) placeholder = el;
-      });
-
-      if (sortOrder === 'desc') {
-        // Newest-first: insert right after .tl-line
-        const tlLine = timeline.querySelector('.tl-line');
-        timeline.insertBefore(entry, tlLine ? tlLine.nextSibling : timeline.firstChild);
-      } else {
-        // Ascending: find first entry with a later date and insert before it
-        let insertBefore = placeholder;
-        const allEntries = Array.from(timeline.querySelectorAll('.tl-entry'));
-        for (const existing of allEntries) {
-          if (getEntrySortKey(existing) > newKey) {
-            insertBefore = existing;
-            break;
-          }
-        }
-        timeline.insertBefore(entry, insertBefore || placeholder || null);
-      }
-
-      // Slide-in animation
-      entry.style.cssText += 'opacity:0;transform:translateY(-14px);transition:opacity 0.35s ease,transform 0.35s ease;';
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        entry.style.opacity   = '1';
-        entry.style.transform = 'translateY(0)';
-      }));
-
-      // Re-apply active filter so the new entry is visible/hidden correctly
-      const activeFilter = document.querySelector('[data-filter-fury].active');
-      if (activeFilter) {
-        const f = activeFilter.dataset.filterFury;
-        entry.classList.toggle('hidden', f !== 'all' && entry.dataset.fury !== f);
-      }
-
-      // Clear form
-      dayInput.value     = '';
-      titleInput.value   = '';
-      detailsInput.value = '';
-    });
-  })();
 </script>
 </body>
 </html>
