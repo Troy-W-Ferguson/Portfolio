@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cost of Epic Fury</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f0e8;
+    --red: #c0392b;
+    --red-dim: #7a1f17;
+    --amber: #d97706;
+    --teal: #0e7490;
+    --teal-dim: #164e63;
+    --muted: #6b5f50;
+    --rule: #d4c9b0;
+    --highlight: #fef3c7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 0 0 80px;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    border-bottom: 3px double var(--ink);
+    padding: 28px 40px 20px;
+    text-align: center;
+    position: relative;
+  }
+  .masthead::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: var(--red);
+    margin-bottom: 10px;
+  }
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .deck {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+  .dateline {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .panel {
+    padding: 36px 40px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .panel:nth-child(odd) { border-right: 1px solid var(--rule); }
+
+  .panel-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-top: 2px solid var(--ink);
+    padding-top: 8px;
+    margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .panel-sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+  }
+  .source-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-top: 14px;
+    border-top: 1px solid var(--rule);
+    padding-top: 6px;
+  }
+
+  /* ── GRAPHIC 1: WAR COST COUNTER ── */
+  .g1-layout {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .cost-column {
+    flex: 1;
+    min-width: 200px;
+  }
+  .cost-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .cost-label.war { color: var(--red); }
+  .cost-label.doge { color: var(--teal); }
+
+  .cost-figure {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .cost-figure.war {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--red);
+  }
+  .cost-figure.doge {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--teal);
+  }
+
+  .cost-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .day-ticks {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .day-tick {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 7px;
+    color: var(--red);
+    opacity: 0.3;
+    transition: all 0.3s;
+  }
+  .day-tick.active {
+    background: var(--red);
+    color: white;
+    opacity: 1;
+  }
+
+  .divider-vertical {
+    width: 1px;
+    background: var(--rule);
+    align-self: stretch;
+    min-height: 80px;
+  }
+
+  .ratio-bar {
+    margin-top: 18px;
+    height: 6px;
+    background: var(--rule);
+    border-radius: 0;
+    position: relative;
+    overflow: visible;
+  }
+  .ratio-fill-war {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: var(--red);
+    width: 0;
+    transition: width 2s ease;
+  }
+  .ratio-fill-doge {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    background: var(--teal);
+    width: 0;
+    transition: width 2s ease;
+  }
+  .ratio-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── GRAPHIC 2: FLIGHT DELAYS ── */
+  .chart-wrap {
+    position: relative;
+    height: 220px;
+    margin-top: 10px;
+  }
+  svg.line-chart {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .chart-grid line { stroke: var(--rule); stroke-width: 1; }
+  .chart-grid text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    fill: var(--muted);
+  }
+  .flight-path {
+    fill: none;
+    stroke: var(--red);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transition: stroke-dashoffset 3s ease;
+  }
+  .flight-area {
+    fill: url(#redGrad);
+    opacity: 0;
+    transition: opacity 1s ease 2s;
+  }
+  .data-dot {
+    fill: var(--red);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .dot-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px;
+    fill: var(--ink);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* ── GRAPHIC 3: AIRLINE LOSSES ── */
+  .bar-wrap {
+    margin-top: 10px;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.5s ease;
+  }
+  .bar-row.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .bar-airline {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    width: 80px;
+    flex-shrink: 0;
+  }
+  .bar-track {
+    flex: 1;
+    height: 22px;
+    background: var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .bar-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: var(--teal);
+    width: 0;
+    transition: width 1.5s ease;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+  }
+  .bar-fill.red { background: var(--red); }
+  .bar-fill.amber { background: var(--amber); }
+  .bar-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: white;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+  .bar-ext-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-left: 8px;
+    white-space: nowrap;
+  }
+
+  .total-callout {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 16px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .total-callout-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .total-callout-figure {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--amber);
+  }
+
+  /* ── GRAPHIC 4: IRAN AIRSPACE ── */
+  .airspace-wrap {
+    position: relative;
+    background: #0a1628;
+    border: 1px solid #1e3a5f;
+    overflow: hidden;
+    height: 320px;
+  }
+  canvas#airspace {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .airspace-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .airspace-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .timeline-track {
+    flex: 1;
+    height: 3px;
+    background: #1e3a5f;
+    position: relative;
+    cursor: pointer;
+  }
+  .timeline-fill {
+    height: 100%;
+    background: var(--amber);
+    width: 0%;
+    transition: width 0.1s;
+  }
+  .timeline-thumb {
+    width: 12px;
+    height: 12px;
+    background: var(--amber);
+    border-radius: 50%;
+    position: absolute;
+    top: -4.5px;
+    left: 0%;
+    transform: translateX(-50%);
+    cursor: pointer;
+  }
+  .date-display {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+    min-width: 70px;
+  }
+  .play-btn {
+    background: none;
+    border: 1.5px solid var(--amber);
+    color: var(--amber);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 4px 12px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: all 0.2s;
+  }
+  .play-btn:hover { background: var(--amber); color: var(--ink); }
+
+  .void-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: rgba(201,42,42,0.6);
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 20px rgba(201,42,42,0.8);
+  }
+
+  /* ── FULL-WIDTH PANEL for Graphic 4 ── */
+  .panel.full {
+    grid-column: 1 / -1;
+    border-right: none;
+  }
+
+  /* ── ANNOTATIONS ── */
+  .annotation {
+    position: absolute;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+    pointer-events: none;
+  }
+  .annotation::before {
+    content: '▸';
+    margin-right: 4px;
+    color: var(--red);
+  }
+
+  @media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+    .panel:nth-child(odd) { border-right: none; }
+    .panel.full { grid-column: 1; }
+    .g1-layout { flex-direction: column; }
+    .divider-vertical { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="kicker">Data Journalism · War & Economy · March 2026</div>
+  <h1 class="headline">The Price of Epic Fury</h1>
+  <div class="deck">Four graphics on what America's war with Iran is costing — in dollars, flights, and airspace</div>
+  <div class="dateline">Data: CSIS · Airlines for America · U.S. Travel Association · FlightRadar24 · FAA · DOGE.gov</div>
+</div>
+
+<!-- GRID -->
+<div class="grid">
+
+  <!-- ═══ GRAPHIC 1 ═══ -->
+  <div class="panel">
+    <div class="panel-label">Graphic 01 · War Expenditure</div>
+    <div class="panel-title">What America Spends Each Day It Fights</div>
+    <div class="panel-sub">Operation Epic Fury cost vs. DOGE's claimed savings · Feb 28 – present</div>
+
+    <div class="g1-layout">
+      <div class="cost-column">
+        <div class="cost-label war">Operation Epic Fury · Running Total</div>
+        <div class="cost-figure war" id="warCounter">$0</div>
+        <div class="cost-sub" id="warDays">Day 0 of conflict</div>
+        <div class="day-ticks" id="dayTicks"></div>
+        <div class="cost-sub" style="margin-top:10px; font-size:9px;">$891M/day est. (CSIS) · $3.7B first 100 hrs</div>
+      </div>
+
+      <div class="divider-vertical"></div>
+
+      <div class="cost-column">
+        <div class="cost-label doge">DOGE Claimed Savings · Since Jan 20, 2025</div>
+        <div class="cost-figure doge" id="dogeCounter">$0</div>
+        <div class="cost-sub">Claimed total · disputed by independent analysts</div>
+        <div class="cost-sub" style="margin-top:8px; font-size:9px; line-height:1.5;">
+          Verified by NPR/AEI: ~$10–12B<br>
+          DOGE.gov claims: ~$160B<br>
+          <span style="color:var(--red)">Epic Fury surpasses verified savings within days</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ratio-bar" id="ratioBar">
+      <div class="ratio-fill-war" id="ratioWar"></div>
+    </div>
+    <div class="ratio-label">
+      <span style="color:var(--red)">■ Epic Fury cost</span>
+      <span>← ratio to DOGE verified savings →</span>
+      <span style="color:var(--teal)">■ DOGE (verified ~$12B)</span>
+    </div>
+
+    <div class="source-line">Sources: CSIS "3.7 Billion: Estimated Cost of Epic Fury's First 100 Hours" · ABC/CNN/NPR reporting · DOGE.gov · American Enterprise Institute · NPR contract analysis</div>
+  </div>
+
+  <!-- ═══ GRAPHIC 2 ═══ -->
+  <div class="panel">
+    <div class="panel-label">Graphic 02 · Aviation Disruption</div>
+    <div class="panel-title">Grounded: Friday Flight Delays During the Shutdown</div>
+    <div class="panel-sub">Staffing-attributed NAS delay minutes each Friday, Oct–Nov 2025 (thousands)</div>
+
+    <div class="chart-wrap">
+      <svg class="line-chart" id="lineChart" viewBox="0 0 560 200" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="redGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c0392b" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#c0392b" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <!-- Grid lines -->
+        <g class="chart-grid">
+          <line x1="60" y1="20" x2="540" y2="20"/>
+          <line x1="60" y1="60" x2="540" y2="60"/>
+          <line x1="60" y1="100" x2="540" y2="100"/>
+          <line x1="60" y1="140" x2="540" y2="140"/>
+          <line x1="60" y1="180" x2="540" y2="180"/>
+          <text x="50" y="23" text-anchor="end">184k</text>
+          <text x="50" y="63" text-anchor="end">130k</text>
+          <text x="50" y="103" text-anchor="end">80k</text>
+          <text x="50" y="143" text-anchor="end">35k</text>
+          <text x="50" y="183" text-anchor="end">0</text>
+        </g>
+        <!-- X axis labels -->
+        <text class="chart-grid" x="95"  y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6b5f50">Oct 3</text>
+        <text class="chart-grid" x="175" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6b5f50">Oct 10</text>
+        <text class="chart-grid" x="255" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6b5f50">Oct 17</text>
+        <text class="chart-grid" x="335" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6b5f50">Oct 31</text>
+        <text class="chart-grid" x="415" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6b5f50">Nov 7</text>
+        <text class="chart-grid" x="495" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6b5f50">Nov 12</text>
+
+        <!-- FAA flight reduction annotation -->
+        <line x1="415" y1="20" x2="415" y2="180" stroke="#d97706" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+        <text x="418" y="38" font-family="IBM Plex Mono" font-size="7" fill="#d97706">FAA 4% cut order</text>
+
+        <!-- Area fill -->
+        <path class="flight-area" id="flightArea" d=""/>
+        <!-- Line path -->
+        <path class="flight-path" id="flightPath" d=""/>
+        <!-- Data dots -->
+        <circle class="data-dot" id="d0" cx="95"  cy="174" r="4"/>
+        <circle class="data-dot" id="d1" cx="175" cy="163" r="4"/>
+        <circle class="data-dot" id="d2" cx="255" cy="148" r="4"/>
+        <circle class="data-dot" id="d3" cx="335" cy="100" r="4"/>
+        <circle class="data-dot" id="d4" cx="415" cy="40"  r="4"/>
+        <circle class="data-dot" id="d5" cx="495" cy="22"  r="5" fill="#d97706"/>
+        <!-- Labels -->
+        <text class="dot-label" id="l0" x="95"  y="170" text-anchor="middle">4.5k</text>
+        <text class="dot-label" id="l1" x="175" y="159" text-anchor="middle">10k</text>
+        <text class="dot-label" id="l2" x="255" y="144" text-anchor="middle">22k</text>
+        <text class="dot-label" id="l3" x="335" y="96"  text-anchor="middle">65k</text>
+        <text class="dot-label" id="l4" x="415" y="36"  text-anchor="middle">145k</text>
+        <text class="dot-label" id="l5" x="495" y="17"  text-anchor="middle" fill="#d97706" font-weight="600">184k</text>
+      </svg>
+    </div>
+
+    <div class="source-line">Sources: Airlines for America NAS delay analysis · FAA Air Traffic Control staffing data · CNN/NPR reporting on 2025 government shutdown. Fridays shown as peak stress days per FAA operational data.</div>
+  </div>
+
+  <!-- ═══ GRAPHIC 3 ═══ -->
+  <div class="panel">
+    <div class="panel-label">Graphic 03 · Airline Financial Impact</div>
+    <div class="panel-title">The Tarmac Tab: What Airlines Lost</div>
+    <div class="panel-sub">Estimated losses from 43-day shutdown, by carrier (Oct–Nov 2025)</div>
+
+    <div class="bar-wrap" id="barWrap">
+      <div class="bar-row" data-pct="100" data-color="red" data-val="$200M">
+        <div class="bar-airline">DELTA</div>
+        <div class="bar-track">
+          <div class="bar-fill red" style="">
+            <span class="bar-value">$200M Q4 pre-tax loss</span>
+          </div>
+        </div>
+        <span class="bar-ext-value"></span>
+      </div>
+      <div class="bar-row" data-pct="35" data-color="" data-val="~$70M est.">
+        <div class="bar-airline">UNITED</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="">
+            <span class="bar-value"></span>
+          </div>
+        </div>
+        <span class="bar-ext-value">~$70M est. (declined to confirm)</span>
+      </div>
+      <div class="bar-row" data-pct="30" data-color="amber" data-val="~$60M est.">
+        <div class="bar-airline">ALASKA</div>
+        <div class="bar-track">
+          <div class="bar-fill amber" style="">
+            <span class="bar-value">15¢/share</span>
+          </div>
+        </div>
+        <span class="bar-ext-value">~$60M est.</span>
+      </div>
+      <div class="bar-row" data-pct="25" data-color="" data-val="">
+        <div class="bar-airline">SOUTHWEST</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="">
+            <span class="bar-value"></span>
+          </div>
+        </div>
+        <span class="bar-ext-value">FY profit cut ~$100–300M (shutdown bundled)</span>
+      </div>
+      <div class="bar-row" data-pct="20" data-color="" data-val="">
+        <div class="bar-airline">AMERICAN</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="">
+            <span class="bar-value"></span>
+          </div>
+        </div>
+        <span class="bar-ext-value">Undisclosed · offered waivers</span>
+      </div>
+    </div>
+
+    <div class="total-callout">
+      <div>
+        <div class="total-callout-label">Total travel economy loss · 43 days</div>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:#9ca3af; margin-top:2px;">U.S. Travel Association / Tourism Economics</div>
+      </div>
+      <div class="total-callout-figure" id="totalFig">$0</div>
+    </div>
+
+    <div style="display:flex; gap:20px; margin-top:14px; flex-wrap:wrap;">
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); line-height:1.5;">
+        <span style="color:var(--red)">4,162</span> flights canceled (Oct 30–Nov 9)<br>
+        <span style="color:var(--red)">5.2M</span> passengers disrupted<br>
+        <span style="color:var(--red)">$285–580M</span> est. daily impact at peak
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); line-height:1.5;">
+        Prior to Oct 30: only <span style="color:var(--teal)">11 cancellations</span><br>
+        Post Oct 30: <span style="color:var(--red)">4,162 cancellations</span><br>
+        <span style="color:var(--amber)">61%</span> of NAS delay mins = staffing (Nov 7–9)
+      </div>
+    </div>
+
+    <div class="source-line">Sources: Airlines for America · Engine.com airline loss analysis · Delta/Alaska investor filings · U.S. Travel Association / Tourism Economics · Fortune reporting</div>
+  </div>
+
+  <!-- ═══ GRAPHIC 4 ═══ -->
+  <div class="panel">
+    <div class="panel-label">Graphic 04 · Airspace Visualization</div>
+    <div class="panel-title">The Void Opens: Iranian Airspace, Feb–Mar 2026</div>
+    <div class="panel-sub">Simulated commercial aircraft density · each dot one aircraft · strikes began Feb 28</div>
+
+    <div class="airspace-wrap" id="airspaceWrap">
+      <canvas id="airspace"></canvas>
+      <div class="void-label" id="voidLabel">No civilian aircraft<br>detected over Iran</div>
+    </div>
+
+    <div class="airspace-controls">
+      <button class="play-btn" id="playBtn">▶ PLAY</button>
+      <div class="date-display" id="dateDisplay">FEB 20</div>
+      <div class="timeline-track" id="timelineTrack">
+        <div class="timeline-fill" id="timelineFill"></div>
+        <div class="timeline-thumb" id="timelineThumb"></div>
+      </div>
+    </div>
+
+    <div class="airspace-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#4fa8e8"></div>Commercial flights (normal)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div>Diverted / rerouting</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Strike zone active</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#374151"></div>Airspace closed</div>
+    </div>
+
+    <div class="source-line">Simulation based on: FlightRadar24 / OAG reported airspace closures · ICAM NOTAMs · Guardian/BBC reporting on Feb 28 closure · CSIS/Hudson Institute operational timeline. Dot density approximates reported 60–80% reduction in overflights.</div>
+  </div>
+
+</div><!-- /grid -->
+
+<script>
+// ──────────────────────────────────────────────
+// UTILITIES
+// ──────────────────────────────────────────────
+function formatBillions(n) {
+  if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return '$' + Math.round(n / 1e6) + 'M';
+  return '$' + Math.round(n);
+}
+
+function easeInOut(t) {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+}
+
+// ──────────────────────────────────────────────
+// GRAPHIC 1: WAR COST COUNTER
+// ──────────────────────────────────────────────
+const strikeStart = new Date('2026-02-28T00:00:00Z');
+const today = new Date('2026-03-10T00:00:00Z');
+const daysSince = Math.floor((today - strikeStart) / 86400000); // ~10 days
+const dailyCost = 891_400_000;
+const totalWarCost = daysSince * dailyCost;
+const dogeVerified = 12_000_000_000;
+const dogeClaimed = 160_000_000_000;
+
+// Day ticks
+const ticksEl = document.getElementById('dayTicks');
+for (let i = 1; i <= 30; i++) {
+  const t = document.createElement('div');
+  t.className = 'day-tick';
+  t.textContent = i;
+  if (i <= daysSince) t.classList.add('active');
+  ticksEl.appendChild(t);
+}
+
+// Animated counters
+function animateCounter(el, target, duration, prefix='$', suffix='') {
+  const start = performance.now();
+  function update(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const val = Math.round(easeInOut(t) * target);
+    el.textContent = formatBillions(val) + suffix;
+    if (t < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+const warEl = document.getElementById('warCounter');
+const dogeEl = document.getElementById('dogeCounter');
+const daysEl = document.getElementById('warDays');
+
+setTimeout(() => {
+  animateCounter(warEl, totalWarCost, 3000);
+  animateCounter(dogeEl, dogeClaimed, 2500);
+  daysEl.textContent = `Day ${daysSince} of conflict · ${daysSince} × $891M/day`;
+
+  // Ratio bar
+  const warPct = Math.min((totalWarCost / dogeVerified) * 100, 100);
+  setTimeout(() => {
+    document.getElementById('ratioWar').style.width = Math.min(warPct, 100) + '%';
+  }, 500);
+}, 400);
+
+// ──────────────────────────────────────────────
+// GRAPHIC 2: LINE CHART TRACE
+// ──────────────────────────────────────────────
+// Data points: [x, y] in SVG coords (already placed in HTML)
+// Path: Oct3→Oct10→Oct17→Oct31→Nov7→Nov12
+const pathData = "M95,174 C120,172 150,166 175,163 C200,160 230,153 255,148 C280,135 310,115 335,100 C360,80 390,58 415,40 C445,32 470,25 495,22";
+const areaData = pathData + " L495,180 L95,180 Z";
+
+const flightPath = document.getElementById('flightPath');
+const flightArea = document.getElementById('flightArea');
+flightPath.setAttribute('d', pathData);
+flightArea.setAttribute('d', areaData);
+
+const observer2 = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      flightPath.style.strokeDashoffset = '0';
+      flightArea.style.opacity = '0.3';
+      // Dots and labels appear sequentially
+      for (let i = 0; i <= 5; i++) {
+        setTimeout(() => {
+          document.getElementById('d' + i).style.opacity = '1';
+          document.getElementById('l' + i).style.opacity = '1';
+        }, 600 + i * 400);
+      }
+      observer2.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+observer2.observe(document.getElementById('lineChart'));
+
+// ──────────────────────────────────────────────
+// GRAPHIC 3: AIRLINE BAR CHART
+// ──────────────────────────────────────────────
+const barRows = document.querySelectorAll('.bar-row');
+
+const observer3 = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      barRows.forEach((row, i) => {
+        setTimeout(() => {
+          row.classList.add('visible');
+          const pct = row.dataset.pct;
+          const fill = row.querySelector('.bar-fill');
+          setTimeout(() => {
+            fill.style.width = pct + '%';
+          }, 100);
+        }, i * 150);
+      });
+
+      // Total counter
+      setTimeout(() => {
+        animateCounter(document.getElementById('totalFig'), 6_100_000_000, 2000);
+      }, 900);
+
+      observer3.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+observer3.observe(document.getElementById('barWrap'));
+
+// ──────────────────────────────────────────────
+// GRAPHIC 4: IRAN AIRSPACE ANIMATION
+// ──────────────────────────────────────────────
+const canvas = document.getElementById('airspace');
+const ctx = canvas.getContext('2d');
+const wrap = document.getElementById('airspaceWrap');
+
+function resizeCanvas() {
+  canvas.width = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', () => { resizeCanvas(); drawFrame(currentT); });
+
+// Iran approximate bounding box in normalized coords [0,1]
+// We'll draw a simplified region map
+// Iran center roughly 32°N, 53°E
+// Surrounding region: 24–42°N, 44–64°E
+// We'll use a simple rectangular projection
+
+const IRAN = {
+  // Rough polygon of Iran in [lon, lat]
+  poly: [
+    [44.0, 38.0], [46.0, 39.5], [48.0, 40.0], [50.0, 39.8], [52.0, 39.5],
+    [54.0, 38.0], [56.0, 37.5], [58.0, 37.0], [60.5, 36.5], [61.5, 35.5],
+    [63.0, 35.0], [63.5, 34.0], [62.0, 32.0], [61.0, 29.5], [60.0, 28.0],
+    [58.0, 25.5], [56.5, 25.0], [54.0, 25.5], [52.0, 26.0], [50.0, 27.0],
+    [48.5, 28.0], [47.0, 29.5], [46.0, 30.5], [45.0, 32.0], [44.5, 33.5],
+    [44.0, 35.0], [44.0, 38.0]
+  ]
+};
+
+// Viewport bounds
+const LONMIN = 40, LONMAX = 68, LATMIN = 22, LATMAX = 43;
+
+function geoToCanvas(lon, lat) {
+  const W = canvas.width, H = canvas.height;
+  const x = ((lon - LONMIN) / (LONMAX - LONMIN)) * W;
+  const y = H - ((lat - LATMIN) / (LATMAX - LATMIN)) * H;
+  return [x, y];
+}
+
+function drawIranOutline() {
+  ctx.beginPath();
+  IRAN.poly.forEach(([lon, lat], i) => {
+    const [x, y] = geoToCanvas(lon, lat);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.closePath();
+}
+
+function pointInIran(lon, lat) {
+  // Ray casting
+  const poly = IRAN.poly;
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const xi = poly[i][0], yi = poly[i][1];
+    const xj = poly[j][0], yj = poly[j][1];
+    const intersect = ((yi > lat) !== (yj > lat)) &&
+      (lon < (xj - xi) * (lat - yi) / (yj - yi) + xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
+// Generate random flights
+const rng = (min, max) => min + Math.random() * (max - min);
+
+// Pre-generate flight data: each flight has a route across the region
+const NUM_FLIGHTS = 120;
+const flights = [];
+for (let i = 0; i < NUM_FLIGHTS; i++) {
+  // Start/end points outside Iran (regional traffic)
+  const fromLon = rng(40, 48);
+  const fromLat = rng(24, 42);
+  const toLon = rng(55, 68);
+  const toLat = rng(24, 42);
+  flights.push({
+    fromLon, fromLat, toLon, toLat,
+    speed: rng(0.003, 0.008),
+    phase: Math.random(),
+    size: rng(1.5, 3.5),
+  });
+}
+
+// Additional flights that transit OVER Iran
+const NUM_IRAN_TRANSITS = 60;
+const iranTransits = [];
+for (let i = 0; i < NUM_IRAN_TRANSITS; i++) {
+  iranTransits.push({
+    fromLon: rng(40, 46),
+    fromLat: rng(24, 42),
+    toLon: rng(58, 66),
+    toLat: rng(24, 42),
+    speed: rng(0.002, 0.006),
+    phase: Math.random(),
+    size: rng(1.5, 2.5),
+  });
+}
+
+// Timeline: 0 = Feb 20, 1 = Mar 10
+// Strike starts at t = 0.4 (Feb 28)
+const DATES = [
+  { t: 0,    label: 'FEB 20' },
+  { t: 0.25, label: 'FEB 25' },
+  { t: 0.4,  label: 'FEB 28 ★' },
+  { t: 0.6,  label: 'MAR 3'  },
+  { t: 0.8,  label: 'MAR 7'  },
+  { t: 1.0,  label: 'MAR 10' },
+];
+
+function getDateLabel(t) {
+  const feb20 = new Date('2026-02-20');
+  const mar10 = new Date('2026-03-10');
+  const range = mar10 - feb20;
+  const d = new Date(feb20.getTime() + t * range);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+}
+
+let currentT = 0;
+let playing = false;
+let animId = null;
+let lastTimestamp = null;
+
+function drawFrame(t) {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // Background gradient
+  const bg = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W,H)*0.7);
+  bg.addColorStop(0, '#0d1f3c');
+  bg.addColorStop(1, '#060e1d');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw surrounding countries (faint)
+  ctx.strokeStyle = 'rgba(100,140,180,0.15)';
+  ctx.lineWidth = 0.5;
+  // simple grid lines for geography feel
+  for (let lon = 40; lon <= 68; lon += 4) {
+    const [x1, y1] = geoToCanvas(lon, 22);
+    const [x2, y2] = geoToCanvas(lon, 43);
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+    ctx.stroke();
+  }
+  for (let lat = 22; lat <= 43; lat += 4) {
+    const [x1] = geoToCanvas(40, lat);
+    const [x2] = geoToCanvas(68, lat);
+    const [, y] = geoToCanvas(40, lat);
+    ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y);
+    ctx.stroke();
+  }
+
+  // Iran fill
+  const strikeProgress = Math.max(0, (t - 0.4) / 0.6); // 0→1 after strikes
+  drawIranOutline();
+  
+  if (t < 0.4) {
+    // Pre-strike: normal
+    ctx.fillStyle = 'rgba(30, 60, 100, 0.3)';
+  } else {
+    // Post-strike: darkens to void
+    const darkness = Math.min(strikeProgress * 1.5, 1);
+    const r = Math.round(30 - darkness * 20);
+    const g = Math.round(60 - darkness * 55);
+    const b = Math.round(100 - darkness * 90);
+    ctx.fillStyle = `rgba(${r},${g},${b},${0.3 + darkness * 0.4})`;
+  }
+  ctx.fill();
+
+  // Iran border
+  drawIranOutline();
+  const borderAlpha = t < 0.4 ? 0.4 : 0.15 + (1 - Math.min(strikeProgress, 1)) * 0.25;
+  ctx.strokeStyle = `rgba(100,160,220,${borderAlpha})`;
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+
+  // Strike glow effect
+  if (t > 0.4) {
+    const glowIntensity = Math.max(0, 1 - strikeProgress * 1.5) * 0.5;
+    if (glowIntensity > 0) {
+      drawIranOutline();
+      ctx.strokeStyle = `rgba(239,68,68,${glowIntensity})`;
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    }
+    // Explosion dots
+    if (strikeProgress < 0.3) {
+      const numBlasts = Math.floor(strikeProgress * 40);
+      for (let i = 0; i < numBlasts; i++) {
+        const seed = i * 137.508;
+        const blon = 44 + (seed % 18);
+        const blat = 24 + ((seed * 1.3) % 16);
+        if (pointInIran(blon, blat)) {
+          const [bx, by] = geoToCanvas(blon, blat);
+          const pulse = Math.sin(t * 80 + i) * 0.5 + 0.5;
+          ctx.beginPath();
+          ctx.arc(bx, by, 2 + pulse * 3, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(239,68,68,${0.6 - strikeProgress * 2})`;
+          ctx.fill();
+        }
+      }
+    }
+  }
+
+  // Draw regular flights (around Iran, not transiting)
+  flights.forEach((f, i) => {
+    const p = (f.phase + t * f.speed * 20) % 1;
+    const lon = f.fromLon + (f.toLon - f.fromLon) * p;
+    const lat = f.fromLat + (f.toLat - f.fromLat) * p;
+    const inIran = pointInIran(lon, lat);
+    if (inIran) return; // These don't transit Iran
+    const [x, y] = geoToCanvas(lon, lat);
+    if (x < 0 || x > W || y < 0 || y > H) return;
+    ctx.beginPath();
+    ctx.arc(x, y, f.size, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(79,168,232,0.8)';
+    ctx.fill();
+  });
+
+  // Draw Iran-transiting flights (disappear after strike)
+  iranTransits.forEach((f) => {
+    const p = (f.phase + t * f.speed * 20) % 1;
+    const lon = f.fromLon + (f.toLon - f.fromLon) * p;
+    const lat = f.fromLat + (f.toLat - f.fromLat) * p;
+    const inIran = pointInIran(lon, lat);
+    const [x, y] = geoToCanvas(lon, lat);
+    if (x < 0 || x > W || y < 0 || y > H) return;
+
+    if (t < 0.35) {
+      // Normal transit
+      ctx.beginPath();
+      ctx.arc(x, y, f.size, 0, Math.PI * 2);
+      ctx.fillStyle = inIran ? 'rgba(79,168,232,0.9)' : 'rgba(79,168,232,0.7)';
+      ctx.fill();
+    } else if (t < 0.5) {
+      // Transition: some turning orange, some disappearing
+      const tPhase = (t - 0.35) / 0.15;
+      if (inIran) {
+        if (Math.random() < tPhase * 0.1) return;
+        ctx.beginPath();
+        ctx.arc(x, y, f.size, 0, Math.PI * 2);
+        const r = Math.round(79 + tPhase * 170);
+        const g2 = Math.round(168 - tPhase * 55);
+        const b = Math.round(232 - tPhase * 182);
+        ctx.fillStyle = `rgba(${r},${g2},${b},0.8)`;
+        ctx.fill();
+      } else {
+        ctx.beginPath();
+        ctx.arc(x, y, f.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(249,115,22,0.7)'; // diverting
+        ctx.fill();
+      }
+    } else {
+      // Post-strike: no flights in Iran
+      if (inIran) return;
+      ctx.beginPath();
+      ctx.arc(x, y, f.size * 0.7, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(249,115,22,0.5)'; // still rerouting
+      ctx.fill();
+    }
+  });
+
+  // Labels
+  ctx.font = '9px IBM Plex Mono';
+  ctx.fillStyle = 'rgba(100,160,220,0.5)';
+  ctx.fillText('TEHRAN', ...geoToCanvas(51.5, 35.7).map((v,i)=>i===0?v-20:v-4));
+  ctx.fillText('IRAQ', ...geoToCanvas(43.5, 33).map((v,i)=>i===0?v:v));
+  ctx.fillText('GULF', ...geoToCanvas(51, 26.5).map((v,i)=>i===0?v:v));
+  ctx.fillText('PAKISTAN', ...geoToCanvas(63, 27).map((v,i)=>i===0?v:v));
+
+  // Void label visibility
+  const voidLabel = document.getElementById('voidLabel');
+  voidLabel.style.opacity = strikeProgress > 0.4 ? Math.min(strikeProgress - 0.4, 0.7) * (1/0.7) : 0;
+
+  // Timeline
+  document.getElementById('timelineFill').style.width = (t * 100) + '%';
+  document.getElementById('timelineThumb').style.left = (t * 100) + '%';
+  document.getElementById('dateDisplay').textContent = getDateLabel(t);
+}
+
+function tick(timestamp) {
+  if (!lastTimestamp) lastTimestamp = timestamp;
+  const dt = (timestamp - lastTimestamp) / 1000;
+  lastTimestamp = timestamp;
+  currentT = Math.min(currentT + dt * 0.035, 1); // ~28 seconds for full playthrough
+  drawFrame(currentT);
+  if (currentT < 1 && playing) {
+    animId = requestAnimationFrame(tick);
+  } else if (currentT >= 1) {
+    playing = false;
+    document.getElementById('playBtn').textContent = '↺ REPLAY';
+  }
+}
+
+document.getElementById('playBtn').addEventListener('click', () => {
+  if (!playing) {
+    if (currentT >= 1) currentT = 0;
+    playing = true;
+    lastTimestamp = null;
+    document.getElementById('playBtn').textContent = '‖ PAUSE';
+    animId = requestAnimationFrame(tick);
+  } else {
+    playing = false;
+    lastTimestamp = null;
+    document.getElementById('playBtn').textContent = '▶ PLAY';
+    cancelAnimationFrame(animId);
+  }
+});
+
+// Timeline scrubbing
+const track = document.getElementById('timelineTrack');
+let dragging = false;
+track.addEventListener('click', (e) => {
+  const rect = track.getBoundingClientRect();
+  currentT = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  drawFrame(currentT);
+});
+track.addEventListener('mousedown', () => dragging = true);
+document.addEventListener('mouseup', () => dragging = false);
+document.addEventListener('mousemove', (e) => {
+  if (!dragging) return;
+  const rect = track.getBoundingClientRect();
+  currentT = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  drawFrame(currentT);
+});
+
+// Initial draw
+drawFrame(0);
+
+// Auto-start airspace after a delay
+setTimeout(() => {
+  const obs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !playing) {
+      document.getElementById('playBtn').click();
+      obs.disconnect();
+    }
+  }, { threshold: 0.5 });
+  obs.observe(document.getElementById('airspaceWrap'));
+}, 100);
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     CORRECTION BANNER + GRAPHICS 5 & 6: EPIC FURY AVIATION DATA
+     ══════════════════════════════════════════════════════════════════ -->
+
+<div style="background:var(--ink); color:var(--paper); padding:18px 40px; margin-top:0; border-top:4px solid var(--amber); max-width:1400px; margin-left:auto; margin-right:auto;">
+  <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.25em; color:var(--amber); text-transform:uppercase; margin-bottom:6px;">Editorial correction · Appended graphics</div>
+  <div style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; margin-bottom:6px;">Graphics 2 &amp; 3 above reflect the Oct–Nov 2025 government shutdown, not Operation Epic Fury</div>
+  <div style="font-family:'IBM Plex Sans',sans-serif; font-size:12px; color:#9ca3af; line-height:1.6; max-width:800px;">
+    The Friday delay line and airline losses data are real and accurate — but they belong to a separate story: the 43-day FAA staffing crisis caused by the Oct 1, 2025 federal shutdown. They have no connection to Epic Fury. The graphics below correct the record with the actual aviation impact of the Feb 28, 2026 U.S.–Israel strikes on Iran: a sudden, international airspace collapse of a different order entirely.
+  </div>
+</div>
+
+<div class="grid" style="max-width:1400px; margin:0 auto;">
+
+  <!-- ═══ GRAPHIC 5: EPIC FURY DAILY CANCELLATIONS ═══ -->
+  <div class="panel">
+    <div class="panel-label">Graphic 05 · Epic Fury Aviation — Corrected</div>
+    <div class="panel-title">Collapse and Partial Recovery: Middle East Flight Cancellations</div>
+    <div class="panel-sub">Daily cancellation rate (%) across 9 closed airspaces · Feb 28 – Mar 10, 2026 · Source: Cirium / FlightAware</div>
+
+    <div class="chart-wrap" style="height:240px;">
+      <svg id="efChart" viewBox="0 0 560 210" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;overflow:visible;">
+        <defs>
+          <linearGradient id="efGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c0392b" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#c0392b" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="amberGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d97706" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="#d97706" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Grid -->
+        <line x1="60" y1="20"  x2="540" y2="20"  stroke="#d4c9b0" stroke-width="1"/>
+        <line x1="60" y1="60"  x2="540" y2="60"  stroke="#d4c9b0" stroke-width="1"/>
+        <line x1="60" y1="100" x2="540" y2="100" stroke="#d4c9b0" stroke-width="1"/>
+        <line x1="60" y1="140" x2="540" y2="140" stroke="#d4c9b0" stroke-width="1"/>
+        <line x1="60" y1="180" x2="540" y2="180" stroke="#d4c9b0" stroke-width="1"/>
+        <text x="50" y="23"  text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6b5f50">100%</text>
+        <text x="50" y="63"  text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6b5f50">75%</text>
+        <text x="50" y="103" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6b5f50">50%</text>
+        <text x="50" y="143" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6b5f50">25%</text>
+        <text x="50" y="183" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6b5f50">0%</text>
+
+        <!-- X labels: Feb28, Mar1, Mar2, Mar3, Mar4, Mar5, Mar6, Mar7, Mar8, Mar9, Mar10 -->
+        <!-- 11 points, spacing = 480/10 = 48px, starting at x=60 -->
+        <text x="60"  y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6b5f50">Feb 28</text>
+        <text x="108" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6b5f50">Mar 1</text>
+        <text x="156" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6b5f50">Mar 2</text>
+        <text x="204" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6b5f50">Mar 3</text>
+        <text x="252" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6b5f50">Mar 4</text>
+        <text x="300" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6b5f50">Mar 5</text>
+        <text x="348" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6b5f50">Mar 6</text>
+        <text x="396" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6b5f50">Mar 7</text>
+        <text x="444" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6b5f50">Mar 8</text>
+        <text x="492" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6b5f50">Mar 9</text>
+        <text x="540" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6b5f50">Mar 10</text>
+
+        <!-- 
+          Data (cancellation rate %):
+          Feb28: 45% → y=95  (first wave, partial)
+          Mar1:  62% → y=55  (escalation, Emirates/Qatar suspended)
+          Mar2:  71% → y=29  (peak Day 3, 1800+3400 cancellations)
+          Mar3:  68% → y=37  (still near-peak)
+          Mar4:  60% → y=60  (slight easing, Dubai partial resume)
+          Mar5:  52% → y=80  (recovery begins)
+          Mar6:  43% → y=103 (Cirium: 43.25% on Mar6)
+          Mar7:  36% → y=120 (gradual opening)
+          Mar8:  28% → y=140 (more carriers restarting)
+          Mar9:  22% → y=155 (Qatar limited ops)
+          Mar10: 18% → y=163 (ongoing partial ops)
+
+          y formula: 180 - (pct/100)*160
+        -->
+
+        <!-- Area -->
+        <path id="efArea" d="M60,95 C84,75 96,50 108,55 C120,60 132,22 156,29 C168,36 180,40 204,37 C216,34 228,50 252,60 C264,70 276,73 300,80 C312,87 324,95 348,103 C360,111 372,115 396,120 C408,125 420,132 444,140 C456,147 468,151 492,155 C504,158 522,161 540,163 L540,180 L60,180 Z" fill="url(#efGrad)" opacity="0" style="transition:opacity 1s ease 2s;"/>
+
+        <!-- Line -->
+        <path id="efPath" d="M60,95 C84,75 96,50 108,55 C120,60 132,22 156,29 C168,36 180,40 204,37 C216,34 228,50 252,60 C264,70 276,73 300,80 C312,87 324,95 348,103 C360,111 372,115 396,120 C408,125 420,132 444,140 C456,147 468,151 492,155 C504,158 522,161 540,163"
+          fill="none" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          stroke-dasharray="1200" stroke-dashoffset="1200" style="transition:stroke-dashoffset 3s ease;"/>
+
+        <!-- Annotation: Emirates/Qatar suspend -->
+        <line x1="108" y1="20" x2="108" y2="180" stroke="#d97706" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+        <text x="111" y="34" font-family="IBM Plex Mono" font-size="6.5" fill="#d97706">Emirates/Qatar</text>
+        <text x="111" y="43" font-family="IBM Plex Mono" font-size="6.5" fill="#d97706">suspend all ops</text>
+
+        <!-- Annotation: Dubai/Doha hit by missiles -->
+        <line x1="156" y1="20" x2="156" y2="180" stroke="#c0392b" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+        <text x="159" y="34" font-family="IBM Plex Mono" font-size="6.5" fill="#c0392b">DXB/DOH struck</text>
+        <text x="159" y="43" font-family="IBM Plex Mono" font-size="6.5" fill="#c0392b">19k+ disrupted</text>
+
+        <!-- Annotation: Dubai partial resume -->
+        <line x1="300" y1="20" x2="300" y2="180" stroke="#0e7490" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+        <text x="303" y="85" font-family="IBM Plex Mono" font-size="6.5" fill="#0e7490">Dubai partial</text>
+        <text x="303" y="94" font-family="IBM Plex Mono" font-size="6.5" fill="#0e7490">resume</text>
+
+        <!-- Data dots -->
+        <circle id="ef0" cx="60"  cy="95"  r="3.5" fill="#c0392b" opacity="0"/>
+        <circle id="ef1" cx="108" cy="55"  r="3.5" fill="#c0392b" opacity="0"/>
+        <circle id="ef2" cx="156" cy="29"  r="4.5" fill="#c0392b" opacity="0"/>
+        <circle id="ef3" cx="204" cy="37"  r="3.5" fill="#c0392b" opacity="0"/>
+        <circle id="ef4" cx="252" cy="60"  r="3.5" fill="#c0392b" opacity="0"/>
+        <circle id="ef5" cx="300" cy="80"  r="3.5" fill="#0e7490" opacity="0"/>
+        <circle id="ef6" cx="348" cy="103" r="3.5" fill="#0e7490" opacity="0"/>
+        <circle id="ef7" cx="396" cy="120" r="3.5" fill="#0e7490" opacity="0"/>
+        <circle id="ef8" cx="444" cy="140" r="3.5" fill="#0e7490" opacity="0"/>
+        <circle id="ef9" cx="492" cy="155" r="3.5" fill="#0e7490" opacity="0"/>
+        <circle id="ef10" cx="540" cy="163" r="3.5" fill="#0e7490" opacity="0"/>
+
+        <!-- Value labels -->
+        <text id="efl0" x="60"  y="90"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#c0392b" opacity="0">45%</text>
+        <text id="efl1" x="108" y="50"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#c0392b" opacity="0">62%</text>
+        <text id="efl2" x="156" y="24"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#c0392b" font-weight="600" opacity="0">71% ▲</text>
+        <text id="efl3" x="204" y="32"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#c0392b" opacity="0">68%</text>
+        <text id="efl4" x="252" y="55"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#c0392b" opacity="0">60%</text>
+        <text id="efl5" x="300" y="75"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#0e7490" opacity="0">52%</text>
+        <text id="efl6" x="348" y="98"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#0e7490" opacity="0">43%</text>
+        <text id="efl7" x="396" y="115" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#0e7490" opacity="0">36%</text>
+        <text id="efl8" x="444" y="135" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#0e7490" opacity="0">28%</text>
+        <text id="efl9" x="492" y="150" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#0e7490" opacity="0">22%</text>
+        <text id="efl10" x="535" y="158" text-anchor="end" font-family="IBM Plex Mono" font-size="8" fill="#0e7490" opacity="0">18%</text>
+      </svg>
+    </div>
+
+    <!-- Totals callout strip -->
+    <div style="display:flex; gap:0; margin-top:12px; border:1px solid var(--rule);">
+      <div style="flex:1; padding:10px 14px; border-right:1px solid var(--rule);">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;">Total scheduled flights</div>
+        <div style="font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--ink);">51,000+</div>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted);">Feb 28 – Mar 6</div>
+      </div>
+      <div style="flex:1; padding:10px 14px; border-right:1px solid var(--rule);">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;">Cancelled</div>
+        <div style="font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--red);">29,000+</div>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted);">56.38% disruption rate</div>
+      </div>
+      <div style="flex:1; padding:10px 14px; border-right:1px solid var(--rule);">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;">Passengers stranded</div>
+        <div style="font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--ink);">500k+</div>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted);">Gulf hubs + transits</div>
+      </div>
+      <div style="flex:1; padding:10px 14px;">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;">Airspaces closed</div>
+        <div style="font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--amber);">9</div>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted);">Iran · UAE · Qatar · Iraq + 5</div>
+      </div>
+    </div>
+
+    <div class="source-line">Sources: Cirium aviation analytics (cancellation rates, 56.38% figure) · FlightAware · The National / Aerospace Global News · TIME / CNN flight tracker · TravelTourister (19,000 figure) · Fox Business carrier waivers</div>
+  </div>
+
+  <!-- ═══ GRAPHIC 6: CARRIER-BY-CARRIER EPIC FURY IMPACT ═══ -->
+  <div class="panel">
+    <div class="panel-label">Graphic 06 · Carrier Exposure — Epic Fury</div>
+    <div class="panel-title">Who Stopped Flying and When</div>
+    <div class="panel-sub">Suspension status by airline · Feb 28 – Mar 10, 2026 · color = operational status at Mar 10</div>
+
+    <div id="carrierWrap" style="margin-top:8px;">
+
+      <!-- Timeline header -->
+      <div style="display:flex; margin-bottom:4px; padding-left:120px;">
+        <div style="flex:1; font-family:'IBM Plex Mono',monospace; font-size:8px; color:var(--muted); text-align:left;">Feb 28</div>
+        <div style="flex:1; font-family:'IBM Plex Mono',monospace; font-size:8px; color:var(--muted); text-align:center;">Mar 4</div>
+        <div style="flex:1; font-family:'IBM Plex Mono',monospace; font-size:8px; color:var(--muted); text-align:right;">Mar 10</div>
+      </div>
+
+      <!-- Each airline row: name | Gantt bar showing suspension span + recovery -->
+      <!-- 
+        Full timeline = 10 days. Each day = 1/10 of bar width.
+        Format: [airline, suspendStart (day 0-9), resumeDay or null, status, color]
+        Suspended = red fill, Limited = amber, Resumed = teal, Still out = dark red
+      -->
+      <div class="carrier-row" data-suspend="0" data-resume="3.5" data-status="limited" data-label="Emirates (DXB)"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="null" data-status="suspended" data-label="Qatar Airways"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="5" data-status="limited" data-label="Etihad Airways"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="null" data-status="suspended" data-label="Kuwait Airways"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="null" data-status="suspended" data-label="Gulf Air (Bahrain)"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="7" data-status="limited" data-label="Saudia (partial)"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="6" data-status="limited" data-label="Virgin Atlantic (DXB)"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="4" data-status="resumed" data-label="IndiGo (selective)"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="null" data-status="suspended" data-label="Air India (ME)"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="10" data-status="cancelled" data-label="Delta (TLV–JFK)"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="6" data-status="cancelled" data-label="United (DXB/TLV)"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="null" data-status="cancelled" data-label="American Airlines"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="null" data-status="cancelled" data-label="Finnair (through Mar 29)"></div>
+      <div class="carrier-row" data-suspend="0" data-resume="null" data-status="cancelled" data-label="Air Canada (through Mar 23)"></div>
+
+    </div>
+
+    <!-- Legend -->
+    <div style="display:flex; gap:14px; margin-top:14px; flex-wrap:wrap;">
+      <div class="legend-item"><div class="legend-dot" style="background:#c0392b; border-radius:2px;"></div>Fully suspended</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#d97706; border-radius:2px;"></div>Limited / partial ops</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#0e7490; border-radius:2px;"></div>Resuming</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#374151; border-radius:2px;"></div>Extended cancellation</div>
+    </div>
+
+    <div class="source-line">Sources: The National airline-by-airline tracker · Fox Business / CNN carrier waivers · Cirium data · Aerospace Global News · individual airline X/website advisories</div>
+  </div>
+
+</div><!-- /appended grid -->
+
+<style>
+  .carrier-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 7px;
+    opacity: 0;
+    transform: translateX(-15px);
+    transition: all 0.4s ease;
+  }
+  .carrier-row.vis { opacity: 1; transform: translateX(0); }
+  .carrier-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+    width: 118px;
+    flex-shrink: 0;
+    padding-right: 8px;
+    line-height: 1.2;
+  }
+  .gantt-track {
+    flex: 1;
+    height: 16px;
+    background: #e8e0d0;
+    position: relative;
+    overflow: hidden;
+  }
+  .gantt-suspend {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: #c0392b;
+    opacity: 0.85;
+    transition: width 1.2s ease;
+    width: 0;
+  }
+  .gantt-resume {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    opacity: 0.85;
+    transition: width 1.2s ease 0.3s;
+    width: 0;
+  }
+</style>
+
+<script>
+// ── GRAPHIC 5: Epic Fury line chart animation ──
+const efPath = document.getElementById('efPath');
+const efArea = document.getElementById('efArea');
+const efObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    efPath.style.strokeDashoffset = '0';
+    efArea.style.opacity = '0.35';
+    for (let i = 0; i <= 10; i++) {
+      setTimeout(() => {
+        const d = document.getElementById('ef' + i);
+        const l = document.getElementById('efl' + i);
+        if (d) d.style.opacity = '1';
+        if (l) l.style.opacity = '1';
+      }, 400 + i * 220);
+    }
+    efObs.disconnect();
+  }
+}, { threshold: 0.3 });
+efObs.observe(document.getElementById('efChart'));
+
+// ── GRAPHIC 6: Gantt chart render ──
+const TOTAL_DAYS = 10;
+const STATUS_COLORS = {
+  suspended: '#c0392b',
+  limited:   '#d97706',
+  resumed:   '#0e7490',
+  cancelled: '#374151'
+};
+
+const rows = document.querySelectorAll('.carrier-row');
+rows.forEach(row => {
+  // Build DOM
+  const name = document.createElement('div');
+  name.className = 'carrier-name';
+  name.textContent = row.dataset.label;
+
+  const track = document.createElement('div');
+  track.className = 'gantt-track';
+
+  const suspendDiv = document.createElement('div');
+  suspendDiv.className = 'gantt-suspend';
+
+  const resumeDiv = document.createElement('div');
+  resumeDiv.className = 'gantt-resume';
+
+  const resumeDay = row.dataset.resume === 'null' ? null : parseFloat(row.dataset.resume);
+  const status = row.dataset.status;
+
+  // Suspend block: from day 0 to resumeDay (or full bar if never resumed)
+  const suspendEndPct = resumeDay !== null ? (resumeDay / TOTAL_DAYS) * 100 : 100;
+  suspendDiv.style.left = '0%';
+  // Will animate to target width
+
+  // Resume/recovery block
+  if (resumeDay !== null) {
+    const resumeStartPct = (resumeDay / TOTAL_DAYS) * 100;
+    const resumeWidthPct = 100 - resumeStartPct;
+    resumeDiv.style.left = resumeStartPct + '%';
+    resumeDiv.style.background = STATUS_COLORS[status];
+    // Will animate
+  }
+
+  track.appendChild(suspendDiv);
+  track.appendChild(resumeDiv);
+  row.appendChild(name);
+  row.appendChild(track);
+
+  // Store targets for animation
+  row._suspendPct = suspendEndPct;
+  row._resumePct = resumeDay !== null ? (100 - (resumeDay / TOTAL_DAYS) * 100) : 0;
+  row._resumeDiv = resumeDiv;
+  row._suspendDiv = suspendDiv;
+});
+
+const ganttObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    rows.forEach((row, i) => {
+      setTimeout(() => {
+        row.classList.add('vis');
+        setTimeout(() => {
+          row._suspendDiv.style.width = row._suspendPct + '%';
+          row._resumeDiv.style.width = row._resumePct + '%';
+        }, 100);
+      }, i * 80);
+    });
+    ganttObs.disconnect();
+  }
+}, { threshold: 0.2 });
+ganttObs.observe(document.getElementById('carrierWrap'));
+</script>
+</body>
+</html>
