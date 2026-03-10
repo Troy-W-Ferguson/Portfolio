@@ -1811,12 +1811,11 @@
     <div class="divider-vertical"></div>
 
     <div class="cost-column">
-      <div class="cost-label doge">DOGE Claimed Savings · Since Jan 20, 2025</div>
+      <div class="cost-label doge">DOGE Verified Savings · NPR / AEI Analysis</div>
       <div class="cost-figure doge" id="dogeCounter">$0</div>
-      <div class="cost-sub">Claimed total · disputed by independent analysts</div>
+      <div class="cost-sub">Independent analysis (NPR, American Enterprise Institute)</div>
       <div class="cost-sub" style="margin-top:8px; font-size:9px; line-height:1.5;">
-        Verified by NPR/AEI: ~$10–12B<br>
-        DOGE.gov claims: ~$160B<br>
+        DOGE.gov claims: ~$160B (unverified, disputed)<br>
         <span style="color:var(--iran)">Epic Fury surpasses verified savings within days</span>
       </div>
     </div>
@@ -5818,7 +5817,7 @@
   if (warEl && dogeEl && daysEl) {
     setTimeout(() => {
       efAnimateCounter(warEl, totalWarCost, 3000);
-      efAnimateCounter(dogeEl, dogeClaimed, 2500);
+      efAnimateCounter(dogeEl, dogeVerified, 2500);
       daysEl.textContent = `Day ${daysSince} of conflict · ${daysSince} × $891M/day`;
       const warPct = Math.min((totalWarCost / dogeVerified) * 100, 100);
       setTimeout(() => {

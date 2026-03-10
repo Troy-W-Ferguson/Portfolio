@@ -397,6 +397,24 @@
     height: 8px;
     border-radius: 50%;
   }
+  .network-wrap {
+    position: relative;
+    background: #0B0F14;
+    border: 1px solid #1e3a5f;
+    overflow: hidden;
+    height: 360px;
+  }
+  canvas#ccg-network {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .ccg-network-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+  }
   .airspace-controls {
     display: flex;
     align-items: center;
@@ -507,6 +525,29 @@
 
 <!-- GRID -->
 <div class="grid">
+
+  <!-- ═══ GRAPHIC 0 ═══ -->
+  <div class="panel">
+    <div class="panel-label">Graphic 00 · Aviation Network</div>
+    <div class="panel-title">Contagion Tree: How the Shockwave Spread</div>
+    <div class="panel-sub">Global aviation network as a disease map · each node an airport · red = infected · Feb 28 – Mar 8, 2026</div>
+    <div class="network-wrap">
+      <canvas id="ccg-network" width="760" height="360"></canvas>
+      <div id="ccg-net-tooltip" style="position:absolute;opacity:0;background:#111;color:#e8e8e8;padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;pointer-events:none;border:1px solid #2a3a4f;max-width:200px;border-radius:2px;"></div>
+    </div>
+    <div class="ccg-network-controls">
+      <button class="play-btn" id="ccg-n-play">&#9654; PLAY</button>
+      <button class="play-btn" id="ccg-n-reset">&#8634; RESET</button>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);" id="ccg-n-phase">Phase: <span style="color:var(--amber)">Ready</span></span>
+    </div>
+    <div class="airspace-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#C1272D"></div>Critical: ops halted</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#E07020"></div>Severe: mass cancellations</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#D4A843"></div>Moderate: cascading delays</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4A90A4"></div>Peripheral: stranded pax</div>
+    </div>
+    <div class="source-line">Sources: Cirium, Fortune, TIME, AP, Al Jazeera. Network topology simplified; edge weights reflect reported route significance.</div>
+  </div>
 
   <!-- ═══ GRAPHIC 1 ═══ -->
   <div class="panel">
@@ -1530,6 +1571,158 @@ const ganttObs = new IntersectionObserver((entries) => {
   }
 }, { threshold: 0.2 });
 ganttObs.observe(document.getElementById('carrierWrap'));
+</script>
+
+<script>
+// ════════════════════════════════════════
+//  GRAPHIC 00: CONTAGION TREE NETWORK
+// ════════════════════════════════════════
+const CCG_AIRPORTS = [
+  {code:'DXB',name:'Dubai Intl',lat:25.25,lon:55.36,phase:0,cancelled:'4,000+',note:'Struck by Iranian retaliation; terminal damage',tier:'epicenter'},
+  {code:'DOH',name:'Hamad Intl (Doha)',lat:25.26,lon:51.56,phase:0,cancelled:'2,500+',note:'Closed through Mon; Qatar Airways grounded',tier:'epicenter'},
+  {code:'AUH',name:'Abu Dhabi Zayed',lat:24.44,lon:54.65,phase:0,cancelled:'1,000+',note:'Limited emergency corridors only',tier:'epicenter'},
+  {code:'BAH',name:'Bahrain Intl',lat:26.27,lon:50.63,phase:0,cancelled:'800+',note:'Airspace closed; US base targeted',tier:'epicenter'},
+  {code:'KWI',name:'Kuwait Intl',lat:29.23,lon:47.97,phase:0,cancelled:'600+',note:'Airspace closed after strikes on US base',tier:'epicenter'},
+  {code:'IKA',name:'Tehran Imam Khomeini',lat:35.41,lon:51.15,phase:0,cancelled:'All',note:'Iranian airspace fully closed',tier:'epicenter'},
+  {code:'IST',name:'Istanbul',lat:41.26,lon:28.74,phase:1,cancelled:'500+',note:'Rerouting hub; ME-bound flights scrapped',tier:'severe'},
+  {code:'BEY',name:'Beirut',lat:33.82,lon:35.49,phase:1,cancelled:'300+',note:'Lebanon airspace restricted',tier:'severe'},
+  {code:'AMM',name:'Amman',lat:31.72,lon:35.99,phase:1,cancelled:'200+',note:'Jordan airspace intermittently closed',tier:'severe'},
+  {code:'TLV',name:'Ben Gurion',lat:32.01,lon:34.88,phase:1,cancelled:'All',note:'Israeli airspace on war footing',tier:'severe'},
+  {code:'DEL',name:'Delhi',lat:28.56,lon:77.10,phase:1,cancelled:'200+',note:'Air India Gulf routes suspended',tier:'severe'},
+  {code:'BOM',name:'Mumbai',lat:19.09,lon:72.87,phase:1,cancelled:'150+',note:'Indian worker corridor severed',tier:'severe'},
+  {code:'MNL',name:'Manila',lat:14.51,lon:121.02,phase:1,cancelled:'100+',note:'OFW flights to Kuwait stranded',tier:'severe'},
+  {code:'LHR',name:'London Heathrow',lat:51.47,lon:-0.46,phase:2,cancelled:'300+',note:'BA & Gulf carriers rotations disrupted',tier:'moderate'},
+  {code:'CDG',name:'Paris CDG',lat:49.01,lon:2.55,phase:2,cancelled:'250+',note:'Air France resumed then re-cancelled',tier:'moderate'},
+  {code:'FRA',name:'Frankfurt',lat:50.03,lon:8.57,phase:2,cancelled:'200+',note:'Lufthansa Gulf routes suspended',tier:'moderate'},
+  {code:'AMS',name:'Amsterdam Schiphol',lat:52.31,lon:4.77,phase:2,cancelled:'200+',note:'KLM suspended Dubai, Riyadh, Dammam',tier:'moderate'},
+  {code:'FCO',name:'Rome Fiumicino',lat:41.80,lon:12.25,phase:2,cancelled:'80+',note:'Alitalia rerouting Asia flights',tier:'moderate'},
+  {code:'JFK',name:'New York JFK',lat:40.64,lon:-73.78,phase:3,cancelled:'100+',note:'Qatar, Emirates arrivals gone; cascading',tier:'peripheral'},
+  {code:'MIA',name:'Miami Intl',lat:25.79,lon:-80.29,phase:3,cancelled:'80+',note:'Qatar ops disrupted; feeding Delta/AA delays',tier:'peripheral'},
+  {code:'LAX',name:'Los Angeles',lat:33.94,lon:-118.41,phase:3,cancelled:'60+',note:'Asia-Pacific long-hauls reprioritized',tier:'peripheral'},
+  {code:'EWR',name:'Newark',lat:40.69,lon:-74.17,phase:3,cancelled:'50+',note:'United waivers through Mar 31',tier:'peripheral'},
+  {code:'DPS',name:'Bali Ngurah Rai',lat:-8.75,lon:115.17,phase:3,cancelled:'5 (1,600 stranded)',note:'ME-bound flights cancelled outright',tier:'peripheral'},
+  {code:'DAC',name:'Dhaka Shahjalal',lat:23.84,lon:90.40,phase:3,cancelled:'100+',note:'Migrant workers stranded',tier:'peripheral'},
+  {code:'NRT',name:'Tokyo Narita',lat:35.76,lon:140.39,phase:3,cancelled:'30+',note:'ME connecting pax rerouted',tier:'peripheral'},
+];
+const CCG_EDGES = [
+  ['DXB','LHR'],['DXB','CDG'],['DXB','FRA'],['DXB','DEL'],['DXB','BOM'],['DXB','MNL'],['DXB','DPS'],['DXB','JFK'],['DXB','LAX'],
+  ['DOH','LHR'],['DOH','CDG'],['DOH','JFK'],['DOH','MIA'],['DOH','DAC'],['DOH','MNL'],['DOH','NRT'],
+  ['AUH','LHR'],['AUH','FRA'],['AUH','AMS'],['AUH','DEL'],
+  ['BAH','DEL'],['BAH','BOM'],['BAH','MNL'],['KWI','MNL'],['KWI','DEL'],['KWI','DAC'],
+  ['IKA','IST'],['IKA','BEY'],
+  ['IST','LHR'],['IST','CDG'],['IST','FRA'],['IST','FCO'],['IST','JFK'],
+  ['BEY','CDG'],['BEY','FCO'],['TLV','LHR'],['TLV','JFK'],['TLV','EWR'],['AMM','LHR'],['AMM','FRA'],
+  ['LHR','JFK'],['LHR','MIA'],['LHR','LAX'],['LHR','EWR'],
+  ['CDG','JFK'],['CDG','MIA'],['FRA','JFK'],['FRA','EWR'],['FRA','NRT'],['AMS','JFK'],
+  ['DEL','NRT'],['DEL','DPS'],['MIA','LAX'],['JFK','LAX'],
+];
+const CCG_TIER_COLORS = {epicenter:'#C1272D',severe:'#E07020',moderate:'#D4A843',peripheral:'#4A90A4'};
+
+(function initCcgNetwork(){
+  const canvas = document.getElementById('ccg-network');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const tooltip = document.getElementById('ccg-net-tooltip');
+  const W = canvas.width, H = canvas.height, cx = W/2, cy = H/2;
+
+  const nodeMap = {};
+  const nodes = CCG_AIRPORTS.map((a, i) => {
+    const pa = CCG_AIRPORTS.filter(b => b.phase === a.phase);
+    const idx = pa.indexOf(a);
+    const spread = (Math.PI * 2) / Math.max(pa.length, 1);
+    const angle = a.phase * 0.5 + idx * spread;
+    let r = a.phase===0 ? 40+Math.random()*20 : a.phase===1 ? 135+Math.random()*25 : a.phase===2 ? 225+Math.random()*20 : 300+Math.random()*20;
+    const n = {...a, x: cx + Math.cos(angle)*r, y: cy + Math.sin(angle)*r, infected: false, idx: i};
+    nodeMap[a.code] = n;
+    return n;
+  });
+  const edges = CCG_EDGES.map(([f, t]) => ({from: nodeMap[f], to: nodeMap[t], active: false, at: -1})).filter(e => e.from && e.to);
+  let animTime = 0, playing = false, currentPhase = -1;
+  const PL = ['Hour 0: Gulf airspace collapses','Hours 1-24: Connecting routes sever','Days 2-5: European hub degradation','Days 5-8: Global cascade','Contagion complete: 23,000+ flights lost'];
+
+  function ease(t) { return 1 - Math.pow(1-t, 3); }
+  function infectPhase(p) {
+    nodes.forEach(n => { if (n.phase===p && !n.infected) { n.infected=true; n.it=animTime; } });
+    edges.forEach(e => { if (e.from.infected && e.to.infected && !e.active) { e.active=true; e.at=animTime+Math.random()*0.5; } });
+  }
+  function draw() {
+    ctx.fillStyle = '#0B0F14'; ctx.fillRect(0, 0, W, H);
+    [40,135,225,300].forEach(r => {
+      ctx.beginPath(); ctx.arc(cx, cy, r+15, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.025)'; ctx.lineWidth = 0.5; ctx.stroke();
+    });
+    edges.forEach(e => {
+      if (e.active) {
+        const p = Math.min(1, (animTime-e.at)/0.8);
+        const mx = e.from.x + (e.to.x-e.from.x)*ease(p), my = e.from.y + (e.to.y-e.from.y)*ease(p);
+        ctx.beginPath(); ctx.moveTo(e.from.x, e.from.y); ctx.lineTo(mx, my);
+        ctx.strokeStyle = `rgba(184,41,47,${0.12+0.2*(1-p)})`; ctx.lineWidth = 1+(1-p); ctx.stroke();
+      } else if (!e.from.infected && !e.to.infected) {
+        ctx.beginPath(); ctx.moveTo(e.from.x, e.from.y); ctx.lineTo(e.to.x, e.to.y);
+        ctx.strokeStyle = 'rgba(255,255,255,0.02)'; ctx.lineWidth = 0.5; ctx.stroke();
+      }
+    });
+    nodes.forEach(n => {
+      const col = CCG_TIER_COLORS[n.tier] || '#1E2A33';
+      if (n.infected) {
+        const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.tier==='epicenter'?26:16);
+        grd.addColorStop(0, col+'55'); grd.addColorStop(1, col+'00');
+        ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(n.x, n.y, n.tier==='epicenter'?26:16, 0, Math.PI*2); ctx.fill();
+        const r = n.tier==='epicenter'?7 : n.tier==='severe'?5.5 : 4.5;
+        ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, Math.PI*2); ctx.fillStyle = col; ctx.fill();
+        if (n.tier==='epicenter') {
+          const p = (Math.sin(animTime*2.5+n.idx)+1)/2;
+          ctx.beginPath(); ctx.arc(n.x, n.y, 7+p*10, 0, Math.PI*2);
+          ctx.strokeStyle = col+'44'; ctx.lineWidth = 1; ctx.stroke();
+        }
+        ctx.font = '600 10px "IBM Plex Sans",sans-serif'; ctx.fillStyle = col;
+        ctx.textAlign = 'center'; ctx.fillText(n.code, n.x, n.y-(n.tier==='epicenter'?13:9));
+      } else {
+        ctx.beginPath(); ctx.arc(n.x, n.y, 2.5, 0, Math.PI*2); ctx.fillStyle = '#1E2A33'; ctx.fill();
+        ctx.font = '400 9px "IBM Plex Sans",sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.12)';
+        ctx.textAlign = 'center'; ctx.fillText(n.code, n.x, n.y-6);
+      }
+    });
+    ctx.font = '500 11px "IBM Plex Mono",monospace'; ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.textAlign = 'left'; ctx.fillText(`Nodes infected: ${nodes.filter(n=>n.infected).length} / ${nodes.length}`, 14, H-14);
+  }
+  function tick() {
+    if (!playing) return;
+    animTime += 0.016;
+    if (currentPhase<0 && animTime>0.3)  { currentPhase=0; infectPhase(0); }
+    if (currentPhase<1 && animTime>2.5)  { currentPhase=1; infectPhase(1); }
+    if (currentPhase<2 && animTime>5)    { currentPhase=2; infectPhase(2); }
+    if (currentPhase<3 && animTime>7.5)  { currentPhase=3; infectPhase(3); }
+    const phaseSpan = document.querySelector('#ccg-n-phase span');
+    if (phaseSpan) phaseSpan.textContent = currentPhase>=0 ? PL[Math.min(currentPhase,4)] : 'Ready';
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  document.getElementById('ccg-n-play').addEventListener('click', () => { if (!playing) { playing=true; tick(); } });
+  document.getElementById('ccg-n-reset').addEventListener('click', () => {
+    playing=false; currentPhase=-1; animTime=0;
+    nodes.forEach(n => { n.infected=false; });
+    edges.forEach(e => { e.active=false; e.at=-1; });
+    const phaseSpan = document.querySelector('#ccg-n-phase span');
+    if (phaseSpan) phaseSpan.textContent = 'Ready';
+    draw();
+  });
+  canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect(), sx = W/rect.width, sy = H/rect.height;
+    const mx = (e.clientX-rect.left)*sx, my = (e.clientY-rect.top)*sy;
+    let hit = null;
+    nodes.forEach(n => { if (Math.hypot(mx-n.x, my-n.y)<14) hit=n; });
+    if (hit && hit.infected) {
+      tooltip.style.opacity = 1;
+      tooltip.innerHTML = `<div style="font-weight:600;margin-bottom:4px">${hit.name} (${hit.code})</div><div>Cancelled: ${hit.cancelled}</div><div style="margin-top:4px;opacity:0.7">${hit.note}</div>`;
+      tooltip.style.left = Math.min(e.clientX-rect.left+12, rect.width-220) + 'px';
+      tooltip.style.top  = (e.clientY-rect.top-10) + 'px';
+    } else { tooltip.style.opacity = 0; }
+  });
+  canvas.addEventListener('mouseleave', () => { tooltip.style.opacity = 0; });
+  draw();
+})();
 </script>
 </body>
 </html>
