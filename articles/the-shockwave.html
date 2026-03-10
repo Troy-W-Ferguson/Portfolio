@@ -272,6 +272,246 @@
     color: var(--muted);
     border-top: 1px solid var(--rule);
   }
+
+  /* ── Embedded aviation graphics (02, 03, 05, 06) ── */
+  :root {
+    --amber: #d97706;
+    --teal:  #0e7490;
+    --teal-dim: #164e63;
+    --highlight: #fef3c7;
+    --ibm-mono: 'IBM Plex Mono', 'Courier New', monospace;
+    --playfair: 'Playfair Display', Georgia, serif;
+  }
+
+  /* Shared chart container */
+  .ccg-chart-wrap {
+    position: relative;
+    margin-top: 10px;
+  }
+  .ccg-chart-wrap svg {
+    width: 100%;
+    overflow: visible;
+  }
+
+  /* SVG chart shared styles */
+  .ccg-grid-line { stroke: var(--rule); stroke-width: 1; }
+  .ccg-grid-text {
+    font-family: var(--ibm-mono);
+    font-size: 9px;
+    fill: var(--muted);
+  }
+
+  /* Graphic 02 – line chart */
+  .g02-flight-path {
+    fill: none;
+    stroke: var(--red);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transition: stroke-dashoffset 3s ease;
+  }
+  .g02-flight-area {
+    fill: url(#redGrad02);
+    opacity: 0;
+    transition: opacity 1s ease 2s;
+  }
+  .g02-data-dot {
+    fill: var(--red);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .g02-dot-label {
+    font-family: var(--ibm-mono);
+    font-size: 8px;
+    fill: var(--ink);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Graphic 03 – airline bar chart */
+  .g03-bar-wrap { margin-top: 10px; }
+  .g03-bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.5s ease;
+  }
+  .g03-bar-row.visible { opacity: 1; transform: translateX(0); }
+  .g03-bar-airline {
+    font-family: var(--ibm-mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    width: 80px;
+    flex-shrink: 0;
+  }
+  .g03-bar-track {
+    flex: 1;
+    height: 22px;
+    background: var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .g03-bar-fill {
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%;
+    background: var(--teal);
+    width: 0;
+    transition: width 1.5s ease;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+  }
+  .g03-bar-fill.red   { background: var(--red); }
+  .g03-bar-fill.amber { background: var(--amber); }
+  .g03-bar-value {
+    font-family: var(--ibm-mono);
+    font-size: 9px;
+    color: white;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+  .g03-bar-ext {
+    font-family: var(--ibm-mono);
+    font-size: 9px;
+    color: var(--muted);
+    margin-left: 8px;
+    white-space: nowrap;
+  }
+  .g03-total-callout {
+    background: var(--ink);
+    color: #f5f0e8;
+    padding: 12px 16px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .g03-total-label {
+    font-family: var(--ibm-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .g03-total-figure {
+    font-family: var(--playfair);
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--amber);
+  }
+
+  /* Graphic 05 – Epic Fury cancellation line chart (no extra class needed beyond ccg-chart-wrap) */
+
+  /* Graphic 06 – Gantt carrier chart */
+  .g06-carrier-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 7px;
+    opacity: 0;
+    transform: translateX(-15px);
+    transition: all 0.4s ease;
+  }
+  .g06-carrier-row.vis { opacity: 1; transform: translateX(0); }
+  .g06-carrier-name {
+    font-family: var(--ibm-mono);
+    font-size: 9px;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+    width: 118px;
+    flex-shrink: 0;
+    padding-right: 8px;
+    line-height: 1.2;
+  }
+  .g06-gantt-track {
+    flex: 1;
+    height: 16px;
+    background: #e8e0d0;
+    position: relative;
+    overflow: hidden;
+  }
+  .g06-gantt-suspend {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: #c0392b;
+    opacity: 0.85;
+    transition: width 1.2s ease;
+    width: 0;
+  }
+  .g06-gantt-resume {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    opacity: 0.85;
+    transition: width 1.2s ease 0.3s;
+    width: 0;
+  }
+  .g06-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--ibm-mono);
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  .g06-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  /* Shared source line for embedded graphics */
+  .ccg-source {
+    font-family: var(--ibm-mono);
+    font-size: 8.5px;
+    color: var(--muted);
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule);
+    line-height: 1.6;
+  }
+  .ccg-source a { color: var(--gold); text-decoration: none; }
+  .ccg-source a:hover { text-decoration: underline; }
+
+  /* Stat callout strip (Graphic 05) */
+  .g05-stat-strip {
+    display: flex;
+    gap: 0;
+    margin-top: 12px;
+    border: 1px solid var(--rule);
+  }
+  .g05-stat-cell {
+    flex: 1;
+    padding: 10px 14px;
+    border-right: 1px solid var(--rule);
+  }
+  .g05-stat-cell:last-child { border-right: none; }
+  .g05-stat-label {
+    font-family: var(--ibm-mono);
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .g05-stat-val {
+    font-family: var(--playfair);
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--ink);
+  }
+  .g05-stat-val.red   { color: var(--red); }
+  .g05-stat-val.amber { color: var(--amber); }
+  .g05-stat-note {
+    font-family: var(--ibm-mono);
+    font-size: 9px;
+    color: var(--muted);
+  }
 </style>
 </head>
 <body>
@@ -314,6 +554,113 @@
   <p>The contagion did not stop at Europe. At Miami International, already one of the most congested airports in America, Qatar Airways disruptions fed directly into Delta and American schedules, which cascaded into JFK, LaGuardia, Newark, and Los Angeles. Ground staff at LAX were forced to prioritize long-haul departures to Asia-Pacific, pushing domestic flights further behind. <span class="source-tag">(<a href="https://www.thetraveler.org/flight-disruptions-ripple-across-major-us-hubs/">The Traveler</a>)</span> In Bali, 1,600 tourists were stranded after five Middle East-bound flights vanished from the board. In Manila, Filipino migrant workers, the human infrastructure of the Gulf economy, waited at airport gates for flights to Kuwait that would never arrive. <span class="source-tag">(<a href="https://fortune.com/2026/03/01/air-fares-us-israel-iran-bombing-airlines-reroute-flights-fuel-airspace-closures-mideast/">Fortune</a>)</span></p>
 
 </div>
+
+<!-- ── GRAPHIC 05 (embedded): EPIC FURY FLIGHT CANCELLATIONS ── -->
+<div class="graphic-section">
+  <div class="graphic-label">Graphic 05 · Epic Fury Aviation</div>
+  <div class="graphic-title">Collapse and Partial Recovery: Middle East Flight Cancellations</div>
+  <div class="graphic-subtitle">Daily cancellation rate (%) across 9 closed airspaces · Feb 28 – Mar 10, 2026 · Source: Cirium / FlightAware</div>
+
+  <div class="ccg-chart-wrap" style="height:240px;">
+    <svg id="efChart" viewBox="0 0 560 210" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;overflow:visible;">
+      <defs>
+        <linearGradient id="efGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c0392b" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#c0392b" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- Grid -->
+      <line x1="60" y1="20"  x2="540" y2="20"  stroke="#C8C4BA" stroke-width="1"/>
+      <line x1="60" y1="60"  x2="540" y2="60"  stroke="#C8C4BA" stroke-width="1"/>
+      <line x1="60" y1="100" x2="540" y2="100" stroke="#C8C4BA" stroke-width="1"/>
+      <line x1="60" y1="140" x2="540" y2="140" stroke="#C8C4BA" stroke-width="1"/>
+      <line x1="60" y1="180" x2="540" y2="180" stroke="#C8C4BA" stroke-width="1"/>
+      <text x="50" y="23"  text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6E6E6E">100%</text>
+      <text x="50" y="63"  text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6E6E6E">75%</text>
+      <text x="50" y="103" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6E6E6E">50%</text>
+      <text x="50" y="143" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6E6E6E">25%</text>
+      <text x="50" y="183" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6E6E6E">0%</text>
+      <!-- X labels -->
+      <text x="60"  y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6E6E6E">Feb 28</text>
+      <text x="108" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6E6E6E">Mar 1</text>
+      <text x="156" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6E6E6E">Mar 2</text>
+      <text x="204" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6E6E6E">Mar 3</text>
+      <text x="252" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6E6E6E">Mar 4</text>
+      <text x="300" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6E6E6E">Mar 5</text>
+      <text x="348" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6E6E6E">Mar 6</text>
+      <text x="396" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6E6E6E">Mar 7</text>
+      <text x="444" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6E6E6E">Mar 8</text>
+      <text x="492" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6E6E6E">Mar 9</text>
+      <text x="540" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#6E6E6E">Mar 10</text>
+      <!-- Area fill -->
+      <path id="efArea" d="M60,95 C84,75 96,50 108,55 C120,60 132,22 156,29 C168,36 180,40 204,37 C216,34 228,50 252,60 C264,70 276,73 300,80 C312,87 324,95 348,103 C360,111 372,115 396,120 C408,125 420,132 444,140 C456,147 468,151 492,155 C504,158 522,161 540,163 L540,180 L60,180 Z" fill="url(#efGrad)" opacity="0" style="transition:opacity 1s ease 2s;"/>
+      <!-- Animated line -->
+      <path id="efPath" d="M60,95 C84,75 96,50 108,55 C120,60 132,22 156,29 C168,36 180,40 204,37 C216,34 228,50 252,60 C264,70 276,73 300,80 C312,87 324,95 348,103 C360,111 372,115 396,120 C408,125 420,132 444,140 C456,147 468,151 492,155 C504,158 522,161 540,163"
+        fill="none" stroke="#B8292F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+        stroke-dasharray="1200" stroke-dashoffset="1200" style="transition:stroke-dashoffset 3s ease;"/>
+      <!-- Annotations -->
+      <line x1="108" y1="20" x2="108" y2="180" stroke="#d97706" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+      <text x="111" y="34" font-family="IBM Plex Mono" font-size="6.5" fill="#d97706">Emirates/Qatar</text>
+      <text x="111" y="43" font-family="IBM Plex Mono" font-size="6.5" fill="#d97706">suspend all ops</text>
+      <line x1="156" y1="20" x2="156" y2="180" stroke="#B8292F" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+      <text x="159" y="34" font-family="IBM Plex Mono" font-size="6.5" fill="#B8292F">DXB/DOH struck</text>
+      <text x="159" y="43" font-family="IBM Plex Mono" font-size="6.5" fill="#B8292F">19k+ disrupted</text>
+      <line x1="300" y1="20" x2="300" y2="180" stroke="#0e7490" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+      <text x="303" y="85" font-family="IBM Plex Mono" font-size="6.5" fill="#0e7490">Dubai partial</text>
+      <text x="303" y="94" font-family="IBM Plex Mono" font-size="6.5" fill="#0e7490">resume</text>
+      <!-- Data dots -->
+      <circle id="ef0"  cx="60"  cy="95"  r="3.5" fill="#B8292F" opacity="0"/>
+      <circle id="ef1"  cx="108" cy="55"  r="3.5" fill="#B8292F" opacity="0"/>
+      <circle id="ef2"  cx="156" cy="29"  r="4.5" fill="#B8292F" opacity="0"/>
+      <circle id="ef3"  cx="204" cy="37"  r="3.5" fill="#B8292F" opacity="0"/>
+      <circle id="ef4"  cx="252" cy="60"  r="3.5" fill="#B8292F" opacity="0"/>
+      <circle id="ef5"  cx="300" cy="80"  r="3.5" fill="#0e7490"  opacity="0"/>
+      <circle id="ef6"  cx="348" cy="103" r="3.5" fill="#0e7490"  opacity="0"/>
+      <circle id="ef7"  cx="396" cy="120" r="3.5" fill="#0e7490"  opacity="0"/>
+      <circle id="ef8"  cx="444" cy="140" r="3.5" fill="#0e7490"  opacity="0"/>
+      <circle id="ef9"  cx="492" cy="155" r="3.5" fill="#0e7490"  opacity="0"/>
+      <circle id="ef10" cx="540" cy="163" r="3.5" fill="#0e7490"  opacity="0"/>
+      <!-- Labels -->
+      <text id="efl0"  x="60"  y="90"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#B8292F" opacity="0">45%</text>
+      <text id="efl1"  x="108" y="50"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#B8292F" opacity="0">62%</text>
+      <text id="efl2"  x="156" y="24"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#B8292F" font-weight="600" opacity="0">71% ▲</text>
+      <text id="efl3"  x="204" y="32"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#B8292F" opacity="0">68%</text>
+      <text id="efl4"  x="252" y="55"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#B8292F" opacity="0">60%</text>
+      <text id="efl5"  x="300" y="75"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#0e7490"  opacity="0">52%</text>
+      <text id="efl6"  x="348" y="98"  text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#0e7490"  opacity="0">43%</text>
+      <text id="efl7"  x="396" y="115" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#0e7490"  opacity="0">36%</text>
+      <text id="efl8"  x="444" y="135" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#0e7490"  opacity="0">28%</text>
+      <text id="efl9"  x="492" y="150" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#0e7490"  opacity="0">22%</text>
+      <text id="efl10" x="535" y="158" text-anchor="end"    font-family="IBM Plex Mono" font-size="8" fill="#0e7490"  opacity="0">18%</text>
+    </svg>
+  </div>
+
+  <div class="g05-stat-strip">
+    <div class="g05-stat-cell">
+      <div class="g05-stat-label">Total scheduled flights</div>
+      <div class="g05-stat-val">51,000+</div>
+      <div class="g05-stat-note">Feb 28 – Mar 6</div>
+    </div>
+    <div class="g05-stat-cell">
+      <div class="g05-stat-label">Cancelled</div>
+      <div class="g05-stat-val red">29,000+</div>
+      <div class="g05-stat-note">56.38% disruption rate</div>
+    </div>
+    <div class="g05-stat-cell">
+      <div class="g05-stat-label">Passengers stranded</div>
+      <div class="g05-stat-val">500k+</div>
+      <div class="g05-stat-note">Gulf hubs + transits</div>
+    </div>
+    <div class="g05-stat-cell">
+      <div class="g05-stat-label">Airspaces closed</div>
+      <div class="g05-stat-val amber">9</div>
+      <div class="g05-stat-note">Iran · UAE · Qatar · Iraq + 5</div>
+    </div>
+  </div>
+
+  <div class="ccg-source">Sources: <a href="https://www.cirium.com/" target="_blank">Cirium aviation analytics</a> (cancellation rates, 56.38% figure) · <a href="https://www.flightaware.com/" target="_blank">FlightAware</a> · <a href="https://www.thenationalnews.com/" target="_blank">The National</a> / <a href="https://www.aerospaceglobalnews.com/" target="_blank">Aerospace Global News</a> · <a href="https://time.com/" target="_blank">TIME</a> / <a href="https://www.cnn.com/" target="_blank">CNN</a> flight tracker · <a href="https://traveltourister.com/" target="_blank">TravelTourister</a> (19,000 figure) · <a href="https://www.foxbusiness.com/" target="_blank">Fox Business</a> carrier waivers</div>
+</div>
+<!-- ── END GRAPHIC 05 ── -->
 
 <!-- ── GRAPHIC 1: GLOBE SHOCKWAVE ── -->
 <div class="graphic-section">
@@ -374,6 +721,65 @@
 
 </div>
 
+<!-- ── GRAPHIC 03 (embedded): AIRLINE FINANCIAL IMPACT ── -->
+<div class="graphic-section">
+  <div class="graphic-label">Graphic 03 · Airline Financial Impact</div>
+  <div class="graphic-title">The Tarmac Tab: What Airlines Lost</div>
+  <div class="graphic-subtitle">Estimated losses from the 43-day FAA staffing shutdown, by carrier (Oct–Nov 2025)</div>
+
+  <div class="g03-bar-wrap" id="barWrap">
+    <div class="g03-bar-row" data-pct="100">
+      <div class="g03-bar-airline">DELTA</div>
+      <div class="g03-bar-track"><div class="g03-bar-fill red"><span class="g03-bar-value">$200M Q4 pre-tax loss</span></div></div>
+      <span class="g03-bar-ext"></span>
+    </div>
+    <div class="g03-bar-row" data-pct="35">
+      <div class="g03-bar-airline">UNITED</div>
+      <div class="g03-bar-track"><div class="g03-bar-fill"><span class="g03-bar-value"></span></div></div>
+      <span class="g03-bar-ext">~$70M est. (declined to confirm)</span>
+    </div>
+    <div class="g03-bar-row" data-pct="30">
+      <div class="g03-bar-airline">ALASKA</div>
+      <div class="g03-bar-track"><div class="g03-bar-fill amber"><span class="g03-bar-value">15¢/share</span></div></div>
+      <span class="g03-bar-ext">~$60M est.</span>
+    </div>
+    <div class="g03-bar-row" data-pct="25">
+      <div class="g03-bar-airline">SOUTHWEST</div>
+      <div class="g03-bar-track"><div class="g03-bar-fill"><span class="g03-bar-value"></span></div></div>
+      <span class="g03-bar-ext">FY profit cut ~$100–300M (shutdown bundled)</span>
+    </div>
+    <div class="g03-bar-row" data-pct="20">
+      <div class="g03-bar-airline">AMERICAN</div>
+      <div class="g03-bar-track"><div class="g03-bar-fill"><span class="g03-bar-value"></span></div></div>
+      <span class="g03-bar-ext">Undisclosed · offered waivers</span>
+    </div>
+  </div>
+
+  <div class="g03-total-callout">
+    <div>
+      <div class="g03-total-label">Total travel economy loss · 43 days</div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:#9ca3af; margin-top:2px;">U.S. Travel Association / Tourism Economics</div>
+    </div>
+    <div class="g03-total-figure" id="totalFig">$0</div>
+  </div>
+
+  <div style="display:flex; gap:20px; margin-top:14px; flex-wrap:wrap;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:#6E6E6E; line-height:1.5;">
+      <span style="color:#B8292F">4,162</span> flights canceled (Oct 30–Nov 9)<br>
+      <span style="color:#B8292F">5.2M</span> passengers disrupted<br>
+      <span style="color:#B8292F">$285–580M</span> est. daily impact at peak
+    </div>
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; color:#6E6E6E; line-height:1.5;">
+      Prior to Oct 30: only <span style="color:#0e7490">11 cancellations</span><br>
+      Post Oct 30: <span style="color:#B8292F">4,162 cancellations</span><br>
+      <span style="color:#d97706">61%</span> of NAS delay mins = staffing (Nov 7–9)
+    </div>
+  </div>
+
+  <div class="ccg-source">Sources: <a href="https://www.airlines.org/" target="_blank">Airlines for America</a> · <a href="https://www.engine.com/" target="_blank">Engine.com</a> airline loss analysis · <a href="https://ir.delta.com/" target="_blank">Delta</a> / <a href="https://investor.alaskaair.com/" target="_blank">Alaska</a> investor filings · <a href="https://www.ustravel.org/" target="_blank">U.S. Travel Association</a> / <a href="https://tourismeconomics.com/" target="_blank">Tourism Economics</a> · <a href="https://fortune.com/" target="_blank">Fortune</a> reporting</div>
+</div>
+<!-- ── END GRAPHIC 03 ── -->
+
 <hr class="divider">
 
 <!-- ── GRAPHIC 2: NETWORK CONTAGION ── -->
@@ -400,6 +806,45 @@
   <div class="graphic-source">Sources: Cirium, Fortune, TIME, AP, Al Jazeera. Network topology simplified; edge weights reflect reported route significance.</div>
 </div>
 
+<!-- ── GRAPHIC 06 (embedded): CARRIER EXPOSURE — WHO STOPPED FLYING ── -->
+<div class="graphic-section">
+  <div class="graphic-label">Graphic 06 · Carrier Exposure — Epic Fury</div>
+  <div class="graphic-title">Who Stopped Flying and When</div>
+  <div class="graphic-subtitle">Suspension status by airline · Feb 28 – Mar 10, 2026 · bar color = operational status at Mar 10</div>
+
+  <div id="carrierWrap" style="margin-top:8px;">
+    <div style="display:flex; margin-bottom:4px; padding-left:120px;">
+      <div style="flex:1; font-family:'IBM Plex Mono',monospace; font-size:8px; color:#6E6E6E; text-align:left;">Feb 28</div>
+      <div style="flex:1; font-family:'IBM Plex Mono',monospace; font-size:8px; color:#6E6E6E; text-align:center;">Mar 4</div>
+      <div style="flex:1; font-family:'IBM Plex Mono',monospace; font-size:8px; color:#6E6E6E; text-align:right;">Mar 10</div>
+    </div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="3.5" data-status="limited"   data-label="Emirates (DXB)"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="null" data-status="suspended" data-label="Qatar Airways"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="5"    data-status="limited"   data-label="Etihad Airways"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="null" data-status="suspended" data-label="Kuwait Airways"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="null" data-status="suspended" data-label="Gulf Air (Bahrain)"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="7"    data-status="limited"   data-label="Saudia (partial)"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="6"    data-status="limited"   data-label="Virgin Atlantic (DXB)"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="4"    data-status="resumed"   data-label="IndiGo (selective)"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="null" data-status="suspended" data-label="Air India (ME)"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="10"   data-status="cancelled" data-label="Delta (TLV–JFK)"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="6"    data-status="cancelled" data-label="United (DXB/TLV)"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="null" data-status="cancelled" data-label="American Airlines"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="null" data-status="cancelled" data-label="Finnair (through Mar 29)"></div>
+    <div class="g06-carrier-row" data-suspend="0" data-resume="null" data-status="cancelled" data-label="Air Canada (through Mar 23)"></div>
+  </div>
+
+  <div style="display:flex; gap:14px; margin-top:14px; flex-wrap:wrap;">
+    <div class="g06-legend-item"><div class="g06-legend-dot" style="background:#B8292F;"></div>Fully suspended</div>
+    <div class="g06-legend-item"><div class="g06-legend-dot" style="background:#d97706;"></div>Limited / partial ops</div>
+    <div class="g06-legend-item"><div class="g06-legend-dot" style="background:#0e7490;"></div>Resuming</div>
+    <div class="g06-legend-item"><div class="g06-legend-dot" style="background:#374151;"></div>Extended cancellation</div>
+  </div>
+
+  <div class="ccg-source">Sources: <a href="https://www.thenationalnews.com/" target="_blank">The National</a> airline-by-airline tracker · <a href="https://www.foxbusiness.com/" target="_blank">Fox Business</a> / <a href="https://www.cnn.com/" target="_blank">CNN</a> carrier waivers · <a href="https://www.cirium.com/" target="_blank">Cirium data</a> · <a href="https://www.aerospaceglobalnews.com/" target="_blank">Aerospace Global News</a> · individual airline advisories</div>
+</div>
+<!-- ── END GRAPHIC 06 ── -->
+
 <!-- ARTICLE BODY FINAL -->
 <div class="article-body">
 
@@ -415,6 +860,66 @@
 
 </div>
 
+<!-- ── GRAPHIC 02 (embedded): FRIDAY FLIGHT DELAYS — 2025 FAA SHUTDOWN ── -->
+<div class="graphic-section">
+  <div class="graphic-label">Graphic 02 · Aviation Disruption — Context</div>
+  <div class="graphic-title">Grounded: Friday Flight Delays During the Shutdown</div>
+  <div class="graphic-subtitle">Staffing-attributed NAS delay minutes each Friday, Oct–Nov 2025 (thousands) — the FAA staffing crisis that preceded Epic Fury</div>
+
+  <div class="ccg-chart-wrap" style="height:220px;">
+    <svg class="line-chart" id="lineChart" viewBox="0 0 560 200" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;overflow:visible;">
+      <defs>
+        <linearGradient id="redGrad02" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#B8292F" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#B8292F" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- Grid lines -->
+      <line x1="60" y1="20"  x2="540" y2="20"  stroke="#C8C4BA" stroke-width="1"/>
+      <line x1="60" y1="60"  x2="540" y2="60"  stroke="#C8C4BA" stroke-width="1"/>
+      <line x1="60" y1="100" x2="540" y2="100" stroke="#C8C4BA" stroke-width="1"/>
+      <line x1="60" y1="140" x2="540" y2="140" stroke="#C8C4BA" stroke-width="1"/>
+      <line x1="60" y1="180" x2="540" y2="180" stroke="#C8C4BA" stroke-width="1"/>
+      <text x="50" y="23"  text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6E6E6E">184k</text>
+      <text x="50" y="63"  text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6E6E6E">130k</text>
+      <text x="50" y="103" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6E6E6E">80k</text>
+      <text x="50" y="143" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6E6E6E">35k</text>
+      <text x="50" y="183" text-anchor="end" font-family="IBM Plex Mono" font-size="9" fill="#6E6E6E">0</text>
+      <!-- X axis labels -->
+      <text x="95"  y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6E6E6E">Oct 3</text>
+      <text x="175" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6E6E6E">Oct 10</text>
+      <text x="255" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6E6E6E">Oct 17</text>
+      <text x="335" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6E6E6E">Oct 31</text>
+      <text x="415" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6E6E6E">Nov 7</text>
+      <text x="495" y="198" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#6E6E6E">Nov 12</text>
+      <!-- FAA annotation -->
+      <line x1="415" y1="20" x2="415" y2="180" stroke="#d97706" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+      <text x="418" y="38" font-family="IBM Plex Mono" font-size="7" fill="#d97706">FAA 4% cut order</text>
+      <!-- Area fill -->
+      <path class="g02-flight-area" id="flightArea" d=""/>
+      <!-- Line path -->
+      <path class="g02-flight-path" id="flightPath" d=""/>
+      <!-- Data dots -->
+      <circle class="g02-data-dot" id="d0" cx="95"  cy="174" r="4"/>
+      <circle class="g02-data-dot" id="d1" cx="175" cy="163" r="4"/>
+      <circle class="g02-data-dot" id="d2" cx="255" cy="148" r="4"/>
+      <circle class="g02-data-dot" id="d3" cx="335" cy="100" r="4"/>
+      <circle class="g02-data-dot" id="d4" cx="415" cy="40"  r="4"/>
+      <circle class="g02-data-dot" id="d5" cx="495" cy="22"  r="5" fill="#d97706"/>
+      <!-- Labels -->
+      <text class="g02-dot-label" id="l0" x="95"  y="170" text-anchor="middle">4.5k</text>
+      <text class="g02-dot-label" id="l1" x="175" y="159" text-anchor="middle">10k</text>
+      <text class="g02-dot-label" id="l2" x="255" y="144" text-anchor="middle">22k</text>
+      <text class="g02-dot-label" id="l3" x="335" y="96"  text-anchor="middle">65k</text>
+      <text class="g02-dot-label" id="l4" x="415" y="36"  text-anchor="middle">145k</text>
+      <text class="g02-dot-label" id="l5" x="495" y="17"  text-anchor="middle" fill="#d97706" font-weight="600">184k</text>
+    </svg>
+  </div>
+
+  <div class="ccg-source">Sources: <a href="https://www.airlines.org/" target="_blank">Airlines for America</a> NAS delay analysis · <a href="https://www.faa.gov/" target="_blank">FAA Air Traffic Control</a> staffing data · <a href="https://www.cnn.com/" target="_blank">CNN</a> / <a href="https://www.npr.org/" target="_blank">NPR</a> reporting on 2025 government shutdown. Fridays shown as peak stress days per FAA operational data.</div>
+</div>
+<!-- ── END GRAPHIC 02 ── -->
+
 <!-- FOOTER -->
 <div class="article-footer">
   Troy W. Ferguson · Data Journalism · March 2026<br>
@@ -422,6 +927,175 @@
 </div>
 
 <script>
+// ════════════════════════════════════════
+// EMBEDDED GRAPHICS 02 · 03 · 05 · 06
+// ════════════════════════════════════════
+
+// ── Shared utilities ──
+function ccgFormatBillions(n) {
+  if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return '$' + Math.round(n / 1e6) + 'M';
+  return '$' + Math.round(n);
+}
+function ccgEaseInOut(t) {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+}
+function ccgAnimateCounter(el, target, duration) {
+  const start = performance.now();
+  function update(now) {
+    const t = Math.min((now - start) / duration, 1);
+    el.textContent = ccgFormatBillions(Math.round(ccgEaseInOut(t) * target));
+    if (t < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+// ── GRAPHIC 05: Epic Fury cancellation line chart ──
+(function() {
+  const efPath = document.getElementById('efPath');
+  const efArea = document.getElementById('efArea');
+  if (!efPath) return;
+  const efObs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      efPath.style.strokeDashoffset = '0';
+      efArea.style.opacity = '0.35';
+      for (let i = 0; i <= 10; i++) {
+        setTimeout(() => {
+          const d = document.getElementById('ef' + i);
+          const l = document.getElementById('efl' + i);
+          if (d) d.style.opacity = '1';
+          if (l) l.style.opacity = '1';
+        }, 400 + i * 220);
+      }
+      efObs.disconnect();
+    }
+  }, { threshold: 0.3 });
+  efObs.observe(document.getElementById('efChart'));
+})();
+
+// ── GRAPHIC 06: Carrier Gantt chart ──
+(function() {
+  const carrierWrap = document.getElementById('carrierWrap');
+  if (!carrierWrap) return;
+  const TOTAL_DAYS = 10;
+  const STATUS_COLORS = {
+    suspended: '#B8292F',
+    limited:   '#d97706',
+    resumed:   '#0e7490',
+    cancelled: '#374151'
+  };
+  const rows = carrierWrap.querySelectorAll('.g06-carrier-row');
+  rows.forEach(row => {
+    const name = document.createElement('div');
+    name.className = 'g06-carrier-name';
+    name.textContent = row.dataset.label;
+
+    const track = document.createElement('div');
+    track.className = 'g06-gantt-track';
+
+    const suspendDiv = document.createElement('div');
+    suspendDiv.className = 'g06-gantt-suspend';
+
+    const resumeDiv = document.createElement('div');
+    resumeDiv.className = 'g06-gantt-resume';
+
+    const resumeDay = row.dataset.resume === 'null' ? null : parseFloat(row.dataset.resume);
+    const status = row.dataset.status;
+    const suspendEndPct = resumeDay !== null ? (resumeDay / TOTAL_DAYS) * 100 : 100;
+    suspendDiv.style.left = '0%';
+
+    if (resumeDay !== null) {
+      const resumeStartPct = (resumeDay / TOTAL_DAYS) * 100;
+      resumeDiv.style.left = resumeStartPct + '%';
+      resumeDiv.style.background = STATUS_COLORS[status];
+    }
+
+    track.appendChild(suspendDiv);
+    track.appendChild(resumeDiv);
+    row.appendChild(name);
+    row.appendChild(track);
+
+    row._suspendPct = suspendEndPct;
+    row._resumePct  = resumeDay !== null ? (100 - (resumeDay / TOTAL_DAYS) * 100) : 0;
+    row._resumeDiv  = resumeDiv;
+    row._suspendDiv = suspendDiv;
+  });
+
+  const ganttObs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      rows.forEach((row, i) => {
+        setTimeout(() => {
+          row.classList.add('vis');
+          setTimeout(() => {
+            row._suspendDiv.style.width = row._suspendPct + '%';
+            row._resumeDiv.style.width  = row._resumePct  + '%';
+          }, 100);
+        }, i * 80);
+      });
+      ganttObs.disconnect();
+    }
+  }, { threshold: 0.2 });
+  ganttObs.observe(carrierWrap);
+})();
+
+// ── GRAPHIC 03: Airline bar chart + total counter ──
+(function() {
+  const barWrap = document.getElementById('barWrap');
+  if (!barWrap) return;
+  const barRows = barWrap.querySelectorAll('.g03-bar-row');
+  const obs3 = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        barRows.forEach((row, i) => {
+          setTimeout(() => {
+            row.classList.add('visible');
+            const pct  = row.dataset.pct;
+            const fill = row.querySelector('.g03-bar-fill');
+            setTimeout(() => { fill.style.width = pct + '%'; }, 100);
+          }, i * 150);
+        });
+        setTimeout(() => {
+          const totalEl = document.getElementById('totalFig');
+          if (totalEl) ccgAnimateCounter(totalEl, 6_100_000_000, 2000);
+        }, 900);
+        obs3.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  obs3.observe(barWrap);
+})();
+
+// ── GRAPHIC 02: Friday flight delay line chart ──
+(function() {
+  const lineChart = document.getElementById('lineChart');
+  if (!lineChart) return;
+  const pathData = 'M95,174 C120,172 150,166 175,163 C200,160 230,153 255,148 C280,135 310,115 335,100 C360,80 390,58 415,40 C445,32 470,25 495,22';
+  const areaData = pathData + ' L495,180 L95,180 Z';
+  const flightPath = document.getElementById('flightPath');
+  const flightArea = document.getElementById('flightArea');
+  if (flightPath) flightPath.setAttribute('d', pathData);
+  if (flightArea) flightArea.setAttribute('d', areaData);
+
+  const obs2 = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (flightPath) flightPath.style.strokeDashoffset = '0';
+        if (flightArea) flightArea.style.opacity = '0.3';
+        for (let i = 0; i <= 5; i++) {
+          setTimeout(() => {
+            const d = document.getElementById('d' + i);
+            const l = document.getElementById('l' + i);
+            if (d) d.style.opacity = '1';
+            if (l) l.style.opacity = '1';
+          }, 600 + i * 400);
+        }
+        obs2.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  obs2.observe(lineChart);
+})();
+
 // ════════════════════════════════════════
 //  SHARED DATA
 // ════════════════════════════════════════
