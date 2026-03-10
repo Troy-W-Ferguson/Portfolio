@@ -1660,6 +1660,181 @@
   </div>
 </header>
 
+<!-- ── GRAPHIC 01: WAR EXPENDITURE COUNTER ── -->
+<style>
+  .ef-cost-graphic {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+  .ef-cost-graphic .graphic-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .ef-cost-graphic .graphic-heading {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .ef-cost-graphic .graphic-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .ef-cost-graphic .g1-layout {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .ef-cost-graphic .cost-column {
+    flex: 1;
+    min-width: 200px;
+  }
+  .ef-cost-graphic .cost-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .ef-cost-graphic .cost-label.war { color: var(--iran); }
+  .ef-cost-graphic .cost-label.doge { color: var(--us); }
+  .ef-cost-graphic .cost-figure {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .ef-cost-graphic .cost-figure.war {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--iran);
+  }
+  .ef-cost-graphic .cost-figure.doge {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--us);
+  }
+  .ef-cost-graphic .cost-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .ef-cost-graphic .day-ticks {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .ef-cost-graphic .day-tick {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--iran);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 7px;
+    color: var(--iran);
+    opacity: 0.3;
+    transition: all 0.3s;
+  }
+  .ef-cost-graphic .day-tick.active {
+    background: var(--iran);
+    color: #0a0a0c;
+    opacity: 1;
+  }
+  .ef-cost-graphic .divider-vertical {
+    width: 1px;
+    background: var(--border);
+    align-self: stretch;
+    min-height: 80px;
+  }
+  .ef-cost-graphic .ratio-bar {
+    margin-top: 18px;
+    height: 6px;
+    background: var(--border);
+    position: relative;
+    overflow: visible;
+  }
+  .ef-cost-graphic .ratio-fill-war {
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%;
+    background: var(--iran);
+    width: 0;
+    transition: width 2s ease;
+  }
+  .ef-cost-graphic .ratio-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.08em;
+  }
+  .ef-cost-graphic .g1-source-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8.5px;
+    color: var(--muted);
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    line-height: 1.5;
+  }
+  .ef-cost-graphic .g1-source-line a { color: var(--accent); text-decoration: none; }
+  .ef-cost-graphic .g1-source-line a:hover { text-decoration: underline; }
+</style>
+
+<div class="ef-cost-graphic">
+  <div class="graphic-eyebrow">Graphic 01 · War Expenditure</div>
+  <div class="graphic-heading">What America Spends Each Day It Fights</div>
+  <div class="graphic-sub">Operation Epic Fury cost vs. DOGE's claimed savings · Feb 28 – present</div>
+
+  <div class="g1-layout">
+    <div class="cost-column">
+      <div class="cost-label war">Operation Epic Fury · Running Total</div>
+      <div class="cost-figure war" id="warCounter">$0</div>
+      <div class="cost-sub" id="warDays">Day 0 of conflict</div>
+      <div class="day-ticks" id="dayTicks"></div>
+      <div class="cost-sub" style="margin-top:10px; font-size:9px;">$891M/day est. (CSIS) · $3.7B first 100 hrs</div>
+    </div>
+
+    <div class="divider-vertical"></div>
+
+    <div class="cost-column">
+      <div class="cost-label doge">DOGE Claimed Savings · Since Jan 20, 2025</div>
+      <div class="cost-figure doge" id="dogeCounter">$0</div>
+      <div class="cost-sub">Claimed total · disputed by independent analysts</div>
+      <div class="cost-sub" style="margin-top:8px; font-size:9px; line-height:1.5;">
+        Verified by NPR/AEI: ~$10–12B<br>
+        DOGE.gov claims: ~$160B<br>
+        <span style="color:var(--iran)">Epic Fury surpasses verified savings within days</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ratio-bar" id="ratioBar">
+    <div class="ratio-fill-war" id="ratioWar"></div>
+  </div>
+  <div class="ratio-label">
+    <span style="color:var(--iran)">■ Epic Fury cost</span>
+    <span>← ratio to DOGE verified savings →</span>
+    <span style="color:var(--us)">■ DOGE (verified ~$12B)</span>
+  </div>
+
+  <div class="g1-source-line">Sources: <a href="https://www.csis.org/analysis/37-billion-estimated-cost-epic-furys-first-100-hours" target="_blank">CSIS "3.7 Billion: Estimated Cost of Epic Fury's First 100 Hours"</a> · <a href="https://abcnews.go.com/" target="_blank">ABC</a> / <a href="https://www.cnn.com/" target="_blank">CNN</a> / <a href="https://www.npr.org/" target="_blank">NPR reporting</a> · <a href="https://doge.gov" target="_blank">DOGE.gov</a> · <a href="https://www.aei.org/research-products/report/doge-savings-analysis/" target="_blank">American Enterprise Institute</a> · <a href="https://www.npr.org/2025/02/26/nx-s1-5307726/doge-contract-cuts-analysis" target="_blank">NPR contract analysis</a></div>
+</div>
+<!-- ── END GRAPHIC 01 ── -->
+
 <div class="main">
 
   <div class="timeline-wrap">
@@ -5593,6 +5768,66 @@
     });
   });
 
+</script>
+
+<script>
+// ── GRAPHIC 01: WAR COST COUNTER (Epic Fury tab) ──
+(function() {
+  function efFormatBillions(n) {
+    if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
+    if (n >= 1e6) return '$' + Math.round(n / 1e6) + 'M';
+    return '$' + Math.round(n);
+  }
+  function efEaseInOut(t) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+  function efAnimateCounter(el, target, duration) {
+    const start = performance.now();
+    function update(now) {
+      const t = Math.min((now - start) / duration, 1);
+      el.textContent = efFormatBillions(Math.round(efEaseInOut(t) * target));
+      if (t < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  const strikeStart = new Date('2026-02-28T00:00:00Z');
+  const today       = new Date('2026-03-10T00:00:00Z');
+  const daysSince   = Math.floor((today - strikeStart) / 86400000);
+  const dailyCost   = 891_400_000;
+  const totalWarCost  = daysSince * dailyCost;
+  const dogeVerified  = 12_000_000_000;
+  const dogeClaimed   = 160_000_000_000;
+
+  // Populate day ticks
+  const ticksEl = document.getElementById('dayTicks');
+  if (ticksEl) {
+    for (let i = 1; i <= 30; i++) {
+      const t = document.createElement('div');
+      t.className = 'day-tick' + (i <= daysSince ? ' active' : '');
+      t.textContent = i;
+      ticksEl.appendChild(t);
+    }
+  }
+
+  // Animate counters on load
+  const warEl  = document.getElementById('warCounter');
+  const dogeEl = document.getElementById('dogeCounter');
+  const daysEl = document.getElementById('warDays');
+
+  if (warEl && dogeEl && daysEl) {
+    setTimeout(() => {
+      efAnimateCounter(warEl, totalWarCost, 3000);
+      efAnimateCounter(dogeEl, dogeClaimed, 2500);
+      daysEl.textContent = `Day ${daysSince} of conflict · ${daysSince} × $891M/day`;
+      const warPct = Math.min((totalWarCost / dogeVerified) * 100, 100);
+      setTimeout(() => {
+        const ratioEl = document.getElementById('ratioWar');
+        if (ratioEl) ratioEl.style.width = Math.min(warPct, 100) + '%';
+      }, 500);
+    }, 400);
+  }
+})();
 </script>
 </body>
 </html>
