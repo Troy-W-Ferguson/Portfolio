@@ -700,7 +700,7 @@
 <!-- ══════════════════ TAB NAV ══════════════════ -->
 <nav class="tab-nav">
   <div class="tab-nav-brand">Iran–Israel · Conflict Series</div>
-  <button class="tab-btn active" data-tab="april2024">
+  <button class="tab-btn" data-tab="april2024">
     Operation True Promise I
     <span class="tab-date">April 2024</span>
   </button>
@@ -708,7 +708,7 @@
     The Twelve-Day War
     <span class="tab-date">June 2025</span>
   </button>
-  <button class="tab-btn" data-tab="epicfury">
+  <button class="tab-btn active" data-tab="epicfury">
     Operations Epic Fury / Roaring Lion
     <span class="tab-date">Feb–Mar 2026 · Live</span>
   </button>
@@ -717,7 +717,7 @@
 <!-- ══════════════════════════════════════════════
      PANEL 1 — APRIL 2024
 ══════════════════════════════════════════════ -->
-<div class="panel active" id="panel-april2024">
+<div class="panel" id="panel-april2024">
 
 <header>
   <div class="header-label">Conflict Analysis · Middle East · April 2024</div>
@@ -1645,7 +1645,7 @@
      To add new events: paste a new .tl-entry block
      above the placeholder phase-divider.
 ══════════════════════════════════════════════ -->
-<div class="panel" id="panel-epicfury">
+<div class="panel active" id="panel-epicfury">
 
 <header>
   <div class="header-label">Conflict Analysis · Middle East · February–March 2026 · Ongoing</div>
@@ -6994,7 +6994,7 @@
   }
 
   const strikeStart = new Date('2026-02-28T00:00:00Z');
-  const today       = new Date('2026-03-10T00:00:00Z');
+  const today       = new Date();
   const daysSince   = Math.floor((today - strikeStart) / 86400000);
   const dailyCost   = 891_400_000;
   const totalWarCost  = daysSince * dailyCost;
