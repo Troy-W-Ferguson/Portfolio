@@ -1242,7 +1242,7 @@ function initGlobe(){
 
   // Draw Natural Earth land onto texture
   drawLandOnCanvas(tc, (lon, lat) => [((lon+180)/360)*texW, ((90-lat)/180)*texH],
-    'rgba(18,36,58,0.9)', 'rgba(55,95,135,0.4)', 1.2);
+    'rgba(18,36,58,0.9)', 'rgba(180,210,240,0.65)', 1.8);
 
   const globeTexture = new THREE.CanvasTexture(texCanvas);
   const globeGeo = new THREE.SphereGeometry(1, 64, 64);
