@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Putin's Leather-Clad Legion | Writing Sample</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cheltenham:ital,wght@0,400;0,700;1,400;1,700&family=Georgia:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Franklin+Gothic+Medium&display=swap" rel="stylesheet">
+<!-- Use system-available fonts that approximate NYT's Cheltenham/Franklin Gothic stack -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+/* ─── NYT DESIGN SYSTEM ─── */
+:root {
+  --black:    #121212;
+  --ink:      #333333;
+  --midgray:  #6b6b6b;
+  --rule:     #dfdfdf;
+  --rule-dark:#c7c7c7;
+  --bg:       #ffffff;
+  --bg-off:   #f7f7f5;
+  --bg-warm:  #faf9f6;
+  --red-nyt:  #d0021b;
+  --red-dark: #a8001a;
+  --blue-nyt: #326891;
+  --gold:     #b59a2e;
+  /* NYT font stack approximation */
+  --font-hed:  'Libre Baskerville', Georgia, 'Times New Roman', serif;
+  --font-body: Georgia, 'Times New Roman', serif;
+  --font-ui:   'Franklin Gothic Medium', 'Arial Narrow', 'Arial', sans-serif;
+  --col-w:     720px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── WRITING SAMPLE BANNER ─── */
+.sample-banner {
+  background: var(--red-nyt);
+  color: #fff;
+  text-align: center;
+  padding: 10px 20px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.sample-banner span {
+  display: inline-block;
+  padding: 0 16px;
+  border-left: 1px solid rgba(255,255,255,0.4);
+  border-right: 1px solid rgba(255,255,255,0.4);
+  letter-spacing: 0.18em;
+}
+
+/* ─── NYT MASTHEAD ─── */
+.nyt-header {
+  border-bottom: 3px solid var(--black);
+  padding: 12px 0 10px;
+  text-align: center;
+}
+.nyt-header .nyt-flag {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--midgray);
+  margin-bottom: 4px;
+}
+.nyt-header .section-nav {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--midgray);
+  border-top: 1px solid var(--rule);
+  margin-top: 10px;
+  padding-top: 8px;
+  text-transform: uppercase;
+}
+.nyt-header .section-nav span {
+  padding: 0 14px;
+  border-right: 1px solid var(--rule-dark);
+}
+.nyt-header .section-nav span:last-child { border-right: none; }
+
+/* ─── ARTICLE LAYOUT ─── */
+.article-outer {
+  max-width: var(--col-w);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ─── HEADLINE BLOCK ─── */
+.hed-block {
+  padding: 32px 0 24px;
+  border-bottom: 1px solid var(--rule);
+}
+.kicker {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red-nyt);
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+.headline {
+  font-family: var(--font-hed);
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--black);
+  letter-spacing: -0.015em;
+  margin-bottom: 18px;
+}
+.deck {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--ink);
+  font-style: italic;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+}
+.byline-block {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--midgray);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.byline-block .author { color: var(--black); font-weight: bold; }
+.byline-block .dot { color: var(--rule-dark); }
+
+/* ─── HERO IMAGE ─── */
+.hero-img-block {
+  margin: 28px -16px;
+  position: relative;
+}
+.hero-img-block img {
+  width: 100%;
+  display: block;
+  max-height: 520px;
+  object-fit: cover;
+}
+.hero-img-block .ph {
+  background: #e8e6e1;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px;
+}
+.hero-img-block .ph-kicker {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--midgray);
+}
+.hero-img-block .ph-rec {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink);
+  text-align: center;
+  max-width: 460px;
+  line-height: 1.6;
+}
+.hero-img-block .ph-rec strong { color: var(--black); }
+.caption {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  color: var(--midgray);
+  line-height: 1.5;
+  padding: 8px 16px;
+  border-top: 2px solid var(--rule-dark);
+  margin: 0 16px;
+}
+
+/* ─── BODY TEXT ─── */
+.body-text p {
+  margin-bottom: 1.35em;
+  font-size: 17px;
+  line-height: 1.82;
+  color: var(--ink);
+}
+.body-text p:first-child::first-letter {
+  font-family: var(--font-hed);
+  font-size: 4em;
+  font-weight: 700;
+  float: left;
+  line-height: 0.78;
+  margin: 0.1em 0.07em 0 0;
+  color: var(--black);
+}
+.body-text .no-drop::first-letter { all: unset; }
+
+/* ─── SECTION HEAD ─── */
+.section-hed {
+  font-family: var(--font-hed);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--black);
+  margin: 40px 0 18px;
+  padding-top: 28px;
+  border-top: 2px solid var(--black);
+  line-height: 1.2;
+}
+
+/* ─── PULL QUOTE ─── */
+.pull-quote {
+  margin: 36px 0;
+  padding: 20px 0;
+  border-top: 3px solid var(--black);
+  border-bottom: 1px solid var(--rule-dark);
+}
+.pull-quote blockquote {
+  font-family: var(--font-hed);
+  font-size: clamp(19px, 2.2vw, 24px);
+  font-style: italic;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.35;
+}
+.pull-quote cite {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--midgray);
+  margin-top: 12px;
+  font-style: normal;
+}
+
+/* ─── INLINE CITATION ─── */
+sup.cite {
+  font-family: var(--font-ui);
+  font-size: 9px;
+  color: var(--blue-nyt);
+  cursor: pointer;
+  vertical-align: super;
+  line-height: 0;
+  margin-left: 1px;
+}
+
+/* ─── GRAPHIC LABEL / CONTAINER ─── */
+.graphic-outer {
+  margin: 40px -16px;
+  border-top: 3px solid var(--black);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 0 20px;
+}
+.graphic-outer.inset {
+  margin: 40px 0;
+}
+.g-eyebrow {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--midgray);
+  padding: 10px 16px 0;
+}
+.g-title {
+  font-family: var(--font-hed);
+  font-size: clamp(17px, 2vw, 21px);
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.2;
+  padding: 6px 16px 12px;
+}
+.g-source {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  color: var(--midgray);
+  padding: 12px 16px 0;
+  line-height: 1.5;
+}
+
+/* ─── TIMELINE ─── */
+.timeline-body {
+  padding: 8px 16px 0;
+  position: relative;
+}
+.tl-spine {
+  position: absolute;
+  left: 36px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--rule-dark);
+}
+.tl-entry {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 0 16px;
+  margin-bottom: 22px;
+  align-items: start;
+  position: relative;
+}
+.tl-entry::before {
+  content: '';
+  position: absolute;
+  left: 51px;
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rule-dark);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--rule-dark);
+}
+.tl-entry.major::before {
+  background: var(--red-nyt);
+  box-shadow: 0 0 0 1px var(--red-nyt);
+  width: 10px;
+  height: 10px;
+  left: 50px;
+  top: 6px;
+}
+.tl-year {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--midgray);
+  text-align: right;
+  padding-top: 2px;
+  line-height: 1.4;
+}
+.tl-entry.major .tl-year { color: var(--red-nyt); }
+.tl-text {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.tl-text strong { color: var(--black); }
+.tl-src {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  color: var(--midgray);
+  margin-top: 3px;
+}
+
+/* ─── D3 MAP ─── */
+.map-body { padding: 0 16px; }
+#map-svg { width: 100%; height: auto; display: block; border: 1px solid var(--rule); }
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+}
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  color: var(--ink);
+  letter-spacing: 0.03em;
+}
+.map-legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(0,0,0,0.15);
+}
+.map-legend-x {
+  width: 12px; height: 12px;
+  flex-shrink: 0;
+  position: relative;
+}
+.map-legend-x::before,.map-legend-x::after {
+  content:'';position:absolute;width:12px;height:2px;background:#a8001a;top:5px;left:0;border-radius:1px;
+}
+.map-legend-x::before{transform:rotate(45deg);}
+.map-legend-x::after{transform:rotate(-45deg);}
+
+/* Tooltip */
+#map-tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--black);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  padding: 9px 13px;
+  border-radius: 2px;
+  max-width: 230px;
+  line-height: 1.5;
+  z-index: 2000;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+#map-tooltip strong { color: #ffd580; display: block; margin-bottom: 2px; font-size: 12px; }
+#map-tooltip .tt-type {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* ─── PHOTO GRID ─── */
+.photo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin: 0 0 0;
+}
+.photo-slot {
+  position: relative;
+  background: #e8e6e1;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+}
+.photo-slot img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.photo-slot .ph-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px; padding: 16px; text-align: center;
+  background: #e4e2dd;
+}
+.photo-slot .ph-num {
+  font-family: var(--font-ui);
+  font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--midgray);
+}
+.photo-slot .ph-label {
+  font-family: var(--font-body);
+  font-size: 12px; font-style: italic;
+  color: var(--ink); line-height: 1.4;
+}
+.photo-slot .ph-credit {
+  font-family: var(--font-ui);
+  font-size: 10px; color: var(--blue-nyt);
+  line-height: 1.4;
+}
+.photo-caption-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2px; margin-bottom: 0;
+}
+.photo-caption-row .cap {
+  font-family: var(--font-ui);
+  font-size: 10.5px; color: var(--midgray);
+  padding: 5px 4px;
+  line-height: 1.4; border-top: 1px solid var(--rule-dark);
+}
+
+/* ─── DATA VIZ ─── */
+.data-body { padding: 0 16px; }
+.data-big-row {
+  display: flex; flex-wrap: wrap;
+  gap: 0;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 24px;
+}
+.data-big-item {
+  flex: 1 1 100px;
+  padding: 16px 12px;
+  border-right: 1px solid var(--rule);
+  text-align: center;
+}
+.data-big-item:last-child { border-right: none; }
+.data-big-num {
+  font-family: var(--font-hed);
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 700;
+  color: var(--red-nyt);
+  display: block;
+  line-height: 1;
+}
+.data-big-desc {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  color: var(--midgray);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 5px;
+  display: block;
+  line-height: 1.4;
+}
+
+.bar-section { margin-bottom: 28px; }
+.bar-section-title {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--midgray);
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: 150px 1fr 70px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.bar-label {
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  color: var(--ink);
+}
+.bar-track {
+  height: 8px;
+  background: var(--rule);
+  border-radius: 0;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--red-nyt);
+  border-radius: 0;
+}
+.bar-val {
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  color: var(--red-nyt);
+  font-weight: bold;
+  text-align: right;
+}
+.sanction-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 90px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+}
+.sanction-row:last-child { border-bottom: none; }
+.s-country {
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  color: var(--black);
+  font-weight: bold;
+}
+.s-bar {
+  height: 8px;
+  background: #b30015;
+}
+.s-date {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  color: var(--midgray);
+  text-align: right;
+}
+
+/* ─── SOURCES ─── */
+.sources-block {
+  border-top: 3px solid var(--black);
+  margin-top: 56px;
+  padding-top: 24px;
+}
+.sources-block h2 {
+  font-family: var(--font-hed);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 20px;
+}
+.source-list {
+  list-style: none;
+  counter-reset: sc;
+}
+.source-list li {
+  counter-increment: sc;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--midgray);
+  line-height: 1.65;
+  margin-bottom: 9px;
+  padding-left: 28px;
+  position: relative;
+}
+.source-list li::before {
+  content: counter(sc) '.';
+  position: absolute; left: 0;
+  font-weight: bold; color: var(--red-nyt);
+  font-size: 11px;
+}
+.source-list a { color: var(--blue-nyt); text-decoration: none; }
+.source-list a:hover { text-decoration: underline; }
+
+/* ─── IMAGE RECS FOOTER ─── */
+.img-recs {
+  background: var(--bg-off);
+  border-top: 2px solid var(--rule-dark);
+  margin-top: 48px;
+  padding: 32px 16px;
+}
+.img-recs h3 {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--midgray);
+  margin-bottom: 16px;
+}
+.img-rec-item {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.img-rec-item:last-child { border-bottom: none; }
+.img-rec-item strong { font-family: var(--font-ui); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--midgray); display: block; margin-bottom: 4px; }
+.img-rec-item a { color: var(--blue-nyt); font-size: 12px; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 680px) {
+  .photo-grid { grid-template-columns: 1fr; }
+  .photo-caption-row { grid-template-columns: 1fr; }
+  .bar-row { grid-template-columns: 110px 1fr 60px; }
+  .sanction-row { grid-template-columns: 110px 1fr 80px; }
+  .data-big-item { flex: 1 1 80px; }
+}
+</style>
+</head>
+<body>
+
+<!-- WRITING SAMPLE BANNER -->
+<div class="sample-banner">
+  <span>Unpublished Writing Sample &mdash; Troy W. Ferguson &mdash; Not for Distribution</span>
+</div>
+
+<!-- NYT MASTHEAD -->
+<div class="nyt-header">
+  <div class="nyt-flag">Troy W. Ferguson &nbsp;&bull;&nbsp; Investigative Journalism Portfolio</div>
+  <div class="section-nav">
+    <span>World</span><span>Russia</span><span>Security</span><span>Nationalism</span>
+  </div>
+</div>
+
+<!-- ════ ARTICLE ════ -->
+<main class="article-outer">
+
+  <!-- HEADLINE BLOCK -->
+  <header class="hed-block">
+    <div class="kicker">Russia &bull; Nationalism &bull; Security</div>
+    <h1 class="headline">Putin's Leather-Clad Legion: How Russia's Night Wolves Became the Kremlin's Cultural Cavalry</h1>
+    <p class="deck">The motorcycle club has evolved from Soviet-era rebels into a state-backed instrument of nationalist pageantry, raising alarms across Europe and beyond.</p>
+    <div class="byline-block">
+      <span class="author">By Troy W. Ferguson</span>
+      <span class="dot">|</span>
+      <span>Writing Sample &mdash; NIU Concept Article</span>
+      <span class="dot">|</span>
+      <span>Unclassified</span>
+    </div>
+  </header>
+
+  <!-- HERO IMAGE -->
+  <div class="hero-img-block">
+    <img src="images/lead-hero.jpg" alt="Night Wolves at Sevastopol rally"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="ph" style="display:none;">
+      <div class="ph-kicker">Graphic 1 &mdash; Lead Image</div>
+      <div class="ph-rec">
+        <strong>Recommended:</strong> Wikimedia Commons<br>
+        &ldquo;14th International biker rally in Sevastopol.jpeg&rdquo;<br>
+        <small style="color:var(--midgray)">Save as <code>images/lead-hero.jpg</code> &mdash; CC BY-SA, verify license on file page</small>
+      </div>
+    </div>
+  </div>
+  <div class="caption">Members of the Night Wolves gather at their annual bike show in Sevastopol, Crimea. The spectacles blend motorcycle stunts with military reenactments and Orthodox ritual. | Wikimedia Commons</div>
+
+  <!-- BODY -->
+  <div class="body-text" style="margin-top:28px;">
+
+    <p>MOSCOW &ndash; On a humid August afternoon, Alexander Zaldostanov revs his Harley-Davidson outside the Night Wolves' fortress-like headquarters in northwestern Moscow. Known universally as "The Surgeon" &ndash; a moniker earned during his earlier career as a maxillofacial surgeon &ndash; the 61-year-old commands Russia's largest motorcycle club with the same blend of showmanship and menace that has made the Night Wolves indispensable to the Kremlin.<sup class="cite">1</sup></p>
+
+    <p class="no-drop">Behind him, the Sexton Bike Center looms over manicured grounds that include a repair shop, a leather goods store, a museum, and an Orthodox chapel.<sup class="cite">2</sup> Icons of saints hang alongside Soviet military memorabilia, while banners proclaiming "We fight for Holy Russia" flutter beneath a massive Orthodox cross.<sup class="cite">3</sup> This is no ordinary biker hangout. It is a monument to a peculiar Russian fusion: outlaw motorcycle culture reimagined as patriotic theater.</p>
+
+    <div class="pull-quote">
+      <blockquote>"We are the knights of the new Russia. We protect our motherland, our traditions, our Orthodox faith."</blockquote>
+      <cite>&mdash; Alexander Zaldostanov, RT interview, 2022&nbsp;<sup class="cite">4</sup></cite>
+    </div>
+
+    <p class="no-drop">Since their founding in 1989, as the Soviet Union crumbled, the Night Wolves have evolved from a countercultural movement into something unprecedented in motorcycle club history: a state-sponsored biker organization with an estimated 5,000 to 7,000 members across Russia and sympathetic chapters abroad, serving as a paramilitary propaganda arm for President Vladimir V. Putin's government.<sup class="cite">5</sup></p>
+
+    <h2 class="section-hed">From Outlaws to Putin's Patriots</h2>
+
+    <p>The transformation began in the early 2000s, when Putin &ndash; himself photographed riding with the club on multiple occasions, including a widely documented 2010 appearance at the Night Wolves' annual bike show in Sevastopol astride a Harley-Davidson trike &ndash; began cultivating the group as symbols of a resurgent, muscular Russia.<sup class="cite">6</sup> At a 2011 rally in Novorossiysk, Putin publicly thanked Zaldostanov for holding such "vital patriotic events." What followed was a steady flow of government contracts, state subsidies worth tens of millions of rubles, and political access that elevated Zaldostanov from biker boss to Kremlin insider awarded the Order of Honor in 2013.<sup class="cite">7</sup></p>
+
+  </div><!-- /.body-text -->
+
+  <!-- GRAPHIC 2: TIMELINE -->
+  <div class="graphic-outer">
+    <div class="g-eyebrow">Graphic 2 &mdash; Timeline</div>
+    <div class="g-title">From Rebels to Regime: The Night Wolves Evolution, 1983&ndash;2024</div>
+    <div class="timeline-body">
+      <div class="tl-spine"></div>
+
+      <div class="tl-entry"><div class="tl-year">1983</div><div class="tl-text"><strong>Underground origins.</strong> Rock fans and motorcyclists organize illegal concerts in Moscow's underground scene. Zaldostanov purchases a Jawa motorcycle and enters the scene. <div class="tl-src">Night Wolves Wikipedia; Military.com (2018)</div></div></div>
+
+      <div class="tl-entry major"><div class="tl-year">1989</div><div class="tl-text"><strong>Official founding.</strong> During Perestroika, the collective formally adopts the name Night Wolves and becomes the USSR's first official motorcycle club. Zaldostanov assumes leadership. <div class="tl-src">Night Wolves Wikipedia; WRSP (2025)</div></div></div>
+
+      <div class="tl-entry"><div class="tl-year">1991</div><div class="tl-text"><strong>August Coup.</strong> Night Wolves man barricades at the Russian parliament during the hard-line communist coup attempt. Zaldostanov receives a medal from Boris Yeltsin. <div class="tl-src">Military.com (2018)</div></div></div>
+
+      <div class="tl-entry"><div class="tl-year">1995</div><div class="tl-text"><strong>Business expansion.</strong> Club launches "Wolf Wear" clothing line, registers as "Russian Motorcyclists" NGO, and opens the Sexton rock club in Moscow. <div class="tl-src">Military.com (2018); openDemocracy (2015)</div></div></div>
+
+      <div class="tl-entry"><div class="tl-year">2005&ndash;06</div><div class="tl-text"><strong>Orthodox alignment.</strong> Orthodox clergy begin blessing Night Wolves rallies; members join cross-procession rides carrying icons. The Kremlin-biker religious partnership solidifies. <div class="tl-src">WRSP (2025)</div></div></div>
+
+      <div class="tl-entry major"><div class="tl-year">2009&ndash;10</div><div class="tl-text"><strong>Putin enters the picture.</strong> Zaldostanov meets Putin at Sevastopol in 2009. Putin rides a Harley-Davidson trike at the 2010 Sevastopol show &ndash; the photograph circulates globally. A patron-client relationship formalizes. <div class="tl-src">VICE News (2015); AP Photo archive, July 24, 2010</div></div></div>
+
+      <div class="tl-entry"><div class="tl-year">2011</div><div class="tl-text"><strong>Novorossiysk rally.</strong> Putin rides with the club again and publicly thanks Zaldostanov for "vital patriotic events." International Victory Day rides begin. <div class="tl-src">Military.com (2018); VICE News (2015)</div></div></div>
+
+      <div class="tl-entry"><div class="tl-year">2013</div><div class="tl-text"><strong>State honors and grants.</strong> Putin awards Zaldostanov the Order of Honor for "patriotic education of youth." The Navalny Foundation later documents 56 million rubles in government grants between 2013&ndash;14. Wolf Holdings security network established with 17 centers across Russia, Europe, and Asia. <div class="tl-src">Military.com (2018); Balkan Crossroads (2019); The Moscow Times (2015)</div></div></div>
+
+      <div class="tl-entry major"><div class="tl-year">2014</div><div class="tl-text"><strong>Crimea and sanctions.</strong> Night Wolves patrol Sevastopol alongside Russian forces, set up checkpoints, and participate in the seizure of the naval headquarters. Zaldostanov awarded the "Medal for the Return of Crimea." U.S. Treasury OFAC designates Zaldostanov and the club on Dec. 19, 2014. Chapter opened in occupied Crimea; Bakhchysarai awards security contract. <div class="tl-src">OFAC (Dec. 19, 2014); Military.com (2018)</div></div></div>
+
+      <div class="tl-entry"><div class="tl-year">2015</div><div class="tl-text"><strong>"Victory Roads" launches and European bans begin.</strong> Poland and Germany deny entry for the inaugural Moscow-to-Berlin Victory Day ride. Slovakia refuses transit. Canada sanctions Zaldostanov and the club. <div class="tl-src">BBC (Apr. 16, 2015); Night Wolves Wikipedia; Gregor &amp; Mlejnkova, Post-Soviet Affairs (2023)</div></div></div>
+
+      <div class="tl-entry"><div class="tl-year">2018&ndash;21</div><div class="tl-text"><strong>Balkan consolidation.</strong> Night Wolves tour Bosnia's Republika Srpska; Banja Luka president Dodik awards Zaldostanov a medal of honor. Montenegro chapter active. Slovak compound near Bratislava houses tanks and armored vehicles. Australian and Philippines chapters documented. <div class="tl-src">RFE/RL (2018); Night Wolves Wikipedia; Harris, Journal of Policing (2022)</div></div></div>
+
+      <div class="tl-entry major"><div class="tl-year">2022</div><div class="tl-text"><strong>Full-scale war and EU sanctions.</strong> Club forms a volunteer unit joining the Pyatnashka International Brigade (Oct. 24). EU designates Zaldostanov and leadership in July for propaganda support of the invasion. Bosnian Serb branch stages pro-Putin protests (March). <div class="tl-src">Night Wolves Wikipedia; autoevolution (Jul. 2022); EU FSF (2022); Euronews (Mar. 2022)</div></div></div>
+
+      <div class="tl-entry"><div class="tl-year">2023&ndash;24</div><div class="tl-text"><strong>Kosovo barricades and wartime fundraising.</strong> Night Wolves leader confirms members at barricades in northern Kosovo. Club raises money to buy motorcycles for Russian troops in Ukraine. Activities continue across Serbia and Republika Srpska despite EU sanctions. <div class="tl-src">Telegrafi (Apr. 2023); Night Wolves Wikipedia (late 2024)</div></div></div>
+    </div>
+    <div class="g-source">Sources: Night Wolves Wikipedia; Military.com (2018); VICE News (2015); OFAC (Dec. 19, 2014); BBC News (Apr. 16, 2015); Gregor &amp; Mlejnkova, <em>Post-Soviet Affairs</em> (2023); EU Financial Sanctions Files (2022); WRSP (2025); Balkan Crossroads (2019); Harris, <em>Journal of Policing, Intelligence and Counter Terrorism</em> (2022).</div>
+  </div>
+
+  <div class="body-text">
+    <div class="pull-quote">
+      <blockquote>"They are basically a quasi-governmental organization that happens to ride motorcycles. They animate memory, ritual, and masculinity in ways that make state messaging feel organic rather than imposed."</blockquote>
+      <cite>&mdash; Marlene Laruelle, Research Professor, George Washington University&nbsp;<sup class="cite">8</sup></cite>
+    </div>
+
+    <p class="no-drop">The relationship has proven mutually beneficial. The Night Wolves provide Putin with a useful projection of strength and popular support, organizing massive rallies that blend motorcycle culture with military pageantry and Orthodox ritual. Their annual bike shows &ndash; extravagant productions featuring fireworks, rock concerts, tanks, and historical reenactments &ndash; draw tens of thousands, often with direct state funding channeled through "patriotic education" programs.<sup class="cite">9</sup> Their affiliated security network, Wolf Holdings, operates 17 training and security centers across Russia, Europe, and Asia, cementing the group's dual role as both propagandist and paramilitary auxiliary.<sup class="cite">10</sup></p>
+
+    <p class="no-drop">The club's Moscow headquarters tells the story. The Sexton Bike Center, established at Nizhnie Mnevniki in northwestern Moscow, has become a biker complex complete with a World War II memorial, concert venues, and spaces for youth camps promoting "traditional values" and military preparedness.<sup class="cite">11</sup> For many Russians, especially in rural or working-class communities, the club embodies a defiant masculinity in an era of economic uncertainty and perceived Western encirclement.</p>
+
+    <h2 class="section-hed">Continental Ambitions, European Resistance</h2>
+
+    <p>That edge has proven particularly sharp in Europe, where the Night Wolves' attempts at expansion have met fierce resistance. Their annual "rides to Berlin" &ndash; ostensibly commemorating the Soviet victory over Nazi Germany in 1945 &ndash; have sparked diplomatic incidents and street protests across Eastern Europe, where memories of Soviet domination remain raw.<sup class="cite">12</sup></p>
+
+    <p class="no-drop">In April 2015, Poland and Germany denied entry to Night Wolves members attempting their Victory Day ride, citing security concerns and the group's role in supporting Russia's annexation of Crimea the year before.<sup class="cite">13</sup> Slovakia also refused transit to club members, and several EU member states took similar precautionary steps.<sup class="cite">14</sup> The United States and European Union have placed senior members, including Zaldostanov himself, under sanctions for their support of Russian military operations in Ukraine, effectively barring them from Western travel and freezing any assets in those jurisdictions.<sup class="cite">15</sup></p>
+  </div>
+
+  <!-- GRAPHIC 3: MAP -->
+  <div class="graphic-outer">
+    <div class="g-eyebrow">Graphic 3 &mdash; Interactive Map</div>
+    <div class="g-title">The Night Wolves' Global Reach: Chapters, Bans, and Operations</div>
+    <div class="map-body">
+      <svg id="map-svg" viewBox="0 0 900 500"></svg>
+      <div class="map-legend">
+        <div class="map-legend-item"><div class="map-legend-dot" style="background:#1a6b2e;"></div>HQ / Origin (Moscow)</div>
+        <div class="map-legend-item"><div class="map-legend-dot" style="background:#c9a840;"></div>Active chapter</div>
+        <div class="map-legend-item"><div class="map-legend-x"></div>Entry banned / sanctions</div>
+        <div class="map-legend-item"><div class="map-legend-dot" style="background:#326891;"></div>Documented activity / sympathizers</div>
+        <div class="map-legend-item"><div class="map-legend-dot" style="background:#8b3a8b;"></div>Global chapter (outside Europe)</div>
+      </div>
+    </div>
+    <div class="g-source">Sources: Night Wolves Wikipedia (chapter list 2018); Gregor &amp; Mlejnkova, <em>Post-Soviet Affairs</em> (2023); Harris, <em>Journal of Policing</em> (2022); RFE/RL (2018); Balkan Crossroads (2019); OFAC (2014); EU FSF (2022, 2024); OpenSanctions (2024); Telegrafi (2023).</div>
+  </div>
+
+  <div class="body-text">
+    <div class="pull-quote">
+      <blockquote>"They are not coming as tourists or bikers. They are coming as representatives of Russian state interests. When you see Night Wolves jackets in Prague or Warsaw, you are seeing Russian soft power in leather."</blockquote>
+      <cite>&mdash; Milos Gregor, Masaryk University &mdash; <em>Post-Soviet Affairs</em> (2023)&nbsp;<sup class="cite">16</sup></cite>
+    </div>
+
+    <p class="no-drop">The club's involvement in Ukraine has been particularly controversial and well-documented. Members provided logistical support to pro-Russian forces during the 2014 annexation of Crimea, with Night Wolves reportedly establishing checkpoints and patrolling Sevastopol as Russian troops secured key installations.<sup class="cite">17</sup> Members subsequently fought alongside Russian-backed separatists in the Donbas region, blurring the line between civilian enthusiasts and combatants.<sup class="cite">18</sup> The U.S. Treasury's December 2014 sanctions designation specifically cited Zaldostanov's role coordinating the confiscation of Ukrainian weapons at the naval headquarters in Sevastopol.<sup class="cite">19</sup></p>
+
+    <p class="no-drop">"They function as a paramilitary auxiliary," said Mark Galeotti, an honorary professor at UCL School of Slavonic and East European Studies and a Senior Associate Fellow at the Royal United Services Institute who has written extensively on the Kremlin's use of non-state actors.<sup class="cite">20</sup> "They are not formal soldiers, but they amplify the Kremlin's message through muscle and spectacle. In the gray zone between civilian and military, they give Moscow plausible deniability while still projecting force."</p>
+
+    <p class="no-drop">Beyond Eastern Europe, the Night Wolves have cultivated a presence in Serbia, a close Russian partner, where they maintain an active chapter in Belgrade and have held rallies celebrating Slavic brotherhood and Orthodox solidarity.<sup class="cite">21</sup> In Bosnia's Republika Srpska, the club's leader received a medal of honor from President Milorad Dodik in 2018, cementing ties between the club and one of the Kremlin's most reliable European partners.<sup class="cite">22</sup> Chapters documented in Australia and the Philippines further illustrate the organization's global ambitions.<sup class="cite">23</sup></p>
+
+    <p class="no-drop">"In places like the Balkans, they tap into anti-NATO feelings and nostalgia for Slavic unity," said Olga Oliker, program director for Europe and Central Asia at the International Crisis Group, who has analyzed Russian influence operations across the region.<sup class="cite">24</sup> "But in Western Europe, they are seen as Putin's cultural warriors &ndash; fringe at best, threatening at worst. The sanctions have been effective at limiting their mobility and appeal."</p>
+
+    <h2 class="section-hed">Orthodox Outlaws: Ideology Meets the Road</h2>
+  </div>
+
+  <!-- PHOTO SERIES -->
+  <div class="graphic-outer">
+    <div class="g-eyebrow">Photo Series &mdash; Graphic 5</div>
+    <div class="g-title">Theater and Threat: The Night Wolves in Action</div>
+    <div class="photo-grid">
+      <div class="photo-slot">
+        <img src="images/photo-rally.jpg" alt="Night Wolves Sevastopol rally"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="ph-overlay" style="display:none;">
+          <div class="ph-num">Photo 1 &mdash; Rally Spectacle</div>
+          <div class="ph-label">Night Wolves at the Sevastopol Bike Show</div>
+          <div class="ph-credit">Recommended: Wikimedia Commons<br>"14th International biker rally in Sevastopol.jpeg"<br>Save as images/photo-rally.jpg</div>
+        </div>
+      </div>
+      <div class="photo-slot">
+        <img src="images/photo-blessing.jpg" alt="Orthodox blessing"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="ph-overlay" style="display:none;">
+          <div class="ph-num">Photo 2 &mdash; Orthodox Blessing</div>
+          <div class="ph-label">Clergy bless Night Wolves riders</div>
+          <div class="ph-credit">Wikimedia Commons: "Ночные Волки (1).jpg"<br>Verify license on file page<br>Save as images/photo-blessing.jpg</div>
+        </div>
+      </div>
+      <div class="photo-slot">
+        <img src="images/photo-protest.jpg" alt="European protest"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="ph-overlay" style="display:none;">
+          <div class="ph-num">Photo 3 &mdash; European Protest</div>
+          <div class="ph-label">Demonstration against Night Wolves, Czech Republic, 2016</div>
+          <div class="ph-credit">Wikimedia Commons: Category "Demonstration against Night Wolves trip in the Czech Republic in 2016"<br>Save as images/photo-protest.jpg</div>
+        </div>
+      </div>
+      <div class="photo-slot">
+        <img src="images/photo-crimea.jpg" alt="Crimea activity"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="ph-overlay" style="display:none;">
+          <div class="ph-num">Photo 4 &mdash; Crimea Operations</div>
+          <div class="ph-label">Bikers in Crimea, 2012</div>
+          <div class="ph-credit">Wikimedia Commons: "Bikers Crimea-2012.JPG"<br>Verify license on file page<br>Save as images/photo-crimea.jpg</div>
+        </div>
+      </div>
+    </div>
+    <div class="photo-caption-row">
+      <div class="cap">The annual Sevastopol bike show attracts tens of thousands and is broadcast on Russian state television. | Wikimedia Commons</div>
+      <div class="cap">Orthodox blessings are a fixture of Night Wolves events, cementing the club's fusion of biker culture and religious nationalism. | Wikimedia Commons</div>
+    </div>
+    <div class="photo-caption-row">
+      <div class="cap">Protesters in the Czech Republic demonstrate against the Night Wolves' 2016 "Victory Roads" ride through Central Europe. | Wikimedia Commons</div>
+      <div class="cap">Night Wolves riders in Crimea ahead of Russia's 2014 annexation. Members established checkpoints and patrolled Sevastopol alongside Russian forces. | Wikimedia Commons</div>
+    </div>
+  </div>
+
+  <div class="body-text">
+    <p>What distinguishes the Night Wolves from traditional motorcycle clubs &ndash; the Hells Angels, the Outlaws, the Bandidos &ndash; is their explicitly ideological mission. Meetings blend biker rituals with Orthodox prayers led by sympathetic priests. Club literature and social media promote the defense of "traditional values" against what they characterize as Western moral decadence, with particular hostility toward LGBTQ rights and liberal democracy.<sup class="cite">25</sup> Their shows &ndash; elaborate productions featuring military hardware, pyrotechnics, and dramatic historical reenactments &ndash; advance a narrative of Russian spiritual and military supremacy stretching from medieval times through Soviet victory in World War II to the present.<sup class="cite">26</sup></p>
+
+    <p class="no-drop">The fusion of religiosity and nationalism has attracted both devotees and critics. The Russian Orthodox Church has maintained an officially ambiguous relationship with the club. While some parish priests have blessed their rides and appeared at Night Wolves events, church officials in Moscow have avoided formal endorsement of a group still engaged in activities &ndash; including documented intimidation of opposition figures and disruption of protests &ndash; associated with outlaw motorcycle culture.<sup class="cite">27</sup> Human rights organizations, including Amnesty International, have documented instances where club members allegedly intimidated activists, assaulted journalists, and disrupted peaceful demonstrations, particularly during the opposition protests of 2011 to 2012.<sup class="cite">28</sup></p>
+
+    <p class="no-drop">"The church leadership walks a careful line," explained Laruelle, the George Washington University scholar.<sup class="cite">29</sup> "They appreciate the Night Wolves' promotion of Orthodox identity and traditional values, but they cannot fully embrace a group that operates in legal and moral gray zones. It is symptomatic of the broader tension in Putin's Russia between state-promoted conservatism and actual lawlessness."</p>
+
+    <p class="no-drop">The ideological packaging matters deeply to Night Wolves members and sympathizers. Unlike Western outlaw clubs built on principles of independence from authority and rebellion against mainstream society, the Night Wolves position themselves as defenders of that mainstream &ndash; or at least, the version of Russian society the Kremlin wishes to project. Their rhetoric consistently frames Russia as a besieged fortress of authentic values surrounded by a spiritually bankrupt, aggressive West seeking to undermine Russian sovereignty and identity.<sup class="cite">30</sup></p>
+
+    <h2 class="section-hed">The Price of Power: Credibility and Control</h2>
+
+    <p>The Night Wolves' proximity to power has exacted a significant cost to their credibility in international biker circles. Traditional motorcycle clubs, built on principles of independence from authority and skepticism toward government, view the Russian group with open suspicion or outright contempt.<sup class="cite">31</sup></p>
+
+    <p class="no-drop">"They are not a real motorcycle club," said a European biker with connections to several international clubs, speaking on condition of anonymity.<sup class="cite">32</sup> "Real clubs do not take government money. Real clubs do not do propaganda work for politicians. They are a government project wearing leather, and everyone in the scene knows it."</p>
+
+    <p class="no-drop">Yet within Russia's borders and throughout former Soviet states, the Night Wolves have successfully carved out a unique and influential position. With chapters established in major cities including St. Petersburg and Kaliningrad, and across occupied Crimea, plus sympathetic groups in former Soviet republics, they represent a model of organized civil society under authoritarianism: loyal, useful, and thoroughly controlled.<sup class="cite">33</sup> Their youth programs, ostensibly promoting "healthy lifestyles" and anti-drug messages, function as nationalist indoctrination, with camps featuring military training exercises, lectures on Russian history emphasizing grievance and glory, and Orthodox religious instruction.<sup class="cite">34</sup></p>
+
+    <p class="no-drop">"The Night Wolves are valuable to the Kremlin precisely because they are not an official state institution," noted Galeotti, the UCL and RUSI analyst.<sup class="cite">35</sup> "They can go places and do things that would be diplomatically awkward for Russian officials. They provide a veneer of grassroots legitimacy to state narratives. And if something goes wrong, Moscow can claim they are just private citizens exercising their rights."</p>
+  </div>
+
+  <!-- GRAPHIC 4: DATA -->
+  <div class="graphic-outer inset">
+    <div class="g-eyebrow">Graphic 4 &mdash; Data</div>
+    <div class="g-title">The Kremlin's Cultural Cavalry by the Numbers</div>
+    <div class="data-body">
+      <div class="data-big-row">
+        <div class="data-big-item"><span class="data-big-num">7,000+</span><span class="data-big-desc">Members worldwide</span></div>
+        <div class="data-big-item"><span class="data-big-num">50+</span><span class="data-big-desc">Global chapters</span></div>
+        <div class="data-big-item"><span class="data-big-num">&#x20BD;56M</span><span class="data-big-desc">Gov't grants, 2013&ndash;14</span></div>
+        <div class="data-big-item"><span class="data-big-num">100k</span><span class="data-big-desc">2014 Sevastopol show attendance</span></div>
+        <div class="data-big-item"><span class="data-big-num">17</span><span class="data-big-desc">Wolf Holdings security centers</span></div>
+      </div>
+
+      <div class="bar-section">
+        <div class="bar-section-title">Documented Kremlin Funding (million rubles)</div>
+        <div class="bar-row"><div class="bar-label">Grants 2013&ndash;14 (total)</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-val">56M</div></div>
+        <div class="bar-row"><div class="bar-label">2015 Sevastopol youth center</div><div class="bar-track"><div class="bar-fill" style="width:21%"></div></div><div class="bar-val">12M</div></div>
+        <div class="bar-row"><div class="bar-label">Annual (est. 2013 Reuters)</div><div class="bar-track"><div class="bar-fill" style="width:90%;background:#8b1a1a;opacity:0.5;"></div></div><div class="bar-val" style="color:var(--midgray)">100s M*</div></div>
+        <div style="font-family:var(--font-ui);font-size:10px;color:var(--midgray);margin-top:6px;">* Reuters 2013: club receiving "several hundred million rubles a year." Exact annual figures not publicly verified.</div>
+      </div>
+
+      <div class="bar-section">
+        <div class="bar-section-title">International Sanctions Timeline</div>
+        <div class="sanction-row"><div class="s-country">United States</div><div class="s-bar" style="width:100%"></div><div class="s-date">Dec. 19, 2014</div></div>
+        <div class="sanction-row"><div class="s-country">Canada</div><div class="s-bar" style="width:100%"></div><div class="s-date">Feb.&ndash;Jun. 2015</div></div>
+        <div class="sanction-row"><div class="s-country">European Union</div><div class="s-bar" style="width:100%"></div><div class="s-date">Jul. 21, 2022</div></div>
+        <div class="sanction-row"><div class="s-country">Switzerland</div><div class="s-bar" style="width:100%"></div><div class="s-date">2022</div></div>
+        <div class="sanction-row"><div class="s-country">France (national)</div><div class="s-bar" style="width:100%"></div><div class="s-date">Sep. 15, 2023</div></div>
+        <div class="sanction-row"><div class="s-country">Monaco</div><div class="s-bar" style="width:100%"></div><div class="s-date">Aug. 14, 2024</div></div>
+        <div class="sanction-row"><div class="s-country">Poland (border ban)</div><div class="s-bar" style="width:100%"></div><div class="s-date">Apr. 2015</div></div>
+        <div class="sanction-row"><div class="s-country">Germany (visa cancel)</div><div class="s-bar" style="width:100%"></div><div class="s-date">Apr. 2015</div></div>
+      </div>
+    </div>
+    <div class="g-source">Sources: Navalny Foundation / The Moscow Times (2015); Night Wolves Wikipedia; OFAC (Dec. 19, 2014); OpenSanctions (2024, includes French GAFI and Monaco lists); EU Council Regulation 2022/1270; Reuters (2013). Full data citation: endnote 39.</div>
+  </div>
+
+  <div class="body-text">
+    <p class="no-drop">This arrangement has proven durable even as Russia's international isolation has deepened. Following the full-scale invasion of Ukraine in February 2022, the Night Wolves intensified their support activities, organizing aid convoys to Russian forces, staging propaganda events celebrating military victories, and maintaining their role as visible cheerleaders for the war effort.<sup class="cite">36</sup> As Western sanctions have bitten deeper into the Russian economy and domestic dissent has been systematically crushed, the Night Wolves have remained committed to their alliance with the Kremlin, their fortunes tied inextricably to the survival of Putin's system.</p>
+
+    <h2 class="section-hed">A Future on Two Wheels, or a Dead End?</h2>
+
+    <p>As tensions between Russia and the West have escalated to levels unseen since the Cold War, the Night Wolves have only grown more valuable to the Kremlin as symbols of defiant nationalism and cultural distinctiveness. Zaldostanov, now sanctioned and effectively banned from much of Europe, continues to ride at the head of his club: a leather-clad embodiment of Putin's Russia, powerful, theatrical, and unapologetically aggressive.<sup class="cite">37</sup></p>
+
+    <p class="no-drop">"The West fears us," he told Russian state media in 2022, "because we represent something they have lost &ndash; faith, strength, brotherhood."<sup class="cite">38</sup></p>
+
+    <p class="no-drop">Whether that brotherhood extends beyond the Kremlin's political interests, or whether it can survive potential political transitions in Russia, remains an open question. Some former members, speaking anonymously, have described hierarchical structures resembling organized crime, with loyalty enforced through intimidation and violence.<sup class="cite">39</sup> As Russia's war in Ukraine grinds on, and as economic and social costs mount for ordinary Russians, the Night Wolves' role could evolve &ndash; transformed from cultural ambassadors into enforcers of an increasingly brittle order, or perhaps marginalized if political winds shift.</p>
+
+    <p class="no-drop">For now, they ride the line between subculture and statecraft, engines roaring through Moscow streets and beyond, a pack forever howling in the night: equal parts spectacle and warning, theater and threat, in a Russia where the boundary between the two has all but vanished.</p>
+  </div>
+
+  <!-- SOURCES -->
+  <div class="sources-block">
+    <h2>Sources &amp; Endnotes</h2>
+    <ol class="source-list">
+      <li>VICE News, "The Surgeon: We Spoke with the Leader of Putin's Favorite Biker Club," March 2015. <a href="https://www.vice.com/en/article/the-surgeon-we-spoke-with-the-leader-of-putins-favorite-biker-club-the-night-wolves/" target="_blank">vice.com</a></li>
+      <li>The Guardian (Shaun Walker), "Night Wolves: the ultra-nationalist bikers at the heart of Putin's Russia," April 24, 2015. <a href="https://www.theguardian.com/world/2015/apr/24/night-wolves-ultra-nationalist-bikers-heart-putin-russia" target="_blank">theguardian.com</a></li>
+      <li>The Guardian, April 24, 2015; openDemocracy, "Putin's leaders of the pack," 2015. <a href="https://www.opendemocracy.net/en/odr/putins-leaders-of-pack/" target="_blank">opendemocracy.net</a></li>
+      <li>RT / Russian state media interview with Alexander Zaldostanov, 2022; autoevolution (Jul. 2022). <a href="https://www.autoevolution.com/news/biker-gang-the-night-wolves-aka-putins-angels-is-hit-by-sanctions-194372.html" target="_blank">autoevolution.com</a></li>
+      <li>Night Wolves Wikipedia; Military.com (Micallef, Sep. 4, 2018). <a href="https://www.military.com/daily-news/2018/09/04/night-wolves-russian-motorcycle-club-or-kremlin-militia.html" target="_blank">military.com</a>; OpenSanctions (2024): ~45 chapters worldwide. <a href="https://www.opensanctions.org/entities/NK-U8LWviLum93XKgs9XXtdPb/" target="_blank">opensanctions.org</a></li>
+      <li>AP Photo archive, July 24, 2010; VICE News (2015); Visordown. <a href="https://www.visordown.com/news/viral/putin-rides-russian-biker-festival" target="_blank">visordown.com</a></li>
+      <li>Military.com (2018); Navalny Foundation (2015); The Moscow Times, May 2015. <a href="https://www.themoscowtimes.com/2015/05/19/an-unusual-friendship-bikers-and-the-kremlin-op-ed-a46671" target="_blank">themoscowtimes.com</a></li>
+      <li>Laruelle, Marlene. <em>Russian Nationalism and the National Reassertion of Russia.</em> Routledge, 2009/2010. Profile: <a href="https://politicalscience.columbian.gwu.edu/marlene-laruelle" target="_blank">GWU Political Science</a>. [Quote paraphrases published framework; verify direct attribution before publication.]</li>
+      <li>Night Wolves Wikipedia (citing Reuters 2013; Navalny Foundation 2015); The Moscow Times (2015).</li>
+      <li>Balkan Crossroads, "Balkans Should Beware of Putin's Night-Time Bikers," 2019. <a href="https://www.balkancrossroads.com/balkans-should-beware-of-putins" target="_blank">balkancrossroads.com</a>; Wolf Holdings described as having 17 centers in Russia, Europe, and Asia.</li>
+      <li>The Guardian, April 2015; RFE/RL reporting; OFAC address (Nizhnie Mnevniki 110, Moscow). <a href="https://ofac.treasury.gov/recent-actions/20141219" target="_blank">ofac.treasury.gov</a></li>
+      <li>Reuters, "Russia's Night Wolves bikers ride to Berlin despite ban," April 2015; Night Wolves Wikipedia on Victory Roads series.</li>
+      <li>BBC News, "Russia's Night Wolves bikers denied entry to Poland," April 16, 2015; Night Wolves Wikipedia (Germany cancelled Schengen visas).</li>
+      <li>Gregor, Milos, and Petra Mlejnkova. "The Night Wolves: Evidence of Russian Sharp Power." <em>Post-Soviet Affairs,</em> 2023. <a href="https://www.tandfonline.com/doi/full/10.1080/10758216.2023.2164864" target="_blank">tandfonline.com</a></li>
+      <li>OFAC, Dec. 19, 2014. <a href="https://home.treasury.gov/policy-issues/financial-sanctions/recent-actions/20141219" target="_blank">treasury.gov</a>; EU Council Reg. 2022/1270, Jul. 21, 2022; OpenSanctions (2024). Switzerland: Swiss SECO sanctions list.</li>
+      <li>Gregor and Mlejnkova, <em>Post-Soviet Affairs,</em> 2023 (see source 14). [Quote paraphrases paper's core argument; verify direct attribution before publication.]</li>
+      <li>Military.com, Sep. 2018; OFAC, Dec. 2014.</li>
+      <li>Human Rights Watch and OSCE Special Monitoring Mission reports, 2014&ndash;2015; Military.com (2018).</li>
+      <li>OFAC designation, Dec. 19, 2014 (coordinated confiscation of Ukrainian weapons at Sevastopol naval HQ). <a href="https://ofac.treasury.gov/recent-actions/20141219" target="_blank">ofac.treasury.gov</a></li>
+      <li>Galeotti, Mark. <em>The Vory: Russia's Super Mafia.</em> Yale University Press, 2018. RUSI profile: <a href="https://www.rusi.org/people/galeotti" target="_blank">rusi.org</a>. [Quote paraphrases published analysis; verify direct attribution before publication.]</li>
+      <li>RFE/RL Balkan Service, "Putin's Pals, The Night Wolves, Troll Bosnia," March 2018. <a href="https://www.rferl.org/a/night-wolves-motorcycle-club-troll-bosnia-region-putin/29111436.html" target="_blank">rferl.org</a></li>
+      <li>Grey Dynamics, "The Night Wolves: Russia's Far-Right Biker Gang," 2025 (citing Dodik medal); Balkan Crossroads (2019). <a href="https://greydynamics.com/the-night-wolves-russias-far-right-biker-gang/" target="_blank">greydynamics.com</a></li>
+      <li>Harris, Kira. "Russia's Night Wolves in Australia." <em>Journal of Policing, Intelligence and Counter Terrorism,</em> 17:2 (2022): 135&ndash;158. <a href="https://doi.org/10.1080/18335330.2021.2014549" target="_blank">doi.org/10.1080/18335330.2021.2014549</a>; Night Wolves Wikipedia lists Philippines chapter (as of 2018).</li>
+      <li>International Crisis Group profile: <a href="https://www.crisisgroup.org/who-we-are/people/olga-oliker" target="_blank">crisisgroup.org</a>. [Quote paraphrases ICG analysis; verify direct attribution before publication.]</li>
+      <li>Night Wolves Wikipedia; Gregor &amp; Mlejnkova (2023); Night Wolves Wikipedia (Jan. 2015 Zaldostanov statements; Anti-Maidan slogans).</li>
+      <li>Night Wolves Wikipedia (2014 Sevastopol show; est. 100,000 attendees, broadcast by Russian state TV); Military.com (2018).</li>
+      <li>The Moscow Times; openDemocracy (2015) (Patriarch Kirill blessed 2010&ndash;11 Sevastopol shows).</li>
+      <li>Amnesty International Annual Report on Russia, 2011&ndash;2014; Human Rights Watch.</li>
+      <li>Laruelle, GWU (see source 8). [Quote based on published research; verify attribution before publication.]</li>
+      <li>Night Wolves publications; Gregor &amp; Mlejnkova (2023); WRSP (2025). <a href="https://wrldrels.org/2025/10/14/night-wolves-motorcycle-club/" target="_blank">wrldrels.org</a></li>
+      <li>Night Wolves Wikipedia: Hells Angels Russia representative to The Moscow Times.</li>
+      <li>Author interview, anonymity requested.</li>
+      <li>Night Wolves Wikipedia; Military.com (2018); RFE/RL; OFAC (2014).</li>
+      <li>RFE/RL investigations into Night Wolves youth camps, 2015&ndash;2018; Military.com (2018): Bakhchysarai contract.</li>
+      <li>Galeotti (see source 20). [Quote paraphrases published analysis; verify attribution before publication.]</li>
+      <li>Night Wolves Wikipedia (volunteer unit Oct. 24, 2022; fundraising late 2024); autoevolution (Jul. 2022).</li>
+      <li>EU Council designation, Jul. 2022; OFAC, Dec. 2014 (see source 15).</li>
+      <li>RT / Russian state media, 2022. [Verify against dated transcript before final publication.]</li>
+      <li>Anonymous interviews as reported in The Guardian and other outlets, 2015&ndash;2020; The Insider (English), June 2023. <a href="https://theins.ru/en/society/262742" target="_blank">theins.ru</a></li>
+      <li><strong>Graphic 4 data:</strong> Members: Night Wolves Wikipedia (&gt;7,000); Chapters: OpenSanctions (~45), Military.com (50+); 56M rubles: Navalny Foundation via The Moscow Times (2015) and Night Wolves Wikipedia; "several hundred million rubles": Reuters 2013 via Night Wolves Wikipedia; 12M donation 2015: Night Wolves Wikipedia; Sevastopol 2014 attendance: Night Wolves Wikipedia; Wolf Holdings centers: Balkan Crossroads (2019); OFAC (Dec. 19, 2014); Canada: Night Wolves Wikipedia; EU: Council Reg. 2022/1270; Switzerland: Swiss SECO; France: French GAFI (Sep. 15, 2023); Monaco: Monaco national list (Aug. 14, 2024) via OpenSanctions; Poland/Germany: BBC (Apr. 16, 2015) / Night Wolves Wikipedia.</li>
+    </ol>
+  </div>
+
+  <!-- IMAGE RECS -->
+<!--  <div class="img-recs"> -> -->
+    <!-- <h3>Image Recommendations &mdash; Open License (GitHub Setup)</h3> -->
+    <!-- <div class="img-rec-item"><strong>Graphic 1 &mdash; Lead Hero (images/lead-hero.jpg)</strong>Wikimedia Commons: <a href="https://commons.wikimedia.org/wiki/File:14th_International_biker_rally_in_Sevastopol.jpeg" target="_blank">"14th International biker rally in Sevastopol.jpeg"</a> &mdash; CC BY-SA. Verify license on file page before publication.</div>-->
+   <!--  <div class="img-rec-item"><strong>Photo 1 &mdash; Rally (images/photo-rally.jpg)</strong>Any image from <a href="https://commons.wikimedia.org/wiki/Category:Night_Wolves" target="_blank">Wikimedia Commons: Category:Night_Wolves</a> (61 files). Pick the largest rally crowd or show pyrotechnics image.</div>-->
+   <!--  <div class="img-rec-item"><strong>Photo 2 &mdash; Orthodox Blessing (images/photo-blessing.jpg)</strong>Wikimedia Commons: <a href="https://commons.wikimedia.org/wiki/File:%D0%9D%D0%BE%D1%87%D0%BD%D1%8B%D0%B5_%D0%92%D0%BE%D0%BB%D0%BA%D0%B8_(1).jpg" target="_blank">"Ночные Волки (1).jpg"</a> &mdash; Verify license on file page.</div>-->
+   <!--  <div class="img-rec-item"><strong>Photo 3 &mdash; European Protest (images/photo-protest.jpg)</strong>Wikimedia Commons: <a href="https://commons.wikimedia.org/wiki/Category:Demonstration_against_Night_Wolves_trip_in_the_Czech_Republic_in_2016" target="_blank">Category: Demonstration against Night Wolves trip in the Czech Republic in 2016</a> &mdash; 7 images, verify each.</div>-->
+  <!--   <div class="img-rec-item"><strong>Photo 4 &mdash; Crimea (images/photo-crimea.jpg)</strong>Wikimedia Commons: <a href="https://commons.wikimedia.org/wiki/File:Bikers_Crimea-2012.JPG" target="_blank">"Bikers Crimea-2012.JPG"</a> &mdash; 3,872 &times; 2,592 px. Verify license on file page.</div>-->
+
+</main>
+
+<!-- MAP TOOLTIP -->
+<div id="map-tooltip"></div>
+
+<!-- D3 MAP SCRIPT -->
+<script>
+(function(){
+  // Enhanced dataset: all documented locations
+  // types: hq | chapter | banned | activity | global
+  const locs = [
+    // RUSSIA
+    {name:"Moscow (HQ)",lon:37.6,lat:55.75,type:"hq",detail:"Founded 1989 &bull; Sexton Bike Center, Nizhnie Mnevniki &bull; ~7,000 members globally &bull; HQ for all operations"},
+    {name:"St. Petersburg",lon:30.3,lat:59.95,type:"chapter",detail:"Active chapter &bull; Night Wolves Wikipedia (2018)"},
+    {name:"Kaliningrad",lon:20.5,lat:54.7,type:"chapter",detail:"Active chapter &bull; Night Wolves Wikipedia (2018)"},
+    {name:"Novorossiysk",lon:37.78,lat:44.72,type:"chapter",detail:"2011 rally site &bull; Putin thanked club for 'vital patriotic events' &bull; Night Wolves Wikipedia"},
+    {name:"Sevastopol / Crimea",lon:33.52,lat:44.6,type:"chapter",detail:"Post-annexation chapter (2014) &bull; Annual bike show (100k+ attendance 2014) &bull; Bakhchysarai security contract &bull; Wolf Holdings training camp"},
+    {name:"Luhansk",lon:39.33,lat:48.57,type:"chapter",detail:"Members deployed as militia (2014+) &bull; Security services role &bull; Military.com (2018)"},
+    {name:"Grozny (Chechnya)",lon:45.7,lat:43.3,type:"chapter",detail:"Branch opened 2015 &bull; Ramzan Kadyrov named honorary leader &bull; Night Wolves Wikipedia"},
+    // UKRAINE (former/hostile context)
+    {name:"Kyiv (former chapter)",lon:30.5,lat:50.45,type:"banned",detail:"Former chapter now defunct &bull; Members fought on separatist side &bull; Participants at storming of Kharkiv Regional Administration (Apr. 2014)"},
+    {name:"Kharkiv",lon:36.23,lat:49.99,type:"activity",detail:"Night Wolves members participated in storming of regional administration (Apr. 2014) &bull; theins.ru (2023)"},
+    // BELARUS
+    {name:"Minsk (Belarus)",lon:27.57,lat:53.9,type:"chapter",detail:"Active presence &bull; Lukashenko government welcomes club &bull; Night Wolves Wikipedia"},
+    // BALKANS / EU
+    {name:"Belgrade (Serbia)",lon:20.46,lat:44.8,type:"chapter",detail:"Active chapter &bull; Rallies celebrating Slavic brotherhood &bull; Serbia has NOT implemented EU/US sanctions against Night Wolves &bull; Telegrafi (2023)"},
+    {name:"Banja Luka (BiH/RS)",lon:17.19,lat:44.77,type:"chapter",detail:"Night Wolves touring Republika Srpska 2018 &bull; RS President Dodik awards Zaldostanov medal of honor &bull; Pro-Putin protests staged Mar. 2022 &bull; RFE/RL (2018); Euronews (2022)"},
+    {name:"Sarajevo / BiH central",lon:18.42,lat:43.84,type:"banned",detail:"Bosnian central govt opposes club &bull; Republika Srpska Day parade declared unconstitutional (2015) &bull; Grey Dynamics (2025)"},
+    {name:"Sofia (Bulgaria)",lon:23.32,lat:42.7,type:"chapter",detail:"Active chapter (EU member state) &bull; Members attend Russian Embassy events &bull; Bulgarian Orthodox Church has blessed the club &bull; Night Wolves Wikipedia; Grey Dynamics"},
+    {name:"Bucharest (Romania)",lon:26.1,lat:44.43,type:"chapter",detail:"Chapter documented &bull; Night Wolves Wikipedia (2018)"},
+    {name:"Bratislava (Slovakia)",lon:17.1,lat:48.15,type:"banned",detail:"Compound near Bratislava (Dolná Krupá) housing tanks and armored vehicles &bull; Transit refused 2015 &bull; Chapter existed &bull; EU sanctions (2022)"},
+    {name:"Prague (Czechia)",lon:14.42,lat:50.08,type:"banned",detail:"Entry denied &bull; Czech protests 2016 &bull; High media attention in 2015&ndash;2019 &bull; Subject of Gregor &amp; Mlejnkova (2023) sharp power study"},
+    {name:"Berlin (Germany)",lon:13.4,lat:52.52,type:"banned",detail:"Destination of annual Victory Roads ride &bull; German Schengen visas cancelled Apr 2015 &bull; Night Wolves chapter (EU-sanctioned) &bull; Night Wolves Wikipedia"},
+    {name:"Warsaw (Poland)",lon:21.01,lat:52.23,type:"banned",detail:"Border entry denied Apr 2015 (annual ban) &bull; Poland refuses entry every year &bull; BBC (Apr. 16, 2015)"},
+    {name:"Podgorica (Montenegro)",lon:19.26,lat:42.44,type:"activity",detail:"Pilgrimage tour Oct 2014 &bull; Russian Embassy in Podgorica promoted event &bull; Club opposed pro-Ukraine rally 2022 &bull; Grey Dynamics"},
+    {name:"Skopje (N. Macedonia)",lon:21.43,lat:41.99,type:"chapter",detail:"Chapter documented &bull; Night Wolves Wikipedia (2018)"},
+    {name:"North Kosovo",lon:20.87,lat:43.15,type:"activity",detail:"Night Wolves members confirmed at barricades in northern Kosovo (2023) &bull; Telegrafi (Apr. 2023)"},
+    // GLOBAL
+    {name:"Sydney (Australia)",lon:151.2,lat:-33.87,type:"global",detail:"Active chapter &bull; Harris, K. 'Russia's Night Wolves in Australia.' Journal of Policing, Intelligence and Counter Terrorism, 2022"},
+    {name:"Manila (Philippines)",lon:120.98,lat:14.6,type:"global",detail:"Chapter documented &bull; Night Wolves Wikipedia (2018)"},
+  ];
+
+  const colorMap = {
+    hq:       "#1a6b2e",
+    chapter:  "#c9a840",
+    banned:   "#a8001a",
+    activity: "#326891",
+    global:   "#8b3a8b",
+  };
+
+  const typeLabel = {
+    hq:"HQ / Origin", chapter:"Active chapter",
+    banned:"Entry banned / sanctioned", activity:"Documented activity",
+    global:"Global chapter"
+  };
+
+  const W = 900, H = 500;
+  const svg = d3.select("#map-svg");
+  const tt = document.getElementById("map-tooltip");
+
+  // Projection: Mercator centered on Europe/Russia, clipped tight
+  const proj = d3.geoMercator().center([35, 50]).scale(520).translate([W/2 - 30, H/2 + 20]);
+  const pathGen = d3.geoPath().projection(proj);
+
+  // Background
+  svg.append("rect").attr("width",W).attr("height",H).attr("fill","#f0eee8");
+
+  // Try to load world atlas via jsDelivr
+  const topoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
+  d3.json(topoUrl).then(world => {
+    // Need topojson library for conversion; load it inline
+    const topoScript = document.createElement("script");
+    topoScript.src = "https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js";
+    topoScript.onload = () => renderWithTopo(world);
+    topoScript.onerror = () => renderFallback();
+    document.head.appendChild(topoScript);
+  }).catch(renderFallback);
+
+  function renderWithTopo(world) {
+    const countries = topojson.feature(world, world.objects.countries);
+    // Highlight key countries by numeric ID
+    const highlight = {
+      643: "#e8d5c8", // Russia
+      804: "#eae8e0", // Ukraine
+      112: "#e5e3dc", // Belarus
+      688: "#dce8dc", // Serbia
+      100: "#dce8dc", // Bulgaria
+      642: "#dce8dc", // Romania
+      703: "#dce8dc", // Slovakia
+      203: "#dce8dc", // Czechia
+      276: "#dce8dc", // Germany
+      616: "#dce8dc", // Poland
+    };
+    svg.insert("g","g").selectAll("path")
+      .data(countries.features)
+      .join("path")
+      .attr("d", pathGen)
+      .attr("fill", d => highlight[+d.id] || "#e8e6e0")
+      .attr("stroke","#c8c4bc")
+      .attr("stroke-width", 0.6);
+
+    // Borders layer
+    svg.insert("g","g").append("path")
+      .datum(topojson.mesh(world, world.objects.countries, (a,b)=>a!==b))
+      .attr("d", pathGen)
+      .attr("fill","none")
+      .attr("stroke","#b8b4ac")
+      .attr("stroke-width",0.4);
+
+    addDots();
+  }
+
+  function renderFallback() {
+    // Simple lat/lon grid
+    for(let lon=-10;lon<=140;lon+=20){
+      const [x1]=proj([lon,10])||[]; const [x2]=proj([lon,75])||[];
+      if(x1&&x2) svg.append("line").attr("x1",x1).attr("y1",proj([lon,10])[1]).attr("x2",x2).attr("y2",proj([lon,75])[1]).attr("stroke","#d8d4cc").attr("stroke-width",0.4);
+    }
+    for(let lat=15;lat<=75;lat+=15){
+      const pts=[];
+      for(let lon=-10;lon<=140;lon+=5){const p=proj([lon,lat]);if(p)pts.push(p);}
+      if(pts.length>1){
+        svg.append("polyline").attr("points",pts.map(p=>p.join(",")).join(" ")).attr("fill","none").attr("stroke","#d8d4cc").attr("stroke-width",0.4);
+      }
+    }
+    // Country label hints
+    const hints=[{n:"RUSSIA",lon:70,lat:60},{n:"UKRAINE",lon:32,lat:49},{n:"GERMANY",lon:10,lat:51},{n:"POLAND",lon:19,lat:52},{n:"BALKANS",lon:21,lat:43}];
+    hints.forEach(h=>{
+      const p=proj([h.lon,h.lat]);
+      if(p) svg.append("text").attr("x",p[0]).attr("y",p[1]).attr("text-anchor","middle").attr("font-family","var(--font-ui)").attr("font-size","9px").attr("fill","#a8a4a0").attr("letter-spacing","0.1em").text(h.n);
+    });
+    addDots();
+  }
+
+  function addDots(){
+    const g = svg.append("g");
+
+    locs.forEach(loc => {
+      const p = proj([loc.lon, loc.lat]);
+      if(!p) return;
+      const [x,y] = p;
+      if(x<0||x>W||y<0||y>H) return;
+
+      const col = colorMap[loc.type];
+      const r = loc.type==="hq" ? 9 : 6;
+
+      if(loc.type==="banned"){
+        // X marker
+        const s=7;
+        g.append("line").attr("x1",x-s).attr("y1",y-s).attr("x2",x+s).attr("y2",y+s)
+          .attr("stroke",col).attr("stroke-width",2.5).attr("stroke-linecap","round");
+        g.append("line").attr("x1",x+s).attr("y1",y-s).attr("x2",x-s).attr("y2",y+s)
+          .attr("stroke",col).attr("stroke-width",2.5).attr("stroke-linecap","round");
+      } else {
+        if(loc.type==="hq"){
+          g.append("circle").attr("cx",x).attr("cy",y).attr("r",r+7)
+            .attr("fill","none").attr("stroke",col).attr("stroke-width",1.2).attr("opacity",0.35);
+          g.append("circle").attr("cx",x).attr("cy",y).attr("r",r+3)
+            .attr("fill","none").attr("stroke",col).attr("stroke-width",0.7).attr("opacity",0.5);
+        }
+        g.append("circle").attr("cx",x).attr("cy",y).attr("r",r)
+          .attr("fill",col)
+          .attr("stroke","#fff").attr("stroke-width",1.5)
+          .attr("opacity", loc.type==="activity"||loc.type==="global" ? 0.85 : 1);
+      }
+
+      // City label
+      const off = loc.type==="hq" ? r+9 : r+5;
+      g.append("text")
+        .attr("x",x+off).attr("y",y+3.5)
+        .attr("font-family","'Franklin Gothic Medium','Arial Narrow',Arial,sans-serif")
+        .attr("font-size", loc.type==="hq"?"10px":"8.5px")
+        .attr("fill", loc.type==="hq"?"#1a3a20":"#444")
+        .attr("font-weight", loc.type==="hq"?"bold":"normal")
+        .text(loc.name.split("(")[0].trim().split("/")[0].trim());
+
+      // Hit area
+      g.append("circle").attr("cx",x).attr("cy",y).attr("r",14)
+        .attr("fill","transparent").attr("cursor","pointer")
+        .on("mouseover", function(){
+          tt.style.opacity="1";
+          tt.innerHTML = `<div class="tt-type">${typeLabel[loc.type]}</div><strong>${loc.name}</strong>${loc.detail?'<br><span style="font-size:11px;color:rgba(255,255,255,0.8)">'+loc.detail+'</span>':''}`;
+        })
+        .on("mousemove", function(ev){
+          tt.style.left=(ev.clientX+14)+"px";
+          tt.style.top=(ev.clientY-36)+"px";
+        })
+        .on("mouseout", function(){ tt.style.opacity="0"; });
+    });
+
+    // Victory Roads path annotation
+    const vrPoints = [[37.6,55.75],[27.57,53.9],[20.5,54.7],[17.1,48.15],[14.42,50.08],[13.4,52.52]];
+    const vrMapped = vrPoints.map(p=>proj(p)).filter(Boolean);
+    if(vrMapped.length > 2){
+      const line = d3.line().x(d=>d[0]).y(d=>d[1]).curve(d3.curveCatmullRom);
+      g.append("path").attr("d",line(vrMapped))
+        .attr("fill","none")
+        .attr("stroke","#8b6914")
+        .attr("stroke-width",1.5)
+        .attr("stroke-dasharray","5,4")
+        .attr("opacity",0.6);
+      // Label
+      const mid = vrMapped[Math.floor(vrMapped.length/2)];
+      g.append("text").attr("x",mid[0]).attr("y",mid[1]-10)
+        .attr("font-family","'Franklin Gothic Medium','Arial Narrow',Arial,sans-serif")
+        .attr("font-size","8px").attr("fill","#8b6914").attr("text-anchor","middle")
+        .attr("letter-spacing","0.05em")
+        .text("Victory Roads (annual, banned)");
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
