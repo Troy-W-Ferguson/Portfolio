@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kazakhstan's New Constitution — The Steppe Reclaims Its Own</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612;
+    --cream: #faf6ee;
+    --gold: #b8860b;
+    --steppe-blue: #4a6fa5;
+    --tulip-red: #c0392b;
+    --tulip-scarlet: #e74c3c;
+    --tulip-yellow: #d4a017;
+    --tulip-white: #f5f0e8;
+    --fade-gray: #7a7068;
+    --border: #d8cfc0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.75;
+  }
+
+  /* ── MASTHEAD ── */
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding: 18px 0 14px;
+    text-align: center;
+  }
+  .section-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fade-gray);
+    margin-bottom: 6px;
+  }
+  .pub-date {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--fade-gray);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── ARTICLE ── */
+  .article-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 52px 24px 80px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 5vw, 3.1rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 18px;
+  }
+
+  .deck {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.18rem;
+    font-style: italic;
+    color: #3e352a;
+    line-height: 1.6;
+    margin-bottom: 28px;
+    border-left: 3px solid var(--gold);
+    padding-left: 16px;
+  }
+
+  .byline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fade-gray);
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  p {
+    margin-bottom: 1.4em;
+  }
+
+  .drop-cap::first-letter {
+    float: left;
+    font-family: 'Playfair Display', serif;
+    font-size: 4.2em;
+    font-weight: 700;
+    line-height: 0.78;
+    padding-right: 10px;
+    padding-top: 6px;
+    color: var(--gold);
+  }
+
+  .pull-quote {
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    margin: 40px 0;
+    padding: 20px 0;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.35rem;
+    line-height: 1.45;
+    color: #2a221a;
+    text-align: center;
+  }
+
+  /* ── VISUALIZATION ── */
+  .viz-container {
+    margin: 48px -24px;
+    background: var(--ink);
+    padding: 40px 32px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .viz-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 60% 0%, rgba(184,134,11,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .viz-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--cream);
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+  .viz-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: #a09278;
+    text-align: center;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+
+  /* Stacked bloom bars */
+  .bloom-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .bloom-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: center;
+    gap: 16px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .bloom-row:last-child { border-bottom: none; }
+
+  .bloom-label {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.82rem;
+    color: #c8bfaf;
+    text-align: right;
+    line-height: 1.35;
+  }
+  .bloom-label em {
+    font-style: italic;
+    color: var(--gold);
+    font-size: 0.75rem;
+  }
+
+  .bar-track {
+    position: relative;
+    height: 22px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 2px;
+    overflow: visible;
+  }
+
+  .bar-fill {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: 2px;
+    opacity: 0;
+    animation: growBar 1s ease forwards;
+  }
+
+  @keyframes growBar {
+    from { opacity: 0; transform: scaleX(0); transform-origin: left; }
+    to   { opacity: 1; transform: scaleX(1); transform-origin: left; }
+  }
+
+  /* Months axis */
+  .month-axis {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 16px;
+    margin-bottom: 6px;
+    padding-top: 4px;
+  }
+  .month-axis .spacer { }
+  .month-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9.5px;
+    color: #6e6050;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0 2px;
+  }
+
+  /* Event pins */
+  .event-pin {
+    position: absolute;
+    top: -30px;
+    transform: translateX(-50%);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    color: var(--cream);
+    background: var(--gold);
+    padding: 2px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+    z-index: 10;
+  }
+  .event-pin::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 3px solid transparent;
+    border-top-color: var(--gold);
+  }
+
+  /* Reference event line */
+  .event-line {
+    position: absolute;
+    top: -38px;
+    width: 1px;
+    height: 58px;
+    background: rgba(212,160,23,0.5);
+    z-index: 5;
+  }
+
+  .viz-note {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: #706050;
+    margin-top: 28px;
+    line-height: 1.6;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+    justify-content: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: #a09278;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .legend-swatch {
+    width: 22px;
+    height: 9px;
+    border-radius: 2px;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline-section {
+    margin: 48px 0;
+    border-left: 2px solid var(--border);
+    padding-left: 24px;
+  }
+  .timeline-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  .t-item {
+    position: relative;
+    margin-bottom: 18px;
+    padding-left: 4px;
+  }
+  .t-item::before {
+    content: '';
+    position: absolute;
+    left: -29px;
+    top: 7px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--cream);
+  }
+  .t-year {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--fade-gray);
+  }
+  .t-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .caption {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11.5px;
+    color: var(--fade-gray);
+    line-height: 1.55;
+    margin-top: 10px;
+    font-style: normal;
+  }
+
+  hr.section-break {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 36px auto;
+    width: 60px;
+  }
+
+  sup a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.6rem;
+    color: var(--gold);
+    text-decoration: none;
+    vertical-align: super;
+    letter-spacing: 0;
+  }
+  sup a:hover { text-decoration: underline; }
+
+  .writing-sample-banner {
+    background: #c0392b;
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  @media (max-width: 540px) {
+    .bloom-row { grid-template-columns: 130px 1fr; }
+    .month-axis { grid-template-columns: 130px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="writing-sample-banner">Unpublished Writing Sample</div>
+
+<header>
+  <div class="section-label">World &nbsp;·&nbsp; Central Asia</div>
+  <div class="pub-date">March 17, 2026</div>
+</header>
+
+<article class="article-wrap">
+
+  <h1>The Steppe Reclaims Its Own</h1>
+  <p class="deck">Kazakhstan has voted to remake its constitution. The real story is what it is remaking itself into — and what it has quietly decided to leave behind.</p>
+  <div class="byline">Analysis</div>
+
+  <p class="drop-cap">Every spring, a few weeks before the Kazakh steppe bursts into color, botanical rangers in the Tien Shan foothills conduct a quiet count. They are tallying wild tulips — <em>Tulipa greigii</em>, the king of tulips, native to these mountains and nowhere else on earth. The Dutch did not invent the tulip. The Russians did not bring it here. The flower originated in Kazakhstan and spread west through Ottoman gardens and into the bulb fields of Holland, not the other way around. Most of the world forgot this. Kazakhstan is in the middle of reminding it.</p>
+
+  <p>On Sunday, Kazakh voters approved a sweeping new constitution by an <strong>87 percent</strong> margin, with turnout of 73 percent, a record for Kazakhstan's referendums, surpassing the 68 percent in 2022 and 64 percent in 2024. The vote was not without controversy: journalists covering the referendum were briefly detained by authorities in the run-up to and on polling day.<sup><a href="https://www.rferl.org/a/kazakhstan-controversial-constitutional-referendum-media-restrictions/33707171.html" target="_blank">1</a></sup> The OSCE, rather than deploying a full observation mission, sent only a limited assessment team, citing concerns about transparency and the compressed timeline between the referendum's announcement and the vote.<sup><a href="https://www.rferl.org/a/kazakhstan-controversial-constitutional-referendum-media-restrictions/33707171.html" target="_blank">2</a></sup></p>
+
+  <p>Putting aside these distinctly Kazakh irregularities in the voting process, the result reflects something real about the mood of a country that has spent three decades carefully separating itself from its Soviet inheritance. The new constitution streamlines parliament and recreates the office of vice president, abolished in 1996, while giving President Kassym-Jomart Tokayev the right to appoint the vice president and a host of other key officials. Critics will note, correctly, that the document concentrates power in familiar ways. But to read it only as an autocratic maneuver is to miss the larger, stranger drama playing out across the steppe.</p>
+
+  <p>This is also a story about language, lineage, and the slow labor of deciding who you are.</p>
+
+  <div class="viz-container">
+    <div class="viz-title">When the Steppe Blooms, and When Kazakhstan Legislates</div>
+    <div class="viz-subtitle">Wild tulip species native to Kazakhstan · bloom windows by elevation zone · constitutional milestones</div>
+
+    <div class="month-axis">
+      <div class="spacer"></div>
+      <div class="month-labels">
+        <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+      </div>
+    </div>
+
+    <div class="bloom-grid" id="bloomGrid"></div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:#c0392b;"></div>T. greigii — King of Tulips</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#d4a017;"></div>T. kaufmanniana — Waterlily</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#7b9e87;"></div>T. alberti — Albert's Tulip</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#6a8dbf;"></div>T. regelii — Regel's Relic</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#a07030;"></div>T. schrenckii — Schrenk's</div>
+    </div>
+
+    <div class="viz-note">
+      ◆ &nbsp;Constitutional referendum held March 15, 2026, during the first days of the <em>T. greigii</em> bloom in the Turkestan foothills. Kazakhstan is home to 35 wild tulip species, 18 protected by state law. The flower originated here 10 million years ago and traveled west, not east. &nbsp;·&nbsp; Sources: Aksu-Jabagly Nature Reserve bloom records; Frontiers in Plant Science (2024); Eurasianet.
+    </div>
+  </div>
+
+  <p class="caption">The timing is not incidental. Kazakhstan's constitutional referendum fell on March 15, the precise opening of the wild tulip season in the country's southern foothills: a bloom that predates the Dutch cultivar industry by millions of years.</p>
+
+  <hr class="section-break">
+
+  <p>The new constitution proposes making Kazakh the country's main language, while retaining Russian as another, albeit downgraded, official language. This is the quiet revolution embedded in the legal boilerplate. For three decades since independence, Russian remained the language of commerce, government, and prestige in Kazakhstan, not because Kazakhs chose it, but because Soviet policy had made Kazakh-language education nearly impossible across large swaths of the country. The language shift in the constitution is less a political act than a remediation.</p>
+
+  <p>The same logic applies to the tulip. During the Soviet period, Russian botanical institutes catalogued and named many of Kazakhstan's endemic species. <em>Tulipa regelii</em>, described and housed in the St. Petersburg Botanic Garden's herbarium, bears the name of a Russian botanist. The flower is Kazakh. The taxonomy, for a century, was Russian. The first cultivated tulips traveled to the Netherlands over 400 years ago from Turkey, where they had been brought from Central Asia. They originated in the mountainous regions and adjacent deserts of Kazakhstan more than 10 to 20 million years ago. The entire world tulip industry, from the Dutch bulb trade to the Chelsea Flower Show arrangements to the roadside petrol-station bouquets of northern Europe, is downstream of the Tien Shan. Most buyers have no idea.</p>
+
+  <div class="pull-quote">
+    "Kazakhstan is not drifting toward Russia or toward the West.<br>It is, with great deliberateness, drifting toward Kazakhstan."
+  </div>
+
+  <p>Alongside structural changes, Tokayev has embedded key themes from his presidency into the political culture: a strong, legalistic state focused on social stability, secularism, environmental protection and digital progress. This brand of modernization entails a move away from Western-led liberal economic models and toward a more institutional, less personalist authoritarian system closer to the political economy of China. The Chatham House framing is apt but incomplete. Kazakhstan is not drifting toward Russia or toward the West. It is, with great deliberateness, drifting toward Kazakhstan, toward a self-conception that predates both the Soviet border and the liberal international order that replaced it.</p>
+
+  <p>Outside a polling station in Almaty, a 55-year-old shopkeeper named Daragul voted against the new constitution for a different reason than most opponents: it retained Russian as an official language at all. "The Kazakh language should be the only state language," she said. "We live in Kazakhstan, don't we?" Her daughter, who also voted no, worried that the document failed to address inflation and crumbling infrastructure. They disagreed about almost everything except the premise: that Kazakhstan belongs to Kazakhs, and that thirty years of independence have not yet made that fully true.</p>
+
+  <div class="timeline-section">
+    <div class="timeline-label">Constitutional lineage since independence</div>
+    <div class="t-item"><div class="t-year">1991</div><div class="t-text">Independence from the USSR. The Soviet-era constitution remains in effect.</div></div>
+    <div class="t-item"><div class="t-year">1993</div><div class="t-text">First post-Soviet constitution adopted: bicameral, Russian co-official.</div></div>
+    <div class="t-item"><div class="t-year">1995</div><div class="t-text">Nazarbayev's referendum replaces the 1993 document. Strong semi-presidential system enshrined.</div></div>
+    <div class="t-item"><div class="t-year">2022</div><div class="t-text">Post-unrest referendum: 56 amendments passed. Tokayev consolidates power; Nazarbayev stripped of influence.</div></div>
+    <div class="t-item"><div class="t-year">2026</div><div class="t-text">Third constitution approved: unicameral <em>Kurultai</em>, vice presidency restored, Kazakh elevated. 87% in favor.</div></div>
+  </div>
+
+  <p>One of the main changes transforms parliament from bicameral to unicameral, renaming it the Kurultai, a word drawn from the ancient Kazakh tradition of a great assembly of tribal leaders. The name is deliberate. The Kurultai was the institution through which the steppe confederacies made collective decisions long before any Russian administrator arrived. Restoring the name does not restore the institution, and critics are right to say so. But names carry meaning. Kazakhstan is in the business of recovering its own.</p>
+
+  <p>None of this excuses the document's authoritarian architecture. Human rights groups have raised serious concerns. The draft places human rights within the framework of broad and vague concepts such as the "idea of a Just Kazakhstan" and the principle of "Law and Order," while the constitution would no longer contain the provision that international treaties take precedence over national laws. A human rights defender quoted by Amnesty International put it plainly: "Law becomes a substitute for rights, and Order — for freedoms." That critique deserves to stand.</p>
+
+  <p>But it can stand alongside another truth: that Kazakhstan's identity project is not a cynical invention of its presidency. It is something older, rooted in the red-petaled, black-blotched wildflower that carpets the Tien Shan every March, that traveled west to become the symbol of Dutch commerce, and that is only now, slowly, being named as what it always was — not an import, not a gift from another civilization, but a thing the steppe made on its own, long before anyone came to catalogue it.</p>
+
+  <p><em>The new constitution takes effect on July 1, 2026.</em></p>
+
+</article>
+
+<script>
+// Bloom data: [start_month_fraction, end_month_fraction] out of 12
+// Month 0 = Jan, Month 11 = Dec
+const species = [
+  {
+    label: "Tulipa greigii",
+    sublabel: "King of Tulips · lowland foothills",
+    color: "#c0392b",
+    start: 2.6,  // late March
+    end: 4.8,    // late May
+    delay: 0.1
+  },
+  {
+    label: "T. kaufmanniana",
+    sublabel: "Waterlily · Western Tien Shan",
+    color: "#d4a017",
+    start: 2.5,
+    end: 6.0,    // late June
+    delay: 0.25
+  },
+  {
+    label: "T. alberti",
+    sublabel: "Albert's Tulip · Karatau",
+    color: "#7b9e87",
+    start: 2.9,  // early April
+    end: 4.5,
+    delay: 0.4
+  },
+  {
+    label: "T. regelii",
+    sublabel: "Regel's Relic · Chu-Ili (ancient)",
+    color: "#6a8dbf",
+    start: 3.2,
+    end: 4.9,
+    delay: 0.55
+  },
+  {
+    label: "T. schrenckii",
+    sublabel: "Schrenk's · steppe & semi-desert",
+    color: "#a07030",
+    start: 3.5,
+    end: 5.4,
+    delay: 0.7
+  }
+];
+
+// Constitutional referendum: March 15 = month index ~2.45
+const refMonth = 2.45;
+
+const grid = document.getElementById('bloomGrid');
+
+species.forEach((s, i) => {
+  const row = document.createElement('div');
+  row.className = 'bloom-row';
+
+  const labelDiv = document.createElement('div');
+  labelDiv.className = 'bloom-label';
+  labelDiv.innerHTML = `<em>${s.label}</em><br>${s.sublabel}`;
+
+  const track = document.createElement('div');
+  track.className = 'bar-track';
+
+  const fill = document.createElement('div');
+  fill.className = 'bar-fill';
+  const leftPct = (s.start / 12) * 100;
+  const widthPct = ((s.end - s.start) / 12) * 100;
+  fill.style.left = leftPct + '%';
+  fill.style.width = widthPct + '%';
+  fill.style.background = s.color;
+  fill.style.animationDelay = s.delay + 's';
+
+  // Add event pin on first row only
+  if (i === 0) {
+    const line = document.createElement('div');
+    line.className = 'event-line';
+    line.style.left = (refMonth / 12 * 100) + '%';
+    track.appendChild(line);
+
+    const pin = document.createElement('div');
+    pin.className = 'event-pin';
+    pin.textContent = 'Referendum · Mar 15';
+    pin.style.left = (refMonth / 12 * 100) + '%';
+    track.appendChild(pin);
+  }
+
+  track.appendChild(fill);
+  row.appendChild(labelDiv);
+  row.appendChild(track);
+  grid.appendChild(row);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deepwaters Still Run Deep — Oxford American (Writing Sample)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #faf7f2;
+    --rule: #d4c9b5;
+    --muted: #7a6f62;
+    --red: #b52a1c;
+    --blue: #1a3a5c;
+    --gold: #c8960c;
+    --light-blue: #e8f0f8;
+    --map-water: #e8e2d8;
+    --map-land: #f0ece4;
+    --map-border: #b0c4d8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* SAMPLE BANNER */
+  .sample-banner {
+    background: var(--red);
+    color: white;
+    text-align: center;
+    padding: 0.6rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  /* HEADER */
+  .article-header {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 4rem 2rem 3rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: block;
+    margin-bottom: 1.2rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+  }
+
+  .dek {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: #3d3530;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+
+  .byline {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .byline span { color: var(--ink); }
+
+  /* BODY */
+  .article-body {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  p {
+    margin-bottom: 1.5rem;
+  }
+
+  /* DROP CAP */
+  .drop-cap::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.2rem;
+    font-weight: 900;
+    float: left;
+    line-height: 0.78;
+    margin: 0.08em 0.1em 0 0;
+    color: var(--ink);
+  }
+
+  /* SUBHEADS */
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    font-style: italic;
+    margin: 3rem 0 1rem;
+    color: var(--ink);
+    border-top: 1px solid var(--rule);
+    padding-top: 2rem;
+  }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    border-left: 3px solid var(--red);
+    margin: 2.5rem 0 2.5rem -1.5rem;
+    padding: 0.5rem 0 0.5rem 1.75rem;
+  }
+
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--ink);
+    margin-bottom: 0;
+  }
+
+  /* INLINE CITATION */
+  .cite {
+    font-size: 0.7rem;
+    vertical-align: super;
+    color: var(--red);
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .cite:hover { color: var(--blue); text-decoration: underline; }
+
+  /* WIDE EMBEDS */
+  .wide-embed {
+    max-width: 860px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  /* MAP FIGURES */
+  .map-figure {
+    background: #f5f0e8;
+    border: 3px solid #f5f0e8;
+    outline: 1px solid var(--rule);
+    overflow: hidden;
+  }
+
+  .map-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 1rem 1.25rem 0.25rem;
+    color: var(--ink);
+  }
+
+  .map-subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 1.25rem 0.75rem;
+  }
+
+  .map-caption {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-style: italic;
+    padding: 0.75rem 1.25rem 1rem;
+    border-top: 1px solid var(--rule);
+    line-height: 1.5;
+  }
+
+  /* SVG MAP SHARED */
+  .map-svg-wrap {
+    padding: 0.5rem 1.25rem;
+    background: #e8e2d8;
+  }
+
+  /* TIMELINE EMBED */
+  .timeline-embed {
+    border: 1px solid var(--rule);
+    background: white;
+    padding: 1.5rem 1.75rem;
+  }
+
+  .timeline-embed-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--ink);
+  }
+
+  .timeline-embed-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .tl-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f0ece4;
+    align-items: flex-start;
+  }
+  .tl-item:last-child { border-bottom: none; }
+
+  .tl-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--red);
+    min-width: 80px;
+    font-weight: 500;
+    padding-top: 0.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .tl-text {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: #3d3530;
+  }
+
+  .tl-text strong {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 0.15rem;
+  }
+
+  /* GOVS TABLE */
+  .govs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+    margin-top: 0.75rem;
+  }
+
+  .govs-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--rule);
+    background: #faf7f2;
+  }
+
+  .govs-table td {
+    padding: 0.65rem 0.75rem;
+    border-bottom: 1px solid #f0ece4;
+    vertical-align: top;
+    line-height: 1.4;
+    color: #3d3530;
+  }
+
+  .govs-table tr:hover td { background: #f7f3ec; }
+
+  .govs-table .name-col {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+
+  .status-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .convicted { background: rgba(181,42,28,0.1); color: var(--red); border: 1px solid rgba(181,42,28,0.3); }
+  .pled { background: rgba(181,42,28,0.08); color: #8b3a2a; border: 1px solid rgba(181,42,28,0.2); }
+  .uncharged { background: rgba(74,85,104,0.08); color: #4a5568; border: 1px solid rgba(74,85,104,0.25); }
+
+  /* SOURCES */
+  .sources-section {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 2rem 3rem;
+    border-top: 2px solid var(--rule);
+  }
+
+  .sources-section h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .source-item {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #3d3530;
+  }
+
+  .source-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--red);
+    min-width: 22px;
+    flex-shrink: 0;
+    padding-top: 0.1rem;
+  }
+
+  .source-item a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  .source-item a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 680px) {
+    .pull-quote { margin-left: 0; }
+    .tl-date { min-width: 60px; font-size: 0.6rem; }
+    h1 { font-size: 2rem; }
+    .drop-cap::first-letter { font-size: 3.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sample-banner">★ Unpublished Writing Sample — Not for Distribution ★</div>
+
+<!-- HEADER -->
+<header class="article-header">
+  <span class="kicker">Essay · Gulf South · Oil &amp; Power</span>
+  <h1>Deepwaters<br>Still Run Deep</h1>
+  <p class="dek">Fifteen years after the worst oil spill in American history, Alabama's political class has never stopped treating the Gulf of Mexico as a private slush fund. Now BP is back, and going deeper.</p>
+  <p class="byline">By <span>Troy W. Ferguson</span> &nbsp;·&nbsp; March 2026</p>
+</header>
+
+<!-- BODY -->
+<main class="article-body">
+
+  <p class="drop-cap">On April 20, 2010, a blowout on the Deepwater Horizon rig, leased by BP and anchored fifty miles off the Louisiana coast, killed eleven workers and cracked open the floor of the Gulf of Mexico. For eighty-seven days, crude oil gushed into federal waters at a rate that eventually totaled nearly five million barrels. The oil reached the beaches of Alabama, Florida, Mississippi, and Louisiana. It killed dolphins and sea turtles. It poisoned fishing grounds. It coated the white sand of Gulf Shores and Orange Beach, two towns whose entire economies rest on the simple promise that the water is clean.<a href="https://www.nrdc.org/stories/deepwater-horizon-oil-spill-facts" target="_blank" class="cite">[1]</a></p>
+
+  <p>Congress held hearings. BP paid billions. A new regulatory agency, the Bureau of Safety and Environmental Enforcement, was created from the wreckage of its captured predecessor. The Obama administration spent five years drafting new rules governing blowout preventers, real-time well monitoring, and the cementing practices that had failed so catastrophically under the Gulf's surface.<a href="https://eelp.law.harvard.edu/tracker/bsee-blowout-preventer-and-well-control-rule/" target="_blank" class="cite">[2]</a> There was, briefly, the sensation that something had changed.</p>
+
+  <p>It hadn't. Not really. Not in Alabama, where the settlement money flowed in and immediately became the subject of its own corruption story. And not in Washington, where the rules written in blood and crude have been loosened, tightened, and loosened again depending on whose party controls the Interior Department. Fifteen years after the disaster, BP has won federal approval for its first entirely new Gulf oilfield since Deepwater Horizon. The Kaskida project sits in water even <em>deeper</em> than the Macondo well and relies on technology the company has admitted it doesn't fully know how to operate. The deepwater is open for business again, and the South is once more holding the tab.</p>
+
+  <div class="pull-quote">
+    <p>"The problem of money coming in for one purpose, but being diverted to somebody's pet project, is a frequent problem in Alabama government. It needs to stop."</p>
+  </div>
+
+  <p>That is Alabama State Auditor Jim Zeigler, speaking in early 2016 about Gov. Robert Bentley's decision to use BP settlement grant money to renovate a derelict six-bedroom beach mansion on the Fort Morgan Peninsula. The mansion had been boarded up not since the oil spill, but since Hurricane Danny struck the Gulf Coast in 1997.<a href="https://news.vice.com/en_us/article/pa4z8y/alabamas-governor-uses-oil-spill-funds-to-renovate-coastal-mansion" target="_blank" class="cite">[3]</a> The renovation cost up to $1.8 million. The state's auditor called it inappropriate. The citizens of Alabama, Zeigler noted, generated more public response on this issue than anything he'd seen from his office. When confronted about the diversion, Bentley said simply: "The needs have been met along the coast."</p>
+
+  <p>The timing had a certain dark comedy to it. Bentley had just lost his own personal beach house in a divorce from his wife of fifty years, a split driven, it would later emerge, by an affair with his top political adviser, Rebekah Mason. The state mansion he renovated with oil-spill money? He renovated it the same month his divorce was finalized.<a href="https://news.vice.com/en_us/article/vb8j5m/alabama-taps-bp-spill-funds-for-another-upscale-beach-project" target="_blank" class="cite">[4]</a> He would eventually resign in April 2017, booked into the Montgomery County Jail, pleading guilty to two campaign finance misdemeanors tied to using public resources to cover up the affair. His thirty-day jail sentence was suspended. He served no time.</p>
+
+  <h2>The Money and the Men</h2>
+
+  <p>Bentley's story is Alabama's story, compressed: a politician who campaigns on morality and self-sacrifice, who uses public funds as a private reserve, who faces something close to accountability but never quite arrives at it, and who is succeeded by the next scandal before the lessons of the last one calcify into anything structural. He was not the first. Alabama has the distinction, worn with something between embarrassment and resignation, of having seen three of its last six governors convicted of crimes.<a href="https://birminghamwatch.org/2017/04/12/alabamas-political-corruption-three-governors-and-one-house-speaker-convicted-gives-state-a-reputation/" target="_blank" class="cite">[5]</a></p>
+
+</main>
+
+<!-- TIMELINE EMBED — WIDE -->
+<div class="wide-embed">
+  <span class="section-label">Timeline</span>
+  <div class="timeline-embed">
+    <div class="timeline-embed-title">The Bentley–BP Scandal: A Chronology</div>
+    <div class="timeline-embed-sub">From blowout to resignation, 2010–2017</div>
+
+    <div class="tl-item">
+      <span class="tl-date">Apr 2010</span>
+      <div class="tl-text"><strong>Deepwater Horizon explodes</strong>Eleven workers killed; 4.9 million barrels of oil enter the Gulf of Mexico over 87 days. Alabama's coast is directly hit. BP begins paying out billions in settlement funds to affected states.</div>
+    </div>
+    <div class="tl-item">
+      <span class="tl-date">Nov 2010</span>
+      <div class="tl-text"><strong>Bentley elected governor</strong>Wins by 230,000 votes, the largest margin for a Republican in an open Alabama gubernatorial race. Campaigns on Christian values and clean government.</div>
+    </div>
+    <div class="tl-item">
+      <span class="tl-date">Oct 2015</span>
+      <div class="tl-text"><strong>Alabama receives $2.3B BP settlement</strong>Intended for environmental restoration and economic recovery along the Gulf Coast. Coastal communities expect direct remediation of damage still affecting fisheries and barrier islands.</div>
+    </div>
+    <div class="tl-item">
+      <span class="tl-date">Dec 2015</span>
+      <div class="tl-text"><strong>BP funds used to renovate Bentley's beach mansion</strong>The governor's office quietly begins renovating a state beach retreat, boarded up since 1997's Hurricane Danny and not the 2010 spill, using BP settlement grant money. Cost: up to $1.8 million. The same month, Bentley's divorce is finalized.</div>
+    </div>
+    <div class="tl-item">
+      <span class="tl-date">Jan 2016</span>
+      <div class="tl-text"><strong>State auditor condemns the diversion</strong>Auditor Zeigler calls the use of BP funds "inappropriate," generating the highest public response his office has recorded.</div>
+    </div>
+    <div class="tl-item">
+      <span class="tl-date">Mar 2016</span>
+      <div class="tl-text"><strong>Second diversion: a luxury hotel</strong>Alabama plans to use $58–86 million in BP natural resource restoration funds to build a 350-room resort hotel at Gulf State Park. Environmental groups sue. A federal judge later blocks the expenditure, finding the state used "circular logic."</div>
+    </div>
+    <div class="tl-item">
+      <span class="tl-date">Mar 2016</span>
+      <div class="tl-text"><strong>The affair breaks publicly</strong>Fired ALEA director Spencer Collier goes public. Recordings of Bentley making explicit remarks to adviser Rebekah Mason are released. Campaign finance records show Bentley used state resources to conceal the relationship.</div>
+    </div>
+    <div class="tl-item">
+      <span class="tl-date">Apr 2017</span>
+      <div class="tl-text"><strong>Booked, pleads guilty, resigns: one afternoon</strong>Bentley enters Montgomery County Jail, pleads guilty to two misdemeanors, and resigns. A 30-day jail sentence is suspended. He serves no time. Lt. Gov. Kay Ivey is sworn in within hours.</div>
+    </div>
+  </div>
+</div>
+
+<main class="article-body">
+
+  <p>Bentley sits alongside Guy Hunt, who was convicted in 1993 of illegally transferring inaugural funds to personal use and forced from office immediately; and Don Siegelman, who served as governor from 1999 to 2003 and was later convicted of federal bribery charges for accepting $500,000 from HealthSouth CEO Richard Scrushy in exchange for a seat on a state board.<a href="https://en.wikipedia.org/wiki/Don_Siegelman" target="_blank" class="cite">[6]</a> Siegelman served time in federal prison. His case remains deeply contested: more than 100 former attorneys general, Republican and Democrat alike, alleged prosecutorial misconduct, and the U.S. House Judiciary Committee investigated whether the prosecution was politically motivated.<a href="https://en.wikipedia.org/wiki/Don_Siegelman" target="_blank" class="cite">[6]</a></p>
+
+  <p>Then there is Bob Riley, who governed from 2003 to 2011, who left office without charges, and who is remembered by his own lobbying firm, at least, as presiding over "the only administration in over 100 years to be completely free of scandal or impropriety."<a href="https://www.bobrileyandassociates.com/our-team" target="_blank" class="cite">[7]</a> Riley was peripherally connected to the Jack Abramoff influence-peddling scandal through a former aide, and casino operators who came to trial in federal court badly wanted him on the witness stand, alleging he and his associates had received millions in unreported contributions from gambling interests. He was excused from testifying, conveniently, after a motorcycle crash in Alaska left him temporarily incapacitated.<a href="https://www.justice-integrity.org/284-justice-department-irregularities-in-alabama-continue-disgrace" target="_blank" class="cite">[8]</a> Whether he was genuinely clean or just fortunate depends on who you ask in Montgomery.</p>
+
+</main>
+
+<!-- GOV TABLE EMBED — WIDE -->
+<div class="wide-embed">
+  <span class="section-label">Record</span>
+  <div class="timeline-embed">
+    <div class="timeline-embed-title">Alabama Governors &amp; Legal Trouble, 1987–2017</div>
+    <div class="timeline-embed-sub">Three of the last six governors faced criminal conviction</div>
+    <table class="govs-table">
+      <thead>
+        <tr>
+          <th>Governor</th>
+          <th>Term</th>
+          <th>Charge / Allegation</th>
+          <th>Status</th>
+          <th>Outcome</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="name-col">Guy Hunt</td>
+          <td>1987–1993</td>
+          <td>Ethics violation; misuse of inaugural funds for personal use</td>
+          <td><span class="status-pill convicted">Convicted</span></td>
+          <td>Resigned immediately. Fined $211K, 5 yrs probation. Pardoned 1998.</td>
+        </tr>
+        <tr>
+          <td class="name-col">Don Siegelman</td>
+          <td>1999–2003</td>
+          <td>Federal bribery, conspiracy, mail fraud, obstruction of justice</td>
+          <td><span class="status-pill convicted">Convicted</span></td>
+          <td>78 months federal prison. Released on probation Feb. 2017. Case contested.</td>
+        </tr>
+        <tr>
+          <td class="name-col">Bob Riley</td>
+          <td>2003–2011</td>
+          <td>Peripheral Abramoff ties; alleged $27M in unreported gambling contributions; sought as witness in federal trial</td>
+          <td><span class="status-pill uncharged">Never Charged</span></td>
+          <td>Left office 2011. Founded lobbying firm. Excused from testifying after motorcycle crash.</td>
+        </tr>
+        <tr>
+          <td class="name-col">Robert Bentley</td>
+          <td>2011–2017</td>
+          <td>Campaign finance violations; misuse of state resources; diversion of BP oil spill funds</td>
+          <td><span class="status-pill pled">Pleaded Guilty</span></td>
+          <td>Two misdemeanors. 30-day sentence suspended. Lifetime ban from Alabama office.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<main class="article-body">
+
+  <h2>The Geography of Extraction</h2>
+
+  <p>It is worth pausing to look at a map. The Central Gulf of Mexico, the area roughly south of Louisiana, Mississippi, and Alabama, contains thousands of active wells and hundreds of drilling platforms.<a href="https://www.pbs.org/newshour/politics/trump-administration-proposes-new-oil-drilling-off-the-coasts-of-california-and-florida" target="_blank" class="cite">[9]</a> It is the engine of American offshore oil production, generating roughly 14 percent of U.S. output as of 2024.<a href="https://news.oilandgaswatch.org/post/even-with-gulf-drilling-down-trump-administration-weighs-expanding-drilling-to-new-coasts" target="_blank" class="cite">[10]</a> The Eastern Gulf, adjacent to the Florida Panhandle and offshore Alabama, has been under a federal drilling moratorium since 1995. The question, in every presidential administration since, is how long that protection holds.</p>
+
+  <p>The story of Gulf rig production since the spill is not one of expansion but of consolidation and drift toward deeper water. Natural gas production in the Gulf has dropped from more than five trillion cubic feet in 2001 to under one trillion cubic feet in the 2020s.<a href="https://news.oilandgaswatch.org/post/even-with-gulf-drilling-down-trump-administration-weighs-expanding-drilling-to-new-coasts" target="_blank" class="cite">[10]</a> Even oil production in 2024 was lower than it was in 2019. The number of active drilling rigs is roughly half what it was a year ago: approximately ten rigs operating as of mid-2025, compared to nineteen a year prior.<a href="https://news.oilandgaswatch.org/post/even-with-gulf-drilling-down-trump-administration-weighs-expanding-drilling-to-new-coasts" target="_blank" class="cite">[10]</a> The industry has effectively migrated inland: horizontal drilling and hydraulic fracturing have made shale basins in Texas, North Dakota, and Pennsylvania far more attractive. The Gulf's remaining value is concentrated in the deepwater and the ultradeepwater, where the geology is richer, the pressures are more extreme, and the consequences of failure are harder to contain.</p>
+
+</main>
+
+<!-- MAP 1 — CURRENT DRILLING -->
+<div class="wide-embed">
+  <span class="section-label">Visualization 1 of 2</span>
+  <div class="map-figure">
+    <div class="map-title">Active Offshore Drilling: The Gulf of Mexico</div>
+    <div class="map-subtitle">Central Gulf concentration · Eastern Gulf moratorium · New proposed zones</div>
+    <div class="map-svg-wrap">
+      <svg viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+  <defs>
+    <pattern id="hatch_em" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#b52a1c" stroke-width="0.9" opacity="0.35"/>
+    </pattern>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Land background -->
+  <rect width="760" height="440" fill="#c8dff0"/>
+
+
+  <!-- Ocean polygon (south of coast) -->
+  <path d="M760,0 L774.1,24.9 L771.9,31.7 L770.2,28.8 L770.6,26.7 L770.6,24.9 L768.5,28.7 L770.6,34.2 L768.8,36.2 L763.2,40.1 L760.1,40.7 L756.6,41.9 L755.5,45.7 L750.8,49.2 L748.2,50.8 L743.1,49.9 L744.7,53.2 L742.8,55.9 L739.6,57.8 L735.7,59.1 L733.4,59.0 L731.6,59.6 L730.1,61.3 L726.4,62.8 L722.5,62.0 L718.3,61.5 L715.7,62.3 L719.8,63.9 L722.1,66.1 L721.6,69.1 L720.5,70.2 L718.0,71.8 L716.9,71.6 L716.2,70.1 L715.3,67.2 L714.1,67.9 L713.9,69.2 L712.8,69.7 L709.3,65.0 L709.4,68.6 L710.7,71.3 L712.0,72.7 L713.1,73.5 L713.5,74.8 L711.0,77.8 L709.7,78.6 L707.5,79.1 L706.1,81.0 L706.5,82.6 L704.5,86.1 L699.8,88.3 L698.3,88.2 L697.1,88.9 L697.8,90.5 L699.1,91.7 L698.9,92.7 L697.6,94.1 L695.3,94.6 L693.9,96.2 L694.3,97.8 L695.1,98.6 L695.0,100.2 L692.0,101.6 L691.5,103.1 L692.9,103.6 L693.9,103.1 L694.7,103.4 L693.0,105.9 L691.5,107.4 L690.1,110.1 L686.7,110.9 L686.8,111.8 L688.7,112.6 L690.4,114.6 L687.3,118.5 L685.4,118.2 L684.3,117.3 L683.6,120.4 L683.9,122.0 L683.2,125.3 L682.1,129.3 L681.2,130.9 L681.4,134.0 L681.9,137.0 L683.8,140.8 L686.6,156.3 L688.4,161.7 L691.8,176.3 L697.5,190.4 L705.5,207.5 L718.6,228.1 L720.1,231.0 L718.4,233.6 L717.9,236.1 L717.7,240.1 L718.1,243.8 L719.7,248.5 L722.8,255.6 L721.1,254.2 L716.7,244.0 L716.2,238.0 L716.9,229.5 L715.9,229.7 L715.0,232.5 L714.6,235.7 L713.5,237.0 L712.0,232.1 L712.1,229.8 L713.6,227.2 L713.2,226.2 L710.7,224.9 L710.1,222.8 L710.4,220.7 L709.0,219.6 L707.9,219.7 L708.6,224.8 L709.9,227.9 L711.4,235.5 L713.8,240.1 L715.2,243.8 L731.7,284.6 L735.7,289.9 L737.1,293.6 L738.6,301.4 L738.9,311.4 L736.2,329.8 L735.5,342.2 L735.3,341.8 L735.0,340.5 L734.3,340.4 L732.0,346.0 L728.8,351.2 L727.7,359.2 L726.3,363.3 L721.6,367.5 L718.8,367.4 L711.8,370.6 L706.9,369.8 L701.0,371.6 L697.2,371.4 L695.0,367.6 L695.4,365.9 L696.2,364.2 L697.8,363.8 L702.8,367.7 L703.8,366.1 L702.3,364.1 L699.3,363.0 L697.1,361.8 L692.7,352.7 L688.1,346.5 L687.3,342.3 L679.4,339.8 L673.7,335.9 L669.9,329.1 L667.8,317.0 L665.2,315.6 L664.1,314.7 L666.6,310.2 L669.3,306.5 L667.2,307.4 L665.7,308.8 L663.7,312.1 L662.3,312.6 L661.0,312.1 L659.5,305.7 L659.9,297.9 L662.0,295.0 L658.8,294.8 L655.6,296.0 L656.0,298.6 L655.6,300.1 L653.0,299.6 L651.2,298.8 L648.8,296.0 L645.3,290.8 L638.4,276.5 L637.0,274.5 L634.6,272.4 L635.8,271.8 L637.7,271.3 L642.2,264.9 L645.7,261.0 L647.0,258.3 L646.7,257.1 L645.2,255.5 L643.2,256.9 L642.2,256.6 L640.0,253.1 L637.7,252.2 L636.2,252.9 L637.9,255.7 L639.3,256.7 L638.7,260.8 L638.2,262.1 L636.8,263.3 L634.6,262.6 L633.7,263.6 L632.4,262.5 L631.1,260.8 L629.7,257.9 L633.4,241.5 L636.8,231.0 L637.2,219.2 L637.5,217.4 L637.2,214.2 L632.5,207.4 L612.2,190.6 L596.5,170.7 L582.9,163.2 L572.5,164.9 L570.8,166.4 L570.0,168.3 L570.7,170.6 L569.7,171.5 L566.9,171.4 L563.2,171.9 L553.4,177.1 L549.9,176.9 L546.8,178.3 L544.4,179.3 L538.4,179.9 L533.2,181.0 L531.0,180.4 L529.6,177.3 L529.6,174.2 L530.7,176.6 L532.5,178.5 L533.3,177.8 L533.6,176.1 L531.8,172.8 L526.1,168.6 L519.3,162.5 L521.3,162.7 L521.8,161.4 L519.7,159.7 L520.7,157.7 L522.1,155.6 L519.3,155.9 L516.8,157.4 L516.6,159.2 L516.2,160.6 L514.8,160.4 L512.3,158.7 L499.8,153.7 L489.0,150.9 L497.3,149.6 L501.8,150.6 L501.4,149.1 L500.2,148.2 L496.6,146.9 L492.1,147.4 L489.1,146.9 L486.2,148.0 L483.1,149.8 L480.2,150.7 L468.9,152.0 L459.8,153.4 L461.4,152.0 L462.9,151.0 L468.2,149.6 L469.1,146.6 L467.8,143.7 L466.4,144.4 L464.9,146.6 L463.1,145.0 L461.1,145.0 L460.5,148.6 L457.9,151.0 L456.7,153.4 L449.2,155.3 L448.2,154.6 L450.4,152.4 L450.3,151.1 L447.6,152.2 L443.4,156.5 L428.5,157.9 L429.2,157.0 L432.5,156.8 L437.0,155.4 L436.0,153.0 L434.3,150.6 L432.7,150.3 L431.6,148.8 L431.8,144.1 L430.8,141.3 L428.3,138.5 L427.4,139.1 L425.7,143.9 L424.2,150.2 L423.5,152.2 L419.0,152.4 L415.1,152.0 L401.7,152.8 L396.8,150.6 L394.7,150.1 L393.5,150.2 L387.7,152.2 L381.0,153.7 L379.4,153.2 L377.2,153.1 L372.4,158.3 L366.8,160.7 L352.5,156.3 L349.0,152.9 L345.9,152.2 L342.0,151.7 L337.9,156.0 L334.7,161.7 L339.7,164.9 L343.9,166.4 L350.9,165.1 L354.9,162.4 L358.1,162.4 L359.6,161.9 L361.0,160.4 L363.7,161.6 L363.9,162.7 L361.9,164.3 L359.5,165.7 L358.0,167.3 L360.8,170.6 L365.1,171.7 L366.8,171.2 L367.8,167.5 L370.4,165.2 L374.1,165.7 L373.7,167.2 L374.1,168.5 L375.8,170.9 L375.6,174.4 L375.9,175.2 L372.0,176.6 L369.0,177.2 L366.7,179.2 L367.9,180.3 L365.5,181.3 L364.0,180.8 L363.2,181.3 L362.9,182.4 L361.6,183.6 L363.4,186.9 L367.1,189.1 L369.7,191.9 L380.1,195.5 L382.7,195.5 L385.2,199.1 L387.1,200.4 L389.1,201.0 L389.0,203.5 L385.5,205.4 L384.5,207.6 L383.6,208.8 L382.1,207.2 L380.5,206.2 L376.9,209.6 L375.1,210.3 L375.9,206.6 L374.5,205.1 L372.4,201.4 L369.5,199.1 L367.2,198.3 L365.5,196.8 L363.6,196.3 L361.7,196.4 L358.8,195.5 L358.7,193.6 L357.8,192.1 L355.6,190.3 L344.6,187.0 L344.5,188.4 L345.3,189.4 L346.9,190.1 L348.7,191.5 L348.7,195.4 L347.9,197.1 L347.6,199.5 L346.9,201.9 L345.5,203.8 L342.5,205.1 L341.1,204.0 L339.0,198.8 L335.9,197.1 L331.2,197.0 L327.9,198.2 L324.4,203.2 L321.5,204.0 L311.7,201.4 L300.4,197.4 L300.7,196.1 L302.5,195.7 L305.9,196.2 L305.8,194.8 L302.3,190.4 L301.7,188.3 L302.1,185.9 L301.0,185.9 L298.9,188.0 L291.7,186.2 L289.8,184.2 L285.6,178.3 L279.7,178.1 L277.0,174.5 L272.1,176.0 L269.7,177.6 L267.6,180.2 L268.4,181.6 L270.5,183.7 L269.6,184.7 L262.7,186.2 L246.7,184.5 L241.9,182.9 L235.8,179.6 L227.1,176.9 L222.8,176.5 L218.8,177.0 L206.7,177.3 L204.0,178.0 L201.7,179.2 L200.1,177.9 L199.4,175.6 L200.8,175.2 L202.4,173.9 L203.8,171.2 L203.9,169.6 L202.9,168.5 L201.1,168.5 L197.0,175.4 L199.3,179.2 L199.1,180.6 L191.0,181.4 L172.5,189.2 L165.3,193.4 L165.6,192.0 L174.3,186.6 L171.3,185.7 L166.3,187.1 L164.5,186.6 L166.6,182.1 L166.0,178.1 L162.4,178.0 L160.1,181.1 L158.6,181.1 L156.6,179.7 L155.1,180.1 L156.2,187.2 L158.4,190.2 L160.3,194.0 L155.2,198.7 L150.4,202.5 L150.0,206.2 L145.3,211.0 L140.8,213.8 L130.4,220.2 L127.3,221.6 L122.7,224.6 L116.1,226.8 L109.9,230.4 L107.8,231.0 L111.7,227.9 L116.5,224.9 L112.4,225.4 L106.2,224.0 L102.3,223.9 L102.3,225.0 L99.4,226.5 L96.4,224.3 L95.2,222.7 L94.5,221.4 L93.2,221.1 L91.9,221.7 L96.4,231.0 L98.4,231.3 L100.5,232.3 L97.8,234.4 L95.0,236.1 L90.5,237.1 L86.7,233.7 L85.9,238.0 L85.5,242.2 L84.2,243.3 L82.1,244.9 L81.1,243.7 L80.6,242.0 L79.3,243.5 L77.3,244.6 L74.3,244.8 L71.9,245.4 L71.9,247.1 L72.4,248.9 L76.6,247.5 L75.1,252.0 L71.3,256.5 L68.1,257.5 L63.3,256.9 L62.2,257.3 L61.1,258.2 L66.7,265.2 L63.2,275.8 L60.8,279.6 L59.2,280.1 L57.6,280.2 L51.4,276.8 L48.0,274.2 L51.0,281.3 L59.1,283.4 L59.5,286.1 L59.4,288.4 L57.8,291.1 L56.3,294.7 L57.4,297.2 L58.7,303.4 L59.8,306.3 L60.9,314.9 L62.3,318.6 L69.6,332.4 L72.2,332.5 L72.4,334.0 L72.3,336.9 L71.6,345.5 L69.2,352.6 L61.5,367.4 L58.1,376.5 L51.9,402.7 L50.0,419.9 L49.6,428.0 L49.0,429.1 L49.6,430.3 L48.2,448.1 L0,440 L0,0 L760,0 Z" fill="#e8e2d8" stroke="none" fill-rule="nonzero"/>
+
+  <!-- Mexico / Gulf south land -->
+  <path d="M48.9,463.4 L48.4,465.7 L46.1,470.3 L44.5,476.7 L45.2,479.5 L45.1,481.5 L47.5,491.2 L48.2,498.5 L55.2,510.9 L59.1,515.3 L63.9,519.0 L65.7,521.1 L62.9,522.8 L63.0,521.0 L60.1,519.1 L54.9,512.9 L48.6,501.7 L53.1,519.5 L54.6,522.3 L55.9,523.5 L405.9,522.2 L410.6,520.9 L419.0,521.0 L421.5,520.5 L422.1,520.0 L422.1,519.5 L423.6,519.0 L428.4,519.5 L437.5,521.7 L440.9,522.3 L461.2,523.2 L460.4,521.9 L459.5,521.9 L458.0,522.7 L456.2,522.7 L452.7,521.7 L453.4,520.7 L456.9,520.8 L459.3,520.3 L462.6,518.7 L466.3,519.9" fill="#c8dff0" stroke="#a8b8c8" stroke-width="0.8"/>
+  <path d="M668.9,454.1 L679.1,456.0 L687.4,455.5 L691.3,454.4 L690.9,455.5 L694.6,458.4 L696.0,458.7 L701.3,457.2 L700.2,499.8 L698.3,498.7 L696.9,497.2 L696.0,494.2 L694.3,491.6 L693.7,494.4 L692.9,496.9 L690.5,498.3 L687.7,498.5 L684.3,495.2 L669.7,494.4 L668.5,493.9 L663.7,490.7 L659.5,486.6 L663.6,485.2 L672.0,483.3 L673.8,482.0 L674.9,480.5 L674.2,478.1 L672.5,476.3 L670.7,475.3 L668.9,474.7 L666.4,474.4 L633.8,474.0 L632.0,475.2 L629.0,477.9 L623.3,481.3 L619.4,484.8 L618.0,486.7 L616.3,488.0 L612.2,490.2 L608.8,493.5 L604.6,495.0 L602.4,494.1 L600.1,494.1 L598.6,495.0 L596.8,495.3 L588.5,495.8 L587.2,496.6 L586.1,499.0 L584.7,503.7 L583.4,505.2 L579.2,505.8 L575.3,507.1 L567.2,511.6 L565.1,512.3 L565.5,509.0 L565.1,505.8 L562.8,505.7 L560.1,506.2 L558.0,507.1 L554.0,509.4 L552.0,510.1 L550.0,508.9 L550.5,507.3 L563.8,501.6 L565.3,501.1 L567.7,501.6 L570.1,501.4 L571.9,499.8 L569.7,492.1 L570.5,487.0 L573.6,483.0 L579.9,476.9 L582.9,475.0 L613.6,462.3 L616.7,461.6 L636.6,459.1 L639.7,458.2 L649.0,454.5 L658.6,453.0 L668.9,454.1" fill="#c8dff0" stroke="#a8b8c8" stroke-width="0.8"/>
+
+  <!-- Grid lines -->
+  <line x1="39.0" y1="0" x2="39.0" y2="440" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="39.0" y="436" text-anchor="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">-98°</text>
+        <line x1="116.9" y1="0" x2="116.9" y2="440" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="116.9" y="436" text-anchor="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">-96°</text>
+        <line x1="194.9" y1="0" x2="194.9" y2="440" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="194.9" y="436" text-anchor="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">-94°</text>
+        <line x1="272.8" y1="0" x2="272.8" y2="440" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="272.8" y="436" text-anchor="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">-92°</text>
+        <line x1="350.8" y1="0" x2="350.8" y2="440" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="350.8" y="436" text-anchor="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">-90°</text>
+        <line x1="428.7" y1="0" x2="428.7" y2="440" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="428.7" y="436" text-anchor="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">-88°</text>
+        <line x1="506.7" y1="0" x2="506.7" y2="440" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="506.7" y="436" text-anchor="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">-86°</text>
+        <line x1="584.6" y1="0" x2="584.6" y2="440" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="584.6" y="436" text-anchor="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">-84°</text>
+        <line x1="662.6" y1="0" x2="662.6" y2="440" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="662.6" y="436" text-anchor="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">-82°</text>
+        <line x1="740.5" y1="0" x2="740.5" y2="440" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="740.5" y="436" text-anchor="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">-80°</text>
+        <line x1="0" y1="419.0" x2="760" y2="419.0" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="4" y="419.0" dominant-baseline="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">24°N</text>
+        <line x1="0" y1="335.2" x2="760" y2="335.2" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="4" y="335.2" dominant-baseline="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">26°N</text>
+        <line x1="0" y1="251.4" x2="760" y2="251.4" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="4" y="251.4" dominant-baseline="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">28°N</text>
+        <line x1="0" y1="167.6" x2="760" y2="167.6" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="4" y="167.6" dominant-baseline="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">30°N</text>
+        <line x1="0" y1="83.8" x2="760" y2="83.8" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,3"/>
+        <text x="4" y="83.8" dominant-baseline="middle" font-size="7" fill="#8aa0b8" font-family="DM Mono,monospace">32°N</text>
+
+<!-- Small Florida islands / keys -->
+  <path d="M688.5,391.8 L687.3,392.7 L686.7,392.4 L686.7,391.1 L685.2,388.3 L685.2,387.6 L688.9,390.3 L689.1,391.1 L688.5,391.8" fill="#c8dff0" stroke="#98aabf" stroke-width="0.8"/><path d="M708.2,385.4 L707.5,385.4 L707.8,384.7 L709.3,383.6 L709.9,384.0 L709.9,384.7 L708.2,385.4" fill="#c8dff0" stroke="#98aabf" stroke-width="0.8"/><path d="M715.6,381.2 L714.6,381.4 L716.2,379.6 L716.6,379.7 L715.6,381.2" fill="#c8dff0" stroke="#98aabf" stroke-width="0.8"/><path d="M699.8,389.0 L698.1,390.0 L696.2,389.3 L698.2,388.3 L704.2,387.2 L702.0,388.5 L699.8,389.0" fill="#c8dff0" stroke="#98aabf" stroke-width="0.8"/><path d="M679.4,393.9 L676.9,394.3 L679.0,392.7 L679.7,390.2 L680.8,392.1 L680.8,393.3 L679.4,393.9" fill="#c8dff0" stroke="#98aabf" stroke-width="0.8"/><path d="M671.0,396.2 L670.0,396.3 L669.9,395.7 L671.6,394.9 L672.8,394.9 L672.7,395.8 L671.0,396.2" fill="#c8dff0" stroke="#98aabf" stroke-width="0.8"/><path d="M549.2,182.6 L545.3,184.1 L541.1,183.0 L543.7,182.8 L545.6,183.2 L550.5,181.1 L553.0,179.5 L555.9,178.8 L549.2,182.6" fill="#c8dff0" stroke="#98aabf" stroke-width="0.8"/><path d="M685.2,126.9 L683.5,137.1 L682.8,133.5 L682.6,130.0 L683.9,128.0 L685.2,126.9" fill="#c8dff0" stroke="#98aabf" stroke-width="0.8"/>
+
+  <!-- Eastern Gulf moratorium zone -->
+  <polygon points="448.2,150.9 526.2,167.6 584.6,188.6 643.1,230.5 682.1,293.3 693.7,356.2 701.5,398.1 643.1,419.0 604.1,410.7 565.1,385.5 526.2,356.2 487.2,314.3 448.2,272.4 436.5,209.5 448.2,150.9" fill="url(#hatch_em)" stroke="#b52a1c" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.85"/>
+
+  <!-- Central Gulf active drilling platforms -->
+  <circle cx="388.2" cy="205.3" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="394.4" cy="215.8" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="410.0" cy="207.4" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="403.8" cy="203.2" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="385.1" cy="211.6" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="400.7" cy="201.1" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="406.9" cy="213.7" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="391.3" cy="207.4" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="346.9" cy="237.2" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="354.7" cy="251.8" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="374.2" cy="240.1" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="366.4" cy="234.2" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="343.0" cy="246.0" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="362.5" cy="231.3" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="370.3" cy="248.9" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="350.8" cy="240.1" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="358.6" cy="237.2" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="374.2" cy="251.8" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="366.4" cy="246.0" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="354.7" cy="234.2" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="278.3" cy="246.4" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="287.6" cy="259.0" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="311.0" cy="248.9" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="301.7" cy="243.9" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="273.6" cy="253.9" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="297.0" cy="241.4" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="306.3" cy="256.5" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="283.0" cy="248.9" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="292.3" cy="246.4" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="311.0" cy="259.0" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="244.0" cy="268.2" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="250.2" cy="278.7" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="265.8" cy="270.3" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="259.6" cy="266.1" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="240.9" cy="274.5" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="256.5" cy="264.0" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="262.7" cy="276.6" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="206.2" cy="290.0" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="211.6" cy="298.4" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="225.3" cy="291.7" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="219.8" cy="288.3" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="203.4" cy="295.0" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="429.5" cy="185.2" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="434.2" cy="193.6" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="445.9" cy="186.9" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="441.2" cy="183.5" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="427.2" cy="190.2" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="438.9" cy="181.9" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="399.9" cy="226.3" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="406.1" cy="236.8" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="421.7" cy="228.4" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="415.5" cy="224.2" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="396.8" cy="232.6" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="412.3" cy="222.1" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="418.6" cy="234.7" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="403.0" cy="228.4" r="3" fill="#1a3a5c" opacity="0.75"/>
+        <circle cx="319.6" cy="267.4" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="327.4" cy="279.9" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="346.9" cy="269.9" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="339.1" cy="264.8" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="315.7" cy="274.9" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="335.2" cy="262.3" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="343.0" cy="277.4" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="323.5" cy="269.9" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="331.3" cy="267.4" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="302.4" cy="298.4" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="308.7" cy="306.7" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="324.3" cy="300.0" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="318.0" cy="296.7" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="299.3" cy="303.4" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="314.9" cy="295.0" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="362.1" cy="290.0" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="367.5" cy="298.4" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="381.2" cy="291.7" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="375.7" cy="288.3" r="2.5" fill="#0a2848" opacity="0.75"/>
+        <circle cx="359.3" cy="295.0" r="2.5" fill="#0a2848" opacity="0.75"/>
+
+  <!-- Kaskida marker (BP) -->
+  <circle cx="187.1" cy="289.1" r="9" fill="none" stroke="#b52a1c" stroke-width="2" stroke-dasharray="4,3"/>
+  <circle cx="187.1" cy="289.1" r="4" fill="#b52a1c" opacity="0.9"/>
+  <!-- Kaskida label -->
+  <line x1="187.1" y1="280.1" x2="157.1" y2="239.1" stroke="#b52a1c" stroke-width="0.8"/>
+  <rect x="72.1" y="214.1" width="82" height="28" fill="white" rx="2" opacity="0.92" stroke="#e0c8c8" stroke-width="0.5"/>
+  <text x="113.1" y="228.1" text-anchor="middle" font-size="7.5" fill="#b52a1c" font-weight="600" font-family="DM Mono,monospace">BP KASKIDA</text>
+  <text x="113.1" y="239.1" text-anchor="middle" font-size="6.5" fill="#b52a1c" font-family="DM Mono,monospace">Appr. Mar 2026 · 6,200ft</text>
+
+  <!-- New Orleans dot -->
+  <circle cx="348.0" cy="169.7" r="3.5" fill="#1a3a5c"/>
+  <text x="353.0" y="165.7" font-size="7.5" fill="#1a3a5c" font-family="DM Mono,monospace" font-weight="500">New Orleans</text>
+
+  <!-- Gulf Shores / Alabama coast dot -->
+  <circle cx="440.4" cy="157.1" r="3.5" fill="#1a3a5c"/>
+  <text x="445.4" y="169.1" font-size="7.5" fill="#1a3a5c" font-family="DM Mono,monospace" font-weight="500">Gulf Shores, AL</text>
+
+  <!-- Pensacola dot -->
+  <circle cx="459.1" cy="150.9" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+
+  <!-- Houston dot -->
+  <circle cx="141.5" cy="177.7" r="3" fill="#1a3a5c" opacity="0.7"/>
+  <text x="136.5" y="191.7" text-anchor="middle" font-size="7" fill="#1a3a5c" font-family="DM Mono,monospace">Houston</text>
+
+  <!-- Tampa dot -->
+  <circle cx="644.6" cy="253.9" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+  <text x="649.6" y="257.9" font-size="7" fill="#1a3a5c" font-family="DM Mono,monospace">Tampa</text>
+
+  <!-- State labels -->
+  <text x="116.9" y="146.7" text-anchor="middle" font-size="8.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="1">TEXAS</text>
+        <text x="272.8" y="125.7" text-anchor="middle" font-size="8.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="1">LOUISIANA</text>
+        <text x="389.7" y="62.9" text-anchor="middle" font-size="8.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="1">MISS.</text>
+        <text x="475.5" y="62.9" text-anchor="middle" font-size="8.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="1">ALABAMA</text>
+        <text x="604.1" y="134.1" text-anchor="middle" font-size="8.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="1">FLORIDA</text>
+        <text x="604.1" y="37.7" text-anchor="middle" font-size="8.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="1">GEORGIA</text>
+
+  <!-- Gulf of Mexico label -->
+  <text x="350.8" y="335.2" text-anchor="middle" font-size="13" fill="#4a6a8a" font-style="italic" font-family="Georgia,serif" opacity="0.8">Gulf of Mexico</text>
+
+  <!-- Mexico label -->
+  <text x="116.9" y="377.1" text-anchor="middle" font-size="9" fill="#6a6560" font-family="DM Mono,monospace" letter-spacing="1">MEXICO</text>
+
+  <!-- LEGEND -->
+  <rect x="530" y="20" width="215" height="155" fill="white" rx="3" stroke="#d4c9b5" stroke-width="1" filter="url(#shadow)"/>
+  <text x="545" y="40" font-size="8" fill="#1a1410" font-weight="600" font-family="DM Mono,monospace" letter-spacing="1">LEGEND</text>
+  <!-- Shelf well -->
+  <circle cx="552" cy="57" r="4" fill="#1a3a5c" opacity="0.75"/>
+  <text x="563" y="61" font-size="7.5" fill="#3d3530" font-family="Source Serif 4,Georgia,serif">Active platform (shelf)</text>
+  <!-- Deepwater well -->
+  <circle cx="552" cy="76" r="4" fill="#0a2848" opacity="0.8"/>
+  <text x="563" y="80" font-size="7.5" fill="#3d3530" font-family="Source Serif 4,Georgia,serif">Active platform (deepwater)</text>
+  <!-- Kaskida -->
+  <circle cx="552" cy="95" r="6" fill="none" stroke="#b52a1c" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <circle cx="552" cy="95" r="3" fill="#b52a1c"/>
+  <text x="563" y="99" font-size="7.5" fill="#b52a1c" font-family="Source Serif 4,Georgia,serif">BP Kaskida (2029)</text>
+  <!-- Moratorium zone -->
+  <rect x="545" y="108" width="13" height="13" fill="url(#hatch_em)" stroke="#b52a1c" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="563" y="118" font-size="7.5" fill="#b52a1c" font-family="Source Serif 4,Georgia,serif">Moratorium zone (since 1995)</text>
+  <text x="563" y="128" font-size="6.5" fill="#8a6a6a" font-family="Source Serif 4,Georgia,serif">  Proposed leases 2029–30</text>
+  <!-- Production note -->
+  <line x1="538" y1="140" x2="734" y2="140" stroke="#d4c9b5" stroke-width="0.5"/>
+  <text x="545" y="153" font-size="6.5" fill="#6a5a52" font-family="Source Serif 4,Georgia,serif" font-style="italic">Oil prod. ~1.8M bbl/day (2024–25)</text>
+  <text x="545" y="164" font-size="6.5" fill="#6a5a52" font-family="Source Serif 4,Georgia,serif" font-style="italic">Rig count: ~10 rigs (2025 low)</text>
+
+</svg>
+    </div>
+    <div class="map-caption">The Central Gulf of Mexico contains thousands of active wells and hundreds of platforms, generating roughly 14% of U.S. oil production. The Eastern Gulf, adjacent to the Florida Panhandle and offshore Alabama, has been under a moratorium since 1995. The Trump administration has proposed new lease sales there beginning in 2029. BP's Kaskida project, approved March 2026, sits 250 miles southwest of New Orleans in ultradeep water, deeper than the Deepwater Horizon site. Sources: BOEM active lease data; EIA; Earthjustice.</div>
+  </div>
+</div>
+
+<main class="article-body">
+
+  <h2>Drill, Baby, Drill — Again</h2>
+
+  <p>On his first day in office in January 2025, Donald Trump signed an executive order reversing the Biden administration's moratorium on new offshore leasing and pledging "energy dominance" over global markets.<a href="https://climate.law.columbia.edu/content/trump-signs-executive-order-expand-offshore-drilling-0" target="_blank" class="cite">[11]</a> By November 2025, his Interior Department had released a five-year plan proposing 34 offshore lease sales encompassing 1.27 billion acres of federal waters. The plan includes, for the first time in decades, the Eastern Gulf adjacent to Florida and Alabama, the entire California coastline, and vast swaths of Alaska.<a href="https://earthjustice.org/press/2025/trump-proposes-massive-expansion-of-offshore-drilling-in-public-waters-targets-protected-public-waters-off-california-eastern-gulf-near-florida-all-of-alaska" target="_blank" class="cite">[12]</a> Beyond the five-year plan, Trump's "One Big Beautiful Bill" would mandate thirty additional Gulf sales over fifteen years.<a href="https://earthjustice.org/brief/2025/trump-announces-unlawful-gulf-of-mexico-oil-sale-were-taking-it-to-court" target="_blank" class="cite">[13]</a></p>
+
+  <p>There is a notable irony embedded in the politics of the Eastern Gulf expansion. Florida's Republican delegation, including every member of the congressional caucus, Senators Rick Scott and Ashley Moody, and Governor Ron DeSantis, pushed back, writing in a letter to the president that oil exploration near the state's coast would be "incompatible with military operations and recreational uses" and could devastate the tourism economy that the state's leadership depends on.<a href="https://www.insurancejournal.com/news/southeast/2025/12/08/850213.htm" target="_blank" class="cite">[14]</a> Scott had helped persuade Trump to drop a similar plan during the first term. The memory of 2010, even for Republicans, has not fully faded.</p>
+
+  <p>Alabama, conspicuously, produced no such letter. Its congressional delegation, led by Sen. Tommy Tuberville and Sen. Katie Britt, has been conspicuously quiet on the question of its own coastline's exposure. Their campaign finance records show consistent and substantial support from the oil and gas industry. Both senators voted in favor of the "One Big Beautiful Bill."<a href="https://earthjustice.org/press/2025/trump-proposes-massive-expansion-of-offshore-drilling-in-public-waters-targets-protected-public-waters-off-california-eastern-gulf-near-florida-all-of-alaska" target="_blank" class="cite">[12]</a></p>
+
+  <div class="pull-quote">
+    <p>"The U.S. Gulf drillship sector is facing a lull in activity not seen since 2018, yet the administration is pushing to open a billion acres of new coastal waters."</p>
+  </div>
+
+  <p>Here is the thing about "drill, baby, drill" as a practical energy policy: the drilling has been going down, not up. The number of active rigs in the Gulf is roughly half what it was a year ago. Natural gas production in the Gulf has declined by over eighty percent since 2001. Even with Trump's expansions, the Energy Information Administration forecasts Gulf oil production to remain essentially flat through 2026, holding around 1.8 million barrels per day, roughly where it has been since 2023.<a href="https://www.eia.gov/todayinenergy/detail.php?id=63124" target="_blank" class="cite">[15]</a> The industry doesn't urgently need these new coastal zones to pump oil. It needs them as future options: long-term land grabs in waters where it has been locked out for decades. The coastal communities in between don't get a vote on the timeline.</p>
+
+  <h2>Safety Rules, Loosened and Loosened Again</h2>
+
+  <p>The Obama administration spent five years drafting the Well Control Rule, a comprehensive set of regulations built directly from the investigations into what killed eleven men and poisoned the Gulf for three months. It covered blowout preventer design, real-time monitoring of production data, third-party certification of safety equipment, and the cementing and casing practices that had been so catastrophically neglected at Macondo.<a href="https://surfrider.org/news/trump-administration-weakens-safety-rule-for-offshore-drilling" target="_blank" class="cite">[16]</a></p>
+
+  <p>During Trump's first term, BSEE rolled back 84 provisions of that rule, arguing the changes saved the industry $13 million a year without compromising safety.<a href="https://thehill.com/policy/energy-environment/408727-trump-officials-ease-offshore-drilling-safety-rule/" target="_blank" class="cite">[17]</a> Specific rollbacks included reducing the duration of a safety pressure test from thirty minutes to five, limiting third-party inspector certification requirements, and reducing which engineers needed to review critical safety diagrams. Environmental groups filed suit in 2019, arguing BSEE had "disregarded the evidence and expert findings" underpinning the original rule.<a href="https://eelp.law.harvard.edu/tracker/bsee-blowout-preventer-and-well-control-rule/" target="_blank" class="cite">[2]</a> The Biden administration reinstated stricter standards in 2023. Under the current administration, the pendulum is expected to swing again.</p>
+
+  <p>"The well control rule was one of the most important actions we took, as a nation, in response to the BP-style disaster at sea," the NRDC said at the time of the rollback. "The rule draws directly from lessons learned from that debacle. It creates tools to help reduce the risk of these dangerous industrial operations at sea."<a href="https://www.npr.org/2019/05/03/720008093/trump-administration-moves-to-roll-back-offshore-drilling-safety-regulations" target="_blank" class="cite">[18]</a> BSEE's own director announced some of those rollbacks at a press conference in Port Fourchon, Louisiana, a town that exists almost entirely to service the Gulf's offshore industry, framing them as "common sense."</p>
+
+  <h2>BP Returns</h2>
+
+  <p>On March 14, 2026, sixteen years and roughly one month after the Deepwater Horizon exploded, the Trump administration approved BP's Kaskida project: the company's first entirely new oilfield in the Gulf of Mexico since the disaster.<a href="https://earthjustice.org/press/2026/trump-administration-approves-bps-first-new-gulf-oilfield-since-deepwater-horizon" target="_blank" class="cite">[19]</a></p>
+
+  <p>Kaskida is not merely a return to the Gulf. It is a descent into it. The field sits 6,200 feet below sea level, deeper than the Macondo well, in the Keathley Canyon area 250 miles southwest of New Orleans. It involves a class of ultradeepwater, high-pressure, high-temperature drilling that the industry has been moving toward for years, despite the fact that NOAA has determined the likelihood of uncontrolled spills increases exponentially with depth. For high-pressure, high-temperature wells like Kaskida, the chance of a Deepwater Horizon-style blowout is six to seven times higher than for standard deepwater operations.<a href="https://earthjustice.org/press/2026/trump-administration-approves-bps-first-new-gulf-oilfield-since-deepwater-horizon" target="_blank" class="cite">[19]</a></p>
+
+  <p>BP's own proposal acknowledged it "lacks the qualifications to operate a high-pressure, high-temperature project." Members of Congress wrote to BOEM urging rejection, citing red flags including an underestimate of potential spill volume by half a million barrels. In a rare rebuke, BOEM sent the proposal back to BP, but BP resubmitted within weeks, with minor changes. BOEM approved it anyway.<a href="https://earthjustice.org/feature/kaskida-bp-oil-drilling" target="_blank" class="cite">[20]</a></p>
+
+  <p>"Sixteen years after the Deepwater Horizon oil spill disaster devastated the Gulf," said Healthy Gulf executive director Martha Collins, "federal regulators are once again putting industry profits over people, wildlife, and our climate."<a href="https://earthjustice.org/press/2026/trump-administration-approves-bps-first-new-gulf-oilfield-since-deepwater-horizon" target="_blank" class="cite">[19]</a> BP, for its part, said safety "remains its highest priority." It said the same thing in April 2010.</p>
+
+</main>
+
+<!-- MAP 2 — NEW PROPOSED ZONES -->
+<div class="wide-embed">
+  <span class="section-label">Visualization 2 of 2</span>
+  <div class="map-figure">
+    <div class="map-title">The New Frontier: Proposed Drilling Expansions Under Trump (2025–2031)</div>
+    <div class="map-subtitle">Eastern Gulf · Atlantic Coast · Pacific · Alaska — Areas proposed for first leasing in decades</div>
+    <div class="map-svg-wrap">
+      <svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+  <defs>
+    <pattern id="hatch2" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#b52a1c" stroke-width="0.9" opacity="0.38"/>
+    </pattern>
+    <pattern id="hatch2b" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(135)">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#b52a1c" stroke-width="0.9" opacity="0.28"/>
+    </pattern>
+    <filter id="sh2"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs><svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+  <defs>
+    <pattern id="hatch2" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#b52a1c" stroke-width="0.9" opacity="0.38"/>
+    </pattern>
+    <pattern id="hatch2b" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(135)">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#b52a1c" stroke-width="0.9" opacity="0.28"/>
+    </pattern>
+    <filter id="sh2"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+
+  <svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+  <defs>
+    <pattern id="hatch2" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#b52a1c" stroke-width="0.9" opacity="0.38"/>
+    </pattern>
+    <pattern id="hatch2b" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(135)">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#b52a1c" stroke-width="0.9" opacity="0.28"/>
+    </pattern>
+    <filter id="sh2"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.12"/></filter>
+  </defs>
+
+  <!-- Land background -->
+  <rect width="760" height="460" fill="#c8dff0"/>
+
+  <!-- Ocean polygon (south of coast) -->
+  <path d="M760,0 L559.3,-90.7 L563.5,-89.9 L564.6,-90.6 L565.2,-89.0 L565.5,-86.7 L565.2,-84.3 L564.5,-81.9 L563.9,-78.9 L563.5,-74.3 L562.8,-70.2 L562.8,-71.4 L563.2,-76.5 L562.4,-75.9 L562.0,-74.7 L560.7,-68.3 L559.0,-64.8 L557.4,-62.4 L555.7,-62.8 L556.1,-60.9 L555.6,-59.9 L555.3,-57.9 L554.2,-56.5 L553.3,-56.6 L552.0,-55.7 L551.5,-55.0 L551.4,-53.6 L550.6,-52.4 L547.3,-46.1 L544.5,-44.2 L543.8,-44.5 L544.6,-47.4 L545.1,-50.5 L543.4,-51.7 L541.7,-52.4 L539.9,-52.4 L537.8,-54.7 L535.2,-56.4 L531.5,-61.0 L531.6,-62.3 L531.5,-64.5 L532.6,-67.8 L533.7,-70.2 L535.2,-71.4 L539.5,-72.7 L540.6,-74.6 L541.3,-76.2 L539.1,-73.4 L535.9,-72.5 L534.2,-71.5 L532.7,-70.0 L532.0,-68.0 L530.1,-65.6 L530.2,-64.1 L530.6,-63.0 L530.4,-60.6 L531.6,-58.3 L533.9,-54.6 L534.3,-48.8 L536.1,-45.0 L538.8,-40.5 L541.0,-39.2 L541.0,-37.5 L540.1,-34.7 L538.8,-33.4 L540.5,-33.7 L541.3,-33.1 L542.0,-30.8 L542.0,-28.4 L541.7,-27.1 L541.3,-26.6 L541.3,-27.9 L540.9,-28.4 L540.3,-27.8 L539.9,-27.1 L539.8,-24.5 L539.4,-23.2 L538.0,-22.8 L536.5,-19.3 L535.2,-17.3 L529.9,-4.0 L530.1,-1.8 L529.1,-1.1 L527.7,-0.5 L526.2,0.9 L525.2,2.3 L524.3,6.2 L522.6,10.7 L521.5,8.8 L521.2,7.2 L521.7,3.1 L523.6,-3.7 L525.6,-7.9 L527.3,-9.9 L528.5,-13.9 L526.9,-14.5 L524.4,-14.5 L524.8,-16.3 L525.6,-18.0 L524.3,-19.6 L523.5,-19.9 L522.7,-20.5 L523.7,-21.9 L524.1,-23.3 L523.8,-25.1 L524.2,-26.5 L523.5,-26.2 L522.5,-24.8 L521.9,-24.3 L521.5,-25.5 L521.0,-25.2 L520.7,-24.4 L520.0,-23.9 L518.6,-25.1 L516.6,-26.4 L515.4,-28.7 L514.8,-30.5 L515.4,-33.8 L516.8,-34.3 L518.7,-33.8 L521.1,-33.8 L520.8,-34.5 L519.9,-34.4 L517.3,-37.0 L516.5,-38.6 L515.1,-39.0 L514.5,-37.5 L513.7,-37.1 L514.6,-40.4 L515.8,-40.6 L517.5,-41.5 L517.0,-43.4 L515.9,-44.2 L514.0,-43.2 L514.0,-44.6 L514.4,-46.3 L515.9,-46.3 L517.1,-45.7 L518.2,-48.5 L518.3,-49.8 L516.4,-48.0 L516.0,-51.9 L517.8,-55.7 L519.5,-57.3 L521.6,-57.3 L523.8,-57.6 L522.5,-58.2 L521.1,-58.6 L522.1,-60.1 L523.1,-60.4 L523.9,-61.7 L521.8,-61.5 L522.0,-63.9 L521.0,-63.5 L519.8,-63.2 L519.3,-62.2 L519.4,-60.4 L519.1,-59.3 L518.0,-58.3 L516.5,-57.7 L516.3,-58.9 L515.8,-59.5 L515.5,-56.8 L515.2,-55.9 L514.0,-58.4 L513.6,-57.9 L513.7,-57.2 L513.4,-56.0 L512.3,-55.3 L512.4,-53.8 L512.0,-52.9 L508.7,-54.3 L508.7,-53.8 L510.5,-50.8 L511.9,-49.9 L512.0,-48.3 L510.9,-47.0 L509.3,-48.1 L509.0,-48.0 L509.8,-46.1 L510.4,-44.3 L509.8,-42.9 L509.9,-41.1 L509.8,-39.5 L509.4,-38.1 L510.2,-31.7 L511.2,-29.9 L512.1,-28.2 L512.6,-26.7 L511.6,-26.4 L510.1,-27.7 L508.7,-28.7 L507.1,-31.8 L506.8,-33.1 L506.4,-34.1 L506.6,-31.8 L507.2,-29.3 L512.3,-23.6 L513.2,-21.3 L513.9,-19.6 L513.7,-18.0 L512.4,-19.2 L511.2,-20.7 L508.3,-22.4 L504.4,-23.4 L502.3,-27.3 L502.3,-25.7 L501.8,-24.3 L500.5,-26.0 L499.7,-27.4 L499.4,-29.0 L497.8,-28.9 L496.1,-27.5 L494.4,-27.8 L494.2,-30.5 L494.6,-31.9 L496.5,-35.2 L498.3,-37.0 L499.1,-39.2 L498.7,-42.6 L498.4,-39.1 L497.4,-37.4 L495.8,-36.1 L493.7,-33.8 L493.3,-31.6 L492.6,-27.5 L493.5,-26.1 L494.4,-25.8 L497.0,-26.7 L498.4,-26.2 L501.5,-21.4 L507.1,-19.4 L509.2,-18.2 L510.9,-15.7 L513.4,-14.2 L515.4,-12.1 L515.5,-10.6 L514.8,-9.1 L514.5,-6.8 L513.7,-5.4 L511.6,-5.2 L510.5,-5.6 L503.9,-13.4 L503.1,-14.2 L500.7,-18.3 L497.9,-20.4 L497.0,-20.4 L501.1,-16.3 L502.7,-13.5 L505.6,-9.5 L507.7,-7.8 L509.2,-5.2 L510.6,-3.9 L514.5,-2.2 L513.1,-0.9 L515.3,0.2 L515.6,2.1 L515.4,4.4 L512.4,3.5 L512.3,5.2 L512.6,6.1 L511.3,6.9 L509.4,5.9 L504.7,-0.2 L504.8,0.6 L505.1,1.6 L507.9,5.4 L510.3,7.8 L512.4,8.8 L514.1,10.8 L514.6,11.9 L515.0,13.7 L513.8,14.9 L512.4,15.6 L511.1,14.4 L510.2,13.1 L508.0,11.0 L507.4,8.5 L505.9,8.7 L499.3,5.6 L494.0,5.2 L494.5,5.9 L495.1,6.3 L499.4,7.0 L501.1,8.4 L504.5,9.7 L506.6,10.0 L507.4,13.9 L510.2,16.5 L510.5,18.5 L512.5,18.7 L515.9,16.8 L518.0,17.5 L521.2,18.0 L521.9,19.6 L522.4,22.5 L523.5,25.9 L526.4,39.0 L530.7,49.7 L531.3,51.5 L530.2,49.9 L527.0,42.8 L525.2,37.7 L523.4,28.6 L522.9,26.6 L522.3,25.8 L521.9,26.5 L521.7,27.6 L522.0,28.5 L521.3,31.5 L521.6,32.8 L522.7,34.2 L524.1,37.8 L525.1,42.5 L523.7,40.6 L522.2,39.6 L519.9,38.8 L518.0,37.4 L518.0,39.4 L517.9,41.5 L516.3,40.9 L515.2,40.2 L516.2,42.4 L514.1,41.7 L512.8,41.9 L511.9,43.9 L510.8,45.1 L509.0,45.5 L506.4,43.7 L505.5,41.5 L505.2,39.0 L505.1,41.9 L505.5,45.0 L505.4,47.3 L507.9,47.8 L510.2,47.3 L513.4,47.4 L515.4,47.0 L516.6,46.3 L519.6,46.9 L519.8,49.7 L519.5,52.5 L519.3,55.5 L520.2,55.5 L521.1,54.5 L521.6,49.2 L524.3,47.2 L525.2,47.4 L526.1,49.1 L526.4,50.8 L526.7,53.2 L526.0,56.8 L521.9,61.1 L518.9,65.0 L517.3,65.8 L515.2,65.4 L512.7,64.4 L511.5,64.1 L510.5,64.5 L509.9,63.3 L509.6,61.1 L508.6,60.3 L507.9,60.4 L507.3,62.8 L505.1,63.5 L501.9,62.4 L498.6,60.5 L500.0,62.6 L508.2,66.5 L509.1,67.3 L510.0,68.4 L508.8,70.1 L508.0,72.0 L507.8,73.5 L507.5,74.4 L504.2,77.0 L502.4,76.5 L497.9,71.9 L500.0,75.9 L501.6,77.6 L505.0,78.5 L511.2,77.0 L513.3,78.6 L511.6,81.5 L509.9,83.5 L507.7,83.7 L505.8,84.3 L505.2,85.7 L503.8,85.8 L501.7,85.8 L498.3,85.9 L496.5,85.6 L494.0,88.5 L493.0,88.9 L491.6,88.3 L491.1,86.0 L490.5,84.9 L490.5,89.2 L490.7,90.3 L491.2,91.2 L488.2,93.5 L485.3,96.4 L484.3,97.2 L483.1,98.6 L480.8,102.7 L480.1,105.8 L479.3,109.2 L479.2,107.6 L479.4,105.1 L478.7,102.2 L478.3,107.5 L477.4,110.0 L468.9,109.9 L465.2,111.2 L459.4,115.8 L457.7,117.8 L453.0,125.5 L451.8,130.5 L450.8,128.4 L451.1,126.9 L451.1,125.6 L449.9,128.3 L451.1,132.3 L450.0,133.8 L446.9,136.7 L445.2,137.1 L443.2,138.0 L442.6,140.8 L440.0,143.4 L438.5,144.5 L435.7,143.8 L436.6,146.3 L435.6,148.2 L433.8,149.6 L431.6,150.6 L430.3,150.5 L429.3,151.0 L428.5,152.2 L426.4,153.3 L424.2,152.7 L421.9,152.3 L420.5,153.0 L422.8,154.1 L424.0,155.7 L423.8,157.9 L423.1,158.7 L421.7,159.9 L421.1,159.7 L420.7,158.6 L420.3,156.5 L419.6,157.0 L419.5,158.0 L418.8,158.3 L416.9,154.9 L417.0,157.5 L417.7,159.5 L418.4,160.5 L419.0,161.1 L419.2,162.1 L417.8,164.3 L417.1,164.8 L415.9,165.2 L415.1,166.6 L415.3,167.8 L414.2,170.4 L411.6,172.0 L410.8,171.9 L410.1,172.4 L410.5,173.6 L411.2,174.4 L411.1,175.2 L410.4,176.2 L409.1,176.5 L408.3,177.8 L408.5,178.9 L409.0,179.5 L408.9,180.6 L407.3,181.7 L407.0,182.8 L407.7,183.1 L408.3,182.8 L408.8,183.0 L407.8,184.8 L407.0,186.0 L406.2,187.9 L404.3,188.5 L404.4,189.2 L405.4,189.7 L406.3,191.2 L404.6,194.0 L403.6,193.8 L403.0,193.2 L402.6,195.4 L402.7,196.6 L402.4,199.1 L401.7,202.0 L401.3,203.2 L401.3,205.4 L401.6,207.6 L402.7,210.3 L404.2,221.7 L405.2,225.7 L407.1,236.3 L410.3,246.6 L414.8,259.2 L422.1,274.3 L422.9,276.4 L422.0,278.3 L421.7,280.1 L421.6,283.0 L421.8,285.8 L422.7,289.2 L424.4,294.4 L423.5,293.3 L421.0,285.9 L420.7,281.5 L421.1,275.3 L420.6,275.4 L420.1,277.5 L419.9,279.8 L419.2,280.8 L418.4,277.2 L418.5,275.5 L419.3,273.6 L419.1,272.9 L417.7,271.9 L417.4,270.4 L417.5,268.8 L416.7,268.0 L416.1,268.1 L416.5,271.8 L417.2,274.1 L418.1,279.7 L419.4,283.0 L420.2,285.8 L429.4,315.6 L431.6,319.5 L432.4,322.2 L433.2,327.9 L433.4,335.2 L431.9,348.7 L431.5,357.8 L431.4,357.5 L431.2,356.5 L430.8,356.4 L429.6,360.6 L427.8,364.4 L427.1,370.2 L426.4,373.2 L423.8,376.3 L422.2,376.2 L418.3,378.5 L415.6,377.9 L412.3,379.3 L410.2,379.1 L408.9,376.3 L409.2,375.1 L409.6,373.8 L410.5,373.6 L413.3,376.4 L413.8,375.2 L413.0,373.8 L411.3,373.0 L410.1,372.1 L407.7,365.4 L405.1,360.9 L404.6,357.9 L400.2,356.0 L397.0,353.2 L394.9,348.2 L393.8,339.3 L392.3,338.3 L391.7,337.6 L393.1,334.3 L394.6,331.6 L393.4,332.3 L392.6,333.3 L391.5,335.7 L390.7,336.1 L390.0,335.7 L389.1,331.1 L389.4,325.3 L390.5,323.2 L388.8,323.1 L387.0,323.9 L387.2,325.9 L387.0,326.9 L385.5,326.6 L384.5,326.0 L383.2,323.9 L381.2,320.2 L377.4,309.7 L376.6,308.2 L375.3,306.7 L375.9,306.2 L377.0,305.9 L379.5,301.2 L381.5,298.3 L382.2,296.4 L382.0,295.5 L381.2,294.3 L380.1,295.4 L379.5,295.1 L378.3,292.6 L377.0,291.9 L376.2,292.4 L377.1,294.5 L377.9,295.2 L377.6,298.2 L377.3,299.1 L376.5,300.0 L375.3,299.5 L374.8,300.3 L374.1,299.5 L373.4,298.2 L372.6,296.1 L374.6,284.1 L376.5,276.4 L376.7,267.7 L376.9,266.5 L376.7,264.1 L374.1,259.1 L362.8,246.8 L354.0,232.3 L346.5,226.8 L340.7,228.0 L339.7,229.1 L339.3,230.5 L339.7,232.2 L339.1,232.9 L337.5,232.8 L335.5,233.1 L330.0,237.0 L328.1,236.8 L326.4,237.8 L325.0,238.6 L321.7,239.0 L318.8,239.8 L317.5,239.4 L316.8,237.1 L316.8,234.8 L317.4,236.6 L318.4,238.0 L318.9,237.4 L319.0,236.2 L318.0,233.8 L314.8,230.7 L311.0,226.3 L312.1,226.4 L312.5,225.5 L311.3,224.2 L311.8,222.7 L312.6,221.2 L311.0,221.4 L309.6,222.5 L309.6,223.8 L309.3,224.9 L308.5,224.7 L307.1,223.4 L300.2,219.8 L294.2,217.7 L298.8,216.8 L301.3,217.6 L301.0,216.5 L300.4,215.8 L298.4,214.9 L295.9,215.2 L294.2,214.8 L292.6,215.7 L290.9,217.0 L289.2,217.6 L283.0,218.6 L277.9,219.6 L278.8,218.5 L279.6,217.8 L282.6,216.8 L283.1,214.6 L282.4,212.5 L281.6,213.0 L280.7,214.7 L279.7,213.5 L278.6,213.5 L278.3,216.1 L276.8,217.8 L276.2,219.6 L272.0,221.0 L271.4,220.5 L272.7,218.9 L272.6,217.9 L271.1,218.7 L268.8,221.9 L260.5,222.9 L260.9,222.2 L262.7,222.1 L265.2,221.0 L264.6,219.3 L263.7,217.5 L262.8,217.3 L262.2,216.2 L262.3,212.8 L261.7,210.8 L260.3,208.7 L259.8,209.1 L258.9,212.6 L258.0,217.3 L257.7,218.8 L255.2,218.9 L253.0,218.5 L245.5,219.1 L242.8,217.5 L241.6,217.2 L240.9,217.3 L237.7,218.7 L234.0,219.8 L233.1,219.4 L231.9,219.4 L229.2,223.2 L226.1,224.9 L218.1,221.7 L216.1,219.2 L214.4,218.7 L212.2,218.4 L210.0,221.5 L208.2,225.7 L211.0,228.0 L213.3,229.1 L217.2,228.2 L219.4,226.2 L221.2,226.2 L222.1,225.8 L222.9,224.7 L224.4,225.6 L224.4,226.4 L223.3,227.6 L222.0,228.6 L221.1,229.8 L222.7,232.2 L225.1,233.0 L226.1,232.6 L226.6,229.9 L228.1,228.2 L230.1,228.6 L229.9,229.7 L230.1,230.7 L231.1,232.4 L231.0,234.9 L231.2,235.5 L229.0,236.6 L227.3,237.0 L226.0,238.4 L226.7,239.2 L225.4,240.0 L224.5,239.7 L224.0,240.0 L223.9,240.8 L223.2,241.7 L224.2,244.1 L226.2,245.7 L227.7,247.8 L233.5,250.4 L234.9,250.4 L236.3,253.0 L237.4,254.0 L238.5,254.4 L238.4,256.3 L236.5,257.6 L235.9,259.3 L235.5,260.2 L234.6,259.0 L233.7,258.2 L231.7,260.7 L230.7,261.2 L231.2,258.5 L230.4,257.5 L229.2,254.7 L227.6,253.0 L226.3,252.5 L225.4,251.4 L224.3,251.0 L223.3,251.1 L221.6,250.4 L221.5,249.0 L221.1,247.9 L219.8,246.6 L213.7,244.2 L213.6,245.2 L214.1,246.0 L215.0,246.4 L216.0,247.4 L216.0,250.3 L215.5,251.5 L215.4,253.3 L215.0,255.1 L214.2,256.5 L212.6,257.5 L211.8,256.7 L210.6,252.8 L208.9,251.6 L206.2,251.5 L204.4,252.3 L202.5,256.1 L200.8,256.7 L195.4,254.7 L189.1,251.8 L189.3,250.9 L190.3,250.5 L192.1,250.9 L192.1,249.9 L190.1,246.6 L189.8,245.2 L190.0,243.3 L189.4,243.4 L188.2,244.9 L184.3,243.6 L183.2,242.1 L180.8,237.8 L177.5,237.7 L176.0,235.0 L173.3,236.1 L172.0,237.3 L170.8,239.2 L171.3,240.2 L172.4,241.8 L171.9,242.5 L168.1,243.6 L159.2,242.3 L156.5,241.2 L153.1,238.8 L148.2,236.8 L145.9,236.5 L143.6,236.9 L136.9,237.1 L135.4,237.6 L134.1,238.4 L133.2,237.5 L132.8,235.8 L133.6,235.6 L134.5,234.6 L135.2,232.6 L135.3,231.5 L134.8,230.7 L133.8,230.6 L131.5,235.7 L132.7,238.5 L132.7,239.5 L128.1,240.1 L117.8,245.8 L113.8,248.9 L114.0,247.9 L118.8,243.9 L117.2,243.2 L114.4,244.3 L113.3,243.9 L114.5,240.6 L114.2,237.7 L112.2,237.6 L110.9,239.9 L110.1,239.8 L109.0,238.8 L108.1,239.1 L108.7,244.4 L110.0,246.5 L111.0,249.3 L108.2,252.7 L105.5,255.5 L105.3,258.3 L102.6,261.8 L100.1,263.8 L94.4,268.5 L92.6,269.5 L90.1,271.7 L86.4,273.3 L82.9,275.9 L81.8,276.4 L84.0,274.1 L86.6,271.9 L84.3,272.3 L80.9,271.2 L78.7,271.2 L78.7,272.0 L77.1,273.1 L75.4,271.5 L74.7,270.3 L74.3,269.4 L73.6,269.2 L72.9,269.6 L75.4,276.4 L76.5,276.6 L77.7,277.3 L76.2,278.9 L74.7,280.1 L72.2,280.9 L70.0,278.4 L69.6,281.5 L69.3,284.6 L68.6,285.4 L67.5,286.5 L66.9,285.7 L66.6,284.4 L65.9,285.5 L64.8,286.3 L63.1,286.5 L61.8,286.9 L61.8,288.2 L62.1,289.5 L64.4,288.4 L63.6,291.7 L61.4,295.0 L59.6,295.8 L57.0,295.3 L56.4,295.6 L55.7,296.3 L58.9,301.4 L56.9,309.1 L55.6,311.9 L54.7,312.3 L53.8,312.4 L50.3,309.9 L48.5,308.0 L50.1,313.2 L54.6,314.7 L54.9,316.7 L54.8,318.4 L53.9,320.4 L53.1,323.0 L53.7,324.9 L54.4,329.4 L55.0,331.5 L55.7,337.8 L56.4,340.5 L60.5,350.6 L61.9,350.7 L62.1,351.7 L62.0,353.9 L61.6,360.2 L60.3,365.4 L56.0,376.2 L54.1,382.9 L50.7,402.0 L49.6,414.6 L49.3,420.5 L49.0,421.3 L49.3,422.2 L48.5,435.3 L0,460 L0,0 L760,0 Z" fill="#e8e2d8" stroke="none"/>
+
+  <!-- Mexico coast -->
+  <path d="M48.9,446.4 L48.7,448.2 L47.4,451.5 L46.5,456.2 L46.9,458.3 L46.8,459.7 L48.2,466.8 L48.5,472.1 L52.5,481.2 L54.6,484.4 L57.3,487.1 L58.3,488.7 L57.8,492.6 L56.8,494.5 L56.3,497.7 L55.7,495.1 L55.9,491.8 L56.8,489.9 L56.8,488.6 L55.2,487.2 L52.3,482.6 L48.8,474.5 L51.3,487.5 L52.1,489.6 L52.8,490.4 L53.9,491.3 L54.3,492.8 L54.3,493.8 L57.4,502.8 L60.9,512.1 L61.1,514.7 L62.5,517.8 L71.4,530.9 L76.9,540.7 L78.9,549.9 L202.1,544.9 L203.0,542.9 L206.1,539.3 L206.5,538.3 L206.7,535.9 L206.6,529.8 L206.8,525.0 L206.6,519.6 L207.2,514.8 L207.7,513.4 L209.5,505.7 L213.2,502.3 L219.6,498.2 L221.1,497.6 L241.5,493.3 L244.4,492.2 L247.9,489.5 L250.5,488.6 L255.2,488.6 L256.6,488.2 L256.9,487.9 L256.9,487.5 L257.7,487.1 L260.4,487.5 L265.5,489.1 L267.3,489.6 L271.9,491.5 L276.8,492.3 L277.6,492.0 L278.2,491.4 L278.7,490.2 L278.2,489.3 L277.7,489.3 L276.9,489.8 L275.9,489.9 L273.9,489.1 L274.3,488.4 L276.3,488.5 L277.6,488.1 L279.5,487.0 L281.5,487.8 L284.2,491.8 L286.1,493.1 L286.3,498.8 L286.6,499.8 L287.2,501.4 L286.3,505.9 L285.3,509.5 L283.9,512.6 L281.0,517.3 L277.5,521.1 L273.1,529.6 L272.1,533.5 L272.2,536.7 L272.9,539.8 L272.7,540.9 L272.2,542.1 L271.3,542.0 L269.5,543.4 L267.3,547.8 L267.3,549.1 L268.3,550.4 L269.5,549.8 L271.2,549.7 L272.1,549.4 L273.1,549.5 L272.8,552.0" fill="#c8dff0" stroke="#a8b8c8" stroke-width="0.8"/>
+
+  <!-- Cuba -->
+  <path d="M394.4,439.7 L400.1,441.1 L404.7,440.7 L406.9,439.8 L406.7,440.7 L408.7,442.8 L409.5,443.0 L412.4,441.9 L420.2,441.5 L421.0,442.1 L422.4,444.2 L424.3,445.4 L426.4,446.4 L428.5,446.7 L430.7,446.2 L432.7,446.4 L435.2,448.4 L436.0,448.7 L438.2,448.2 L437.5,450.0 L441.3,452.6 L444.1,457.6 L446.1,459.7 L448.2,461.6 L450.0,462.8 L452.0,463.4 L458.2,463.2 L459.6,463.3 L460.9,464.1 L462.1,464.3 L462.8,464.1 L474.6,472.0 L478.3,476.2 L480.7,478.4 L485.6,481.5 L487.6,482.2 L488.7,481.9 L488.4,481.1 L487.0,479.3 L486.8,478.7 L488.7,479.3 L492.0,482.9 L493.0,484.1 L494.6,485.4 L496.3,486.3 L495.5,487.7 L494.1,487.8 L491.5,487.2 L493.6,489.5 L494.0,491.2 L494.9,491.3 L496.4,489.5 L497.3,487.9 L501.0,491.9 L503.0,493.7 L502.5,494.8 L502.3,495.9 L504.5,494.9 L505.4,495.0 L506.2,495.6 L507.1,497.3 L509.1,497.7 L511.2,497.6 L515.5,499.0 L519.5,501.9 L523.4,502.5 L527.2,502.6 L529.1,504.1 L529.9,506.2 L529.0,507.6 L528.4,509.1 L529.9,511.0 L526.8,511.8 L526.3,512.9 L526.5,514.1 L527.1,514.8 L528.9,514.2 L531.5,514.7 L535.5,515.1 L538.2,514.8 L543.8,516.0 L545.4,516.7 L548.7,519.1 L550.2,520.7 L553.5,524.9 L556.2,526.5 L558.6,526.9 L559.5,526.7 L560.3,527.1 L561.0,527.7 L561.6,529.6 L561.2,531.5 L559.9,533.1 L559.1,534.2 L555.6,534.3 L550.8,534.9 L546.1,536.6 L543.8,538.0 L542.7,538.9 L540.3,539.7 L540.2,539.0 L540.2,538.1 L539.5,536.4 L539.0,537.9 L538.1,539.0 L536.6,539.9 L530.9,540.0 L528.6,538.8 L526.3,537.9 L517.7,537.0 L515.6,537.1 L509.9,538.0 L504.2,538.5 L501.8,539.1 L499.4,539.9 L494.8,539.9 L489.4,540.9 L483.9,541.1 L487.4,534.1 L494.8,527.5 L496.2,526.0 L497.2,524.2 L497.4,522.8 L497.1,521.6 L495.3,519.5 L495.0,517.9 L494.4,516.9 L491.9,516.0 L489.3,515.5 L486.5,515.5 L480.8,514.8 L477.8,514.8 L475.2,513.3 L470.9,508.2 L468.9,506.8 L467.9,505.6 L467.1,504.4 L466.1,496.9 L465.2,493.3 L463.9,490.2 L461.9,487.8 L459.8,487.0 L451.9,489.0 L450.0,488.8 L448.2,488.1 L436.2,483.2 L431.3,480.6 L429.2,479.2 L427.5,477.4 L425.7,474.3 L423.8,471.5 L423.8,472.6 L423.5,473.4 L413.4,473.7 L411.8,473.1 L410.8,472.3 L410.0,471.2 L409.5,469.0 L408.5,467.1 L408.2,469.1 L407.7,470.9 L406.4,472.0 L404.9,472.2 L403.0,469.7 L394.8,469.2 L394.1,468.8 L391.5,466.4 L389.1,463.4 L391.4,462.4 L396.1,461.0 L397.1,460.1 L397.7,459.0 L397.3,457.2 L396.4,455.9 L395.4,455.2 L394.4,454.7 L393.0,454.5 L374.8,454.2 L373.8,455.1 L372.2,457.1 L369.0,459.5 L366.8,462.2 L366.0,463.5 L365.1,464.4 L362.8,466.0 L360.9,468.5 L358.6,469.6 L357.3,468.9 L356.1,468.9 L355.2,469.6 L354.2,469.8 L349.6,470.1 L348.9,470.7 L348.3,472.5 L347.5,475.9 L346.8,477.1 L344.4,477.5 L342.2,478.4 L337.7,481.7 L336.5,482.2 L336.8,479.8 L336.5,477.5 L335.3,477.4 L333.8,477.8 L332.6,478.4 L330.4,480.1 L329.3,480.6 L328.2,479.7 L328.4,478.6 L335.8,474.4 L336.7,474.1 L338.0,474.4 L339.3,474.2 L340.4,473.1 L339.1,467.5 L339.6,463.7 L341.3,460.8 L344.8,456.4 L346.5,454.9 L363.6,445.6 L365.3,445.2 L376.4,443.3 L378.1,442.7 L383.3,440.0 L388.7,438.8 L394.4,439.7" fill="#c8dff0" stroke="#a8b8c8" stroke-width="0.8"/>
+
+  <!-- Grid lines -->
+  <line x1="43.4" y1="0" x2="43.4" y2="460" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="43.4" y="456" text-anchor="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">-98°</text>
+  <line x1="130.3" y1="0" x2="130.3" y2="460" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="130.3" y="456" text-anchor="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">-94°</text>
+  <line x1="217.1" y1="0" x2="217.1" y2="460" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="217.1" y="456" text-anchor="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">-90°</text>
+  <line x1="304.0" y1="0" x2="304.0" y2="460" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="304.0" y="456" text-anchor="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">-86°</text>
+  <line x1="390.9" y1="0" x2="390.9" y2="460" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="390.9" y="456" text-anchor="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">-82°</text>
+  <line x1="477.7" y1="0" x2="477.7" y2="460" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="477.7" y="456" text-anchor="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">-78°</text>
+  <line x1="564.6" y1="0" x2="564.6" y2="460" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="564.6" y="456" text-anchor="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">-74°</text>
+  <line x1="651.4" y1="0" x2="651.4" y2="460" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="651.4" y="456" text-anchor="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">-70°</text>
+  <line x1="738.3" y1="0" x2="738.3" y2="460" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="738.3" y="456" text-anchor="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">-66°</text>
+  <line x1="0" y1="414.0" x2="760" y2="414.0" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="4" y="414.0" dominant-baseline="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">24°N</text>
+  <line x1="0" y1="352.7" x2="760" y2="352.7" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="4" y="352.7" dominant-baseline="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">26°N</text>
+  <line x1="0" y1="291.3" x2="760" y2="291.3" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="4" y="291.3" dominant-baseline="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">28°N</text>
+  <line x1="0" y1="230.0" x2="760" y2="230.0" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="4" y="230.0" dominant-baseline="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">30°N</text>
+  <line x1="0" y1="168.7" x2="760" y2="168.7" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="4" y="168.7" dominant-baseline="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">32°N</text>
+  <line x1="0" y1="107.3" x2="760" y2="107.3" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="4" y="107.3" dominant-baseline="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">34°N</text>
+  <line x1="0" y1="46.0" x2="760" y2="46.0" stroke="#b8cce0" stroke-width="0.4" stroke-dasharray="3,4" opacity="0.6"/>
+  <text x="4" y="46.0" dominant-baseline="middle" font-size="6.5" fill="#8aa0b8" font-family="DM Mono,monospace">36°N</text>
+
+    <!-- Central Gulf active zone (soft blue fill) -->
+  <polygon points="21.7,245.3 43.4,306.7 86.9,337.3 130.3,352.7 173.7,358.8 217.1,352.7 249.7,306.7 260.6,276.0 249.7,245.3 217.1,230.0 195.4,236.1 173.7,245.3 130.3,276.0 86.9,276.0 54.3,266.8 21.7,245.3" fill="rgba(26,58,92,0.10)" stroke="#1a3a5c" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.9"/>
+
+  <!-- Active drilling platforms -->
+  <circle cx="238.0" cy="257.6" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="241.5" cy="265.3" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="250.1" cy="259.1" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="246.7" cy="256.1" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="236.3" cy="262.2" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="244.9" cy="254.5" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="215.0" cy="280.9" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="219.3" cy="291.6" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="230.2" cy="283.1" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="225.8" cy="278.8" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="212.8" cy="287.3" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="223.7" cy="276.6" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="228.0" cy="289.5" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="217.1" cy="283.1" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="176.8" cy="287.7" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="182.0" cy="296.9" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="195.0" cy="289.5" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="189.8" cy="285.8" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="174.1" cy="293.2" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="187.2" cy="284.0" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="192.4" cy="295.0" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="157.6" cy="303.6" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="161.1" cy="311.3" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="169.8" cy="305.1" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="166.3" cy="302.1" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="155.9" cy="308.2" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="136.6" cy="319.5" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="139.6" cy="325.7" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="147.2" cy="320.8" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="144.2" cy="318.3" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="261.0" cy="242.9" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="263.6" cy="249.0" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="270.1" cy="244.1" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="267.5" cy="241.7" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="199.8" cy="303.0" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="204.1" cy="312.2" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="215.0" cy="304.8" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="210.6" cy="301.1" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="197.6" cy="308.5" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+        <circle cx="208.5" cy="299.3" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+
+  <!-- Eastern Gulf proposed zone (hatched red) -->
+  <polygon points="271.4,217.7 314.9,230.0 347.4,251.5 373.5,285.2 401.7,328.1 412.6,377.2 416.9,414.0 380.0,420.1 347.4,398.7 314.9,377.2 293.1,337.3 271.4,306.7 264.9,260.7 271.4,217.7" fill="url(#hatch2)" stroke="#b52a1c" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.88"/>
+
+  <!-- Atlantic proposed zone (diagonal cross-hatch) -->
+  <polygon points="488.6,92.0 510.3,122.7 521.1,153.3 510.3,199.3 456.0,245.3 423.4,291.3 401.7,337.3 412.6,383.3 434.3,398.7 445.1,368.0 434.3,322.0 423.4,276.0 456.0,214.7 510.3,168.7 521.1,122.7 510.3,92.0 488.6,92.0" fill="url(#hatch2b)" stroke="#b52a1c" stroke-width="1.2" stroke-dasharray="5,4" opacity="0.7"/>
+
+  <!-- Kaskida marker -->
+  <circle cx="125.9" cy="318.9" r="9" fill="none" stroke="#b52a1c" stroke-width="2" stroke-dasharray="4,3"/>
+  <circle cx="125.9" cy="318.9" r="4" fill="#b52a1c" opacity="0.9"/>
+  <line x1="125.9" y1="309.9" x2="105.9" y2="263.9" stroke="#b52a1c" stroke-width="0.8"/>
+  <rect x="20.9" y="238.9" width="85" height="28" fill="white" rx="2" opacity="0.93" stroke="#e0c8c8" stroke-width="0.5"/>
+  <text x="63.9" y="252.9" text-anchor="middle" font-size="7.5" fill="#b52a1c" font-weight="600" font-family="DM Mono,monospace">BP KASKIDA</text>
+  <text x="63.9" y="263.9" text-anchor="middle" font-size="6.5" fill="#b52a1c" font-family="DM Mono,monospace">6,200ft · 10B bbl est.</text>
+
+  <!-- New Orleans -->
+  <circle cx="215.6" cy="231.5" r="3.5" fill="#1a3a5c"/>
+  <text x="220.6" y="227.5" font-size="7" fill="#1a3a5c" font-family="DM Mono,monospace">New Orleans</text>
+
+  <!-- Gulf Shores AL -->
+  <circle cx="267.1" cy="222.3" r="3" fill="#1a3a5c"/>
+  <text x="272.1" y="234.3" font-size="6.5" fill="#1a3a5c" font-family="DM Mono,monospace">Gulf Shores, AL</text>
+
+  <!-- Tampa -->
+  <circle cx="380.9" cy="293.2" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+  <text x="384.9" y="297.2" font-size="6.5" fill="#1a3a5c" font-family="DM Mono,monospace">Tampa</text>
+
+  <!-- Miami -->
+  <circle cx="430.2" cy="359.7" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+
+  <!-- Charleston -->
+  <circle cx="435.8" cy="144.7" r="2.5" fill="#1a3a5c" opacity="0.7"/>
+  <text x="439.8" y="144.7" font-size="6.5" fill="#1a3a5c" font-family="DM Mono,monospace">Charleston</text>
+
+  <!-- Houston -->
+  <circle cx="100.5" cy="237.4" r="3" fill="#1a3a5c" opacity="0.7"/>
+  <text x="100.5" y="251.4" text-anchor="middle" font-size="7" fill="#1a3a5c" font-family="DM Mono,monospace">Houston</text>
+
+  <!-- State labels -->
+  <text x="43.4" y="199.3" text-anchor="middle" font-size="7.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="0.5">TEXAS</text>
+  <text x="162.9" y="168.7" text-anchor="middle" font-size="7.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="0.5">LOUISIANA</text>
+  <text x="228.0" y="122.7" text-anchor="middle" font-size="7.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="0.5">MISS.</text>
+  <text x="282.3" y="122.7" text-anchor="middle" font-size="7.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="0.5">ALABAMA</text>
+  <text x="369.1" y="260.7" text-anchor="middle" font-size="7.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="0.5">FLORIDA</text>
+  <text x="358.3" y="122.7" text-anchor="middle" font-size="7.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="0.5">GEORGIA</text>
+  <text x="423.4" y="107.3" text-anchor="middle" font-size="7.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="0.5">S. CAROLINA</text>
+  <text x="456.0" y="52.1" text-anchor="middle" font-size="7.5" fill="#3a4a5a" font-weight="600" font-family="DM Mono,monospace" letter-spacing="0.5">N. CAROLINA</text>
+
+  <!-- Water labels -->
+  <text x="238.9" y="368.0" text-anchor="middle" font-size="13" fill="#4a6a8a" font-style="italic" font-family="Georgia,serif" opacity="0.75">Gulf of Mexico</text>
+  <text x="542.9" y="199.3" text-anchor="middle" font-size="11" fill="#4a6a8a" font-style="italic" font-family="Georgia,serif" opacity="0.75">Atlantic Ocean</text>
+  <text x="97.7" y="383.3" text-anchor="middle" font-size="8.5" fill="#6a6560" font-family="DM Mono,monospace" letter-spacing="1">MEXICO</text>
+
+  <!-- Production decline data box -->
+  <rect x="490" y="20" width="255" height="110" fill="white" rx="3" stroke="#d4c9b5" stroke-width="1" filter="url(#sh2)"/>
+  <text x="503" y="39" font-size="7.5" fill="#b52a1c" font-weight="600" font-family="DM Mono,monospace" letter-spacing="0.3">GULF PRODUCTION: FLAT / DECLINING</text>
+  <line x1="497" y1="45" x2="735" y2="45" stroke="#e8e0d0" stroke-width="0.7"/>
+  <text x="503" y="59" font-size="7" fill="#3d3530" font-family="Source Serif 4,Georgia,serif">Oil: ~1.8M bbl/day (2024) — below 2019</text>
+  <text x="503" y="72" font-size="7" fill="#3d3530" font-family="Source Serif 4,Georgia,serif">Gas: down 80%+ since 2001 peak</text>
+  <text x="503" y="85" font-size="7" fill="#3d3530" font-family="Source Serif 4,Georgia,serif">Active rigs: ~10 (mid-2025), vs 19 (2024)</text>
+  <text x="503" y="98" font-size="7" fill="#3d3530" font-family="Source Serif 4,Georgia,serif">Active leases: ~2,000; 80%+ unproductive</text>
+  <text x="503" y="118" font-size="6.5" fill="#8a7a72" font-style="italic" font-family="Source Serif 4,Georgia,serif">Sources: EIA; Baker Hughes; BOEM (Feb 2026)</text>
+
+  <!-- LEGEND -->
+  <rect x="490" y="142" width="255" height="155" fill="white" rx="3" stroke="#d4c9b5" stroke-width="1" filter="url(#sh2)"/>
+  <text x="503" y="161" font-size="8" fill="#1a1410" font-weight="600" font-family="DM Mono,monospace" letter-spacing="1">LEGEND</text>
+  <!-- Active zone -->
+  <rect x="497" y="170" width="14" height="12" fill="rgba(26,58,92,0.10)" stroke="#1a3a5c" stroke-width="1" stroke-dasharray="3,2" rx="1"/>
+  <circle cx="504" cy="176" r="3" fill="#1a3a5c" opacity="0.7"/>
+  <text x="518" y="180" font-size="7.5" fill="#3d3530" font-family="Source Serif 4,Georgia,serif">Current drilling zone + platforms</text>
+  <!-- Proposed Eastern Gulf -->
+  <rect x="497" y="191" width="14" height="12" fill="url(#hatch2)" stroke="#b52a1c" stroke-width="1" stroke-dasharray="4,2" rx="1"/>
+  <text x="518" y="201" font-size="7.5" fill="#b52a1c" font-family="Source Serif 4,Georgia,serif">Proposed E. Gulf leases (2029–30)</text>
+  <!-- Proposed Atlantic -->
+  <rect x="497" y="212" width="14" height="12" fill="url(#hatch2b)" stroke="#b52a1c" stroke-width="1" stroke-dasharray="4,2" rx="1"/>
+  <text x="518" y="222" font-size="7.5" fill="#b52a1c" font-family="Source Serif 4,Georgia,serif">Proposed Atlantic leases (first since 1980s)</text>
+  <!-- Kaskida -->
+  <circle cx="504" cy="242" r="7" fill="none" stroke="#b52a1c" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <circle cx="504" cy="242" r="3" fill="#b52a1c"/>
+  <text x="518" y="246" font-size="7.5" fill="#b52a1c" font-family="Source Serif 4,Georgia,serif">BP Kaskida site (appr. Mar 2026)</text>
+  <line x1="497" y1="257" x2="735" y2="257" stroke="#e8e0d0" stroke-width="0.7"/>
+  <text x="503" y="270" font-size="6.5" fill="#8a7a72" font-style="italic" font-family="Source Serif 4,Georgia,serif">E. Gulf moratorium: in place since 1995</text>
+  <text x="503" y="281" font-size="6.5" fill="#8a7a72" font-style="italic" font-family="Source Serif 4,Georgia,serif">No new Atlantic leases since mid-1980s</text>
+  <text x="503" y="292" font-size="6.5" fill="#8a7a72" font-style="italic" font-family="Source Serif 4,Georgia,serif">Sources: BOEM; Trump 5-yr plan Nov 2025</text>
+
+
+</svg>
+    </div>
+    <div class="map-caption">The Trump administration's 2025–2031 offshore drilling plan proposes 34 lease sales across 1.27 billion acres, including the Eastern Gulf (near Alabama and Florida, moratorium since 1995), the Atlantic coast, the Pacific, and Alaska. This despite Gulf production flatlining and active rig counts near seven-year lows. The "One Big Beautiful Bill" adds 30 more mandatory Gulf sales over 15 years. Sources: BOEM; Earthjustice; EIA; CNBC; Al Jazeera.</div>
+  </div>
+</div>
+
+<main class="article-body">
+
+  <h2>What We Are Left With</h2>
+
+  <p>There is a version of this story that has a clean moral arc. It goes: a disaster happens, powerful interests exploit the chaos, a few bad actors are eventually held to account, and the system learns. But Alabama's experience with Deepwater Horizon does not trace that arc. Bentley diverted the settlement funds. A federal judge stopped the hotel. Bentley resigned for the affair, not for the money. He was succeeded by Kay Ivey, who has governed quietly and without obvious scandal. But no structural reform followed. No legislation changed how BP settlement funds flow through the governor's office. No mechanism was created to insulate coastal recovery money from being redirected to pet projects in Montgomery.</p>
+
+  <p>And the Gulf itself? It has partially recovered. Some species are rebounding. The white sand beaches fill up in summer. The tar balls still wash up occasionally, sixteen years on. The fishermen who lost seasons in 2010 largely did not receive full compensation for what they lost. The cleanup workers, many of them poor, many of them Black or brown, living in coastal communities with already compromised health from proximity to the petrochemical industry, reported persistent respiratory problems, neurological symptoms, and cancers at elevated rates. They are still fighting for acknowledgment in 2026.<a href="https://earthjustice.org/press/2026/trump-administration-approves-bps-first-new-gulf-oilfield-since-deepwater-horizon" target="_blank" class="cite">[19]</a></p>
+
+  <p>BP was cleared to resume bidding on federal offshore leases in 2014. It has gradually rebuilt its Gulf presence. And now, in March 2026, it has been handed a $5 billion project at depths its own engineers have admitted they cannot fully guarantee are safe, approved over the objections of members of Congress, tens of thousands of public commenters, and the lessons that eleven dead men paid for with their lives.<a href="https://earthjustice.org/feature/kaskida-bp-oil-drilling" target="_blank" class="cite">[20]</a></p>
+
+  <p>The well will not be producing until 2029. By then, there may be a new governor of Alabama. There may be new senators. There will certainly be new money flowing through new channels, new settlement funds or lease revenues designated for "coastal recovery," new opportunities for that money to find its way toward someone's pet project or someone's beach house. The Gulf will still be there, patient and enormous, holding everything we have poured into it.</p>
+
+  <p>One wonders, not rhetorically but with genuine uncertainty, just how long the waters will stay clean, and whether anyone with real power over that question is actually watching.</p>
+
+</main>
+
+<!-- SOURCES -->
+<section class="sources-section">
+  <h3>Sources &amp; Citations</h3>
+
+  <div class="source-item"><span class="source-num">[1]</span><div>NRDC. <a href="https://www.nrdc.org/stories/deepwater-horizon-oil-spill-facts" target="_blank">"Deepwater Horizon Oil Spill: The Facts About the Worst Oil Spill in U.S. History."</a> Natural Resources Defense Council.</div></div>
+
+  <div class="source-item"><span class="source-num">[2]</span><div>Harvard Environmental and Energy Law Program. <a href="https://eelp.law.harvard.edu/tracker/bsee-blowout-preventer-and-well-control-rule/" target="_blank">"BSEE Blowout Preventer and Well Control Rule."</a> Regulatory tracker. Harvard Law School.</div></div>
+
+  <div class="source-item"><span class="source-num">[3]</span><div>VICE News. <a href="https://news.vice.com/en_us/article/pa4z8y/alabamas-governor-uses-oil-spill-funds-to-renovate-coastal-mansion" target="_blank">"Alabama's Governor Uses Oil Spill Funds to Renovate Coastal Mansion."</a> January 2016.</div></div>
+
+  <div class="source-item"><span class="source-num">[4]</span><div>VICE News. <a href="https://news.vice.com/en_us/article/vb8j5m/alabama-taps-bp-spill-funds-for-another-upscale-beach-project" target="_blank">"Alabama Taps BP Spill Funds for Another Upscale Beach Project."</a> March 2016.</div></div>
+
+  <div class="source-item"><span class="source-num">[5]</span><div>BirminghamWatch. <a href="https://birminghamwatch.org/2017/04/12/alabamas-political-corruption-three-governors-and-one-house-speaker-convicted-gives-state-a-reputation/" target="_blank">"Alabama's Political Corruption: Three Governors and One House Speaker Convicted."</a> April 2017.</div></div>
+
+  <div class="source-item"><span class="source-num">[6]</span><div>Wikipedia. <a href="https://en.wikipedia.org/wiki/Don_Siegelman" target="_blank">"Don Siegelman."</a> Wikipedia, The Free Encyclopedia.</div></div>
+
+  <div class="source-item"><span class="source-num">[7]</span><div>Bob Riley &amp; Associates. <a href="https://www.bobrileyandassociates.com/our-team" target="_blank">"Our Team."</a> BR&amp;A firm biography.</div></div>
+
+  <div class="source-item"><span class="source-num">[8]</span><div>Justice Integrity Project. <a href="https://www.justice-integrity.org/284-justice-department-irregularities-in-alabama-continue-disgrace" target="_blank">"Justice Department Irregularities in Alabama Continue Disgrace."</a></div></div>
+
+  <div class="source-item"><span class="source-num">[9]</span><div>PBS NewsHour / AP. <a href="https://www.pbs.org/newshour/politics/trump-administration-proposes-new-oil-drilling-off-the-coasts-of-california-and-florida" target="_blank">"Trump administration proposes new oil drilling off the coasts of California and Florida."</a> November 20, 2025.</div></div>
+
+  <div class="source-item"><span class="source-num">[10]</span><div>Oil and Gas Watch. <a href="https://news.oilandgaswatch.org/post/even-with-gulf-drilling-down-trump-administration-weighs-expanding-drilling-to-new-coasts" target="_blank">"Even with Gulf drilling down, Trump Administration weighs expanding drilling to new coasts."</a></div></div>
+
+  <div class="source-item"><span class="source-num">[11]</span><div>Sabin Center for Climate Change Law, Columbia University. <a href="https://climate.law.columbia.edu/content/trump-signs-executive-order-expand-offshore-drilling-0" target="_blank">"Trump Signs Executive Order to Expand Offshore Drilling."</a></div></div>
+
+  <div class="source-item"><span class="source-num">[12]</span><div>Earthjustice. <a href="https://earthjustice.org/press/2025/trump-proposes-massive-expansion-of-offshore-drilling-in-public-waters-targets-protected-public-waters-off-california-eastern-gulf-near-florida-all-of-alaska" target="_blank">"Trump Proposes Massive Expansion of Offshore Drilling."</a> November 20, 2025.</div></div>
+
+  <div class="source-item"><span class="source-num">[13]</span><div>Earthjustice. <a href="https://earthjustice.org/brief/2025/trump-announces-unlawful-gulf-of-mexico-oil-sale-were-taking-it-to-court" target="_blank">"Trump Plans to Drill 1.27 Billion Acres of Ocean."</a> November–December 2025.</div></div>
+
+  <div class="source-item"><span class="source-num">[14]</span><div>Insurance Journal / AP. <a href="https://www.insurancejournal.com/news/southeast/2025/12/08/850213.htm" target="_blank">"Florida Republicans Urge Trump to Back Off Offshore Drilling."</a> December 8, 2025.</div></div>
+
+  <div class="source-item"><span class="source-num">[15]</span><div>U.S. Energy Information Administration. <a href="https://www.eia.gov/todayinenergy/detail.php?id=63124" target="_blank">"Development of new fields in Gulf of Mexico to offset production decline in 2024 and 2025."</a></div></div>
+
+  <div class="source-item"><span class="source-num">[16]</span><div>Surfrider Foundation. <a href="https://www.surfrider.org/news/trump-administration-weakens-safety-rule-for-offshore-drilling" target="_blank">"Trump Administration Weakens Safety Rules for Offshore Drilling."</a></div></div>
+
+  <div class="source-item"><span class="source-num">[17]</span><div>The Hill. <a href="https://thehill.com/policy/energy-environment/408727-trump-officials-ease-offshore-drilling-safety-rule/" target="_blank">"Trump officials ease offshore safety rule."</a> September 2018.</div></div>
+
+  <div class="source-item"><span class="source-num">[18]</span><div>NPR. <a href="https://www.npr.org/2019/05/03/720008093/trump-administration-moves-to-roll-back-offshore-drilling-safety-regulations" target="_blank">"Trump Administration Moves To Roll Back Offshore Drilling Safety Regulations."</a> May 3, 2019.</div></div>
+
+  <div class="source-item"><span class="source-num">[19]</span><div>Earthjustice. <a href="https://earthjustice.org/press/2026/trump-administration-approves-bps-first-new-gulf-oilfield-since-deepwater-horizon" target="_blank">"Trump Administration Approves BP's First New Gulf Oilfield Since Deepwater Horizon."</a> March 2026.</div></div>
+
+  <div class="source-item"><span class="source-num">[20]</span><div>Earthjustice. <a href="https://earthjustice.org/feature/kaskida-bp-oil-drilling" target="_blank">"Why BP's Kaskida Project Is a Recipe for (Yet Another) Disaster."</a> March 2026.</div></div>
+
+</section>
+
+</body>
+</html>
