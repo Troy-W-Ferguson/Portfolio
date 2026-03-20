@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How War Rewrote Ukraine's Budget | Troy W. Ferguson</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --black: #111111;
+  --text: #222222;
+  --muted: #666666;
+  --light: #999999;
+  --rule: #d4d0c8;
+  --bg: #faf9f6;
+  --cream: #f5f3ee;
+  --gold: #c9a84c;
+  --red: #b5352a;
+  --blue: #2a5fa5;
+  --col-width: 860px;
+  --s-border: #232b3e;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 20px; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  line-height: 1.78;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  border-bottom: 3px double var(--black);
+  padding: 1.4rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.pub-name {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--black);
+  font-weight: 700;
+}
+
+.masthead-right {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-align: right;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+/* ── ARTICLE LAYOUT ── */
+article {
+  max-width: var(--col-width);
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+}
+
+/* ── HEADER ── */
+.article-header {
+  padding: 3.5rem 0 1.8rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2rem;
+}
+
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 500;
+  margin-bottom: 1.1rem;
+  display: block;
+}
+
+h1 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.12;
+  color: var(--black);
+  margin-bottom: 1.3rem;
+  letter-spacing: -0.01em;
+}
+
+.deck {
+  font-size: 1.05rem;
+  line-height: 1.62;
+  color: var(--muted);
+  font-style: italic;
+  font-weight: 300;
+  border-top: 1px solid var(--rule);
+  padding-top: 1.1rem;
+  margin-top: 1rem;
+}
+
+/* ── BYLINE ── */
+.byline-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2.2rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.byline {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.byline strong { color: var(--black); font-weight: 500; }
+
+.dateline {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--light);
+}
+
+/* ── BODY TEXT ── */
+p {
+  margin-bottom: 1.7rem;
+  font-size: 1rem;
+  line-height: 1.82;
+}
+
+p:first-of-type::first-letter {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 4rem;
+  font-weight: 700;
+  float: left;
+  line-height: 0.82;
+  margin: 0.08rem 0.1rem 0 0;
+  color: var(--black);
+}
+
+/* ── INLINE CITATIONS ── */
+sup a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 500;
+  vertical-align: super;
+}
+sup a:hover { text-decoration: underline; }
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  border-top: 3px solid var(--black);
+  border-bottom: 1px solid var(--rule);
+  padding: 1.6rem 0;
+  margin: 2.8rem 0;
+}
+
+.pull-quote blockquote {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.28rem;
+  line-height: 1.48;
+  font-style: italic;
+  color: var(--black);
+}
+
+.pull-quote cite {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-top: 0.8rem;
+  font-style: normal;
+}
+
+/* ── SECTION RULE ── */
+.section-break {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 2.8rem 0 2.2rem;
+}
+
+.section-break span {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.section-break::before, .section-break::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* ── GRAPHIC HEADER (above gold line, in article column) ── */
+.graphic-header {
+  margin: 3rem 0 0;
+  padding-bottom: 1rem;
+  border-bottom: 4px solid var(--gold);
+}
+.graphic-label-above {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--red);
+  margin-bottom: 0.4rem;
+}
+.graphic-title-above {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.15rem;
+  color: var(--black);
+  font-style: italic;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+/* ── GRAPHIC CONTAINER: full-width dark panel ─────────────────────────────
+   THE KEY RULE: NO overflow:hidden, NO fixed height, NOWHERE.
+   The SVG sets its own height via the viewBox aspect ratio.
+   The container is a plain block element that wraps its children.
+   Width extension via margin calc — stays in normal document flow.
+──────────────────────────────────────────────────────────────────────────── */
+.graphic-container {
+  width:         100vw;
+  margin-left:   calc(-50vw + 50%);
+  margin-right:  calc(-50vw + 50%);
+  margin-top:    0;
+  margin-bottom: 3rem;
+  background:    #0e1117;
+  border-bottom: 1px solid #2a2a2a;
+  box-sizing:    border-box;
+  /* NO overflow:hidden — the SVG must push the container's height */
+  /* NO height — driven entirely by SVG content */
+}
+
+.graphic-inner {
+  max-width: 1200px;
+  margin:    0 auto;
+  padding:   0 1.2rem;
+  display:   block;
+}
+
+/* Tab row */
+.tab-row {
+  display:   flex;
+  gap:       0;
+  padding:   1rem 0 0.6rem;
+  flex-wrap: wrap;
+}
+.s-tab {
+  font-family:    'DM Mono', monospace;
+  font-size:      12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background:     transparent;
+  border:         1px solid #232b3e;
+  color:          #6b7fa8;
+  padding:        0.45rem 1.1rem;
+  cursor:         pointer;
+  transition:     all 0.2s;
+}
+.s-tab.active         { background: var(--gold); border-color: var(--gold); color: #0e1117; font-weight: 500; }
+.s-tab:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
+
+.s-chart          { display: none; }
+.s-chart.active   { display: block; }
+
+/* THE SVG RULES:
+   - width: 100% so it fills the container horizontally
+   - NO height attribute or property — browser computes from viewBox ratio
+   - display: block removes the default inline gap below SVGs
+   - This is the canonical "responsive SVG" pattern per MDN and Sara Soueidan
+*/
+.sankey-svg {
+  display: block;
+  width:   100%;
+  /* height intentionally omitted — derived from viewBox aspect ratio */
+}
+
+.graphic-caption {
+  padding:     0.9rem 0 1.4rem;
+  font-family: 'DM Mono', monospace;
+  font-size:   11px;
+  color:       #6b7fa8;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  border-top:  1px solid #232b3e;
+}
+
+
+/* ── STAT BOX ── */
+.stat-inline {
+  background: var(--cream);
+  border-left: 3px solid var(--gold);
+  margin: 2.2rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.stat-inline-item {
+  background: var(--cream);
+  padding: 1rem 1.2rem;
+  border-right: 1px solid var(--rule);
+}
+
+.stat-inline-item:last-child { border-right: none; }
+
+.stat-num {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1;
+}
+
+.stat-desc {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-top: 0.35rem;
+  line-height: 1.5;
+}
+
+/* ── SOURCES ── */
+.sources-block {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 3px double var(--rule);
+}
+
+.sources-block h3 {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  margin-bottom: 1.1rem;
+}
+
+.sources-block ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+
+.sources-block li {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 0.55rem;
+  line-height: 1.55;
+}
+
+.sources-block a { color: var(--blue); text-decoration: none; }
+.sources-block a:hover { text-decoration: underline; }
+
+/* ── TOOLTIP ── */
+.tooltip {
+  position: fixed;
+  background: #1c2437;
+  border: 1px solid #232b3e;
+  padding: 0.8rem 1rem;
+  font-family: 'Source Serif 4', serif;
+  font-size: 14px;
+  color: #e8dcc8;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 9999;
+  max-width: 280px;
+  line-height: 1.5;
+  transition: opacity 0.12s;
+}
+.tt-title {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: var(--gold);
+  font-size: 15px;
+}
+.tt-sub {
+  color: #6b7fa8;
+  font-style: italic;
+  font-size: 12px;
+  margin-top: 0.3rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  :root { --col-width: 100%; }
+  article { padding: 0 1.25rem 4rem; }
+}
+
+@media (max-width: 700px) {
+  html { font-size: 17px; }
+  h1 { font-size: 1.8rem; }
+  .stat-inline { grid-template-columns: 1fr; }
+  .stat-inline-item { border-right: none; border-bottom: 1px solid var(--rule); }
+  .graphic-container { width: 100%; margin-left: 0; margin-right: 0; }
+  .graphic-inner { padding: 0 1rem 0; }
+  .graphic-caption { font-size: 10px; }
+  .s-tab { font-size: 11px; padding: 0.4rem 0.8rem; }
+}
+
+@media (max-width: 480px) {
+  html { font-size: 15px; }
+  h1 { font-size: 1.55rem; }
+  .masthead { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+  .graphic-inner { padding: 0 0.5rem 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="pub-name">Troy W. Ferguson &nbsp;|&nbsp; Portfolio</div>
+  <div class="masthead-right">Economics &amp; National Security<br>Cambridge, United Kingdom</div>
+</div>
+
+<article>
+
+  <header class="article-header">
+    <span class="section-label">War Economy</span>
+    <h1>How War Rewrote Ukraine's Budget</h1>
+    <p class="deck">From a tax-funded sovereign economy to a state kept alive by allied transfers, Kyiv's fiscal transformation is without peacetime precedent in modern Europe.</p>
+  </header>
+
+  <div class="byline-block">
+    <div class="byline">By <strong>Troy W. Ferguson</strong></div>
+    <div class="dateline">March 2026 &nbsp;&bull;&nbsp; Cambridge, U.K.</div>
+  </div>
+
+  <p>In 2021, Ukraine paid its own bills. Its state budget general fund collected approximately UAH 1.084 trillion, roughly forty billion dollars, from a familiar mix of value-added taxes, corporate levies, customs receipts, and dividends from state-owned enterprises including the gas giant Naftogaz.<sup><a href="#src1">(1)</a></sup> The International Monetary Fund was present, as it had been for decades, but only modestly so: a single Stand-by tranche of SDR 0.5 billion arrived that year, and the European Union's Macro-Financial Assistance contribution amounted to under seven hundred million euros.<sup><a href="#src2">(2)</a></sup> Defense consumed less than four percent of gross domestic product. The country was neither prosperous nor fiscally adventurous, but it was, in every meaningful sense, solvent and self-reliant.</p>
+
+  <p>Three years later, that architecture no longer exists. Russia's full-scale invasion of February 2022 did not simply stress Ukraine's public finances. It restructured them from the ground up, replacing domestic self-sufficiency with a system of international life-support that no Western government has had to construct for a sovereign European state since the Marshall Plan. The transformation is visible in a single sentence from the Centre for Economic Strategy, the leading tracker of Ukrainian wartime fiscal data: since the invasion began, all domestic revenues have been directed to defense, and all civilian expenditures have been financed by foreign partners.<sup><a href="#src3">(3)</a></sup></p>
+
+  <!-- GRAPHIC EMBED -->
+  <div class="graphic-header">
+    <div class="graphic-label-above">Interactive Graphic</div>
+    <div class="graphic-title-above">Ukraine's Budget: Where the Money Came From &mdash; 2021 vs. 2024</div>
+  </div>
+  <div class="graphic-container">
+    <div class="graphic-inner">
+      <div class="tab-row">
+        <button class="s-tab active" onclick="switchTab('pre')">Pre-War &middot; 2021</button>
+        <button class="s-tab" onclick="switchTab('war')">Wartime &middot; 2024</button>
+      </div>
+      <div id="chart-pre" class="s-chart active">
+        <svg id="sankey-pre" class="sankey-svg"></svg>
+      </div>
+      <div id="chart-war" class="s-chart">
+        <svg id="sankey-war" class="sankey-svg"></svg>
+      </div>
+      <div class="graphic-caption">
+        Flows represent estimated budget financing streams in U.S. dollars. Hover nodes and links for sourced annotations.
+        Pre-war data: Ukrainian Ministry of Finance, Cabinet of Ministers 2021 annual budget reports.
+        Wartime data: Centre for Economic Strategy, IMF EFF programme documents, EU EEAS, U.S. GAO, Kyiv Independent, Kiel Institute.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-break"><span>The Domestic Base</span></div>
+
+  <p>What is striking about Ukraine's wartime revenue picture is not collapse but resilience. Ukrainians and Ukrainian businesses paid over one trillion hryvnias, roughly twenty-four billion dollars, in taxes in 2024.<sup><a href="#src4">(4)</a></sup> Corporate income tax contributed Hr 270.8 billion. Value-added tax on imports surged as allied procurement drove goods inflows across the border. Personal income tax and the military levy together reached Hr 233.6 billion, a figure that will rise further after President Volodymyr Zelensky signed legislation raising the military tax rate from 1.5 percent to 5 percent in late 2024.<sup><a href="#src4">(4)</a></sup> State-owned enterprise dividends, particularly from Naftogaz and Ukrenerhom, contributed at record levels as wartime demand for energy management inflated their reported profits.</p>
+
+  <p>Ukraine has also leaned aggressively on its domestic bond market. Domestic government bonds, known as OVDPs, have become the second most important source of internal financing since 2022, doubling in volume as banks, pension funds, and individual savers found they offered higher real returns than deposits.<sup><a href="#src5">(5)</a></sup> By July 2025, UAH 302.9 billion in fresh domestic bond placements had been recorded in a single seven-month window alone.<sup><a href="#src6">(6)</a></sup> These are not grants; they are obligations that will compound Ukraine's debt burden long into reconstruction. Public and publicly guaranteed debt reached ninety percent of GDP by the end of 2024, compared with forty-nine percent before the war.<sup><a href="#src3">(3)</a></sup></p>
+
+  <div class="pull-quote">
+    <blockquote>"All civilian expenditures of the state budget are financed through foreign financial aid. All domestic revenues go to the war."</blockquote>
+    <cite>Centre for Economic Strategy, Kyiv &mdash; 2024 Fiscal Review</cite>
+  </div>
+
+  <div class="section-break"><span>The International Architecture</span></div>
+
+  <p>The gap between what Ukraine earns and what the war costs has been bridged by an international financing architecture assembled with speed that has no postwar European precedent. The European Union's Ukraine Facility, a fifty-billion-euro envelope agreed for 2024 through 2027, allocated EUR 12.1 billion directly to the Ukrainian state budget in 2024, with a target of EUR 16 billion by year-end.<sup><a href="#src7">(7)</a></sup> These funds cover salaries for teachers, doctors, and judges: the ordinary machinery of a functioning state that Kyiv can no longer pay for out of its own pocket while simultaneously sustaining a military consuming more than half the entire budget. In total, the EU and its twenty-seven member states have made available close to $197 billion in financial, military, humanitarian, and refugee assistance since the invasion began, with sixty-five percent delivered as grants or in-kind support.<sup><a href="#src8">(8)</a></sup></p>
+
+  <p>The United States contributed differently but at comparable scale. The U.S. Agency for International Development channeled $22.9 billion to the Government of Ukraine through World Bank trust funds prior to 2024, reimbursing Kyiv for documented eligible expenditures.<sup><a href="#src9">(9)</a></sup> Deloitte and KPMG were contracted to conduct ongoing audits. In 2024, additional budget support tranches of roughly $8.5 billion followed. The IMF's four-year Extended Fund Facility, approved in March 2023 at SDR 11.6 billion, disbursed seven tranches by late 2024 at a pace calibrated to Ukraine's reform benchmarks, including anti-corruption measures, VAT alignment with EU standards, and National Bank independence.<sup><a href="#src10">(10)</a></sup></p>
+
+  <div class="stat-inline">
+    <div class="stat-inline-item">
+      <div class="stat-num">$41.6B</div>
+      <div class="stat-desc">International financial aid to Ukraine's budget, 2024</div>
+    </div>
+    <div class="stat-inline-item">
+      <div class="stat-num">$197B</div>
+      <div class="stat-desc">Total EU + member state assistance since Feb. 2022</div>
+    </div>
+    <div class="stat-inline-item">
+      <div class="stat-num">$50B</div>
+      <div class="stat-desc">G7 ERA loan backed by frozen Russian asset interest</div>
+    </div>
+  </div>
+
+  <p>The most structurally novel instrument is the G7's Extraordinary Revenue Acceleration mechanism, which committed a $50 billion loan to Ukraine backed by the roughly $3 billion in annual interest generated by approximately 300 billion euros in frozen Russian sovereign assets held in Western custodians, predominantly Euroclear in Belgium.<sup><a href="#src11">(11)</a></sup> The first tranche, EUR 18.1 billion in macro-financial assistance, began flowing in late 2024 and continued into 2025. Ukraine is expected to repay from future reparations or the eventual resolution of frozen Russian assets themselves. It is, in effect, a loan from Russia to Ukraine, intermediated by the G7.</p>
+
+  <div class="section-break"><span>Grain, Corridors, and the Economy Behind the War</span></div>
+
+  <p>The civilian economy, though sharply contracted, has not stopped generating foreign exchange. Ukraine's grain and oilseed exports reached 61.5 million tonnes in 2024, a twenty percent increase over the prior year, with Black Sea ports handling seventy-nine percent of total export volume despite ongoing Russian maritime harassment.<sup><a href="#src12">(12)</a></sup> This export revenue does not flow directly into the state budget, but it shores up National Bank reserves, stabilizes the hryvnia, and reduces the foreign currency drain that would otherwise accelerate devaluation. The EU's Solidarity Lanes, established to replace the Black Sea Grain Corridor after Russia's withdrawal from that arrangement in July 2023, have collectively moved over 196 million tonnes of Ukrainian goods, including 88 million tonnes of grains and agricultural products, generating what Brussels calculates as critical revenue for the broader economy.<sup><a href="#src8">(8)</a></sup> The metallurgical sector contributed a further $6.4 billion in export receipts in 2024, led by iron ore and semi-finished steel.<sup><a href="#src12">(12)</a></sup></p>
+
+  <p>Ukraine's information technology sector, while declining slightly in absolute terms due to emigration of skilled workers, still produced $6.4 billion in computer service exports in 2024, a residual of the pre-war boom that has survived partly because code crosses no physical border.<sup><a href="#src12">(12)</a></sup> These private-sector flows are not budget revenue, but they matter: they fund the consumption of a working-age population that continues to pay taxes, and they provide the hard-currency base that keeps the National Bank's roughly $39 billion in reserves from eroding faster than they already are.<sup><a href="#src13">(13)</a></sup></p>
+
+  <p>What the diagram above makes plain is a transformation that cannot be described purely in numbers. Pre-war Ukraine was fiscally ordinary for a middle-income transition economy: largely self-funding, modestly indebted, and conditionally engaged with international lenders. Wartime Ukraine is something with few modern analogues: a state whose entire civilian apparatus is financed by allied transfers while its own citizens fund the guns. The Centre for Economic Strategy estimates that, even combining Ukraine's domestic revenues with all international assistance, the resulting total still falls $20 to $30 billion short of Russia's annual military expenditure.<sup><a href="#src14">(14)</a></sup> The allies are not merely sustaining Ukraine. They are, in the most literal fiscal sense, doing so at a discount to what would be required to match the adversary on equal terms.</p>
+
+  <div class="sources-block">
+    <h3>Sources</h3>
+    <ol>
+      <li id="src1">Cabinet of Ministers of Ukraine. <a href="https://www.kmu.gov.ua/en/news/derzhbyudzhet-2021-za-sichen-gruden-2021-roku-do-zagalnogo-fondu-nadijshlo-1084-trln-grn" target="_blank">"State Budget 2021: UAH 1.084 Trillion Transferred to the General Fund, January-December 2021."</a> Ministry of Finance of Ukraine, January 2022.</li>
+      <li id="src2">Cabinet of Ministers of Ukraine. <a href="https://www.kmu.gov.ua/en/news/derzhbyudzhet-2021-za-sichen-gruden-2021-roku-do-zagalnogo-fondu-nadijshlo-1084-trln-grn" target="_blank">"IMF Stand-By Tranche and EU Macro-Financial Assistance, 2021 Budget Financing."</a> Ministry of Finance of Ukraine, 2022.</li>
+      <li id="src3">Centre for Economic Strategy. <a href="https://ces.org.ua/en/public_finances_2024/" target="_blank">"Adapting to the Unknown: Ukraine's Public Finances in the Third Year of War."</a> CES Kyiv, April 2025.</li>
+      <li id="src4">Kyiv Independent. <a href="https://kyivindependent.com/ukrainians-pay-24-billion-in-taxes-in-2024/" target="_blank">"Ukrainians Paid $24 Billion in Taxes in 2024, Finance Ministry Reports."</a> December 31, 2024.</li>
+      <li id="src5">Centre for Economic Strategy. <a href="https://ces.org.ua/en/ukrainian_economy_in_2024/" target="_blank">"Ukrainian Economy in 2024: Special Edition of the Tracker."</a> CES Kyiv, 2025.</li>
+      <li id="src6">Interfax Ukraine. <a href="https://interfax.com/newsroom/top-stories/113092/" target="_blank">"Ukrainian State Budget's Revenues, Expenditures Grow in Jan-July 2025."</a> Interfax, 2025.</li>
+      <li id="src7">Kyiv Post. <a href="https://www.kyivpost.com/post/44447" target="_blank">"Recap of International Aid to Ukraine in December 2024."</a> Kyiv Post, December 25, 2024.</li>
+      <li id="src8">European External Action Service. <a href="https://www.eeas.europa.eu/delegations/united-states-america/eu-assistance-ukraine-us-dollars_en" target="_blank">"EU Assistance to Ukraine (in U.S. Dollars)."</a> EEAS, February 24, 2026.</li>
+      <li id="src9">U.S. Government Accountability Office. <a href="https://www.gao.gov/products/gao-24-107520" target="_blank">"Ukraine: Oversight of U.S. Direct Budget Support."</a> GAO-24-107520, July 31, 2024.</li>
+      <li id="src10">European Parliament Research Service. <a href="https://www.europarl.europa.eu/RegData/etudes/IDAN/2023/733763/IPOL_IDA(2023)733763_EN.pdf" target="_blank">"Multilateral Financial Assistance to Ukraine."</a> EPRS, January 2024.</li>
+      <li id="src11">Wikipedia / Kiel Institute for the World Economy. <a href="https://en.wikipedia.org/wiki/List_of_military_aid_to_Ukraine_during_the_Russo-Ukrainian_War" target="_blank">"List of Military Aid to Ukraine During the Russo-Ukrainian War."</a> Updated March 2026.</li>
+      <li id="src12">Centre for Economic Strategy. <a href="https://ces.org.ua/en/ukrainian_economy_in_2024/" target="_blank">"Ukrainian Economy in 2024: Grain, Metallurgy, and Services Exports."</a> CES Kyiv, 2025.</li>
+      <li id="src13">VoxUkraine. <a href="https://voxukraine.org/en/ukraines-financial-system-during-wartime" target="_blank">"Ukraine's Financial System During Wartime."</a> VoxUkraine, 2024.</li>
+      <li id="src14">VoxUkraine / Yuriy Gorodnichenko (UC Berkeley). <a href="https://voxukraine.org/en/ukraines-financial-system-during-wartime" target="_blank">"How Ukraine Can Finance a War of Attrition."</a> VoxUkraine lecture summary, October 2024.</li>
+    </ol>
+  </div>
+
+</article>
+
+<div class="tooltip" id="tooltip">
+  <div class="tt-title" id="tt-title"></div>
+  <div id="tt-body"></div>
+  <div class="tt-sub" id="tt-sub"></div>
+</div>
+
+<script>
+const PRE_WAR = {
+  nodes: [
+    // Col 0 -- domestic revenue sources
+    { id:"vat_domestic",   label:"VAT (Domestic)",           color:"#4a8fe8", group:"domestic" },
+    { id:"vat_import",     label:"VAT on Imports",           color:"#5db87a", group:"domestic" },
+    { id:"pit",            label:"PIT + Military Levy",      color:"#c9a84c", group:"domestic" },
+    { id:"cit",            label:"Corporate Profit Tax",     color:"#e8834a", group:"domestic" },
+    { id:"excise",         label:"Excise Duties",            color:"#9b72cf", group:"domestic" },
+    { id:"import_duty",    label:"Import Duties",            color:"#4ac9c9", group:"domestic" },
+    { id:"soe_div",        label:"SOE Dividends\n(Naftogaz+)",color:"#d64933",group:"domestic" },
+    // Col 1 -- debt instruments (side by side: domestic bonds + foreign loans)
+    { id:"domestic_bonds", label:"Domestic Bonds\n(OVDPs)",  color:"#8a9ab5", group:"debt"     },
+    { id:"foreign_loans",  label:"Foreign Economic\nLoan Assistance\n(IMF + EU MFA + World Bank + Eurobonds)",
+                           color:"#4a8fe8", group:"external" },
+    // Col 2 -- budget
+    { id:"budget",         label:"STATE BUDGET\n2021",       color:"#c9a84c", group:"center"  },
+    // Col 3 -- expenditure
+    { id:"defense",        label:"Defense &\nSecurity",      color:"#d64933", group:"spend"   },
+    { id:"social",         label:"Social Protection\n& Pensions", color:"#4a8fe8", group:"spend" },
+    { id:"debt_service",   label:"Debt Service",             color:"#8a9ab5", group:"spend"   },
+    { id:"education",      label:"Education\n& Health",      color:"#5db87a", group:"spend"   },
+    { id:"infrastructure", label:"Infrastructure",           color:"#9b72cf", group:"spend"   },
+    { id:"admin",          label:"Administration\n& Other",  color:"#c9a84c", group:"spend"   },
+  ],
+  links: [
+    // Domestic tax revenue -> budget
+    { source:"vat_domestic",   target:"budget", value:5.8,  note:"UAH 158B net domestic VAT (2021 actuals)" },
+    { source:"vat_import",     target:"budget", value:7.3,  note:"UAH 197B import VAT collected by State Customs" },
+    { source:"pit",            target:"budget", value:5.2,  note:"UAH 137.6B -- PIT plus 1.5% military levy" },
+    { source:"cit",            target:"budget", value:2.8,  note:"UAH 76B corporate income tax" },
+    { source:"excise",         target:"budget", value:2.4,  note:"UAH 65B excise duties" },
+    { source:"import_duty",    target:"budget", value:1.0,  note:"UAH 26.6B import duties" },
+    { source:"soe_div",        target:"budget", value:1.8,  note:"UAH 48B SOE dividends -- Naftogaz, Ukrzaliznytsia, Ukrposhta" },
+    // Debt instruments -> budget
+    { source:"domestic_bonds", target:"budget", value:5.8,  note:"UAH 388B OVDPs placed -- normal peacetime sovereign bond market" },
+    { source:"foreign_loans",  target:"budget", value:3.9,  note:"Eurobonds $1.25B + IMF SDR 0.5B Stand-by + EU EUR 588M MFA + World Bank IBRD loans. Total ~$3.9B in 2021." },
+    // Budget -> expenditure
+    { source:"budget", target:"defense",        value:3.5,  note:"Under 4% of GDP -- peacetime defense baseline" },
+    { source:"budget", target:"social",         value:10.0, note:"Pensions, social transfers, welfare programs" },
+    { source:"budget", target:"debt_service",   value:3.8,  note:"Interest + principal -- manageable at 49% debt/GDP" },
+    { source:"budget", target:"education",      value:6.5,  note:"Schools, universities, public healthcare" },
+    { source:"budget", target:"infrastructure", value:3.5,  note:"Roads, energy, rail, port infrastructure" },
+    { source:"budget", target:"admin",          value:4.7,  note:"Central government, judiciary, local transfers" },
+  ]
+};
+
+const WARTIME = {
+  nodes: [
+    { id:"vat_import_w",  label:"VAT on Imports",           color:"#5db87a", group:"domestic" },
+    { id:"vat_dom_w",     label:"VAT (Domestic)",           color:"#4a8fe8", group:"domestic" },
+    { id:"pit_w",         label:"PIT + Military Tax\n(raised to 5%)", color:"#c9a84c", group:"domestic" },
+    { id:"cit_w",         label:"Corporate Tax\n(Banks at 50%)", color:"#e8834a", group:"domestic" },
+    { id:"excise_w",      label:"Excise Duties",            color:"#9b72cf", group:"domestic" },
+    { id:"soe_w",         label:"SOE Profits\n(Naftogaz+)", color:"#d64933", group:"domestic" },
+    { id:"grain_export",  label:"Grain & Oilseed Exports\n61.5M tonnes -- FX reserves", color:"#5db87a", group:"economy" },
+    { id:"ovdp_w",        label:"OVDPs (War Bonds)\ndoubled since 2022", color:"#8a9ab5", group:"debt"    },
+    { id:"us_w",          label:"United States\n(USAID via World Bank)", color:"#4a8fe8", group:"external"},
+    { id:"eu_facility",   label:"EU Ukraine Facility\nEUR 12.1B in 2024", color:"#e8c44a", group:"external"},
+    { id:"imf_eff",       label:"IMF Extended Fund\n(SDR 11.6B, 4-year)", color:"#4ac9c9", group:"external"},
+    { id:"world_bank_w",  label:"World Bank DPL\n(Growth Foundations)", color:"#5db87a", group:"external"},
+    { id:"era_loan",      label:"G7 ERA Loan\n$50B on frozen Russian assets", color:"#e8834a", group:"external"},
+    { id:"other_donors",  label:"Canada, Japan, UK\n+ Bilateral Partners", color:"#9b72cf", group:"external"},
+    { id:"budget_w",      label:"STATE BUDGET\n2024",       color:"#c9a84c", group:"center"  },
+    { id:"defense_w",     label:"Defense & Security\n51% of budget", color:"#d64933", group:"spend" },
+    { id:"social_w",      label:"Social Protection\n& Pensions (20%)", color:"#4a8fe8", group:"spend" },
+    { id:"debt_svc_w",    label:"Debt Service\n(90% debt/GDP)", color:"#8a9ab5", group:"spend" },
+    { id:"edu_health_w",  label:"Education & Health\n(grant-financed)", color:"#5db87a", group:"spend" },
+    { id:"civil_admin_w", label:"Civil Service & Admin\n(grant-financed)", color:"#9b72cf", group:"spend" },
+  ],
+  links: [
+    { source:"vat_import_w", target:"budget_w", value:7.0,  note:"Import VAT surged as allied procurement drove goods inflows" },
+    { source:"vat_dom_w",    target:"budget_w", value:5.5,  note:"Domestic VAT approximately $6.4B (Finance Ministry)" },
+    { source:"pit_w",        target:"budget_w", value:5.6,  note:"Hr 233.6B ($5.6B) -- military tax raised to 5% in late 2024" },
+    { source:"cit_w",        target:"budget_w", value:6.5,  note:"Hr 270.8B ($6.5B) -- bank super-tax at 50% rate for 2024" },
+    { source:"excise_w",     target:"budget_w", value:3.2,  note:"Hr 133.5B ($3.2B) -- recovering from 2022 wartime collapse" },
+    { source:"soe_w",        target:"budget_w", value:3.2,  note:"Hr 51.8B rent + record SOE profit transfers to budget" },
+    { source:"grain_export", target:"budget_w", value:4.0,  note:"61.5M tonnes grain/oilseed via Black Sea ports and EU Solidarity Lanes -- supports NBU reserves and hryvnia stability" },
+    { source:"ovdp_w",       target:"budget_w", value:7.2,  note:"Domestic war bonds doubled since invasion -- attractive yields sold to banks, citizens, and institutions" },
+    { source:"us_w",         target:"budget_w", value:8.5,  note:"USAID channels $22.9B+ via World Bank trust funds -- reimburses Ukraine for teacher, doctor, civil servant salaries. Audited by Deloitte and KPMG" },
+    { source:"eu_facility",  target:"budget_w", value:12.1, note:"EU Ukraine Facility: EUR 12.1B to state budget in 2024 -- part of EUR 50B 2024-2027 package. Mix of grants and concessional loans" },
+    { source:"imf_eff",      target:"budget_w", value:4.5,  note:"IMF EFF SDR 11.6B -- 7 tranches disbursed. Conditioned on VAT reform, anti-corruption, and NBU independence" },
+    { source:"world_bank_w", target:"budget_w", value:2.0,  note:"World Bank Growth Foundations DPL -- $1B tranches tied to governance reforms" },
+    { source:"era_loan",     target:"budget_w", value:2.5,  note:"$50B G7 ERA loan backed by roughly $3B/year interest on EUR 300B frozen Russian sovereign assets held at Euroclear" },
+    { source:"other_donors", target:"budget_w", value:2.5,  note:"Canada, Japan, UK, Nordics, Australia -- mix of grants and concessional loans. Japan committed approximately $4.5B in 2022-2024" },
+    { source:"budget_w", target:"defense_w",    value:42.0, note:"UAH 1.69T ($40B+) -- 22% of GDP. Weapons production, UAVs, artillery, personnel costs" },
+    { source:"budget_w", target:"social_w",     value:12.0, note:"Pensions, IDP support, disability payments -- largely financed by EU and US grants" },
+    { source:"budget_w", target:"debt_svc_w",   value:9.5,  note:"Debt at 90% of GDP ($166B). Partial restructuring in 2024 deferred approximately $20B in obligations" },
+    { source:"budget_w", target:"edu_health_w", value:8.0,  note:"Schools and hospitals funded via USAID World Bank trust funds, audited independently" },
+    { source:"budget_w", target:"civil_admin_w",value:10.5, note:"Civil service, judiciary, local budgets -- financed almost entirely by international grants" },
+  ]
+};
+
+/* ================================================================
+   SANKEY RENDERER -- Fixed internal canvas, responsive via viewBox
+   
+   Architecture (the correct one per MDN/Sara Soueidan):
+   * SVG has width="100%" and NO height attribute
+   * SVG has a viewBox="0 0 CANVAS_W CANVAS_H" 
+   * Browser computes rendered height = container_width x (CANVAS_H/CANVAS_W)
+   * Container has NO overflow:hidden and NO fixed height
+   * Result: SVG is always fully visible, scales with container, never clips
+   
+   All content is drawn inside [0..CANVAS_W] x [0..CANVAS_H].
+   Labels sit in reserved margin zones inside the canvas.
+================================================================ */
+
+// Fixed internal canvas size
+// Tall canvas => longer page scroll => everything visible, nothing clipped.
+// The SVG has width:100% and NO height attr, so browser derives rendered
+// height from the viewBox aspect ratio: rendered_h = rendered_w * (H/W).
+const CANVAS_W  = 1400;
+const CANVAS_H  = 1800; // tall enough that all nodes + labels have room
+
+// Internal margins -- label text lives here, nodes live in the draw zone
+const M_LEFT    = 290;  // generous left gutter for longest left labels
+const M_RIGHT   = 300;  // generous right gutter for expenditure labels
+const M_TOP     = 60;
+const M_BOTTOM  = 60;
+
+// Node geometry -- larger for visibility
+const NODE_W    = 32;
+const NODE_PAD  = 20;   // vertical gap between nodes in same column
+
+// Typography -- bigger text, all drawn inside canvas coordinates
+const FONT_LBL  = 15;   // label font size in SVG px
+const FONT_VAL  = 13;   // $xB badge font size
+const LINE_H    = 19;   // line height between label rows
+const GOLD      = '#c9a84c';
+
+// Drawable area (inside margins)
+const DRAW_W = CANVAS_W - M_LEFT  - M_RIGHT;
+const DRAW_H = CANVAS_H - M_TOP   - M_BOTTOM;
+
+// Four column X positions (left edge of node rect)
+// Col 0: domestic sources (left)
+// Col 1: debt / external (left-centre) -- "foreign_loans" sits here
+// Col 2: STATE BUDGET node (centre)
+// Col 3: expenditure sinks (right)
+const COL_X = [
+  M_LEFT + 0.000 * DRAW_W,
+  M_LEFT + 0.295 * DRAW_W,
+  M_LEFT + 0.570 * DRAW_W,
+  M_LEFT + 0.775 * DRAW_W,
+];
+
+function renderSankey(data, svgId) {
+  const nodes = data.nodes.map(n => ({...n}));
+  const links = data.links.map(l => ({...l}));
+
+  // Column assignment
+  const colMap   = {domestic:0, economy:0, debt:1, external:1, center:2, spend:3};
+  nodes.forEach(n => { n.col = colMap[n.group]; });
+  const colNodes = [0,1,2,3].map(c => nodes.filter(n => n.col === c));
+
+  // Node value totals
+  const cNode = nodes.find(n => n.group === 'center');
+  cNode._total = links.filter(l=>l.target===cNode.id).reduce((s,l)=>s+l.value, 0);
+  nodes.forEach(n => {
+    if (n.group === 'center') return;
+    const iv = links.filter(l=>l.target===n.id).reduce((s,l)=>s+l.value, 0);
+    const ov = links.filter(l=>l.source===n.id).reduce((s,l)=>s+l.value, 0);
+    n._total = Math.max(iv, ov);
+  });
+
+  // Scale: largest column fills DRAW_H
+  const maxColV = Math.max(
+    colNodes[0].reduce((s,n)=>s+(n._total||0), 0),
+    colNodes[1].reduce((s,n)=>s+(n._total||0), 0)
+  );
+  const scaleH = v => (v / maxColV) * DRAW_H;
+  const MIN_H  = 10;
+
+  // Vertical layout -- each column centred in DRAW_H
+  function layoutCol(ci) {
+    const ns   = colNodes[ci];
+    if (!ns.length) return;
+    const hh   = ns.map(n => Math.max(MIN_H, scaleH(n._total || 0)));
+    const used = hh.reduce((s,h)=>s+h, 0) + NODE_PAD * (ns.length - 1);
+    let   y    = M_TOP + (DRAW_H - used) / 2;
+    ns.forEach((n,i) => {
+      n._x = COL_X[ci];
+      n._y = y;
+      n._h = hh[i];
+      y   += hh[i] + NODE_PAD;
+    });
+  }
+  [0,1,2,3].forEach(layoutCol);
+
+  // Link edge cursors -- top-edge tracking (the correct approach)
+  const outY = {}, inY = {};
+  nodes.forEach(n => {
+    if (n._y !== undefined) { outY[n.id] = n._y; inY[n.id] = n._y; }
+  });
+
+  // Build SVG -- width=100%, NO height attribute, viewBox drives aspect ratio
+  const svgEl = document.getElementById(svgId);
+  svgEl.setAttribute('viewBox', '0 0 ' + CANVAS_W + ' ' + CANVAS_H);
+  svgEl.setAttribute('width',   '100%');
+  svgEl.removeAttribute('height');  // critical -- let browser derive from viewBox
+  svgEl.setAttribute('preserveAspectRatio', 'xMidYMin meet');
+
+  const svg = d3.select('#' + svgId);
+  svg.selectAll('*').remove();
+
+  // Ribbon flows
+  links.forEach(link => {
+    const src = nodes.find(n=>n.id===link.source);
+    const tgt = nodes.find(n=>n.id===link.target);
+    if (!src || !tgt) return;
+
+    const lh  = Math.max(1.5, scaleH(link.value));
+    const x1  = src._x + NODE_W,  y1t = outY[src.id],  y1b = y1t + lh;
+    const x2  = tgt._x,           y2t = inY[tgt.id],   y2b = y2t + lh;
+    outY[src.id] += lh;
+    inY[tgt.id]  += lh;
+
+    const cx = (x1 + x2) / 2;
+    const d  = 'M'+x1+','+y1t+' C'+cx+','+y1t+' '+cx+','+y2t+' '+x2+','+y2t
+              +' L'+x2+','+y2b+' C'+cx+','+y2b+' '+cx+','+y1b+' '+x1+','+y1b+' Z';
+
+    svg.append('path').attr('d', d)
+      .attr('fill',         src.color)
+      .attr('fill-opacity', 0.28)
+      .attr('stroke',       src.color)
+      .attr('stroke-width', 0.5)
+      .attr('stroke-opacity', 0.45)
+      .style('cursor', 'pointer')
+      .on('mouseover', function(e) {
+        d3.select(this).attr('fill-opacity', 0.66).attr('stroke-opacity', 0.9);
+        showTip(e,
+          src.label.replace(/\x0a/g, ' ') + ' \u2192 ' + tgt.label.replace(/\x0a/g, ' '),
+          '\x3cstrong\x3e$' + link.value.toFixed(1) + 'B\x3c/strong\x3e estimated flow',
+          link.note);
+      })
+      .on('mousemove', moveTip)
+      .on('mouseout', function() {
+        d3.select(this).attr('fill-opacity', 0.28).attr('stroke-opacity', 0.45);
+        hideTip();
+      });
+  });
+
+  // Nodes and labels
+  nodes.forEach(n => {
+    if (n._x === undefined) return;
+    const g  = svg.append('g').style('cursor', 'pointer');
+    const nh = Math.max(MIN_H, n._h);
+    const isRight  = n.group === 'spend';
+    const isCenter = n.group === 'center';
+
+    // Node rectangle
+    g.append('rect')
+      .attr('x',      n._x).attr('y',     n._y)
+      .attr('width',  NODE_W).attr('height', nh)
+      .attr('fill',   n.color).attr('rx', 2)
+      .on('mouseover', function(e) {
+        showTip(e, n.label.replace(/\x0a/g, ' '),
+          '\x3cstrong\x3e$' + (n._total||0).toFixed(1) + 'B\x3c/strong\x3e',
+          n.group==='center'   ? 'Central state budget' :
+          n.group==='spend'    ? 'Expenditure category' :
+          n.group==='external' ? 'International financing' : 'Domestic revenue / debt');
+      })
+      .on('mousemove', moveTip).on('mouseout', hideTip);
+
+    // Value badge -- GOLD always
+    if ((n._total||0) > 0.3 && nh >= 14) {
+      g.append('text')
+        .attr('x', n._x + NODE_W / 2)
+        .attr('y', n._y + nh / 2)
+        .attr('text-anchor',       'middle')
+        .attr('dominant-baseline', 'middle')
+        .attr('fill',        GOLD)
+        .attr('font-family', "'DM Mono',monospace")
+        .attr('font-size',   FONT_VAL + 'px')
+        .attr('font-weight', '700')
+        .text('$' + (n._total||0).toFixed(1) + 'B');
+    }
+
+    // Labels -- all coordinates inside canvas [0..CANVAS_W]
+    //   Left nodes  \u2192 label to LEFT  of node, anchor=end
+    //   Right nodes \u2192 label to RIGHT of node, anchor=start  
+    //   Center      \u2192 label BELOW node, anchor=middle
+    const GAP   = 10;
+    const lx    = isCenter ? n._x + NODE_W / 2
+                : isRight  ? n._x + NODE_W + GAP
+                :            n._x - GAP;
+    const anchor = isCenter ? 'middle' : isRight ? 'start' : 'end';
+
+    const lines  = n.label.split('\x0a');
+    const blockH = lines.length * LINE_H;
+    const startY = isCenter
+      ? n._y + nh + LINE_H
+      : n._y + nh / 2 - blockH / 2 + LINE_H * 0.82;
+
+    const txt = g.append('text')
+      .attr('text-anchor',   anchor)
+      .attr('fill',          isCenter ? GOLD : '#c8d5e8')
+      .attr('font-family',   "'DM Mono',monospace")
+      .attr('font-size',     (isCenter ? FONT_LBL + 1 : FONT_LBL) + 'px')
+      .attr('font-weight',   isCenter ? '700' : '400');
+
+    lines.forEach((line, i) => {
+      txt.append('tspan')
+        .attr('x', lx)
+        .attr('y', startY + i * LINE_H)
+        .text(line);
+    });
+  });
+}
+
+// Tab switching
+let currentMode = 'pre';
+
+function switchTab(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.s-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.s-chart').forEach(c => c.classList.remove('active'));
+  document.getElementById('chart-' + mode).classList.add('active');
+  document.querySelectorAll('.s-tab').forEach(b => {
+    if ((mode === 'pre' && b.textContent.includes('Pre')) ||
+        (mode === 'war' && b.textContent.includes('War')))
+      b.classList.add('active');
+  });
+}
+
+// Tooltip
+function showTip(e, title, body, sub) {
+  const t = document.getElementById('tooltip');
+  document.getElementById('tt-title').textContent = title;
+  document.getElementById('tt-body').innerHTML    = body;
+  document.getElementById('tt-sub').textContent   = sub || '';
+  t.style.opacity = '1';
+  moveTip(e);
+}
+function moveTip(e) {
+  const t = document.getElementById('tooltip');
+  t.style.left = Math.min(e.clientX + 16, window.innerWidth  - 295) + 'px';
+  t.style.top  = Math.min(e.clientY -  8, window.innerHeight - 130) + 'px';
+}
+function hideTip() { document.getElementById('tooltip').style.opacity = '0'; }
+
+// Boot
+window.addEventListener('DOMContentLoaded', () => {
+  renderSankey(PRE_WAR, 'sankey-pre');
+  renderSankey(WARTIME, 'sankey-war');
+});
+
+</script>
+</body>
+</html>
