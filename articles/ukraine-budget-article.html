@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
 <title>How War Rewrote Ukraine's Budget | Troy W. Ferguson</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <style>
@@ -437,6 +436,19 @@ sup a:hover { text-decoration: underline; }
   .masthead { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
   .graphic-inner { padding: 0 0.5rem 0; }
 }
+
+/* Sankey wrapper -- d3-sankey appends SVG here */
+.sankey-wrap {
+  display: block;
+  width:   100%;
+  overflow: visible;
+  padding-bottom: 1rem;
+}
+.sankey-wrap svg {
+  display: block;
+  max-width: 100%;
+}
+
 </style>
 </head>
 <body>
@@ -475,10 +487,10 @@ sup a:hover { text-decoration: underline; }
         <button class="s-tab" onclick="switchTab('war')">Wartime &middot; 2024</button>
       </div>
       <div id="chart-pre" class="s-chart active">
-        <svg id="sankey-pre" class="sankey-svg"></svg>
+        <div id="inner-pre" class="sankey-wrap"></div>
       </div>
       <div id="chart-war" class="s-chart">
-        <svg id="sankey-war" class="sankey-svg"></svg>
+        <div id="inner-war" class="sankey-wrap"></div>
       </div>
       <div class="graphic-caption">
         Flows represent estimated budget financing streams in U.S. dollars. Hover nodes and links for sourced annotations.
@@ -559,43 +571,294 @@ sup a:hover { text-decoration: underline; }
 </div>
 
 <script>
+// ── Inlined d3-sankey layout (port of d3/d3-sankey@0.12.3) ──────────────────
+// Avoids CDN dependency and global-name ambiguity entirely.
+// Exposes: sankeyLayout(), sankeyLinkHorizontalPath(), sankeyJustify
+// ─────────────────────────────────────────────────────────────────────────────
+(function() {
+  "use strict";
+
+  function justify(node, n) { return node.sourceLinks.length ? node.depth : n - 1; }
+
+  function sankeyLinkHorizontalPath(link) {
+    // Filled ribbon using the correct S-curve Sankey formula.
+    // The scoop comes from control points that pull horizontally to midX
+    // while the y values transition from source to target vertically.
+    // Formula: C midX,y_source  midX,y_target  target_x,y_target
+    var w    = Math.max(link.width || 0, 3),
+        sx   = link.source.x1,
+        tx   = link.target.x0,
+        midX = (sx + tx) / 2,
+        y0t  = link.y0 - w / 2,   // top edge at source
+        y0b  = link.y0 + w / 2,   // bottom edge at source
+        y1t  = link.y1 - w / 2,   // top edge at target
+        y1b  = link.y1 + w / 2;   // bottom edge at target
+    // Top edge: S-curve from source top to target top
+    // Bottom edge: reverse S-curve from target bottom to source bottom
+    return (
+      "M"  + sx   + "," + y0t +
+      "C"  + midX + "," + y0t + " " + midX + "," + y1t + " " + tx + "," + y1t +
+      "L"  + tx   + "," + y1b +
+      "C"  + midX + "," + y1b + " " + midX + "," + y0b + " " + sx + "," + y0b +
+      "Z"
+    );
+  }
+
+  function constant(x) { return function() { return x; }; }
+
+  function ascendingSourceBreadth(a, b) { return ascendingBreadth(a.source, b.source) || a.index - b.index; }
+  function ascendingTargetBreadth(a, b) { return ascendingBreadth(a.target, b.target) || a.index - b.index; }
+  function ascendingBreadth(a, b)       { return a.y0 - b.y0; }
+  function value(d)                     { return d.value; }
+  function defaultId(d)                 { return d.index; }
+  function defaultNodes(graph)          { return graph.nodes; }
+  function defaultLinks(graph)          { return graph.links; }
+
+  function find(nodeById, id) {
+    var node = nodeById.get(id);
+    if (!node) throw new Error("node not found: " + id);
+    return node;
+  }
+
+  function Sankey() {
+    var x0 = 0, y0 = 0, x1 = 1, y1 = 1,
+        dx = 24, py = 8,
+        id = defaultId,
+        align = justify,
+        nodes = defaultNodes,
+        links = defaultLinks,
+        iterations = 6;
+
+    function sankey() {
+      var graph = { nodes: nodes.apply(this, arguments), links: links.apply(this, arguments) };
+      computeNodeLinks(graph);
+      computeNodeValues(graph);
+      computeNodeDepths(graph);
+      computeNodeHeights(graph);
+      computeNodeBreadths(graph);
+      computeLinkBreadths(graph);
+      return graph;
+    }
+
+    sankey.update = function(graph) {
+      computeLinkBreadths(graph);
+      return graph;
+    };
+
+    sankey.nodeId = function(_) { return arguments.length ? (id = typeof _ === "function" ? _ : constant(_), sankey) : id; };
+    sankey.nodeAlign = function(_) { return arguments.length ? (align = typeof _ === "function" ? _ : constant(_), sankey) : align; };
+    sankey.nodeWidth = function(_) { return arguments.length ? (dx = +_, sankey) : dx; };
+    sankey.nodePadding = function(_) { return arguments.length ? (py = +_, sankey) : py; };
+    sankey.nodes = function(_) { return arguments.length ? (nodes = typeof _ === "function" ? _ : constant(_.slice()), sankey) : nodes; };
+    sankey.links = function(_) { return arguments.length ? (links = typeof _ === "function" ? _ : constant(_.slice()), sankey) : links; };
+    sankey.size = function(_) { return arguments.length ? (x0 = y0 = 0, x1 = +_[0], y1 = +_[1], sankey) : [x1 - x0, y1 - y0]; };
+    sankey.extent = function(_) { return arguments.length ? (x0 = +_[0][0], x1 = +_[1][0], y0 = +_[0][1], y1 = +_[1][1], sankey) : [[x0, y0], [x1, y1]]; };
+    sankey.iterations = function(_) { return arguments.length ? (iterations = +_, sankey) : iterations; };
+
+    function computeNodeLinks(graph) {
+      graph.nodes.forEach(function(node, i) { node.index = i; node.sourceLinks = []; node.targetLinks = []; });
+      var nodeById = new Map(graph.nodes.map(function(d) { return [id(d), d]; }));
+      graph.links.forEach(function(link, i) {
+        link.index = i;
+        var source = link.source, target = link.target;
+        if (typeof source !== "object") source = link.source = find(nodeById, source);
+        if (typeof target !== "object") target = link.target = find(nodeById, target);
+        source.sourceLinks.push(link);
+        target.targetLinks.push(link);
+      });
+    }
+
+    function computeNodeValues(graph) {
+      graph.nodes.forEach(function(node) {
+        node.value = node.fixedValue === undefined
+          ? Math.max(d3.sum(node.sourceLinks, value), d3.sum(node.targetLinks, value))
+          : node.fixedValue;
+      });
+    }
+
+    function computeNodeDepths(graph) {
+      var nodes, next, x;
+      for (nodes = graph.nodes, next = [], x = 0; nodes.length; ++x, nodes = next, next = []) {
+        nodes.forEach(function(node) {
+          node.depth = x;
+          node.sourceLinks.forEach(function(link) {
+            if (next.indexOf(link.target) < 0) next.push(link.target);
+          });
+        });
+      }
+      for (nodes = graph.nodes, next = [], x = 0; nodes.length; ++x, nodes = next, next = []) {
+        nodes.forEach(function(node) {
+          node.height = x;
+          node.targetLinks.forEach(function(link) {
+            if (next.indexOf(link.source) < 0) next.push(link.source);
+          });
+        });
+      }
+      var kx = (x1 - x0 - dx) / (x - 1);
+      graph.nodes.forEach(function(node) {
+        node.layer = Math.max(0, Math.min(x - 1, Math.floor(align(node, x))));
+        node.x0 = x0 + node.layer * kx;
+        node.x1 = node.x0 + dx;
+      });
+    }
+
+    function computeNodeHeights(graph) {
+      var n = graph.nodes.length;
+      graph.nodes.forEach(function(node) {
+        node.height = n - 1 - node.depth;
+      });
+    }
+
+    function computeNodeBreadths(graph) {
+      var columns = d3.group(graph.nodes, function(d) { return d.layer; });
+      initializeNodeBreadth();
+      for (var i = 0; i < iterations; ++i) {
+        var alpha = Math.pow(0.99, i), beta = Math.max(1 - alpha, (i + 1) / iterations);
+        relaxRightToLeft(alpha);
+        relaxLeftToRight(alpha);
+        resolveCollisions(beta);
+      }
+
+      function initializeNodeBreadth() {
+        // Compute a SINGLE global ky across all columns so no column overflows.
+        // This matches the correct d3-sankey behaviour.
+        var ky = d3.min(Array.from(columns.values()), function(nodes) {
+          return (y1 - y0 - py * (nodes.length - 1)) /
+                 d3.sum(nodes, function(node) {
+                   return d3.sum(node.targetLinks.length ? node.targetLinks : node.sourceLinks, value) || node.value || 0;
+                 });
+        });
+        // Set link.width proportional to value -- THIS IS WHAT WAS MISSING.
+        // computeLinkBreadths reads link.width to position y0/y1 on each link.
+        graph.links.forEach(function(link) { link.width = link.value * ky; });
+
+        columns.forEach(function(nodes) {
+          var n = nodes.length;
+          var totalH = d3.sum(nodes, function(node) {
+            return (d3.sum(node.targetLinks.length ? node.targetLinks : node.sourceLinks, value) || node.value || 0) * ky;
+          }) + py * (n - 1);
+          var startY = y0 + ((y1 - y0) - totalH) / 2;
+          nodes.forEach(function(node) {
+            var nodeValue = d3.sum(node.targetLinks.length ? node.targetLinks : node.sourceLinks, value) || node.value || 0;
+            node.y0 = startY;
+            node.y1 = startY + nodeValue * ky;
+            startY = node.y1 + py;
+          });
+        });
+      }
+
+      function relaxLeftToRight(alpha) {
+        columns.forEach(function(nodes) {
+          nodes.forEach(function(node) {
+            if (node.targetLinks.length) {
+              var dy = (d3.sum(node.targetLinks, weightedSource) / d3.sum(node.targetLinks, value) - nodeCenter(node)) * alpha;
+              node.y0 += dy; node.y1 += dy;
+            }
+          });
+        });
+      }
+
+      function relaxRightToLeft(alpha) {
+        var cols = Array.from(columns.values()).reverse();
+        cols.forEach(function(nodes) {
+          nodes.forEach(function(node) {
+            if (node.sourceLinks.length) {
+              var dy = (d3.sum(node.sourceLinks, weightedTarget) / d3.sum(node.sourceLinks, value) - nodeCenter(node)) * alpha;
+              node.y0 += dy; node.y1 += dy;
+            }
+          });
+        });
+      }
+
+      function resolveCollisions(alpha) {
+        columns.forEach(function(nodes) {
+          var node, dy, y = y0, n = nodes.length, i;
+          nodes.sort(ascendingBreadth);
+          for (i = 0; i < n; ++i) {
+            node = nodes[i];
+            dy = y - node.y0;
+            if (dy > 0) { node.y0 += dy; node.y1 += dy; }
+            y = node.y1 + py;
+          }
+          dy = y - py - y1;
+          if (dy > 0) {
+            y = (node.y0 -= dy); node.y1 -= dy;
+            for (i = n - 2; i >= 0; --i) {
+              node = nodes[i];
+              dy = node.y1 + py - y;
+              if (dy > 0) { node.y0 -= dy; node.y1 -= dy; }
+              y = node.y0;
+            }
+          }
+        });
+      }
+    }
+
+    function computeLinkBreadths(graph) {
+      graph.nodes.forEach(function(node) {
+        node.sourceLinks.sort(ascendingTargetBreadth);
+        node.targetLinks.sort(ascendingSourceBreadth);
+      });
+      graph.nodes.forEach(function(node) {
+        var y0 = node.y0, y1 = node.y0;
+        node.sourceLinks.forEach(function(link) { link.y0 = y0 + link.width / 2; y0 += link.width; });
+        node.targetLinks.forEach(function(link) { link.y1 = y1 + link.width / 2; y1 += link.width; });
+      });
+    }
+
+    function weightedSource(link) { return nodeCenter(link.source) * link.value; }
+    function weightedTarget(link) { return nodeCenter(link.target) * link.value; }
+    function nodeCenter(node)     { return (node.y0 + node.y1) / 2; }
+
+    return sankey;
+  }
+
+  // Expose on window
+  window.sankeyLayout              = Sankey;
+  window.sankeyLinkHorizontalPath = sankeyLinkHorizontalPath;
+  window.sankeyJustify             = justify;
+})();
+// ─────────────────────────────────────────────────────────────────────────────
+</script>
+
+<script>
+// ============================================================
+// DATA  -- pre-war 2021
+// ============================================================
 const PRE_WAR = {
   nodes: [
-    // Col 0 -- domestic revenue sources
-    { id:"vat_domestic",   label:"VAT (Domestic)",           color:"#4a8fe8", group:"domestic" },
-    { id:"vat_import",     label:"VAT on Imports",           color:"#5db87a", group:"domestic" },
-    { id:"pit",            label:"PIT + Military Levy",      color:"#c9a84c", group:"domestic" },
-    { id:"cit",            label:"Corporate Profit Tax",     color:"#e8834a", group:"domestic" },
-    { id:"excise",         label:"Excise Duties",            color:"#9b72cf", group:"domestic" },
-    { id:"import_duty",    label:"Import Duties",            color:"#4ac9c9", group:"domestic" },
-    { id:"soe_div",        label:"SOE Dividends\n(Naftogaz+)",color:"#d64933",group:"domestic" },
-    // Col 1 -- debt instruments (side by side: domestic bonds + foreign loans)
-    { id:"domestic_bonds", label:"Domestic Bonds\n(OVDPs)",  color:"#8a9ab5", group:"debt"     },
-    { id:"foreign_loans",  label:"Foreign Economic\nLoan Assistance\n(IMF + EU MFA + World Bank + Eurobonds)",
-                           color:"#4a8fe8", group:"external" },
-    // Col 2 -- budget
-    { id:"budget",         label:"STATE BUDGET\n2021",       color:"#c9a84c", group:"center"  },
-    // Col 3 -- expenditure
-    { id:"defense",        label:"Defense &\nSecurity",      color:"#d64933", group:"spend"   },
-    { id:"social",         label:"Social Protection\n& Pensions", color:"#4a8fe8", group:"spend" },
-    { id:"debt_service",   label:"Debt Service",             color:"#8a9ab5", group:"spend"   },
-    { id:"education",      label:"Education\n& Health",      color:"#5db87a", group:"spend"   },
-    { id:"infrastructure", label:"Infrastructure",           color:"#9b72cf", group:"spend"   },
-    { id:"admin",          label:"Administration\n& Other",  color:"#c9a84c", group:"spend"   },
+    // Col 0: domestic tax sources
+    { id:"vat_domestic",   label:"VAT (Domestic)",            color:"#4a8fe8" },
+    { id:"vat_import",     label:"VAT on Imports",            color:"#5db87a" },
+    { id:"pit",            label:"PIT + Military Levy",       color:"#c9a84c" },
+    { id:"cit",            label:"Corporate Profit Tax",      color:"#e8834a" },
+    { id:"excise",         label:"Excise Duties",             color:"#9b72cf" },
+    { id:"import_duty",    label:"Import Duties",             color:"#4ac9c9" },
+    { id:"soe_div",        label:"SOE Dividends (Naftogaz+)", color:"#d64933" },
+    // Col 1: financing instruments
+    { id:"domestic_bonds", label:"Domestic Bonds (OVDPs)",    color:"#8a9ab5" },
+    { id:"foreign_loans",  label:"Foreign Loan Assistance\n(IMF + EU MFA + World Bank + Eurobonds)",
+                           color:"#4a8fe8" },
+    // Center: budget
+    { id:"budget",         label:"STATE BUDGET\n2021",        color:"#c9a84c" },
+    // Right: expenditure
+    { id:"defense",        label:"Defense & Security",        color:"#d64933" },
+    { id:"social",         label:"Social Protection & Pensions", color:"#4a8fe8" },
+    { id:"debt_service",   label:"Debt Service",              color:"#8a9ab5" },
+    { id:"education",      label:"Education & Health",        color:"#5db87a" },
+    { id:"infrastructure", label:"Infrastructure",            color:"#9b72cf" },
+    { id:"admin",          label:"Administration & Other",    color:"#c9a84c" },
   ],
   links: [
-    // Domestic tax revenue -> budget
     { source:"vat_domestic",   target:"budget", value:5.8,  note:"UAH 158B net domestic VAT (2021 actuals)" },
-    { source:"vat_import",     target:"budget", value:7.3,  note:"UAH 197B import VAT collected by State Customs" },
+    { source:"vat_import",     target:"budget", value:7.3,  note:"UAH 197B import VAT via State Customs" },
     { source:"pit",            target:"budget", value:5.2,  note:"UAH 137.6B -- PIT plus 1.5% military levy" },
     { source:"cit",            target:"budget", value:2.8,  note:"UAH 76B corporate income tax" },
     { source:"excise",         target:"budget", value:2.4,  note:"UAH 65B excise duties" },
     { source:"import_duty",    target:"budget", value:1.0,  note:"UAH 26.6B import duties" },
-    { source:"soe_div",        target:"budget", value:1.8,  note:"UAH 48B SOE dividends -- Naftogaz, Ukrzaliznytsia, Ukrposhta" },
-    // Debt instruments -> budget
-    { source:"domestic_bonds", target:"budget", value:5.8,  note:"UAH 388B OVDPs placed -- normal peacetime sovereign bond market" },
-    { source:"foreign_loans",  target:"budget", value:3.9,  note:"Eurobonds $1.25B + IMF SDR 0.5B Stand-by + EU EUR 588M MFA + World Bank IBRD loans. Total ~$3.9B in 2021." },
-    // Budget -> expenditure
+    { source:"soe_div",        target:"budget", value:1.8,  note:"UAH 48B -- Naftogaz, Ukrzaliznytsia, Ukrposhta" },
+    { source:"domestic_bonds", target:"budget", value:5.8,  note:"UAH 388B OVDPs -- normal peacetime bond market" },
+    { source:"foreign_loans",  target:"budget", value:3.9,  note:"$1.25B Eurobonds + IMF SDR 0.5B + EU EUR 588M MFA + World Bank IBRD loans -- total ~$3.9B" },
     { source:"budget", target:"defense",        value:3.5,  note:"Under 4% of GDP -- peacetime defense baseline" },
     { source:"budget", target:"social",         value:10.0, note:"Pensions, social transfers, welfare programs" },
     { source:"budget", target:"debt_service",   value:3.8,  note:"Interest + principal -- manageable at 49% debt/GDP" },
@@ -605,270 +868,263 @@ const PRE_WAR = {
   ]
 };
 
+// ============================================================
+// DATA  -- wartime 2024
+// ============================================================
 const WARTIME = {
   nodes: [
-    { id:"vat_import_w",  label:"VAT on Imports",           color:"#5db87a", group:"domestic" },
-    { id:"vat_dom_w",     label:"VAT (Domestic)",           color:"#4a8fe8", group:"domestic" },
-    { id:"pit_w",         label:"PIT + Military Tax\n(raised to 5%)", color:"#c9a84c", group:"domestic" },
-    { id:"cit_w",         label:"Corporate Tax\n(Banks at 50%)", color:"#e8834a", group:"domestic" },
-    { id:"excise_w",      label:"Excise Duties",            color:"#9b72cf", group:"domestic" },
-    { id:"soe_w",         label:"SOE Profits\n(Naftogaz+)", color:"#d64933", group:"domestic" },
-    { id:"grain_export",  label:"Grain & Oilseed Exports\n61.5M tonnes -- FX reserves", color:"#5db87a", group:"economy" },
-    { id:"ovdp_w",        label:"OVDPs (War Bonds)\ndoubled since 2022", color:"#8a9ab5", group:"debt"    },
-    { id:"us_w",          label:"United States\n(USAID via World Bank)", color:"#4a8fe8", group:"external"},
-    { id:"eu_facility",   label:"EU Ukraine Facility\nEUR 12.1B in 2024", color:"#e8c44a", group:"external"},
-    { id:"imf_eff",       label:"IMF Extended Fund\n(SDR 11.6B, 4-year)", color:"#4ac9c9", group:"external"},
-    { id:"world_bank_w",  label:"World Bank DPL\n(Growth Foundations)", color:"#5db87a", group:"external"},
-    { id:"era_loan",      label:"G7 ERA Loan\n$50B on frozen Russian assets", color:"#e8834a", group:"external"},
-    { id:"other_donors",  label:"Canada, Japan, UK\n+ Bilateral Partners", color:"#9b72cf", group:"external"},
-    { id:"budget_w",      label:"STATE BUDGET\n2024",       color:"#c9a84c", group:"center"  },
-    { id:"defense_w",     label:"Defense & Security\n51% of budget", color:"#d64933", group:"spend" },
-    { id:"social_w",      label:"Social Protection\n& Pensions (20%)", color:"#4a8fe8", group:"spend" },
-    { id:"debt_svc_w",    label:"Debt Service\n(90% debt/GDP)", color:"#8a9ab5", group:"spend" },
-    { id:"edu_health_w",  label:"Education & Health\n(grant-financed)", color:"#5db87a", group:"spend" },
-    { id:"civil_admin_w", label:"Civil Service & Admin\n(grant-financed)", color:"#9b72cf", group:"spend" },
+    // Col 0: domestic sources
+    { id:"vat_import_w",  label:"VAT on Imports",             color:"#5db87a" },
+    { id:"vat_dom_w",     label:"VAT (Domestic)",             color:"#4a8fe8" },
+    { id:"pit_w",         label:"PIT + Military Tax (to 5%)", color:"#c9a84c" },
+    { id:"cit_w",         label:"Corporate Tax (Banks 50%)",  color:"#e8834a" },
+    { id:"excise_w",      label:"Excise Duties",              color:"#9b72cf" },
+    { id:"soe_w",         label:"SOE Profits (Naftogaz+)",    color:"#d64933" },
+    { id:"grain_export",  label:"Grain & Oilseed Exports\n(61.5M tonnes -- FX reserves)", color:"#5db87a" },
+    // Col 1: financing
+    { id:"ovdp_w",        label:"OVDPs (War Bonds)\ndoubled since 2022", color:"#8a9ab5" },
+    { id:"us_w",          label:"United States\n(USAID via World Bank)",  color:"#4a8fe8" },
+    { id:"eu_facility",   label:"EU Ukraine Facility\nEUR 12.1B in 2024", color:"#e8c44a" },
+    { id:"imf_eff",       label:"IMF Extended Fund\n(SDR 11.6B, 4-yr)",   color:"#4ac9c9" },
+    { id:"world_bank_w",  label:"World Bank DPL",             color:"#5db87a" },
+    { id:"era_loan",      label:"G7 ERA Loan\n($50B on frozen Russian assets)", color:"#e8834a" },
+    { id:"other_donors",  label:"Canada, Japan, UK\n+ Bilateral Partners", color:"#9b72cf" },
+    // Center: budget
+    { id:"budget_w",      label:"STATE BUDGET\n2024",         color:"#c9a84c" },
+    // Right: expenditure
+    { id:"defense_w",     label:"Defense & Security\n(51% of budget)",    color:"#d64933" },
+    { id:"social_w",      label:"Social Protection\n& Pensions (20%)",    color:"#4a8fe8" },
+    { id:"debt_svc_w",    label:"Debt Service\n(90% debt/GDP)",           color:"#8a9ab5" },
+    { id:"edu_health_w",  label:"Education & Health\n(grant-financed)",   color:"#5db87a" },
+    { id:"civil_admin_w", label:"Civil Service & Admin\n(grant-financed)", color:"#9b72cf" },
   ],
   links: [
-    { source:"vat_import_w", target:"budget_w", value:7.0,  note:"Import VAT surged as allied procurement drove goods inflows" },
-    { source:"vat_dom_w",    target:"budget_w", value:5.5,  note:"Domestic VAT approximately $6.4B (Finance Ministry)" },
+    { source:"vat_import_w", target:"budget_w", value:7.0,  note:"Import VAT surged with aid-funded goods inflows" },
+    { source:"vat_dom_w",    target:"budget_w", value:5.5,  note:"Domestic VAT ~$6.4B (Finance Ministry)" },
     { source:"pit_w",        target:"budget_w", value:5.6,  note:"Hr 233.6B ($5.6B) -- military tax raised to 5% in late 2024" },
-    { source:"cit_w",        target:"budget_w", value:6.5,  note:"Hr 270.8B ($6.5B) -- bank super-tax at 50% rate for 2024" },
+    { source:"cit_w",        target:"budget_w", value:6.5,  note:"Hr 270.8B ($6.5B) -- bank super-tax at 50% for 2024" },
     { source:"excise_w",     target:"budget_w", value:3.2,  note:"Hr 133.5B ($3.2B) -- recovering from 2022 wartime collapse" },
-    { source:"soe_w",        target:"budget_w", value:3.2,  note:"Hr 51.8B rent + record SOE profit transfers to budget" },
-    { source:"grain_export", target:"budget_w", value:4.0,  note:"61.5M tonnes grain/oilseed via Black Sea ports and EU Solidarity Lanes -- supports NBU reserves and hryvnia stability" },
-    { source:"ovdp_w",       target:"budget_w", value:7.2,  note:"Domestic war bonds doubled since invasion -- attractive yields sold to banks, citizens, and institutions" },
-    { source:"us_w",         target:"budget_w", value:8.5,  note:"USAID channels $22.9B+ via World Bank trust funds -- reimburses Ukraine for teacher, doctor, civil servant salaries. Audited by Deloitte and KPMG" },
-    { source:"eu_facility",  target:"budget_w", value:12.1, note:"EU Ukraine Facility: EUR 12.1B to state budget in 2024 -- part of EUR 50B 2024-2027 package. Mix of grants and concessional loans" },
-    { source:"imf_eff",      target:"budget_w", value:4.5,  note:"IMF EFF SDR 11.6B -- 7 tranches disbursed. Conditioned on VAT reform, anti-corruption, and NBU independence" },
+    { source:"soe_w",        target:"budget_w", value:3.2,  note:"Hr 51.8B rent + record SOE profit transfers" },
+    { source:"grain_export", target:"budget_w", value:4.0,  note:"61.5M tonnes via Black Sea ports + EU Solidarity Lanes" },
+    { source:"ovdp_w",       target:"budget_w", value:7.2,  note:"Domestic war bonds doubled since invasion -- banks, citizens, institutions" },
+    { source:"us_w",         target:"budget_w", value:8.5,  note:"USAID channels $22.9B+ via World Bank trust funds -- pays teacher/doctor/civil servant salaries. Audited by Deloitte & KPMG" },
+    { source:"eu_facility",  target:"budget_w", value:12.1, note:"EU Ukraine Facility: EUR 12.1B in 2024 -- part of EUR 50B 2024-2027 package" },
+    { source:"imf_eff",      target:"budget_w", value:4.5,  note:"IMF EFF SDR 11.6B -- 7 tranches disbursed, conditioned on VAT reform and anti-corruption" },
     { source:"world_bank_w", target:"budget_w", value:2.0,  note:"World Bank Growth Foundations DPL -- $1B tranches tied to governance reforms" },
-    { source:"era_loan",     target:"budget_w", value:2.5,  note:"$50B G7 ERA loan backed by roughly $3B/year interest on EUR 300B frozen Russian sovereign assets held at Euroclear" },
-    { source:"other_donors", target:"budget_w", value:2.5,  note:"Canada, Japan, UK, Nordics, Australia -- mix of grants and concessional loans. Japan committed approximately $4.5B in 2022-2024" },
-    { source:"budget_w", target:"defense_w",    value:42.0, note:"UAH 1.69T ($40B+) -- 22% of GDP. Weapons production, UAVs, artillery, personnel costs" },
-    { source:"budget_w", target:"social_w",     value:12.0, note:"Pensions, IDP support, disability payments -- largely financed by EU and US grants" },
-    { source:"budget_w", target:"debt_svc_w",   value:9.5,  note:"Debt at 90% of GDP ($166B). Partial restructuring in 2024 deferred approximately $20B in obligations" },
-    { source:"budget_w", target:"edu_health_w", value:8.0,  note:"Schools and hospitals funded via USAID World Bank trust funds, audited independently" },
-    { source:"budget_w", target:"civil_admin_w",value:10.5, note:"Civil service, judiciary, local budgets -- financed almost entirely by international grants" },
+    { source:"era_loan",     target:"budget_w", value:2.5,  note:"G7 $50B ERA loan backed by ~$3B/yr interest on EUR 300B frozen Russian assets at Euroclear" },
+    { source:"other_donors", target:"budget_w", value:2.5,  note:"Canada, Japan, UK, Nordics, Australia -- grants and concessional loans" },
+    { source:"budget_w", target:"defense_w",    value:42.0, note:"UAH 1.69T ($40B+) -- 22% of GDP. Weapons, UAVs, artillery, personnel" },
+    { source:"budget_w", target:"social_w",     value:12.0, note:"Pensions, IDP support, disability -- largely EU/US grant-financed" },
+    { source:"budget_w", target:"debt_svc_w",   value:9.5,  note:"Debt at 90% of GDP ($166B). 2024 partial restructuring deferred ~$20B" },
+    { source:"budget_w", target:"edu_health_w", value:8.0,  note:"Schools and hospitals paid via USAID World Bank trust funds" },
+    { source:"budget_w", target:"civil_admin_w",value:10.5, note:"Civil service, judiciary, local budgets -- financed by international grants" },
   ]
 };
 
-/* ================================================================
-   SANKEY RENDERER -- Fixed internal canvas, responsive via viewBox
-   
-   Architecture (the correct one per MDN/Sara Soueidan):
-   * SVG has width="100%" and NO height attribute
-   * SVG has a viewBox="0 0 CANVAS_W CANVAS_H" 
-   * Browser computes rendered height = container_width x (CANVAS_H/CANVAS_W)
-   * Container has NO overflow:hidden and NO fixed height
-   * Result: SVG is always fully visible, scales with container, never clips
-   
-   All content is drawn inside [0..CANVAS_W] x [0..CANVAS_H].
-   Labels sit in reserved margin zones inside the canvas.
-================================================================ */
+// ============================================================
+// RENDERER  using d3-sankey
+// ============================================================
 
-// Fixed internal canvas size
-// Tall canvas => longer page scroll => everything visible, nothing clipped.
-// The SVG has width:100% and NO height attr, so browser derives rendered
-// height from the viewBox aspect ratio: rendered_h = rendered_w * (H/W).
-const CANVAS_W  = 1400;
-const CANVAS_H  = 1800; // tall enough that all nodes + labels have room
+const GOLD = '#c9a84c';
+const FONT = "'DM Mono', monospace";
 
-// Internal margins -- label text lives here, nodes live in the draw zone
-const M_LEFT    = 290;  // generous left gutter for longest left labels
-const M_RIGHT   = 300;  // generous right gutter for expenditure labels
-const M_TOP     = 60;
-const M_BOTTOM  = 60;
+function renderSankey(data, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
 
-// Node geometry -- larger for visibility
-const NODE_W    = 32;
-const NODE_PAD  = 20;   // vertical gap between nodes in same column
+  // Measure container width
+  const totalW = Math.max(container.getBoundingClientRect().width, 340);
 
-// Typography -- bigger text, all drawn inside canvas coordinates
-const FONT_LBL  = 15;   // label font size in SVG px
-const FONT_VAL  = 13;   // $xB badge font size
-const LINE_H    = 19;   // line height between label rows
-const GOLD      = '#c9a84c';
+  // Margins -- generous so labels never clip
+  const margin = { top: 20, right: 0, bottom: 20, left: 0 };
 
-// Drawable area (inside margins)
-const DRAW_W = CANVAS_W - M_LEFT  - M_RIGHT;
-const DRAW_H = CANVAS_H - M_TOP   - M_BOTTOM;
+  // Label widths -- we render labels outside the Sankey columns,
+  // so we reserve space in the margin.
+  // On narrow screens give more space to the Sankey itself
+  const lblFrac  = totalW < 500 ? 0.18 : 0.22;
+  const lblLeft  = Math.round(totalW * lblFrac);
+  const lblRight = Math.round(totalW * lblFrac);
 
-// Four column X positions (left edge of node rect)
-// Col 0: domestic sources (left)
-// Col 1: debt / external (left-centre) -- "foreign_loans" sits here
-// Col 2: STATE BUDGET node (centre)
-// Col 3: expenditure sinks (right)
-const COL_X = [
-  M_LEFT + 0.000 * DRAW_W,
-  M_LEFT + 0.295 * DRAW_W,
-  M_LEFT + 0.570 * DRAW_W,
-  M_LEFT + 0.775 * DRAW_W,
-];
+  // Inner dimensions passed to d3-sankey
+  const innerW = totalW - lblLeft - lblRight - margin.left - margin.right;
 
-function renderSankey(data, svgId) {
-  const nodes = data.nodes.map(n => ({...n}));
-  const links = data.links.map(l => ({...l}));
+  // layoutH: the coordinate space d3-sankey works in.
+  // Keep this modest so link widths stay proportional and visible.
+  // More nodes = slightly taller, but capped to avoid ballooning link widths.
+  const nodeCount  = data.nodes.length;
+  const layoutH    = Math.min(400 + nodeCount * 18, 650);
 
-  // Column assignment
-  const colMap   = {domestic:0, economy:0, debt:1, external:1, center:2, spend:3};
-  nodes.forEach(n => { n.col = colMap[n.group]; });
-  const colNodes = [0,1,2,3].map(c => nodes.filter(n => n.col === c));
+  // displayH: how tall the SVG actually appears on screen.
+  // We use a viewBox to scale layoutH up to displayH.
+  const displayH   = Math.max(600, nodeCount * 55);
+  const totalH     = displayH + margin.top + margin.bottom;
+  const innerH     = layoutH;  // sankey layout uses layoutH
 
-  // Node value totals
-  const cNode = nodes.find(n => n.group === 'center');
-  cNode._total = links.filter(l=>l.target===cNode.id).reduce((s,l)=>s+l.value, 0);
-  nodes.forEach(n => {
-    if (n.group === 'center') return;
-    const iv = links.filter(l=>l.target===n.id).reduce((s,l)=>s+l.value, 0);
-    const ov = links.filter(l=>l.source===n.id).reduce((s,l)=>s+l.value, 0);
-    n._total = Math.max(iv, ov);
-  });
+  // ── Build SVG ──────────────────────────────────────────────────────────────
+  // viewBox uses layout coordinates; SVG renders at displayH on screen.
+  // This decouples visual size from the coordinate space the sankey uses.
+  const layoutTotalH = layoutH + margin.top + margin.bottom;
+  const layoutTotalW = totalW;   // width stays the same
 
-  // Scale: largest column fills DRAW_H
-  const maxColV = Math.max(
-    colNodes[0].reduce((s,n)=>s+(n._total||0), 0),
-    colNodes[1].reduce((s,n)=>s+(n._total||0), 0)
-  );
-  const scaleH = v => (v / maxColV) * DRAW_H;
-  const MIN_H  = 10;
+  const svg = d3.select(container)
+    .append('svg')
+    .attr('width',   totalW)
+    .attr('height',  totalH)
+    .attr('viewBox', '0 0 ' + layoutTotalW + ' ' + layoutTotalH)
+    .attr('preserveAspectRatio', 'xMidYMin meet')
+    .style('display', 'block');
 
-  // Vertical layout -- each column centred in DRAW_H
-  function layoutCol(ci) {
-    const ns   = colNodes[ci];
-    if (!ns.length) return;
-    const hh   = ns.map(n => Math.max(MIN_H, scaleH(n._total || 0)));
-    const used = hh.reduce((s,h)=>s+h, 0) + NODE_PAD * (ns.length - 1);
-    let   y    = M_TOP + (DRAW_H - used) / 2;
-    ns.forEach((n,i) => {
-      n._x = COL_X[ci];
-      n._y = y;
-      n._h = hh[i];
-      y   += hh[i] + NODE_PAD;
-    });
-  }
-  [0,1,2,3].forEach(layoutCol);
+  const g = svg.append('g')
+    .attr('transform', 'translate(' + (margin.left + lblLeft) + ',' + margin.top + ')');
 
-  // Link edge cursors -- top-edge tracking (the correct approach)
-  const outY = {}, inY = {};
-  nodes.forEach(n => {
-    if (n._y !== undefined) { outY[n.id] = n._y; inY[n.id] = n._y; }
-  });
+  // ── d3-sankey layout ───────────────────────────────────────────────────────
+  // Deep-clone nodes and links. Pass string IDs directly in links --
+  // the layout's .nodeId(d => d.id) resolves them internally.
+  // Do NOT pre-convert to numeric indices; that causes "node not found: 0".
+  const sankeyNodes = data.nodes.map(n => ({ ...n }));
+  const sankeyLinks = data.links.map(l => ({
+    source: l.source,   // keep as string ID -- layout resolves via nodeId()
+    target: l.target,   // keep as string ID
+    value:  l.value,
+    note:   l.note,
+  }));
 
-  // Build SVG -- width=100%, NO height attribute, viewBox drives aspect ratio
-  const svgEl = document.getElementById(svgId);
-  svgEl.setAttribute('viewBox', '0 0 ' + CANVAS_W + ' ' + CANVAS_H);
-  svgEl.setAttribute('width',   '100%');
-  svgEl.removeAttribute('height');  // critical -- let browser derive from viewBox
-  svgEl.setAttribute('preserveAspectRatio', 'xMidYMin meet');
+  const sankey = window.sankeyLayout()
+    .nodeId(d => d.id)      // tells layout: match link.source/target to node.id
+    .nodeWidth(28)
+    .nodePadding(18)
+    .nodeAlign(window.sankeyJustify)
+    .extent([[0, 0], [innerW, innerH]]);
 
-  const svg = d3.select('#' + svgId);
-  svg.selectAll('*').remove();
+  const graph = sankey({ nodes: sankeyNodes, links: sankeyLinks });
 
-  // Ribbon flows
-  links.forEach(link => {
-    const src = nodes.find(n=>n.id===link.source);
-    const tgt = nodes.find(n=>n.id===link.target);
-    if (!src || !tgt) return;
 
-    const lh  = Math.max(1.5, scaleH(link.value));
-    const x1  = src._x + NODE_W,  y1t = outY[src.id],  y1b = y1t + lh;
-    const x2  = tgt._x,           y2t = inY[tgt.id],   y2b = y2t + lh;
-    outY[src.id] += lh;
-    inY[tgt.id]  += lh;
 
-    const cx = (x1 + x2) / 2;
-    const d  = 'M'+x1+','+y1t+' C'+cx+','+y1t+' '+cx+','+y2t+' '+x2+','+y2t
-              +' L'+x2+','+y2b+' C'+cx+','+y2b+' '+cx+','+y1b+' '+x1+','+y1b+' Z';
+  // ── Draw links ─────────────────────────────────────────────────────────────
+  const linkPath = window.sankeyLinkHorizontalPath;
 
-    svg.append('path').attr('d', d)
-      .attr('fill',         src.color)
-      .attr('fill-opacity', 0.28)
-      .attr('stroke',       src.color)
-      .attr('stroke-width', 0.5)
-      .attr('stroke-opacity', 0.45)
+  g.append('g').attr('class', 'links')
+    .selectAll('path')
+    .data(graph.links)
+    .enter().append('path')
+      .attr('d', function(d) { return window.sankeyLinkHorizontalPath(d); })
+      .attr('fill',         function(d) { return d.source.color; })
+      .attr('fill-opacity', 0.55)
+      .attr('stroke',       function(d) { return d.source.color; })
+      .attr('stroke-width', 1)
+      .attr('stroke-opacity', 0.8)
       .style('cursor', 'pointer')
-      .on('mouseover', function(e) {
-        d3.select(this).attr('fill-opacity', 0.66).attr('stroke-opacity', 0.9);
-        showTip(e,
-          src.label.replace(/\x0a/g, ' ') + ' \u2192 ' + tgt.label.replace(/\x0a/g, ' '),
-          '\x3cstrong\x3e$' + link.value.toFixed(1) + 'B\x3c/strong\x3e estimated flow',
-          link.note);
+      .on('mouseover', function(event, d) {
+        d3.select(this).attr('fill-opacity', 0.85).attr('stroke-opacity', 1);
+        showTip(event,
+          d.source.label.replace(/\n/g, ' ') + ' → ' + d.target.label.replace(/\n/g, ' '),
+          '\x3cstrong\x3e$' + d.value.toFixed(1) + 'B\x3c/strong\x3e estimated flow',
+          d.note || '');
       })
       .on('mousemove', moveTip)
       .on('mouseout', function() {
-        d3.select(this).attr('fill-opacity', 0.28).attr('stroke-opacity', 0.45);
+        d3.select(this).attr('fill-opacity', 0.55).attr('stroke-opacity', 0.8);
         hideTip();
       });
-  });
 
-  // Nodes and labels
-  nodes.forEach(n => {
-    if (n._x === undefined) return;
-    const g  = svg.append('g').style('cursor', 'pointer');
-    const nh = Math.max(MIN_H, n._h);
-    const isRight  = n.group === 'spend';
-    const isCenter = n.group === 'center';
+  // ── Draw nodes ─────────────────────────────────────────────────────────────
+  const nodeG = g.append('g').attr('class', 'nodes')
+    .selectAll('g')
+    .data(graph.nodes)
+    .enter().append('g');
 
-    // Node rectangle
-    g.append('rect')
-      .attr('x',      n._x).attr('y',     n._y)
-      .attr('width',  NODE_W).attr('height', nh)
-      .attr('fill',   n.color).attr('rx', 2)
-      .on('mouseover', function(e) {
-        showTip(e, n.label.replace(/\x0a/g, ' '),
-          '\x3cstrong\x3e$' + (n._total||0).toFixed(1) + 'B\x3c/strong\x3e',
-          n.group==='center'   ? 'Central state budget' :
-          n.group==='spend'    ? 'Expenditure category' :
-          n.group==='external' ? 'International financing' : 'Domestic revenue / debt');
-      })
-      .on('mousemove', moveTip).on('mouseout', hideTip);
+  // Node rectangles
+  nodeG.append('rect')
+    .attr('x', d => d.x0)
+    .attr('y', d => d.y0)
+    .attr('width',  d => d.x1 - d.x0)
+    .attr('height', d => Math.max(1, d.y1 - d.y0))
+    .attr('fill',   d => d.color)
+    .attr('rx', 2)
+    .style('cursor', 'pointer')
+    .on('mouseover', function(event, d) {
+      showTip(event,
+        d.label.replace(/\n/g, ' '),
+        '<strong>$' + (d.value || 0).toFixed(1) + 'B</strong>',
+        '');
+    })
+    .on('mousemove', moveTip)
+    .on('mouseout', hideTip);
 
-    // Value badge -- GOLD always
-    if ((n._total||0) > 0.3 && nh >= 14) {
-      g.append('text')
-        .attr('x', n._x + NODE_W / 2)
-        .attr('y', n._y + nh / 2)
-        .attr('text-anchor',       'middle')
-        .attr('dominant-baseline', 'middle')
-        .attr('fill',        GOLD)
-        .attr('font-family', "'DM Mono',monospace")
-        .attr('font-size',   FONT_VAL + 'px')
-        .attr('font-weight', '700')
-        .text('$' + (n._total||0).toFixed(1) + 'B');
+  // Value badge inside node -- gold, only if tall enough
+  nodeG.filter(d => (d.y1 - d.y0) >= 16)
+    .append('text')
+    .attr('x', d => (d.x0 + d.x1) / 2)
+    .attr('y', d => (d.y0 + d.y1) / 2)
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'middle')
+    .attr('fill', GOLD)
+    .attr('font-family', FONT)
+    .attr('font-size', '11px')
+    .attr('font-weight', '700')
+    .text(d => '$' + (d.value || 0).toFixed(1) + 'B');
+
+  // ── Labels ─────────────────────────────────────────────────────────────────
+  // d3-sankey places nodes in columns. Left-most column: labels go left.
+  // Right-most column: labels go right. Middle columns: labels centred below.
+  // We detect position by comparing x0 to the leftmost and rightmost column.
+  const xPositions = [...new Set(graph.nodes.map(n => Math.round(n.x0)))].sort((a,b)=>a-b);
+  const leftColX   = xPositions[0];
+  const rightColX  = xPositions[xPositions.length - 1];
+
+  const LBL_GAP  = 8;
+  const LBL_FONT = 13;
+  const LBL_LINE = 15;
+
+  nodeG.each(function(d) {
+    const nodeHeight = d.y1 - d.y0;
+    const nx0 = Math.round(d.x0);
+    const isLeft   = nx0 === leftColX;
+    const isRight  = nx0 === rightColX;
+    const isCenter = !isLeft && !isRight;
+
+    const lines = d.label.split('\n');
+    const blockH = lines.length * LBL_LINE;
+
+    let lx, anchor;
+    if (isLeft) {
+      lx = d.x0 - LBL_GAP;
+      anchor = 'end';
+    } else if (isRight) {
+      lx = d.x1 + LBL_GAP;
+      anchor = 'start';
+    } else {
+      lx = (d.x0 + d.x1) / 2;
+      anchor = 'middle';
     }
 
-    // Labels -- all coordinates inside canvas [0..CANVAS_W]
-    //   Left nodes  \u2192 label to LEFT  of node, anchor=end
-    //   Right nodes \u2192 label to RIGHT of node, anchor=start  
-    //   Center      \u2192 label BELOW node, anchor=middle
-    const GAP   = 10;
-    const lx    = isCenter ? n._x + NODE_W / 2
-                : isRight  ? n._x + NODE_W + GAP
-                :            n._x - GAP;
-    const anchor = isCenter ? 'middle' : isRight ? 'start' : 'end';
+    const startY = (d.y0 + d.y1) / 2 - blockH / 2 + LBL_LINE * 0.75;
 
-    const lines  = n.label.split('\x0a');
-    const blockH = lines.length * LINE_H;
-    const startY = isCenter
-      ? n._y + nh + LINE_H
-      : n._y + nh / 2 - blockH / 2 + LINE_H * 0.82;
-
-    const txt = g.append('text')
-      .attr('text-anchor',   anchor)
-      .attr('fill',          isCenter ? GOLD : '#c8d5e8')
-      .attr('font-family',   "'DM Mono',monospace")
-      .attr('font-size',     (isCenter ? FONT_LBL + 1 : FONT_LBL) + 'px')
-      .attr('font-weight',   isCenter ? '700' : '400');
+    const txtEl = d3.select(this).append('text')
+      .attr('text-anchor', anchor)
+      .attr('fill', isCenter ? GOLD : '#d0daf0')
+      .attr('font-family', FONT)
+      .attr('font-size', (isCenter ? LBL_FONT + 1 : LBL_FONT) + 'px')
+      .attr('font-weight', isCenter ? '700' : '400');
 
     lines.forEach((line, i) => {
-      txt.append('tspan')
+      txtEl.append('tspan')
         .attr('x', lx)
-        .attr('y', startY + i * LINE_H)
+        .attr('y', startY + i * LBL_LINE)
         .text(line);
     });
   });
+
+  // ── Overflow: widen SVG viewBox to include label gutters ───────────────────
+  // Labels on the left side sit at x < 0 (in the g transform space).
+  // We need the SVG to show x = -lblLeft through x = innerW + lblRight.
+  // Solution: use a viewBox that starts at -lblLeft.
+  svg.attr('viewBox', (-lblLeft) + ' 0 ' + totalW + ' ' + totalH);
 }
 
-// Tab switching
+// ============================================================
+// TAB SWITCHING
+// ============================================================
 let currentMode = 'pre';
 
 function switchTab(mode) {
@@ -883,7 +1139,9 @@ function switchTab(mode) {
   });
 }
 
-// Tooltip
+// ============================================================
+// TOOLTIP
+// ============================================================
 function showTip(e, title, body, sub) {
   const t = document.getElementById('tooltip');
   document.getElementById('tt-title').textContent = title;
@@ -899,12 +1157,21 @@ function moveTip(e) {
 }
 function hideTip() { document.getElementById('tooltip').style.opacity = '0'; }
 
-// Boot
-window.addEventListener('DOMContentLoaded', () => {
-  renderSankey(PRE_WAR, 'sankey-pre');
-  renderSankey(WARTIME, 'sankey-war');
-});
+// ============================================================
+// BOOT + RESIZE
+// ============================================================
+function renderAll() {
+  renderSankey(PRE_WAR,  'inner-pre');
+  renderSankey(WARTIME,  'inner-war');
+}
 
+window.addEventListener('DOMContentLoaded', renderAll);
+
+let resizeTimer;
+window.addEventListener('resize', function() {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(renderAll, 80);
+});
 </script>
 </body>
 </html>
