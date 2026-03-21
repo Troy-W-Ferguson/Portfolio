@@ -269,30 +269,38 @@ sup a:hover { text-decoration: underline; }
   display:   block;
 }
 
-/* Tab row */
-.tab-row {
-  display:   flex;
-  gap:       0;
-  padding:   1rem 0 0.6rem;
-  flex-wrap: wrap;
-}
-.s-tab {
+/* Sankey stacked section headers */
+.sankey-section-header {
   font-family:    'DM Mono', monospace;
   font-size:      12px;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  background:     transparent;
-  border:         1px solid #232b3e;
-  color:          #6b7fa8;
-  padding:        0.45rem 1.1rem;
-  cursor:         pointer;
-  transition:     all 0.2s;
+  letter-spacing: 0.12em;
+  color:          var(--gold);
+  padding:        1.2rem 0 0.5rem;
+  font-weight:    600;
 }
-.s-tab.active         { background: var(--gold); border-color: var(--gold); color: #0e1117; font-weight: 500; }
-.s-tab:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
+.sankey-section-divider {
+  height:     1px;
+  background: #232b3e;
+  margin:     0.5rem 0 0.5rem;
+}
 
-.s-chart          { display: none; }
-.s-chart.active   { display: block; }
+/* Pie chart grid */
+.pie-grid {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   1rem;
+  padding:               1.2rem 0;
+}
+.pie-cell {
+  background:    #13161d;
+  border-radius: 4px;
+  padding:       0.75rem;
+  min-height:    320px;
+}
+@media (max-width: 600px) {
+  .pie-grid { grid-template-columns: 1fr; }
+}
 
 /* THE SVG RULES:
    - width: 100% so it fills the container horizontally
@@ -427,7 +435,6 @@ sup a:hover { text-decoration: underline; }
   .graphic-container { width: 100%; margin-left: 0; margin-right: 0; }
   .graphic-inner { padding: 0 1rem 0; }
   .graphic-caption { font-size: 10px; }
-  .s-tab { font-size: 11px; padding: 0.4rem 0.8rem; }
 }
 
 @media (max-width: 480px) {
@@ -482,16 +489,11 @@ sup a:hover { text-decoration: underline; }
   </div>
   <div class="graphic-container">
     <div class="graphic-inner">
-      <div class="tab-row">
-        <button class="s-tab active" onclick="switchTab('pre')">Pre-War &middot; 2021</button>
-        <button class="s-tab" onclick="switchTab('war')">Wartime &middot; 2024</button>
-      </div>
-      <div id="chart-pre" class="s-chart active">
-        <div id="inner-pre" class="sankey-wrap"></div>
-      </div>
-      <div id="chart-war" class="s-chart">
-        <div id="inner-war" class="sankey-wrap"></div>
-      </div>
+      <div class="sankey-section-header">Pre-War Budget &middot; 2021</div>
+      <div id="inner-pre" class="sankey-wrap"></div>
+      <div class="sankey-section-divider"></div>
+      <div class="sankey-section-header">Wartime Budget &middot; 2024</div>
+      <div id="inner-war" class="sankey-wrap"></div>
       <div class="graphic-caption">
         Flows represent estimated budget financing streams in U.S. dollars. Hover nodes and links for sourced annotations.
         Pre-war data: Ukrainian Ministry of Finance, Cabinet of Ministers 2021 annual budget reports.
@@ -509,6 +511,26 @@ sup a:hover { text-decoration: underline; }
   <div class="pull-quote">
     <blockquote>"All civilian expenditures of the state budget are financed through foreign financial aid. All domestic revenues go to the war."</blockquote>
     <cite>Centre for Economic Strategy, Kyiv &mdash; 2024 Fiscal Review</cite>
+  </div>
+
+  <!-- PIE CHART SECTION -->
+  <div class="graphic-header">
+    <div class="graphic-label-above">Budget Composition</div>
+    <div class="graphic-title-above">Income &amp; Expenditure Shares: 2021 vs. 2024</div>
+  </div>
+  <div class="graphic-container">
+    <div class="graphic-inner">
+      <div class="pie-grid">
+        <div class="pie-cell" id="pie-income-pre"></div>
+        <div class="pie-cell" id="pie-income-war"></div>
+        <div class="pie-cell" id="pie-expend-pre"></div>
+        <div class="pie-cell" id="pie-expend-war"></div>
+      </div>
+      <div class="graphic-caption">
+        Percentages derived from estimated flows shown in the Sankey diagrams above.
+        Slice areas are proportional to dollar value within each chart. Hover slices for details.
+      </div>
+    </div>
   </div>
 
   <div class="section-break"><span>The International Architecture</span></div>
@@ -935,12 +957,11 @@ function renderSankey(data, containerId) {
   // Measure container width
   const totalW = Math.max(container.getBoundingClientRect().width, 340);
 
-  // Margins -- generous so labels never clip
-  const margin = { top: 20, right: 0, bottom: 20, left: 0 };
+  // Margins -- generous so labels never clip; top enlarged for center label above diagram
+  const margin = { top: 60, right: 0, bottom: 20, left: 0 };
 
   // Label widths -- we render labels outside the Sankey columns,
   // so we reserve space in the margin.
-  // On narrow screens give more space to the Sankey itself
   const lblFrac  = totalW < 500 ? 0.18 : 0.22;
   const lblLeft  = Math.round(totalW * lblFrac);
   const lblRight = Math.round(totalW * lblFrac);
@@ -948,29 +969,20 @@ function renderSankey(data, containerId) {
   // Inner dimensions passed to d3-sankey
   const innerW = totalW - lblLeft - lblRight - margin.left - margin.right;
 
-  // layoutH: the coordinate space d3-sankey works in.
-  // Keep this modest so link widths stay proportional and visible.
-  // More nodes = slightly taller, but capped to avoid ballooning link widths.
+  // layoutH == displayH: eliminate the coordinate-space/display-height disconnect
+  // that caused wartime diagram to appear short/stubby in the upper portion of a tall SVG.
+  // More nodes = taller diagram, giving wartime more room than pre-war.
   const nodeCount  = data.nodes.length;
-  const layoutH    = Math.min(400 + nodeCount * 18, 650);
-
-  // displayH: how tall the SVG actually appears on screen.
-  // We use a viewBox to scale layoutH up to displayH.
-  const displayH   = Math.max(600, nodeCount * 55);
-  const totalH     = displayH + margin.top + margin.bottom;
-  const innerH     = layoutH;  // sankey layout uses layoutH
+  const layoutH    = Math.max(680, nodeCount * 48);
+  const innerH     = layoutH;
+  const layoutTotalH = layoutH + margin.top + margin.bottom;
 
   // ── Build SVG ──────────────────────────────────────────────────────────────
-  // viewBox uses layout coordinates; SVG renders at displayH on screen.
-  // This decouples visual size from the coordinate space the sankey uses.
-  const layoutTotalH = layoutH + margin.top + margin.bottom;
-  const layoutTotalW = totalW;   // width stays the same
-
   const svg = d3.select(container)
     .append('svg')
     .attr('width',   totalW)
-    .attr('height',  totalH)
-    .attr('viewBox', '0 0 ' + layoutTotalW + ' ' + layoutTotalH)
+    .attr('height',  layoutTotalH)
+    .attr('viewBox', '0 0 ' + totalW + ' ' + layoutTotalH)
     .attr('preserveAspectRatio', 'xMidYMin meet')
     .style('display', 'block');
 
@@ -978,19 +990,16 @@ function renderSankey(data, containerId) {
     .attr('transform', 'translate(' + (margin.left + lblLeft) + ',' + margin.top + ')');
 
   // ── d3-sankey layout ───────────────────────────────────────────────────────
-  // Deep-clone nodes and links. Pass string IDs directly in links --
-  // the layout's .nodeId(d => d.id) resolves them internally.
-  // Do NOT pre-convert to numeric indices; that causes "node not found: 0".
   const sankeyNodes = data.nodes.map(n => ({ ...n }));
   const sankeyLinks = data.links.map(l => ({
-    source: l.source,   // keep as string ID -- layout resolves via nodeId()
-    target: l.target,   // keep as string ID
+    source: l.source,
+    target: l.target,
     value:  l.value,
     note:   l.note,
   }));
 
   const sankey = window.sankeyLayout()
-    .nodeId(d => d.id)      // tells layout: match link.source/target to node.id
+    .nodeId(d => d.id)
     .nodeWidth(28)
     .nodePadding(18)
     .nodeAlign(window.sankeyJustify)
@@ -998,11 +1007,7 @@ function renderSankey(data, containerId) {
 
   const graph = sankey({ nodes: sankeyNodes, links: sankeyLinks });
 
-
-
   // ── Draw links ─────────────────────────────────────────────────────────────
-  const linkPath = window.sankeyLinkHorizontalPath;
-
   g.append('g').attr('class', 'links')
     .selectAll('path')
     .data(graph.links)
@@ -1026,6 +1031,35 @@ function renderSankey(data, containerId) {
         d3.select(this).attr('fill-opacity', 0.55).attr('stroke-opacity', 0.8);
         hideTip();
       });
+
+  // ── Link value labels above each ribbon ───────────────────────────────────
+  const linkLabelG = g.append('g').attr('class', 'link-labels');
+  graph.links.forEach(function(lnk) {
+    if (lnk.width < 8) return;  // skip very thin ribbons
+    const mx    = (lnk.source.x1 + lnk.target.x0) / 2;
+    const topY  = (lnk.y0 + lnk.y1) / 2 - lnk.width / 2;
+    const lblY  = topY - 3;
+    const txt   = '$' + lnk.value.toFixed(1) + 'B';
+    const bgW   = txt.length * 6.2 + 6;
+    linkLabelG.append('rect')
+      .attr('x',  mx - bgW / 2)
+      .attr('y',  lblY - 11)
+      .attr('width',  bgW)
+      .attr('height', 13)
+      .attr('rx', 2)
+      .attr('fill', '#0a0d13')
+      .attr('fill-opacity', 0.82);
+    linkLabelG.append('text')
+      .attr('x', mx)
+      .attr('y', lblY)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'alphabetic')
+      .attr('fill', '#e8e8e8')
+      .attr('font-family', FONT)
+      .attr('font-size', '10px')
+      .attr('font-weight', '700')
+      .text(txt);
+  });
 
   // ── Draw nodes ─────────────────────────────────────────────────────────────
   const nodeG = g.append('g').attr('class', 'nodes')
@@ -1051,23 +1085,29 @@ function renderSankey(data, containerId) {
     .on('mousemove', moveTip)
     .on('mouseout', hideTip);
 
-  // Value badge inside node -- gold, only if tall enough
-  nodeG.filter(d => (d.y1 - d.y0) >= 16)
-    .append('text')
+  // Value badge inside node -- only if tall enough
+  const tallNodes = nodeG.filter(d => (d.y1 - d.y0) >= 18);
+  // background rect behind badge for readability
+  tallNodes.append('rect')
+    .attr('x', d => (d.x0 + d.x1) / 2 - 26)
+    .attr('y', d => (d.y0 + d.y1) / 2 - 9)
+    .attr('width', 52)
+    .attr('height', 18)
+    .attr('rx', 3)
+    .attr('fill', '#0a0d13')
+    .attr('fill-opacity', 0.55);
+  tallNodes.append('text')
     .attr('x', d => (d.x0 + d.x1) / 2)
     .attr('y', d => (d.y0 + d.y1) / 2)
     .attr('text-anchor', 'middle')
     .attr('dominant-baseline', 'middle')
     .attr('fill', GOLD)
     .attr('font-family', FONT)
-    .attr('font-size', '11px')
+    .attr('font-size', '13px')
     .attr('font-weight', '700')
     .text(d => '$' + (d.value || 0).toFixed(1) + 'B');
 
   // ── Labels ─────────────────────────────────────────────────────────────────
-  // d3-sankey places nodes in columns. Left-most column: labels go left.
-  // Right-most column: labels go right. Middle columns: labels centred below.
-  // We detect position by comparing x0 to the leftmost and rightmost column.
   const xPositions = [...new Set(graph.nodes.map(n => Math.round(n.x0)))].sort((a,b)=>a-b);
   const leftColX   = xPositions[0];
   const rightColX  = xPositions[xPositions.length - 1];
@@ -1077,7 +1117,6 @@ function renderSankey(data, containerId) {
   const LBL_LINE = 15;
 
   nodeG.each(function(d) {
-    const nodeHeight = d.y1 - d.y0;
     const nx0 = Math.round(d.x0);
     const isLeft   = nx0 === leftColX;
     const isRight  = nx0 === rightColX;
@@ -1086,25 +1125,39 @@ function renderSankey(data, containerId) {
     const lines = d.label.split('\n');
     const blockH = lines.length * LBL_LINE;
 
-    let lx, anchor;
+    let lx, anchor, startY;
     if (isLeft) {
       lx = d.x0 - LBL_GAP;
       anchor = 'end';
+      startY = (d.y0 + d.y1) / 2 - blockH / 2 + LBL_LINE * 0.75;
     } else if (isRight) {
       lx = d.x1 + LBL_GAP;
       anchor = 'start';
+      startY = (d.y0 + d.y1) / 2 - blockH / 2 + LBL_LINE * 0.75;
     } else {
+      // Center node (STATE BUDGET): place label ABOVE the diagram area
+      // in the margin.top space (margin.top = 60, so we have room at y < 0)
       lx = (d.x0 + d.x1) / 2;
       anchor = 'middle';
+      startY = -margin.top + 14 + LBL_LINE * 0.75;  // near top of SVG
+      // Semi-transparent background pill for contrast
+      const bgW = 130;
+      const bgH = blockH + 10;
+      d3.select(this).append('rect')
+        .attr('x', lx - bgW / 2)
+        .attr('y', -margin.top + 8)
+        .attr('width',  bgW)
+        .attr('height', bgH)
+        .attr('rx', 4)
+        .attr('fill', '#0a0d13')
+        .attr('fill-opacity', 0.88);
     }
-
-    const startY = (d.y0 + d.y1) / 2 - blockH / 2 + LBL_LINE * 0.75;
 
     const txtEl = d3.select(this).append('text')
       .attr('text-anchor', anchor)
       .attr('fill', isCenter ? GOLD : '#d0daf0')
       .attr('font-family', FONT)
-      .attr('font-size', (isCenter ? LBL_FONT + 1 : LBL_FONT) + 'px')
+      .attr('font-size', (isCenter ? LBL_FONT + 2 : LBL_FONT) + 'px')
       .attr('font-weight', isCenter ? '700' : '400');
 
     lines.forEach((line, i) => {
@@ -1115,28 +1168,186 @@ function renderSankey(data, containerId) {
     });
   });
 
-  // ── Overflow: widen SVG viewBox to include label gutters ───────────────────
-  // Labels on the left side sit at x < 0 (in the g transform space).
-  // We need the SVG to show x = -lblLeft through x = innerW + lblRight.
-  // Solution: use a viewBox that starts at -lblLeft.
-  svg.attr('viewBox', (-lblLeft) + ' 0 ' + totalW + ' ' + totalH);
+  // ── Widen viewBox to include label gutters ──────────────────────────────────
+  svg.attr('viewBox', (-lblLeft) + ' ' + (-margin.top) + ' ' + totalW + ' ' + layoutTotalH);
 }
 
-// ============================================================
-// TAB SWITCHING
-// ============================================================
-let currentMode = 'pre';
 
-function switchTab(mode) {
-  currentMode = mode;
-  document.querySelectorAll('.s-tab').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.s-chart').forEach(c => c.classList.remove('active'));
-  document.getElementById('chart-' + mode).classList.add('active');
-  document.querySelectorAll('.s-tab').forEach(b => {
-    if ((mode === 'pre' && b.textContent.includes('Pre')) ||
-        (mode === 'war' && b.textContent.includes('War')))
-      b.classList.add('active');
+// ============================================================
+// PIE CHARTS — 2×2 income / expenditure breakdown
+// ============================================================
+
+const PIE_DATA = {
+  incomePreWar: {
+    title: 'a.  Income Sources · 2021',
+    slices: [
+      { label: 'VAT (Domestic)',      value: 5.8,  color: '#4a8fe8' },
+      { label: 'VAT on Imports',      value: 7.3,  color: '#5db87a' },
+      { label: 'PIT + Military Levy', value: 5.2,  color: '#c9a84c' },
+      { label: 'Corporate Tax',       value: 2.8,  color: '#e8834a' },
+      { label: 'Excise Duties',       value: 2.4,  color: '#9b72cf' },
+      { label: 'Import Duties',       value: 1.0,  color: '#4ac9c9' },
+      { label: 'SOE Dividends',       value: 1.8,  color: '#d64933' },
+      { label: 'Domestic Bonds',      value: 5.8,  color: '#8a9ab5' },
+      { label: 'Foreign Loans',       value: 3.9,  color: '#6aaae8' },
+    ]
+  },
+  incomeWartime: {
+    title: 'b.  Income Sources · 2024',
+    slices: [
+      { label: 'VAT on Imports',      value: 7.0,  color: '#5db87a' },
+      { label: 'VAT (Domestic)',       value: 5.5,  color: '#4a8fe8' },
+      { label: 'PIT + Military Tax',  value: 5.6,  color: '#c9a84c' },
+      { label: 'Corporate Tax',       value: 6.5,  color: '#e8834a' },
+      { label: 'Excise Duties',       value: 3.2,  color: '#9b72cf' },
+      { label: 'SOE Profits',         value: 3.2,  color: '#d64933' },
+      { label: 'Grain Exports',       value: 4.0,  color: '#77cc88' },
+      { label: 'War Bonds',           value: 7.2,  color: '#8a9ab5' },
+      { label: 'United States',       value: 8.5,  color: '#4a8fe8' },
+      { label: 'EU Facility',         value: 12.1, color: '#e8c44a' },
+      { label: 'IMF EFF',             value: 4.5,  color: '#4ac9c9' },
+      { label: 'World Bank',          value: 2.0,  color: '#5db87a' },
+      { label: 'G7 ERA Loan',         value: 2.5,  color: '#e8834a' },
+      { label: 'Other Donors',        value: 2.5,  color: '#9b72cf' },
+    ]
+  },
+  expendPreWar: {
+    title: 'c.  Expenditures · 2021',
+    slices: [
+      { label: 'Defense & Security',  value: 3.5,  color: '#d64933' },
+      { label: 'Social Protection',   value: 10.0, color: '#4a8fe8' },
+      { label: 'Debt Service',        value: 3.8,  color: '#8a9ab5' },
+      { label: 'Education & Health',  value: 6.5,  color: '#5db87a' },
+      { label: 'Infrastructure',      value: 3.5,  color: '#9b72cf' },
+      { label: 'Administration',      value: 4.7,  color: '#c9a84c' },
+    ]
+  },
+  expendWartime: {
+    title: 'd.  Expenditures · 2024',
+    slices: [
+      { label: 'Defense & Security',  value: 42.0, color: '#d64933' },
+      { label: 'Social Protection',   value: 12.0, color: '#4a8fe8' },
+      { label: 'Debt Service',        value: 9.5,  color: '#8a9ab5' },
+      { label: 'Education & Health',  value: 8.0,  color: '#5db87a' },
+      { label: 'Civil Service',       value: 10.5, color: '#9b72cf' },
+    ]
+  }
+};
+
+function renderPie(containerId, dataset) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+
+  const cw      = Math.max(container.getBoundingClientRect().width || 260, 200);
+  const radius  = Math.min(cw / 2, 130) - 8;
+  const cx      = cw / 2;
+  const pieH    = radius * 2 + 16;
+  const total   = d3.sum(dataset.slices, s => s.value);
+
+  // Legend rows: 2 columns
+  const cols    = 2;
+  const rows    = Math.ceil(dataset.slices.length / cols);
+  const lgdH    = rows * 17 + 8;
+  const svgH    = 24 + pieH + 12 + lgdH;   // title + pie + gap + legend
+
+  const svg = d3.select(container).append('svg')
+    .attr('width',  cw)
+    .attr('height', svgH)
+    .style('display', 'block');
+
+  // Title
+  svg.append('text')
+    .attr('x', cw / 2).attr('y', 16)
+    .attr('text-anchor', 'middle')
+    .attr('fill', GOLD)
+    .attr('font-family', FONT)
+    .attr('font-size', '11px')
+    .attr('font-weight', '700')
+    .text(dataset.title);
+
+  const pieG = svg.append('g')
+    .attr('transform', 'translate(' + cx + ',' + (24 + radius + 8) + ')');
+
+  const pie = d3.pie().value(s => s.value).sort(null);
+  const arc = d3.arc().innerRadius(radius * 0.42).outerRadius(radius);
+  const lblArc = d3.arc().innerRadius(radius * 0.68).outerRadius(radius * 0.68);
+
+  const arcs = pie(dataset.slices);
+
+  // Slices
+  pieG.selectAll('path')
+    .data(arcs)
+    .enter().append('path')
+      .attr('d', arc)
+      .attr('fill', s => s.data.color)
+      .attr('stroke', '#0e1117')
+      .attr('stroke-width', 1.5)
+      .style('cursor', 'pointer')
+      .on('mouseover', function(event, s) {
+        showTip(event,
+          s.data.label,
+          '<strong>$' + s.data.value.toFixed(1) + 'B</strong>',
+          Math.round(s.data.value / total * 100) + '% of total');
+      })
+      .on('mousemove', moveTip)
+      .on('mouseout', hideTip);
+
+  // Percentage labels on arcs wide enough (> ~5%)
+  pieG.selectAll('text.arc-pct')
+    .data(arcs.filter(s => (s.endAngle - s.startAngle) > 0.28))
+    .enter().append('text')
+      .attr('class', 'arc-pct')
+      .attr('transform', s => 'translate(' + lblArc.centroid(s) + ')')
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('fill', '#fff')
+      .attr('font-family', FONT)
+      .attr('font-size', '9px')
+      .attr('font-weight', '700')
+      .text(s => Math.round(s.data.value / total * 100) + '%');
+
+  // Total in donut center
+  pieG.append('text')
+    .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
+    .attr('fill', GOLD)
+    .attr('font-family', FONT)
+    .attr('font-size', '11px')
+    .attr('font-weight', '700')
+    .text('$' + total.toFixed(0) + 'B');
+
+  // Legend
+  const lgdG = svg.append('g')
+    .attr('transform', 'translate(6,' + (24 + pieH + 16) + ')');
+
+  const colW = (cw - 12) / cols;
+  dataset.slices.forEach(function(s, i) {
+    const col  = i % cols;
+    const row  = Math.floor(i / cols);
+    const lx   = col * colW;
+    const ly   = row * 17;
+    const pct  = Math.round(s.value / total * 100);
+    const lbl  = s.label.length > 16 ? s.label.slice(0, 15) + '…' : s.label;
+
+    lgdG.append('rect')
+      .attr('x', lx).attr('y', ly + 3)
+      .attr('width', 8).attr('height', 8)
+      .attr('rx', 1).attr('fill', s.color);
+
+    lgdG.append('text')
+      .attr('x', lx + 11).attr('y', ly + 10)
+      .attr('fill', '#8a9ab5')
+      .attr('font-family', FONT)
+      .attr('font-size', '9px')
+      .text(lbl + ' ' + pct + '%');
   });
+}
+
+function renderPieCharts() {
+  renderPie('pie-income-pre',  PIE_DATA.incomePreWar);
+  renderPie('pie-income-war',  PIE_DATA.incomeWartime);
+  renderPie('pie-expend-pre',  PIE_DATA.expendPreWar);
+  renderPie('pie-expend-war',  PIE_DATA.expendWartime);
 }
 
 // ============================================================
@@ -1163,6 +1374,7 @@ function hideTip() { document.getElementById('tooltip').style.opacity = '0'; }
 function renderAll() {
   renderSankey(PRE_WAR,  'inner-pre');
   renderSankey(WARTIME,  'inner-war');
+  renderPieCharts();
 }
 
 window.addEventListener('DOMContentLoaded', renderAll);
