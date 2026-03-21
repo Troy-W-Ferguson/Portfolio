@@ -957,8 +957,8 @@ function renderSankey(data, containerId) {
   // Measure container width
   const totalW = Math.max(container.getBoundingClientRect().width, 340);
 
-  // Margins -- generous so labels never clip; top enlarged for center label above diagram
-  const margin = { top: 60, right: 0, bottom: 20, left: 0 };
+  // Margins -- top enlarged for center label above diagram + large ribbon labels
+  const margin = { top: 90, right: 0, bottom: 30, left: 0 };
 
   // Label widths -- we render labels outside the Sankey columns,
   // so we reserve space in the margin.
@@ -984,6 +984,7 @@ function renderSankey(data, containerId) {
     .attr('height',  layoutTotalH)
     .attr('viewBox', '0 0 ' + totalW + ' ' + layoutTotalH)
     .attr('preserveAspectRatio', 'xMidYMin meet')
+    .attr('overflow', 'visible')   // allow labels outside the viewBox to render
     .style('display', 'block');
 
   const g = svg.append('g')
@@ -1038,7 +1039,8 @@ function renderSankey(data, containerId) {
     if (lnk.width < 8) return;  // skip very thin ribbons
     const mx    = (lnk.source.x1 + lnk.target.x0) / 2;
     const topY  = (lnk.y0 + lnk.y1) / 2 - lnk.width / 2;
-    const lblY  = topY - 3;
+    // Clamp so label rect never floats above the viewBox top (-margin.top)
+    const lblY  = Math.max(-margin.top + 22, topY - 3);
     const txt   = '$' + lnk.value.toFixed(1) + 'B';
     const bgW   = txt.length * 6.2 + 6;
     linkLabelG.append('rect')
@@ -1139,13 +1141,13 @@ function renderSankey(data, containerId) {
       // in the margin.top space (margin.top = 60, so we have room at y < 0)
       lx = (d.x0 + d.x1) / 2;
       anchor = 'middle';
-      startY = -margin.top + 14 + LBL_LINE * 0.75;  // near top of SVG
+      startY = -margin.top + 22 + LBL_LINE * 0.75;  // in the top margin space
       // Semi-transparent background pill for contrast
-      const bgW = 130;
-      const bgH = blockH + 10;
+      const bgW = 140;
+      const bgH = blockH + 12;
       d3.select(this).append('rect')
         .attr('x', lx - bgW / 2)
-        .attr('y', -margin.top + 8)
+        .attr('y', -margin.top + 14)
         .attr('width',  bgW)
         .attr('height', bgH)
         .attr('rx', 4)
@@ -1168,8 +1170,12 @@ function renderSankey(data, containerId) {
     });
   });
 
-  // ── Widen viewBox to include label gutters ──────────────────────────────────
-  svg.attr('viewBox', (-lblLeft) + ' ' + (-margin.top) + ' ' + totalW + ' ' + layoutTotalH);
+  // ── Set final viewBox to include both label gutters ────────────────────────
+  // x starts at -lblLeft (covers left labels), width = totalW + lblRight so the
+  // right-label gutter is inside the declared coordinate space too.
+  // overflow="visible" on the SVG handles any content that still goes beyond.
+  const vbW = totalW + lblRight;
+  svg.attr('viewBox', (-lblLeft) + ' ' + (-margin.top) + ' ' + vbW + ' ' + layoutTotalH);
 }
 
 
