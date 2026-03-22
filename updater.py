@@ -149,7 +149,7 @@ After all searches are complete, return a single JSON object with this exact str
   ],
 
   "new_leaders_killed": [
-    "Name — Title. Details of killing."
+    "<strong style=\"color:var(--accent);\">Full Name</strong> — Title/Role. Details of killing. <a class=\"source-link\" href=\"https://example.com\" target=\"_blank\">Reuters</a>"
   ]
 }}
 
@@ -177,18 +177,24 @@ def patch_stat_card(panel: str, label_fragment: str, new_value: str) -> str:
     """Finds a stat-card containing label_fragment and replaces the stat-num value."""
     pattern = rf'(<div class="stat-num[^"]*">)[^<]+(</div>\s*<div class="stat-label[^"]*"[^>]*>[^<]*{re.escape(label_fragment)})'
     replacement = rf'\g<1>{new_value}\2'
+    if not re.search(pattern, panel):
+        print(f"    WARNING: stat card not found for label fragment: '{label_fragment}'")
+        return panel
     updated = re.sub(pattern, replacement, panel, count=1)
     if updated == panel:
-        print(f"    WARNING: stat card not found for label fragment: '{label_fragment}'")
+        print(f"    Stat already current: {label_fragment} = {new_value}")
     return updated
 
 def patch_hstat(panel: str, label_fragment: str, new_value: str) -> str:
     """Finds an hstat containing label_fragment and updates its hstat-val."""
     pattern = rf'(<div class="hstat-val[^"]*">)[^<]+(</div><div class="hstat-label">[^<]*{re.escape(label_fragment)})'
     replacement = rf'\g<1>{new_value}\2'
+    if not re.search(pattern, panel):
+        print(f"    WARNING: hstat not found for label fragment: '{label_fragment}'")
+        return panel
     updated = re.sub(pattern, replacement, panel, count=1)
     if updated == panel:
-        print(f"    WARNING: hstat not found for label fragment: '{label_fragment}'")
+        print(f"    Hstat already current: {label_fragment} = {new_value}")
     return updated
 
 def build_timeline_entry(entry: dict) -> str:
@@ -327,12 +333,25 @@ def apply_diff(panel: str, diff: dict) -> tuple[str, bool]:
 
     # 7. New leadership kills
     for leader in diff.get("new_leaders_killed", []):
-        leader_html = f'\n      <div class="context-item">{leader}</div>'
+        # Claude may return a string (raw HTML content) or a dict
+        if isinstance(leader, dict):
+            name = leader.get("name", "Unknown")
+            title = leader.get("title", "")
+            details = leader.get("details", "")
+            source_url = leader.get("source_url", "")
+            source_label = leader.get("source_label", "Source")
+            source_tag = f' <a class="source-link" href="{source_url}" target="_blank">{source_label}</a>' if source_url else ""
+            leader_content = f'<strong style="color:var(--accent);">{name}</strong> — {title}. {details}{source_tag}'
+            display_name = name
+        else:
+            leader_content = str(leader)
+            display_name = leader_content
+        leader_html = f'\n      <div class="context-item">{leader_content}</div>'
         anchor = '</div>\n\n    <!-- Key assassinations -->'
         if anchor not in panel:
             anchor = '</div>\n    <!-- Key assassinations -->'
         panel = panel.replace(anchor, leader_html + anchor, 1)
-        print(f"    Added leader killed: {leader[:60]}...")
+        print(f"    Added leader killed: {display_name[:60]}...")
         changed = True
 
     return panel, changed
