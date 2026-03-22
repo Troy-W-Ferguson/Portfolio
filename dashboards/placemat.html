@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Placemat — Troy W. Ferguson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─────────────────────────────────────────
+       CSS CUSTOM PROPERTIES
+    ───────────────────────────────────────── */
+    :root {
+      --paper:       #f5f0e8;
+      --ink:         #0d0d0d;
+      --card:        #ffffff;
+      --red:         #c0392b;
+      --red-dim:     #7a1f17;
+      --amber:       #d97706;
+      --teal:        #0e7490;
+      --blue:        #1d4ed8;
+      --green:       #166534;
+      --muted:       #6b5f50;
+      --rule:        #d4c9b0;
+      --highlight:   #fef3c7;
+      --shadow:      0 2px 8px rgba(0,0,0,0.08);
+      --shadow-hover: 0 6px 24px rgba(0,0,0,0.14);
+    }
+
+    /* ─────────────────────────────────────────
+       RESET & BASE
+    ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─────────────────────────────────────────
+       MASTHEAD
+    ───────────────────────────────────────── */
+    .masthead {
+      position: relative;
+      background: var(--paper);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 0 36px;
+    }
+
+    .masthead::before {
+      content: '';
+      display: block;
+      height: 4px;
+      background: var(--red);
+      width: 100%;
+    }
+
+    .masthead-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 32px 0;
+    }
+
+    .masthead-kicker {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+
+    .masthead-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .masthead-deck {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+      max-width: 560px;
+    }
+
+    .masthead-meta {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .masthead-meta a:hover { color: var(--red); }
+    .masthead-meta span { color: var(--rule); }
+
+    /* ─────────────────────────────────────────
+       STATS STRIP
+    ───────────────────────────────────────── */
+    .stats-strip {
+      display: flex;
+      gap: 1px;
+      background: var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .stat-card {
+      flex: 1;
+      background: var(--paper);
+      padding: 20px 24px;
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--red);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    /* ─────────────────────────────────────────
+       MAIN CONTENT WRAPPER
+    ───────────────────────────────────────── */
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 32px 80px;
+    }
+
+    /* ─────────────────────────────────────────
+       SECTION HEADERS
+    ───────────────────────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.2rem;
+      margin-bottom: 28px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    .section-count {
+      margin-left: auto;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ─────────────────────────────────────────
+       DASHBOARD TILES GRID
+    ───────────────────────────────────────── */
+    .dashboards-section { margin-bottom: 60px; }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .dashboard-tile {
+      background: var(--card);
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+      border-top: 4px solid var(--tile-color, var(--red));
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .dashboard-tile:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .tile-body {
+      padding: 22px 24px 18px;
+      flex: 1;
+    }
+
+    .tile-tag {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--tile-color, var(--red));
+      border: 1px solid var(--tile-color, var(--red));
+      padding: 2px 7px;
+      border-radius: 2px;
+      margin-bottom: 10px;
+      opacity: 0.85;
+    }
+
+    .tile-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .tile-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* Live stat placeholders */
+    .tile-stats {
+      display: flex;
+      gap: 1px;
+      background: var(--rule);
+      border-top: 1px solid var(--rule);
+    }
+
+    .tile-stat {
+      flex: 1;
+      background: #fafaf7;
+      padding: 12px 14px;
+      text-align: center;
+    }
+
+    .tile-stat-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--tile-color, var(--red));
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    .tile-stat-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .tile-footer {
+      padding: 12px 24px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #f0ebe0;
+      background: #fafaf7;
+    }
+
+    .tile-updated {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .tile-link {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--tile-color, var(--red));
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tile-link::after {
+      content: '→';
+      transition: transform 0.15s ease;
+    }
+
+    .dashboard-tile:hover .tile-link::after {
+      transform: translateX(3px);
+    }
+
+    /* Wide tile spans full width */
+    .dashboard-tile.wide {
+      grid-column: 1 / -1;
+    }
+
+    /* ─────────────────────────────────────────
+       ARTICLES GRID
+    ───────────────────────────────────────── */
+    .articles-section { margin-bottom: 40px; }
+
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .article-tile {
+      background: var(--card);
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--pub-color, var(--muted));
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .article-tile:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .article-body {
+      padding: 16px 18px 14px;
+      flex: 1;
+    }
+
+    .article-pub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--pub-color, var(--muted));
+      margin-bottom: 6px;
+    }
+
+    .article-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 7px;
+    }
+
+    .article-excerpt {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .article-footer {
+      padding: 8px 18px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #f0ebe0;
+      background: #fafaf7;
+    }
+
+    .article-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    .article-link {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--pub-color, var(--red));
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .article-link::after {
+      content: '→';
+      transition: transform 0.15s ease;
+    }
+
+    .article-tile:hover .article-link::after {
+      transform: translateX(3px);
+    }
+
+    /* ─────────────────────────────────────────
+       PHASE 2 NOTICE BANNER
+    ───────────────────────────────────────── */
+    .phase-banner {
+      background: var(--highlight);
+      border: 1px solid #fbbf24;
+      border-left: 4px solid var(--amber);
+      border-radius: 4px;
+      padding: 14px 20px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .phase-banner-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .phase-banner-text {
+      font-size: 0.8rem;
+      color: #78350f;
+      line-height: 1.5;
+    }
+
+    .phase-banner-text strong {
+      font-weight: 600;
+    }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    .footer {
+      border-top: 1px solid var(--rule);
+      padding: 24px 32px;
+      background: var(--paper);
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.6rem;
+    }
+
+    .footer-links a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .footer-links a:hover {
+      color: var(--red);
+    }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .article-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .masthead-inner { padding: 24px 20px 0; }
+      .content { padding: 32px 20px 60px; }
+
+      .stats-strip { flex-wrap: wrap; }
+      .stat-card { min-width: 50%; flex: 0 0 50%; }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      .dashboard-tile.wide { grid-column: 1; }
+
+      .section-header { flex-wrap: wrap; gap: 0.5rem; }
+      .section-count { margin-left: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .article-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .masthead-title { font-size: 2rem; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       MASTHEAD
+  ══════════════════════════════════════ -->
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-kicker">Troy W. Ferguson &nbsp;·&nbsp; Portfolio Index</div>
+      <h1 class="masthead-title">Portfolio Placemat</h1>
+      <p class="masthead-deck">A live index of all dashboards and writing samples — interactive tiles linking to every project.</p>
+      <div class="masthead-meta">
+        <a href="../index.html">← Back to Portfolio</a>
+        <span>|</span>
+        <span>Updated March 2026</span>
+        <span>|</span>
+        <span>Phase 1 — Static Index</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════
+       STATS STRIP
+  ══════════════════════════════════════ -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-number">5</div>
+      <div class="stat-label">Dashboards</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">15</div>
+      <div class="stat-label">Articles</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">20</div>
+      <div class="stat-label">Total Projects</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="last-updated">Mar 2026</div>
+      <div class="stat-label">Last Updated</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════ -->
+  <main class="content">
+
+    <!-- Phase 2 notice -->
+    <div class="phase-banner">
+      <div class="phase-banner-icon">⚙</div>
+      <div class="phase-banner-text">
+        <strong>Phase 2 coming:</strong> Live data pulls from each dashboard will populate the stat tiles automatically. For now, stat placeholders are visible below — they'll be wired to live project data in the next build.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         DASHBOARDS SECTION
+    ══════════════════════════════════ -->
+    <section class="dashboards-section">
+      <div class="section-header">
+        <span class="section-label">Interactive</span>
+        <h2 class="section-title">Dashboards</h2>
+        <span class="section-count">5 projects</span>
+      </div>
+
+      <div class="dashboard-grid">
+
+        <!-- Iran–Israel Conflict Tracker -->
+        <a href="iran-israel-conflict-dashboards.html" class="dashboard-tile wide" style="--tile-color: #c0392b;">
+          <div class="tile-body">
+            <div class="tile-tag">Conflict · Live Tracker</div>
+            <h3 class="tile-title">Iran–Israel Conflict Tracker</h3>
+            <p class="tile-desc">A continuously updated war dashboard tracking military strikes, casualty figures, diplomatic developments, and timeline of escalation across the Iran–Israel conflict. Powered by automated Claude API updates.</p>
+          </div>
+          <div class="tile-stats">
+            <div class="tile-stat" data-project="iran-israel" data-field="days">
+              <div class="tile-stat-value live-stat">—</div>
+              <div class="tile-stat-label">Days Active</div>
+            </div>
+            <div class="tile-stat" data-project="iran-israel" data-field="strikes">
+              <div class="tile-stat-value live-stat">—</div>
+              <div class="tile-stat-label">Strike Events</div>
+            </div>
+            <div class="tile-stat" data-project="iran-israel" data-field="updates">
+              <div class="tile-stat-value live-stat">—</div>
+              <div class="tile-stat-label">Timeline Updates</div>
+            </div>
+          </div>
+          <div class="tile-footer">
+            <span class="tile-updated">Auto-updated via Claude API</span>
+            <span class="tile-link">Open Dashboard</span>
+          </div>
+        </a>
+
+        <!-- Conflict Cost Graphics -->
+        <a href="conflict-cost-graphics.html" class="dashboard-tile" style="--tile-color: #d97706;">
+          <div class="tile-body">
+            <div class="tile-tag">Data Viz · Economics</div>
+            <h3 class="tile-title">Conflict Cost Graphics</h3>
+            <p class="tile-desc">Visualizing the human and economic toll of modern warfare — comparing war expenditure against domestic programmes, airline disruptions, and cascading infrastructure costs.</p>
+          </div>
+          <div class="tile-stats">
+            <div class="tile-stat" data-project="conflict-cost" data-field="graphics">
+              <div class="tile-stat-value live-stat">4</div>
+              <div class="tile-stat-label">Graphics</div>
+            </div>
+            <div class="tile-stat" data-project="conflict-cost" data-field="datasets">
+              <div class="tile-stat-value live-stat">6</div>
+              <div class="tile-stat-label">Datasets</div>
+            </div>
+            <div class="tile-stat" data-project="conflict-cost" data-field="charts">
+              <div class="tile-stat-value live-stat">3</div>
+              <div class="tile-stat-label">Chart Types</div>
+            </div>
+          </div>
+          <div class="tile-footer">
+            <span class="tile-updated">Static visualization</span>
+            <span class="tile-link">Open Dashboard</span>
+          </div>
+        </a>
+
+        <!-- Iran War Powers Tracker -->
+        <a href="iran-war-powers-tracker.html" class="dashboard-tile" style="--tile-color: #0e7490;">
+          <div class="tile-body">
+            <div class="tile-tag">Policy · Legal</div>
+            <h3 class="tile-title">Iran War Powers Tracker</h3>
+            <p class="tile-desc">Tracking congressional war authorizations, executive actions, and shifting military posture in the Iran theatre — a legal and political record of U.S. engagement.</p>
+          </div>
+          <div class="tile-stats">
+            <div class="tile-stat" data-project="war-powers" data-field="auths">
+              <div class="tile-stat-value live-stat">—</div>
+              <div class="tile-stat-label">Auth. Events</div>
+            </div>
+            <div class="tile-stat" data-project="war-powers" data-field="votes">
+              <div class="tile-stat-value live-stat">—</div>
+              <div class="tile-stat-label">Congressional Votes</div>
+            </div>
+            <div class="tile-stat" data-project="war-powers" data-field="days">
+              <div class="tile-stat-value live-stat">—</div>
+              <div class="tile-stat-label">Days Tracked</div>
+            </div>
+          </div>
+          <div class="tile-footer">
+            <span class="tile-updated">Policy tracker</span>
+            <span class="tile-link">Open Dashboard</span>
+          </div>
+        </a>
+
+        <!-- Tornado & Politics Dashboard -->
+        <a href="tornado_trump_dashboard.html" class="dashboard-tile" style="--tile-color: #1d4ed8;">
+          <div class="tile-body">
+            <div class="tile-tag">Environment · Politics</div>
+            <h3 class="tile-title">Tornado &amp; Politics Dashboard</h3>
+            <p class="tile-desc">Mapping the intersection of extreme weather events and political geography — storm frequency, FEMA response times, and voting patterns across the tornado belt.</p>
+          </div>
+          <div class="tile-stats">
+            <div class="tile-stat" data-project="tornado" data-field="storms">
+              <div class="tile-stat-value live-stat">—</div>
+              <div class="tile-stat-label">Storm Events</div>
+            </div>
+            <div class="tile-stat" data-project="tornado" data-field="counties">
+              <div class="tile-stat-value live-stat">—</div>
+              <div class="tile-stat-label">Counties</div>
+            </div>
+            <div class="tile-stat" data-project="tornado" data-field="years">
+              <div class="tile-stat-value live-stat">—</div>
+              <div class="tile-stat-label">Years Covered</div>
+            </div>
+          </div>
+          <div class="tile-footer">
+            <span class="tile-updated">NWS + election data</span>
+            <span class="tile-link">Open Dashboard</span>
+          </div>
+        </a>
+
+        <!-- Bristol Trolley Survey -->
+        <a href="bristol-trolley-dashboard.html" class="dashboard-tile" style="--tile-color: #166534;">
+          <div class="tile-body">
+            <div class="tile-tag">Environment · Mapping</div>
+            <h3 class="tile-title">Bristol Trolley Survey</h3>
+            <p class="tile-desc">An interactive map of shopping trolleys recovered from Bristol's waterways between 2005 and 2011. Analysing recovery patterns, retailer breakdown, and river distribution.</p>
+          </div>
+          <div class="tile-stats">
+            <div class="tile-stat" data-project="bristol" data-field="trolleys">
+              <div class="tile-stat-value live-stat">137</div>
+              <div class="tile-stat-label">Trolleys Recovered</div>
+            </div>
+            <div class="tile-stat" data-project="bristol" data-field="rivers">
+              <div class="tile-stat-value live-stat">6</div>
+              <div class="tile-stat-label">Waterways</div>
+            </div>
+            <div class="tile-stat" data-project="bristol" data-field="years">
+              <div class="tile-stat-value live-stat">6</div>
+              <div class="tile-stat-label">Years of Data</div>
+            </div>
+          </div>
+          <div class="tile-footer">
+            <span class="tile-updated">2005–2011 survey data</span>
+            <span class="tile-link">Open Dashboard</span>
+          </div>
+        </a>
+
+      </div><!-- /.dashboard-grid -->
+    </section>
+
+
+    <!-- ══════════════════════════════════
+         ARTICLES SECTION
+    ══════════════════════════════════ -->
+    <section class="articles-section">
+      <div class="section-header">
+        <span class="section-label">Writing</span>
+        <h2 class="section-title">Articles &amp; Writing Samples</h2>
+        <span class="section-count">15 pieces</span>
+      </div>
+
+      <div class="article-grid">
+
+        <!-- The Atlantic: The Storm They Voted For -->
+        <a href="../articles/atlantic_feature_tornados.html" class="article-tile" style="--pub-color: #1a56db;">
+          <div class="article-body">
+            <div class="article-pub">The Atlantic</div>
+            <h3 class="article-title">The Storm They Voted For</h3>
+            <p class="article-excerpt">How the politics of climate denial and FEMA cuts collides with tornado season across America's most vulnerable counties.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Environment · Politics</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- The Atlantic: The Dead Sea That Feeds the World -->
+        <a href="../articles/atlantic-black-sea.html" class="article-tile" style="--pub-color: #1a56db;">
+          <div class="article-body">
+            <div class="article-pub">The Atlantic</div>
+            <h3 class="article-title">The Dead Sea That Feeds the World</h3>
+            <p class="article-excerpt">The Black Sea has become the flashpoint of a global food crisis — a story of grain, war, and the waterway that connects them.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Geopolitics · Food</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- The Atlantic: Bug Scientists -->
+        <a href="../articles/atlantic-bug-scientists.html" class="article-tile" style="--pub-color: #1a56db;">
+          <div class="article-body">
+            <div class="article-pub">The Atlantic</div>
+            <h3 class="article-title">The Bug Scientists Who Saved America</h3>
+            <p class="article-excerpt">The entomologists who defeated some of history's worst agricultural crises — and might not be around to fight the next one.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Science · Policy</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- The Atlantic: The Shockwave -->
+        <a href="../articles/the-shockwave.html" class="article-tile" style="--pub-color: #1a56db;">
+          <div class="article-body">
+            <div class="article-pub">The Atlantic</div>
+            <h3 class="article-title">The Shockwave</h3>
+            <p class="article-excerpt">The aftershocks of a pivotal political moment and the institutions left to absorb the damage in its wake.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Politics</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- Economist: Golden Dome -->
+        <a href="../articles/economist-golden-dome.html" class="article-tile" style="--pub-color: #cc0001;">
+          <div class="article-body">
+            <div class="article-pub">The Economist</div>
+            <h3 class="article-title">From Teapot to Golden: America's Domes of Depletion</h3>
+            <p class="article-excerpt">A deep dive into America's strategic petroleum reserves and the political mythology surrounding the Golden Dome proposals.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Energy · Policy</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- Economist: Playing with Fire -->
+        <a href="../articles/economist-playing-with-fire.html" class="article-tile" style="--pub-color: #cc0001;">
+          <div class="article-body">
+            <div class="article-pub">The Economist</div>
+            <h3 class="article-title">Playing with Fire</h3>
+            <p class="article-excerpt">How escalating brinkmanship in the Middle East is rewriting the calculus of deterrence for every regional power involved.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Geopolitics · Security</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- Economist: The Unprofitable Plot -->
+        <a href="../articles/economist-unprofitable-plot.html" class="article-tile" style="--pub-color: #cc0001;">
+          <div class="article-body">
+            <div class="article-pub">The Economist</div>
+            <h3 class="article-title">The Unprofitable Plot</h3>
+            <p class="article-excerpt">Why the economics of news media have made it structurally impossible to fund the foreign bureaux that geopolitics now demands.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Media · Economics</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- Oxford American: Deepwaters -->
+        <a href="../articles/deepwaters_still_run_deep.html" class="article-tile" style="--pub-color: #5b21b6;">
+          <div class="article-body">
+            <div class="article-pub">Oxford American</div>
+            <h3 class="article-title">Deepwaters Still Run Deep</h3>
+            <p class="article-excerpt">A Southern long-read on the slow reckoning with industrial pollution in the waterways communities have lived beside for generations.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Environment · South</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- Night Wolves -->
+        <a href="../articles/Night-Wolves.html" class="article-tile" style="--pub-color: #7c3aed;">
+          <div class="article-body">
+            <div class="article-pub">Writing Sample</div>
+            <h3 class="article-title">Putin's Leather-Clad Legion</h3>
+            <p class="article-excerpt">Inside the Night Wolves — Russia's most prominent motorcycle club and its role as a political instrument of the Kremlin.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Russia · Politics</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- Music Diaspora -->
+        <a href="../articles/music_diaspora_nyt_style.html" class="article-tile" style="--pub-color: #0d0d0d;">
+          <div class="article-body">
+            <div class="article-pub">Writing Sample</div>
+            <h3 class="article-title">They Fled With Their Music. Now They Play for a Country That No Longer Exists.</h3>
+            <p class="article-excerpt">Musicians from the Ukrainian diaspora and the impossible task of performing a national identity from exile.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Culture · Ukraine</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- Kazakhstan Constitution -->
+        <a href="../articles/kazakhstan-constitution.html" class="article-tile" style="--pub-color: #0f766e;">
+          <div class="article-body">
+            <div class="article-pub">Feature</div>
+            <h3 class="article-title">The Steppe Reclaims Its Own</h3>
+            <p class="article-excerpt">Kazakhstan's new constitution and the long, contested process of building a post-Soviet national identity on the steppe.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Central Asia · Law</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- Kurdistan Explainer -->
+        <a href="../articles/kurdistan_explainer.html" class="article-tile" style="--pub-color: #b45309;">
+          <div class="article-body">
+            <div class="article-pub">OSINT Briefing</div>
+            <h3 class="article-title">Kurdistan Explained</h3>
+            <p class="article-excerpt">An interactive intelligence briefing tracing the political, military, and humanitarian dimensions of the Kurdish question across four states.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">OSINT · Middle East</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- Ukraine Budget -->
+        <a href="../articles/ukraine-budget-article.html" class="article-tile" style="--pub-color: #0f4c8a;">
+          <div class="article-body">
+            <div class="article-pub">Feature</div>
+            <h3 class="article-title">How War Rewrote Ukraine's Budget</h3>
+            <p class="article-excerpt">From peacetime social spending to a full wartime economy — how Ukraine restructured its finances under invasion and what it reveals about modern war economics.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Ukraine · Economics</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- After the Ruling -->
+        <a href="../articles/after-the-ruling.html" class="article-tile" style="--pub-color: #374151;">
+          <div class="article-body">
+            <div class="article-pub">Feature</div>
+            <h3 class="article-title">After the Ruling</h3>
+            <p class="article-excerpt">The downstream consequences of a landmark legal decision — on the communities, institutions, and individuals left to navigate the aftermath.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Law · Society</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+        <!-- Bristol Trolley (article version) -->
+        <a href="../articles/bristol_trolley_dashboard.html" class="article-tile" style="--pub-color: #166534;">
+          <div class="article-body">
+            <div class="article-pub">Data Feature</div>
+            <h3 class="article-title">Bristol River Trolley Survey</h3>
+            <p class="article-excerpt">A detailed breakdown of shopping trolley recoveries from Bristol's rivers and canals, with analysis of seasonal patterns and retailer accountability.</p>
+          </div>
+          <div class="article-footer">
+            <span class="article-tag">Environment · Bristol</span>
+            <span class="article-link">Read</span>
+          </div>
+        </a>
+
+      </div><!-- /.article-grid -->
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-text">Troy W. Ferguson · Portfolio Placemat · Phase 1 — Static Index</span>
+      <nav class="footer-links">
+        <a href="../index.html">Portfolio Home</a>
+        <a href="iran-israel-conflict-dashboards.html">Conflict Tracker</a>
+        <a href="mailto:troyfergu@gmail.com">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>
