@@ -253,6 +253,57 @@
       line-height: 1.55;
     }
 
+    /* ─────────────────────────────────────────
+       TILE VISUALIZATION PREVIEW
+    ───────────────────────────────────────── */
+    .tile-viz {
+      position: relative;
+      background: #fafaf7;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+      padding: 14px 20px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tile-viz svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .viz-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .viz-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--tile-color, var(--muted));
+      border: 1px solid var(--tile-color, var(--rule));
+      padding: 2px 7px;
+      border-radius: 10px;
+      opacity: 0.9;
+      flex-shrink: 0;
+    }
+
+    .viz-note {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--muted);
+      line-height: 1.45;
+      flex: 1;
+      min-width: 0;
+    }
+
     /* Live stat placeholders */
     .tile-stats {
       display: flex;
@@ -546,7 +597,7 @@
         <span>|</span>
         <span>Updated March 2026</span>
         <span>|</span>
-        <span>Phase 1 — Static Index</span>
+        <span>Phase 2 — Viz Previews</span>
       </div>
     </div>
   </header>
@@ -578,14 +629,6 @@
   ══════════════════════════════════════ -->
   <main class="content">
 
-    <!-- Phase 2 notice -->
-    <div class="phase-banner">
-      <div class="phase-banner-icon">⚙</div>
-      <div class="phase-banner-text">
-        <strong>Phase 2 coming:</strong> Live data pulls from each dashboard will populate the stat tiles automatically. For now, stat placeholders are visible below — they'll be wired to live project data in the next build.
-      </div>
-    </div>
-
     <!-- ══════════════════════════════════
          DASHBOARDS SECTION
     ══════════════════════════════════ -->
@@ -604,6 +647,54 @@
             <div class="tile-tag">Conflict · Live Tracker</div>
             <h3 class="tile-title">Iran–Israel Conflict Tracker</h3>
             <p class="tile-desc">A continuously updated war dashboard tracking military strikes, casualty figures, diplomatic developments, and timeline of escalation across the Iran–Israel conflict. Powered by automated Claude API updates.</p>
+          </div>
+          <div class="tile-viz">
+            <svg viewBox="0 0 900 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="900" height="140" fill="#fafaf7"/>
+              <line x1="450" y1="10" x2="450" y2="130" stroke="#d4c9b0" stroke-width="2"/>
+              <text x="450" y="22" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#6b5f50" letter-spacing="0.08em">APR 2024</text>
+              <text x="450" y="82" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#6b5f50" letter-spacing="0.08em">OCT 2024</text>
+              <circle cx="406" cy="35" r="7" fill="#7a1f17" opacity="0.75"/>
+              <circle cx="406" cy="62" r="5" fill="#7a1f17" opacity="0.6"/>
+              <circle cx="406" cy="95" r="6" fill="#7a1f17" opacity="0.7"/>
+              <circle cx="406" cy="118" r="5" fill="#7a1f17" opacity="0.55"/>
+              <circle cx="494" cy="28" r="6" fill="#c0392b"/>
+              <circle cx="494" cy="50" r="8" fill="#c0392b"/>
+              <circle cx="494" cy="80" r="5" fill="#c0392b" opacity="0.85"/>
+              <circle cx="494" cy="108" r="7" fill="#c0392b"/>
+              <line x1="413" y1="35" x2="450" y2="35" stroke="#d4c9b0" stroke-width="1"/>
+              <line x1="411" y1="62" x2="450" y2="62" stroke="#d4c9b0" stroke-width="1"/>
+              <line x1="412" y1="95" x2="450" y2="95" stroke="#d4c9b0" stroke-width="1"/>
+              <line x1="411" y1="118" x2="450" y2="118" stroke="#d4c9b0" stroke-width="1"/>
+              <line x1="487" y1="28" x2="450" y2="28" stroke="#d4c9b0" stroke-width="1"/>
+              <line x1="486" y1="50" x2="450" y2="50" stroke="#d4c9b0" stroke-width="1"/>
+              <line x1="487" y1="80" x2="450" y2="80" stroke="#d4c9b0" stroke-width="1"/>
+              <line x1="487" y1="108" x2="450" y2="108" stroke="#d4c9b0" stroke-width="1"/>
+              <text x="390" y="130" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="#7a1f17" letter-spacing="0.06em">IRAN</text>
+              <text x="510" y="130" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="#c0392b" letter-spacing="0.06em">ISRAEL</text>
+              <g opacity="0.5">
+                <circle cx="760" cy="110" r="4" fill="#c0392b"/>
+                <circle cx="775" cy="95" r="4" fill="#c0392b"/>
+                <circle cx="793" cy="84" r="4" fill="#6b5f50"/>
+                <circle cx="814" cy="77" r="4" fill="#6b5f50"/>
+                <circle cx="836" cy="75" r="4" fill="#6b5f50"/>
+                <circle cx="857" cy="77" r="4" fill="#6b5f50"/>
+                <circle cx="877" cy="84" r="4" fill="#6b5f50"/>
+                <circle cx="894" cy="95" r="4" fill="#6b5f50"/>
+                <circle cx="772" cy="115" r="4" fill="#c0392b"/>
+                <circle cx="787" cy="102" r="4" fill="#c0392b"/>
+                <circle cx="805" cy="93" r="4" fill="#6b5f50"/>
+                <circle cx="825" cy="89" r="4" fill="#6b5f50"/>
+                <circle cx="845" cy="93" r="4" fill="#c0392b"/>
+                <circle cx="863" cy="102" r="4" fill="#6b5f50"/>
+                <circle cx="879" cy="115" r="4" fill="#c0392b"/>
+              </g>
+              <text x="826" y="135" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="#6b5f50" letter-spacing="0.08em">CONGRESS VOTES</text>
+            </svg>
+            <div class="viz-meta">
+              <span class="viz-label">Vertical Timeline</span>
+              <span class="viz-note">Event data sourced continuously from live news via Claude API; congressional roll call votes from official Senate and House records.</span>
+            </div>
           </div>
           <div class="tile-stats">
             <div class="tile-stat" data-project="iran-israel" data-field="days">
@@ -632,6 +723,45 @@
             <h3 class="tile-title">Conflict Cost Graphics</h3>
             <p class="tile-desc">Visualizing the human and economic toll of modern warfare — comparing war expenditure against domestic programmes, airline disruptions, and cascading infrastructure costs.</p>
           </div>
+          <div class="tile-viz">
+            <svg viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="ccGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#d97706" stop-opacity="0.22"/>
+                  <stop offset="100%" stop-color="#d97706" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <rect width="500" height="140" fill="#fafaf7"/>
+              <g stroke="#d4c9b0" stroke-width="0.75">
+                <line x1="50" y1="18" x2="490" y2="18"/>
+                <line x1="50" y1="52" x2="490" y2="52"/>
+                <line x1="50" y1="86" x2="490" y2="86"/>
+                <line x1="50" y1="118" x2="490" y2="118"/>
+              </g>
+              <text x="46" y="21" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="#6b5f50">184k</text>
+              <text x="46" y="55" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="#6b5f50">80k</text>
+              <text x="46" y="89" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="#6b5f50">35k</text>
+              <text x="46" y="121" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="#6b5f50">0</text>
+              <text x="90" y="132" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="#6b5f50">Oct 3</text>
+              <text x="170" y="132" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="#6b5f50">Oct 17</text>
+              <text x="330" y="132" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="#6b5f50">Oct 31</text>
+              <text x="410" y="132" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="#6b5f50">Nov 7</text>
+              <line x1="370" y1="18" x2="370" y2="118" stroke="#d97706" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.7"/>
+              <text x="373" y="30" font-family="IBM Plex Mono, monospace" font-size="6.5" fill="#d97706">FAA 4% cut</text>
+              <path d="M 90 113 L 130 109 L 170 103 L 250 85 L 330 52 L 370 24 L 410 19 L 410 118 L 90 118 Z" fill="url(#ccGrad)"/>
+              <path d="M 90 113 L 130 109 L 170 103 L 250 85 L 330 52 L 370 24 L 410 19" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+              <circle cx="90" cy="113" r="3.5" fill="#d97706"/>
+              <circle cx="170" cy="103" r="3.5" fill="#d97706"/>
+              <circle cx="250" cy="85" r="3.5" fill="#d97706"/>
+              <circle cx="330" cy="52" r="3.5" fill="#d97706"/>
+              <circle cx="410" cy="19" r="4.5" fill="#d97706"/>
+              <text x="413" y="17" font-family="IBM Plex Mono, monospace" font-size="8" fill="#d97706" font-weight="600">184k min</text>
+            </svg>
+            <div class="viz-meta">
+              <span class="viz-label">Flight Delay Chart</span>
+              <span class="viz-note">Aviation figures from Cirium and FAA; military cost estimates composite from CSIS and AEI reporting. Airspace reduction percentages from FlightRadar24/OAG.</span>
+            </div>
+          </div>
           <div class="tile-stats">
             <div class="tile-stat" data-project="conflict-cost" data-field="graphics">
               <div class="tile-stat-value live-stat">4</div>
@@ -658,6 +788,32 @@
             <div class="tile-tag">Policy · Legal</div>
             <h3 class="tile-title">Iran War Powers Tracker</h3>
             <p class="tile-desc">Tracking congressional war authorizations, executive actions, and shifting military posture in the Iran theatre — a legal and political record of U.S. engagement.</p>
+          </div>
+          <div class="tile-viz">
+            <svg viewBox="0 0 500 155" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="500" height="155" fill="#fafaf7"/>
+              <path d="M 130 155 A 120 120 0 0 1 370 155" fill="none" stroke="#e5e7eb" stroke-width="20" stroke-linecap="round"/>
+              <path d="M 130 155 A 120 120 0 0 1 284 40" fill="none" stroke="#0e7490" stroke-width="20" stroke-linecap="round" opacity="0.85"/>
+              <line x1="250" y1="155" x2="287" y2="45" stroke="#0d0d0d" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="250" cy="155" r="8" fill="#0d0d0d"/>
+              <circle cx="250" cy="155" r="4" fill="#fafaf7"/>
+              <text x="250" y="122" text-anchor="middle" font-family="Playfair Display, serif" font-size="32" font-weight="900" fill="#0d0d0d">59%</text>
+              <text x="250" y="137" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#6b5f50" letter-spacing="0.1em">DISAPPROVE</text>
+              <text x="124" y="150" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="#16a34a" font-weight="700">SUPPORT</text>
+              <text x="376" y="150" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="#0e7490" font-weight="700">OPPOSE</text>
+              <g stroke="#aaa" stroke-width="1.2">
+                <line x1="162" y1="90" x2="170" y2="98"/>
+                <line x1="250" y1="35" x2="250" y2="46"/>
+                <line x1="338" y1="90" x2="330" y2="98"/>
+              </g>
+              <text x="156" y="87" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="#aaa">25%</text>
+              <text x="250" y="31" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="#aaa">50%</text>
+              <text x="344" y="87" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="#aaa">75%</text>
+            </svg>
+            <div class="viz-meta">
+              <span class="viz-label">Gauge Meter</span>
+              <span class="viz-note">Congressional data from official roll calls; poll figure (59% disapprove of Iran strikes) from composite national survey reporting at time of publication.</span>
+            </div>
           </div>
           <div class="tile-stats">
             <div class="tile-stat" data-project="war-powers" data-field="auths">
@@ -686,6 +842,38 @@
             <h3 class="tile-title">Tornado &amp; Politics Dashboard</h3>
             <p class="tile-desc">Mapping the intersection of extreme weather events and political geography — storm frequency, FEMA response times, and voting patterns across the tornado belt.</p>
           </div>
+          <div class="tile-viz">
+            <svg viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="500" height="140" fill="#fafaf7"/>
+              <path d="M 42,30 C 48,22 55,18 62,20 L 70,16 C 78,12 88,14 95,18 L 108,14 C 118,10 128,12 136,16 L 148,18 C 158,20 164,24 162,30 L 160,36 C 165,35 172,32 180,34 L 190,30 C 198,26 208,26 215,30 L 222,36 C 226,38 228,42 226,46 L 224,52 C 230,54 238,52 244,54 L 252,58 C 258,60 262,64 260,70 L 256,78 C 258,82 264,84 266,90 L 264,98 C 260,104 254,108 248,110 L 236,112 C 228,114 220,112 212,110 L 196,112 C 184,114 172,112 162,108 L 148,110 C 140,112 130,114 120,116 L 106,118 C 96,118 86,114 80,108 L 72,102 C 68,98 60,96 54,98 L 46,100 C 38,102 28,100 22,94 L 18,86 C 14,80 14,72 18,66 L 22,58 C 18,52 16,44 20,38 L 28,32 Z" fill="#f0ebe0" stroke="#c4baa8" stroke-width="1.2" stroke-linejoin="round"/>
+              <circle cx="178" cy="74" r="6" fill="#1d4ed8" opacity="0.8"/>
+              <circle cx="194" cy="82" r="7.5" fill="#1d4ed8" opacity="0.85"/>
+              <circle cx="212" cy="70" r="5" fill="#1d4ed8" opacity="0.75"/>
+              <circle cx="158" cy="88" r="5.5" fill="#1d4ed8" opacity="0.7"/>
+              <circle cx="232" cy="78" r="4" fill="#3b82f6" opacity="0.7"/>
+              <circle cx="140" cy="76" r="4.5" fill="#3b82f6" opacity="0.65"/>
+              <circle cx="164" cy="62" r="3.5" fill="#3b82f6" opacity="0.65"/>
+              <circle cx="248" cy="88" r="4" fill="#3b82f6" opacity="0.6"/>
+              <circle cx="222" cy="96" r="3.5" fill="#3b82f6" opacity="0.7"/>
+              <circle cx="118" cy="70" r="2.5" fill="#1d4ed8" opacity="0.45"/>
+              <circle cx="130" cy="88" r="2" fill="#1d4ed8" opacity="0.4"/>
+              <circle cx="260" cy="76" r="2.5" fill="#1d4ed8" opacity="0.4"/>
+              <circle cx="100" cy="82" r="2" fill="#1d4ed8" opacity="0.35"/>
+              <circle cx="270" cy="96" r="2.5" fill="#1d4ed8" opacity="0.45"/>
+              <circle cx="196" cy="58" r="2" fill="#1d4ed8" opacity="0.4"/>
+              <text x="200" y="130" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="#1d4ed8" letter-spacing="0.06em" opacity="0.75">TORNADO ALLEY · 1950–2015</text>
+              <circle cx="388" cy="30" r="6" fill="#1d4ed8" opacity="0.8"/>
+              <circle cx="388" cy="50" r="4" fill="#3b82f6" opacity="0.7"/>
+              <circle cx="388" cy="66" r="2.5" fill="#1d4ed8" opacity="0.45"/>
+              <text x="398" y="33" font-family="IBM Plex Mono, monospace" font-size="7" fill="#6b5f50">High severity</text>
+              <text x="396" y="53" font-family="IBM Plex Mono, monospace" font-size="7" fill="#6b5f50">Moderate</text>
+              <text x="394" y="69" font-family="IBM Plex Mono, monospace" font-size="7" fill="#6b5f50">Low</text>
+            </svg>
+            <div class="viz-meta">
+              <span class="viz-label">County Map Preview</span>
+              <span class="viz-note">Tornado records from NOAA Storm Prediction Center (1950–2015); county election results from MIT Election Lab and AP. Pre-1979 federal relief attributed to predecessor agencies, not FEMA.</span>
+            </div>
+          </div>
           <div class="tile-stats">
             <div class="tile-stat" data-project="tornado" data-field="storms">
               <div class="tile-stat-value live-stat">—</div>
@@ -712,6 +900,33 @@
             <div class="tile-tag">Environment · Mapping</div>
             <h3 class="tile-title">Bristol Trolley Survey</h3>
             <p class="tile-desc">An interactive map of shopping trolleys recovered from Bristol's waterways between 2005 and 2011. Analysing recovery patterns, retailer breakdown, and river distribution.</p>
+          </div>
+          <div class="tile-viz">
+            <svg viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="500" height="140" fill="#fafaf7"/>
+              <text x="16" y="16" font-family="IBM Plex Mono, monospace" font-size="8" fill="#6b5f50" letter-spacing="0.08em">TOP RIVERS BY RECOVERY COUNT</text>
+              <text x="16" y="38" font-family="IBM Plex Mono, monospace" font-size="9" fill="#0d0d0d">River Frome</text>
+              <rect x="130" y="27" width="286" height="14" rx="2" fill="#166534" opacity="0.85"/>
+              <text x="422" y="38" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#166534" font-weight="600">58</text>
+              <text x="16" y="60" font-family="IBM Plex Mono, monospace" font-size="9" fill="#0d0d0d">Brislington Brk</text>
+              <rect x="130" y="49" width="202" height="14" rx="2" fill="#166534" opacity="0.75"/>
+              <text x="338" y="60" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#166534" font-weight="600">41</text>
+              <text x="16" y="82" font-family="IBM Plex Mono, monospace" font-size="9" fill="#0d0d0d">Avon (New Cut)</text>
+              <rect x="130" y="71" width="157" height="14" rx="2" fill="#166534" opacity="0.65"/>
+              <text x="293" y="82" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#166534" font-weight="600">32</text>
+              <text x="16" y="104" font-family="IBM Plex Mono, monospace" font-size="9" fill="#0d0d0d">Malago</text>
+              <rect x="130" y="93" width="69" height="14" rx="2" fill="#166534" opacity="0.55"/>
+              <text x="205" y="104" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#166534" font-weight="600">14</text>
+              <text x="16" y="126" font-family="IBM Plex Mono, monospace" font-size="9" fill="#0d0d0d">Trym</text>
+              <rect x="130" y="115" width="39" height="14" rx="2" fill="#166534" opacity="0.45"/>
+              <text x="175" y="126" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#166534" font-weight="600">8</text>
+              <line x1="130" y1="22" x2="416" y2="22" stroke="#d4c9b0" stroke-width="0.75"/>
+              <text x="416" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="6.5" fill="#aaa">n=58</text>
+            </svg>
+            <div class="viz-meta">
+              <span class="viz-label">River Bar Chart</span>
+              <span class="viz-note">Historical recovery logs from Bristol City Council (2005–2011); approximately 40% of trolleys unidentifiable due to weathering or missing store signage.</span>
+            </div>
           </div>
           <div class="tile-stats">
             <div class="tile-stat" data-project="bristol" data-field="trolleys">
@@ -954,7 +1169,7 @@
   ══════════════════════════════════════ -->
   <footer class="footer">
     <div class="footer-inner">
-      <span class="footer-text">Troy W. Ferguson · Portfolio Placemat · Phase 1 — Static Index</span>
+      <span class="footer-text">Troy W. Ferguson · Portfolio Placemat · Phase 2 — Viz Previews</span>
       <nav class="footer-links">
         <a href="../index.html">Portfolio Home</a>
         <a href="iran-israel-conflict-dashboards.html">Conflict Tracker</a>
