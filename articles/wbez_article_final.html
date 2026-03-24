@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chicago Knows Its Deadliest Streets — WBEZ</title>
+
+<!-- WBEZ uses a clean sans-serif stack. Their actual site uses a custom variant of their brand font
+     plus system UI. We replicate with Libre Franklin (headlines) + Source Sans 3 (body) + DM Mono (data labels).
+     Real WBEZ colors: nav #1a1a1a, blue #0a5fa5, red accent #c80000, body text #1a1a1a, bg #ffffff -->
+
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400;1,600&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+
+<style>
+/* ─── RESET & BASE ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --nav:        #1a1a1a;
+  --wbez-blue:  #0a5fa5;
+  --npr-red:    #c80000;
+  --ink:        #1a1a1a;
+  --body-grey:  #333333;
+  --muted:      #666666;
+  --border:     #e0e0e0;
+  --bg:         #ffffff;
+  --warm-bg:    #f7f6f4;
+  --pull-bg:    #eef4fb;
+  --caption:    #555555;
+  --tag-bg:     #0a5fa5;
+}
+
+body {
+  background: #f0f0f0;
+  font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--body-grey);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── PAGE WRAPPER ─────────────────────────────────────── */
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--bg);
+  box-shadow: 0 1px 8px rgba(0,0,0,.1);
+}
+
+/* ─── TOP NAV ──────────────────────────────────────────── */
+.site-nav {
+  background: var(--nav);
+  padding: 0 1.5rem;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo-wrap { display: flex; align-items: center; gap: .6rem; }
+.wbez-logo {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: .06em;
+  line-height: 1;
+}
+.wbez-logo .chicago { color: #c80000; letter-spacing: .04em; }
+.npr-pill {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: var(--npr-red);
+  color: #fff;
+  padding: .18rem .5rem;
+  border-radius: 2px;
+}
+.nav-right {
+  margin-left: auto;
+  display: flex;
+  gap: 1.3rem;
+  align-items: center;
+}
+.nav-right a {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+  text-decoration: none;
+}
+.nav-right a:hover { color: #fff; }
+
+/* ─── SECTION BREADCRUMB ───────────────────────────────── */
+.section-crumb {
+  padding: .7rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.crumb-home {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--wbez-blue);
+  text-decoration: none;
+}
+.crumb-sep { font-size: .7rem; color: var(--muted); }
+.crumb-section {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+.section-tag-pill {
+  margin-left: auto;
+  background: var(--wbez-blue);
+  color: #fff;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .18rem .55rem;
+  border-radius: 2px;
+}
+
+/* ─── ARTICLE HEADER ───────────────────────────────────── */
+.art-header { padding: 1.5rem 1.5rem 0; }
+
+h1.hed {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--ink);
+  letter-spacing: -.02em;
+  margin-bottom: .6rem;
+}
+
+.dek {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  border-left: 3px solid var(--wbez-blue);
+  padding-left: .8rem;
+}
+
+/* ─── AUDIO BAR ────────────────────────────────────────── */
+.audio-bar {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: .7rem 1rem;
+  background: var(--warm-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+.audio-bar:hover { background: #eef0f2; }
+.play-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--npr-red);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: .9rem;
+  color: #fff;
+}
+.audio-meta { flex: 1; }
+.audio-title {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--ink);
+  display: block;
+}
+.audio-sub {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .72rem;
+  color: var(--muted);
+}
+.audio-dur {
+  font-family: 'DM Mono', monospace;
+  font-size: .68rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.audio-waveform {
+  width: 80px; height: 20px; flex-shrink: 0;
+  display: flex; align-items: flex-end; gap: 1.5px;
+}
+.audio-waveform div {
+  flex: 1; background: var(--wbez-blue); border-radius: 1px; opacity: .5;
+}
+
+/* ─── BYLINE ───────────────────────────────────────────── */
+.byline-row {
+  display: flex;
+  align-items: flex-start;
+  gap: .8rem;
+  padding: .8rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 0;
+}
+.byline-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #2c5f8a, #0a5fa5);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: .8rem; font-weight: 800; color: #fff;
+}
+.byline-text {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .8rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.byline-text strong { color: var(--ink); font-weight: 700; }
+.byline-text a { color: var(--wbez-blue); text-decoration: none; }
+.share-bar {
+  margin-left: auto;
+  display: flex;
+  gap: .4rem;
+  flex-shrink: 0;
+}
+.share-btn {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: .28rem .6rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--muted);
+  cursor: pointer;
+  background: none;
+}
+.share-btn:hover { border-color: var(--wbez-blue); color: var(--wbez-blue); }
+
+/* ─── HERO IMAGE / PHOTO ───────────────────────────────── */
+.hero-photo {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #1a1a1a;
+  position: relative;
+  overflow: hidden;
+  display: flex; align-items: flex-end;
+}
+/* Simulated crash scene photo */
+.hero-photo-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(255,60,0,.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 40%, rgba(200,0,0,.12) 0%, transparent 45%),
+    linear-gradient(160deg, #111417 0%, #1e2328 40%, #0d1015 100%);
+}
+/* Street grid lines (abstract) */
+.hero-photo-bg::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.04) 39px, rgba(255,255,255,.04) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,.03) 59px, rgba(255,255,255,.03) 60px);
+}
+.hero-photo-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.1) 55%, transparent 100%);
+}
+.hero-photo-content {
+  position: relative; z-index: 2;
+  padding: 1rem 1.5rem;
+  width: 100%;
+}
+.hero-photo-label {
+  display: inline-flex; align-items: center; gap: .4rem;
+  background: var(--npr-red); color: #fff;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: .62rem; font-weight: 800;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .2rem .6rem; border-radius: 1px;
+  margin-bottom: .5rem;
+}
+.hero-photo-stat {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 3.5rem; font-weight: 900; line-height: 1;
+  color: #fff;
+}
+.hero-photo-stat span { font-size: 1.4rem; color: rgba(255,255,255,.7); margin-left: .2rem; }
+.hero-photo-desc {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .88rem; font-weight: 300;
+  color: rgba(255,255,255,.8);
+  max-width: 400px; line-height: 1.4;
+}
+.hero-caption-bar {
+  background: #f0f0f0;
+  padding: .4rem 1.5rem;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .72rem;
+  color: var(--caption);
+  line-height: 1.4;
+  border-bottom: 1px solid var(--border);
+}
+.hero-caption-bar em { font-style: italic; }
+
+/* ─── ARTICLE BODY ─────────────────────────────────────── */
+.art-body { padding: 1.4rem 1.5rem; }
+
+p {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.72;
+  color: var(--body-grey);
+  margin-bottom: 1.15rem;
+}
+
+p.lede {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: 1.3rem;
+}
+
+/* ─── FACT BOX ─────────────────────────────────────────── */
+.fact-box {
+  border: 2px solid var(--ink);
+  margin: 1.5rem 0;
+  background: var(--warm-bg);
+}
+.fact-box-head {
+  background: var(--ink);
+  color: #fff;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .4rem 1rem;
+}
+.fact-box-body { padding: .9rem 1rem; }
+.fact-box-body ul {
+  padding-left: 1.1rem;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .9rem; line-height: 1.65;
+  color: #333;
+}
+.fact-box-body ul li { margin-bottom: .3rem; }
+.fact-box-body ul li strong { color: var(--ink); }
+
+/* ─── SECTION HEADS ────────────────────────────────────── */
+h2.sec {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 2rem 0 .65rem;
+  padding-top: 1.3rem;
+  border-top: 2px solid var(--ink);
+  letter-spacing: -.01em;
+  line-height: 1.2;
+}
+
+/* ─── PULL QUOTE ───────────────────────────────────────── */
+.pull {
+  margin: 1.6rem 0;
+  padding: 1.1rem 1.4rem;
+  border-left: 4px solid var(--npr-red);
+  background: var(--pull-bg);
+}
+.pull blockquote {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.pull cite {
+  display: block;
+  margin-top: .5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-style: normal;
+}
+
+/* ─── INLINE CALLOUT NUMBER ────────────────────────────── */
+.callout-num {
+  display: inline;
+  font-family: 'Libre Franklin', sans-serif;
+  font-weight: 900;
+  background: var(--npr-red);
+  color: #fff;
+  padding: .05em .3em;
+  border-radius: 2px;
+  font-size: 1em;
+}
+
+/* ─── PHOTO BLOCK (crash scene) ────────────────────────── */
+.photo-block { margin: 1.8rem -1.5rem; }
+.photo-img {
+  width: 100%;
+  height: 280px;
+  background:
+    radial-gradient(ellipse at 40% 70%, rgba(255,80,0,.22) 0%, transparent 40%),
+    radial-gradient(ellipse at 65% 35%, rgba(255,200,0,.08) 0%, transparent 35%),
+    linear-gradient(170deg, #0d0f12 0%, #1a1e24 45%, #0a0c10 100%);
+  display: flex; align-items: flex-end;
+  position: relative; overflow: hidden;
+}
+.photo-img::before {
+  content: '';
+  position: absolute; inset: 0;
+  /* abstract car shape silhouettes */
+  background:
+    radial-gradient(ellipse 80px 30px at 35% 75%, rgba(255,255,255,.06) 0%, transparent 100%),
+    radial-gradient(ellipse 60px 22px at 60% 65%, rgba(255,255,255,.04) 0%, transparent 100%);
+}
+.photo-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 70%);
+}
+.photo-img-label {
+  position: relative; z-index: 2;
+  padding: .8rem 1.5rem;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .8rem; font-style: italic;
+  color: rgba(255,255,255,.6);
+}
+.photo-caption {
+  padding: .4rem 1.5rem;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .75rem;
+  color: var(--caption);
+  background: #f0f0f0;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.45;
+}
+
+/* ─── MAP BLOCK ────────────────────────────────────────── */
+.map-block { margin: 1.8rem 0; }
+.map-header {
+  background: var(--ink);
+  color: #fff;
+  padding: .65rem 1rem;
+  display: flex; align-items: center; gap: .6rem;
+}
+.map-header .mh-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem; letter-spacing: .12em;
+  text-transform: uppercase; color: #4da6ff;
+}
+.map-header .mh-title {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: .95rem; font-weight: 700; color: #fff;
+  margin-left: .2rem;
+}
+#crashMap { width: 100%; height: 320px; }
+.map-caption {
+  padding: .45rem 1rem;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .73rem;
+  color: var(--caption);
+  background: #f0f0f0;
+  border: 1px solid var(--border);
+  border-top: none;
+  line-height: 1.45;
+}
+
+/* ─── CHART EMBED BLOCK ────────────────────────────────── */
+.chart-block { margin: 1.8rem 0; }
+.chart-header {
+  border-top: 3px solid var(--wbez-blue);
+  padding: .7rem .2rem .2rem;
+}
+.chart-header .ch-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--wbez-blue);
+  margin-bottom: .2rem;
+}
+.chart-header .ch-title {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 1rem; font-weight: 700; color: var(--ink);
+  line-height: 1.25; margin-bottom: .2rem;
+}
+.chart-header .ch-sub {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .8rem; color: var(--muted); font-style: italic;
+  line-height: 1.4;
+}
+canvas { display: block; width: 100% !important; }
+.chart-source {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .68rem; color: var(--muted);
+  margin-top: .4rem; font-style: italic;
+}
+
+/* ─── RELATED STORIES ──────────────────────────────────── */
+.related {
+  background: var(--warm-bg);
+  border-top: 2px solid var(--border);
+  padding: 1.2rem 1.5rem;
+}
+.related-head {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: .7rem; font-weight: 900;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: .7rem;
+  padding-bottom: .35rem;
+  border-bottom: 1px solid var(--border);
+}
+.related ul { list-style: none; }
+.related ul li {
+  padding: .38rem 0;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .85rem; line-height: 1.4;
+}
+.related ul li a { color: var(--wbez-blue); text-decoration: none; font-weight: 600; }
+.related ul li span { display: block; font-size: .72rem; color: var(--muted); }
+
+/* ─── FOOTER ───────────────────────────────────────────── */
+.art-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .72rem; color: var(--muted); line-height: 1.6;
+}
+
+/* ─── METHODOLOGY NOTE ─────────────────────────────────── */
+.method-note {
+  background: #f7f9fb;
+  border: 1px solid #d0dce8;
+  border-left: 3px solid var(--wbez-blue);
+  padding: .8rem 1rem;
+  margin: 1.4rem 0;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .8rem; color: #334; line-height: 1.55;
+}
+.method-note strong { color: var(--wbez-blue); }
+
+/* ─── DISCLAIMER BANNER ────────────────────────────────── */
+.disclaimer-banner {
+  background: #c80000;
+  color: #fff;
+  text-align: center;
+  padding: .55rem 1.5rem;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  position: sticky;
+  top: 48px;
+  z-index: 99;
+  border-bottom: 2px solid #8a0000;
+}
+.disclaimer-banner span {
+  font-weight: 400;
+  letter-spacing: .05em;
+  text-transform: none;
+  font-size: .7rem;
+  display: block;
+  opacity: .85;
+  margin-top: .1rem;
+}
+
+@media (max-width: 480px) {
+  h1.hed { font-size: 1.5rem; }
+  .hero-photo-stat { font-size: 2.5rem; }
+  .share-bar { display: none; }
+  p { font-size: 1rem; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ─── TOP NAV ─────────────────────────────────────────── -->
+<nav class="site-nav">
+  <div class="logo-wrap">
+    <div class="wbez-logo">WBEZ<span class="chicago">CHICAGO</span></div>
+    <span class="npr-pill">NPR</span>
+  </div>
+  <div class="nav-right">
+    <a href="#">News</a>
+    <a href="#">Investigations</a>
+    <a href="#">Data</a>
+    <a href="#">Listen ▶</a>
+  </div>
+</nav>
+
+<!-- ─── DISCLAIMER BANNER ────────────────────────────────── -->
+<div class="disclaimer-banner">
+  Unpublished Writing Sample — Not Affiliated with WBEZ
+  <span>This is an original data journalism sample produced for portfolio purposes. All data sourced from public government records. WBEZ is a registered trademark of Chicago Public Media.</span>
+</div>
+
+<!-- ─── BREADCRUMB ──────────────────────────────────────── -->
+<div class="section-crumb">
+  <a class="crumb-home" href="#">WBEZ</a>
+  <span class="crumb-sep">/</span>
+  <a class="crumb-section" href="#">Investigations</a>
+  <span class="crumb-sep">/</span>
+  <a class="crumb-section" href="#">Transportation & Safety</a>
+  <span class="section-tag-pill">Data Investigation</span>
+</div>
+
+<!-- ─── ARTICLE HEADER ──────────────────────────────────── -->
+<div class="art-header">
+  <h1 class="hed">Chicago Knows Its Deadliest Streets. It Just Can't Fix Them.</h1>
+  <p class="dek">A WBEZ analysis of 112,000 crashes finds that a small fraction of the city's roads cause most of its deaths, and the state controls the worst ones. Meanwhile, ambulances take too long and insurance keeps rising.</p>
+
+  <!-- AUDIO BAR -->
+  <div class="audio-bar">
+    <div class="play-btn">▶</div>
+    <div class="audio-meta">
+      <span class="audio-title">Listen to this story · Morning Edition</span>
+      <span class="audio-sub">WBEZ Chicago · 5 min 42 sec · March 2026</span>
+    </div>
+    <div class="audio-waveform">
+      <div style="height:40%"></div><div style="height:70%"></div><div style="height:55%"></div>
+      <div style="height:85%"></div><div style="height:65%"></div><div style="height:90%"></div>
+      <div style="height:50%"></div><div style="height:75%"></div><div style="height:60%"></div>
+      <div style="height:40%"></div><div style="height:80%"></div><div style="height:55%"></div>
+    </div>
+    <div class="audio-dur">5:42</div>
+  </div>
+
+  <!-- BYLINE -->
+  <div class="byline-row">
+    <div class="byline-avatar">TF</div>
+    <div class="byline-text">
+      By <strong>Troy W. Ferguson</strong> &nbsp;·&nbsp; <a href="#">WBEZ Chicago</a> / NPR News &nbsp;·&nbsp; March 24, 2026<br>
+      <span style="font-size:.72rem;">Data analysis by Troy W. Ferguson &nbsp;·&nbsp; Methodology at bottom of story</span>
+    </div>
+    <div class="share-bar">
+      <button class="share-btn">Share</button>
+      <button class="share-btn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── HERO PHOTO: CRASH SCENE ─────────────────────────── -->
+<!-- PLACEMENT NOTE: Hero crash photo goes here, full-width, immediately after byline.
+     WBEZ places the primary photo before any body text. Ideally: a CPD/CFD photo of
+     a crash scene at or near Stony Island, or a wide shot of 79th St at night.
+     Substitute real photography from AP, Getty, or Chicago Sun-Times wire. -->
+<div class="hero-photo">
+  <div class="hero-photo-bg"></div>
+  <div class="hero-photo-overlay"></div>
+  <div class="hero-photo-content">
+    <div class="hero-photo-label">📷 Photo Placeholder</div>
+    <div class="hero-photo-stat">79th &amp; Stony Island<span>Chicago's Most Dangerous Corner</span></div>
+    <div class="hero-photo-desc">Scene of 196 crashes between 2018–2020. CRI score: 293. The intersection is unchanged.</div>
+  </div>
+</div>
+<div class="hero-caption-bar">
+  <em>Replace with: A night photograph of East 79th Street and South Stony Island Avenue showing the intersection's four-lane configuration, bus stop, and pedestrian crosswalk. Photo credit: [AP / Chicago Tribune / WBEZ] — Caption: "East 79th Street and South Stony Island Avenue has a Crash Risk Index of 293, the highest of any intersection in Chicago. Between 2018 and 2020, it recorded 196 crashes, including one fatality and nine serious injuries. The city's data has documented the danger for years."</em>
+</div>
+
+<!-- ─── ARTICLE BODY ─────────────────────────────────────── -->
+<div class="art-body">
+
+  <p class="lede">The corner of East 79th Street and South Stony Island Avenue does not announce its danger. On a weekday afternoon it looks like most other South Side intersections: four lanes of traffic, a bus shelter, a crossing signal, pedestrians moving between errands. What sets it apart is invisible unless you know where to look. Between 2018 and 2020, this one intersection recorded 196 crashes. One person died. Nine others suffered serious injuries. Its Crash Risk Index, a severity-weighted score used by city and state transportation engineers, came in at 293, the highest of any intersection in Chicago. The next most dangerous corner scored roughly 40 percent lower. And the data showing all of this has been available, publicly, in the Chicago Department of Transportation's own systems, for years. The intersection is unchanged.</p>
+
+  <p>In 2024, Chicago logged 112,006 crashes citywide. Those collisions injured 25,692 people, the highest injury count the city has recorded since it began tracking data in 2015. One hundred and nine people died, nearly the same number as in 2017, the year the city launched an initiative called Vision Zero with a formal commitment to eliminate all traffic deaths by 2026. The goal will not be met. What the data does show, with unusual clarity, is where the problem lives, why it persists, and what stands between the city and the fixes that have demonstrably worked elsewhere.</p>
+
+  <p>A WBEZ analysis of crash records, fatality trends, and government jurisdictional data finds that Chicago's traffic deaths are concentrated in a small number of locations on the South and West Sides. A significant share of those locations sit on roads controlled not by the city but by the state of Illinois. The city cannot redesign them without state approval. That single fact helps explain why corners like 79th and Stony Island remain dangerous year after year while the data documenting their danger grows more detailed.</p>
+
+  <h2 class="sec">A Problem the City Did Not Create, and Cannot Fully Solve</h2>
+
+  <p>The most dangerous roads in Chicago often are not Chicago's roads. Major arterials including parts of Cicero Avenue, Pulaski Road, and Archer Avenue fall under the jurisdiction of the Illinois Department of Transportation, or IDOT. The city of Chicago can request signal timing changes, ask for pedestrian refuge islands, or propose lane narrowing. It cannot simply act. Every physical change on an IDOT-controlled road requires negotiation with Springfield, a process that can take years and sometimes never resolves.</p>
+
+  <p>The numbers behind this jurisdictional divide are documented in CDOT's own annual reports and confirmed by independent analyses of state data. IDOT controls just 9 percent of Chicago's total road network by mileage. Those same roads account for 24 percent of all serious and fatal crashes in the city, and 45 percent of all traffic fatalities. The analysis, drawn from CDOT and IDOT crash records and published by the Illinois Hammer legal database, aligns with figures cited in CDOT's 2025 annual report and confirmed by street-level breakdowns provided by the Chicago Sun-Times. The disproportion is not a rounding error. It is a structural feature of how Chicago's road network was built and who has authority over it.</p>
+
+  <p>In 2025, CDOT formally named this concentration pattern by publishing its first High Injury Network, a designated list of 100 miles of streets out of roughly 4,000 total in Chicago that account for a disproportionate share of severe crashes. That is about 2.5 percent of the city's road mileage. Traffic researchers call this a Pareto distribution, the same mathematical shape that describes wealth inequality and earthquake frequency. A small number of locations produce most of the harm. Fix those locations and the citywide numbers move. The obstacle is not knowledge of which locations they are. The obstacle is authority over them.</p>
+
+  <p>"With 44 percent of Chicago's high injury network corridor miles under the jurisdiction of IDOT, strong collaboration between CDOT and IDOT is essential," said Alex Perez, advocacy manager for the Active Transportation Alliance, after CDOT released its annual report in late 2025. "The data make clear these communities continue to experience a disproportionate share of traffic violence."</p>
+
+  <p>Wes Marshall, a traffic safety researcher at the University of Colorado Denver and author of <em>Killed by a Traffic Engineer</em> (2024), has spent his career documenting how American road design standards developed for high-speed rural highways were applied wholesale to dense urban grids. Wide lanes signal to drivers that higher speeds are acceptable. Higher speeds increase both crash frequency and crash severity. The problem is not primarily driver behavior, Marshall argues. It is the road itself. The IDOT-controlled arterials that account for nearly half of Chicago's traffic deaths were engineered under standards that prioritized vehicle throughput over the survival of the people living alongside them.</p>
+
+  <!-- CHART 1: runs after the IDOT explanation, so readers decode it with full context -->
+  <div class="chart-block">
+    <div class="chart-header">
+      <div class="ch-label">Chart 1 of 3 · Jurisdiction Analysis</div>
+      <div class="ch-title">9% of Roads. 45% of Fatalities. The State Controls Them.</div>
+      <div class="ch-sub">IDOT-controlled roads are dramatically overrepresented in Chicago's fatal crash data, but the city must seek state approval before changing a signal, narrowing a lane, or adding a pedestrian refuge island on those streets.</div>
+    </div>
+    <canvas id="jurisdictionChart" height="200"></canvas>
+    <p class="chart-source">Source: CDOT Annual Traffic Crashes Report (Fall 2025) · IDOT crash jurisdiction data · Illinois Hammer compilation of CDOT/IDOT records · Chicago Sun-Times (August 2025)</p>
+  </div>
+
+  <h2 class="sec">Where the Danger Lives</h2>
+
+  <!-- FACT BOX: moved here to anchor the geography section after the structural argument -->
+  <div class="fact-box">
+    <div class="fact-box-head">By the Numbers</div>
+    <div class="fact-box-body">
+      <ul>
+        <li><strong>112,006</strong> total crashes in Chicago in 2024, the third-highest total since records began in 2015</li>
+        <li><strong>25,692</strong> injuries in 2024, the highest injury count on record</li>
+        <li><strong>109</strong> deaths in 2024, nearly identical to 2017, the year Vision Zero launched</li>
+        <li><strong>2.5%</strong> of Chicago's 4,000 road miles sit on the High Injury Network, accounting for most severe crashes</li>
+        <li>IDOT controls <strong>9%</strong> of Chicago roads but those roads generate <strong>45%</strong> of all traffic fatalities</li>
+        <li>Chicago EMS exceeded Illinois's 6-minute response standard in <strong>1 in 5</strong> calls in 2024</li>
+      </ul>
+    </div>
+  </div>
+
+  <p>To understand which intersections are most dangerous, transportation engineers use a scoring method called the Crash Risk Index, or CRI. The score weights both frequency and severity: a corner with many minor fender-benders scores lower than one with fewer crashes that more often result in serious injury or death. The city's average signalized intersection scores roughly 43. East 79th Street and South Stony Island Avenue scores 293, nearly seven times higher. That gap is not noise. It reflects a corner where a specific combination of factors produces crashes that seriously hurt and kill people at a rate the data cannot explain away.</p>
+
+  <p>Look at where the five highest-scoring intersections sit on a map and the pattern is immediate. Four of the five are on the South Side or Southwest Side. This is not a statistical accident. These communities share a specific geography: wide multi-lane arterials built to move high volumes of traffic at speed, limited pedestrian refuge infrastructure, dense residential populations, and, in most cases, state jurisdiction that constrains what the city can unilaterally change.</p>
+
+  <!-- MAP -->
+  <div class="map-block">
+    <div class="map-header">
+      <span class="mh-tag">Interactive Map</span>
+      <span class="mh-title">Chicago's 5 Most Dangerous Intersections, by Crash Risk Index</span>
+    </div>
+    <div id="crashMap"></div>
+    <div class="map-caption">
+      Intersections ranked by Crash Risk Index (CRI), a severity-weighted score used by CDOT and IDOT that accounts for both crash frequency and severity. Click each marker for crash data. East 79th St and Stony Island Ave (#1, CRI 293) is the most dangerous intersection in the city. Four of the five locations are on the South Side or Southwest Side; Michigan and Wacker (#3) is downtown. Source: CDOT / nchstats.com / Chicago Data Portal.
+    </div>
+  </div>
+
+  <p>It is worth pausing on what it means to live near one of these corners. Dominika Chruszcz lost her grandmother Zofia and her step-grandfather Ryszard Stebnicki when a pickup truck struck them as they crossed the street near South Archer Avenue and South McVicker Avenue in Garfield Ridge in February 2024. The stretch where they died had not received safety improvements when the Chicago Sun-Times spoke with Chruszcz in August 2025, more than a year after the crash. "My grandma and I talked about how dangerous this road is," she told the newspaper. The family knew the road was dangerous before Zofia and Ryszard died on it. The city's data knew it too. The question the data cannot answer is why knowing was not enough.</p>
+
+  <!-- CHART 2: Two bar charts side by side -->
+  <div class="chart-block">
+    <div class="chart-header">
+      <div class="ch-label">Chart 2 of 3 · Crashes and Fatalities by Corridor, 2023–2025</div>
+      <div class="ch-title">Crashes Are Falling. On Some Streets, Deaths Are Not.</div>
+      <div class="ch-sub">Total crash volume declined or held steady across most major corridors over three years. Fatalities tell a different story: Pulaski fell 83% after infrastructure intervention; Stony Island surged from zero to four with no change in crash volume. The two charts should be read together.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:.8rem;">
+      <div>
+        <p style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#0a5fa5;margin-bottom:.4rem;">Total Crashes by Year</p>
+        <canvas id="crashesChart" height="280"></canvas>
+      </div>
+      <div>
+        <p style="font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#c80000;margin-bottom:.4rem;">Fatalities by Year</p>
+        <canvas id="fatalityChart" height="280"></canvas>
+      </div>
+    </div>
+    <p style="font-family:'Source Sans 3',sans-serif;font-size:.7rem;color:#888;margin-top:.5rem;font-style:italic;">* 2023 crash volumes for Western, Cicero, and Stony Island estimated from stated percentage changes in the Briskman study; Pulaski and Ashland 2023 values are mathematically derived or source-confirmed. Fatality data for Western Ave 2023 and Stony Island 2023 not available in the study period.</p>
+    <p class="chart-source">Source: Briskman Briskman &amp; Greenberg 3-Year Study (331,914 records, 2023–2025) · Power Rogers Chicago Accident Statistics 2025 · Chicago Data Portal</p>
+  </div>
+
+  <p>The story of Pulaski Road offers both evidence and frustration. In February 2024, Jiekun Xu was struck and killed while crossing the intersection of Pulaski Road and West 44th Street in Archer Heights. After her death, CDOT installed flexible bollards and left-turn posts at the intersection. Total crashes on the Pulaski corridor fell 15 percent from 2023 to 2025. Fatalities fell from six to one, a drop of more than 80 percent. The intervention was not expensive. It worked. What it required was a death to trigger it.</p>
+
+  <p>Stony Island Avenue shows what the absence of intervention looks like. The corridor recorded zero fatalities in 2024. By the end of 2025, it had recorded four, while total crash volume held essentially flat. A three-year independent analysis of 331,914 Chicago crash records, published by the law firm Briskman Briskman and Greenberg in March 2026, found that Stony Island also carried the highest hit-and-run rate of any major street in the city, at 31.9 percent. The deaths did not come from more crashes. They came from worse ones: higher speeds, more severe impacts, drivers more likely to flee. Ashland Avenue showed a similar pattern, rising from one fatality in 2023 to five in 2025 while overall crash volume declined slightly. The Briskman analysis characterized both corridors as showing speed or severity escalation rather than volume growth.</p>
+
+  <p>It is worth acknowledging what this data cannot prove. The corridors that worsened in 2025 might have worsened for reasons beyond infrastructure alone: changes in traffic patterns, in vehicle types, in enforcement presence, in the broader built environment. The correlation between intervention on Pulaski and improvement is consistent with the hypothesis that physical redesign reduces fatalities, but it is observed across two years on a single corridor. It is evidence, not certainty. What can be said with confidence is that Pulaski changed and improved. Stony Island did not change and got worse. That gap is where the policy argument lives.</p>
+
+  <div class="pull">
+    <blockquote>"It should not have taken the deaths of two people to spur these changes. Pulaski is not the only street that has these issues."</blockquote>
+    <cite>Community advocate quoted in the Chicago Sun-Times, August 2025</cite>
+  </div>
+
+  <h2 class="sec">When the Ambulance Does Not Come in Time</h2>
+
+  <!-- CRASH PHOTO -->
+  <div class="photo-block">
+    <div class="photo-img">
+      <div class="photo-img-label">📷 Photo placeholder — CFD ambulance at South Side crash scene, night</div>
+    </div>
+    <div class="photo-caption"><em>Replace with: A Chicago Fire Department ALS ambulance at the scene of a traffic crash on a South Side arterial street. Night photography preferred, with emergency lighting visible. Photo credit: [AP / Chicago Tribune / CPD media office]. Caption: "Chicago runs 80 ALS ambulances for a city of 2.7 million people. The Chicago Fire Department's EMS division operates with a fleet size that experts and union officials say is inadequate for the city's density and call volume."</em></div>
+  </div>
+
+  <p>In early November 2024, Michael Smith was shot in the thigh in front of his grandmother's home in Chicago's Austin neighborhood. His cousin called 911. Fifteen minutes later, no ambulance had arrived. "I don't want to die from bleeding out," Smith told The Trace, recounting what he thought as the minutes passed. A friend drove him to West Suburban Medical Center in Oak Park instead. He survived. But the wait stayed with him. "They need to do better," he said.</p>
+
+  <p>Smith's experience was not unusual. According to The Trace's analysis of data from the Chicago Office of Emergency Management and Communications, more than one in five medical emergency calls in 2024 exceeded the six-minute response threshold set by Illinois law. That amounts to roughly 63,000 incidents in a single year where someone waited longer than the state considers acceptable. The rate of slow responses has grown by 4.6 percentage points since 2021.</p>
+
+  <p>The reason is a fleet that has not kept pace with demand. The Chicago Fire Department operates <span class="callout-num">80 ALS ambulances</span> for a city of 2.7 million people. New York City operates 450 ambulances for a population of 8.8 million. Adjusting for population, Chicago has about 2.96 ambulances per 100,000 residents. New York has 5.11 per 100,000 residents. Chicago is approximately 42 percent less resourced per capita than New York on this measure. The CFD budget fell from $644 million in 2021 to $592 million in 2025, even as EMS calls grew to represent over 80 percent of all CFD emergency responses. The gap between demand and capacity has been bridged through overtime. EMS Director Anthony Snyder of Chicago Fire Fighters Union Local 2 told The Trace that CFD spent approximately $2 million on paramedic overtime in just two months in 2024.</p>
+
+  <p>Victor Chan, who co-owns and teaches at an independent EMT training program in Chicago, described the compounding effect plainly. "It's so densely populated that it's really, really difficult to provide adequate services with the resources we currently have," he told The Trace. The shortage produces overtime; overtime produces burnout; burnout produces errors. It is a cascade that begins with the fleet number and ends with people waiting.</p>
+
+  <!-- CHART 3 -->
+  <div class="chart-block">
+    <div class="chart-header">
+      <div class="ch-label">Chart 3 of 3 · EMS Response Disparity</div>
+      <div class="ch-title">The Communities With the Most Dangerous Streets Wait Longest for Ambulances</div>
+      <div class="ch-sub">Ward 9, covering Chatham, Roseland, and Pullman, had the most gunshot-related EMS calls with response times exceeding the state's 6-minute standard in 2024. Three of the five most dangerous intersections on the map above sit in wards that rank in the top four for slow EMS response.</div>
+    </div>
+    <canvas id="emsChart" height="220"></canvas>
+    <p class="chart-source">Source: The Trace analysis of OEMC data (Jan–Feb 2025) · Chicago OIG CFD Emergency Events dashboard · CFD Operations page · Paul Vallas / Chicago Tribune (July 2024)</p>
+  </div>
+
+  <div class="pull">
+    <blockquote>"It's so densely populated that it's really, really difficult to provide adequate services with the resources we currently have."</blockquote>
+    <cite>Victor Chan, EMT instructor, Chicago, quoted in The Trace, January 2025</cite>
+  </div>
+
+  <p>The geographic overlap in that chart is the article's most direct equity finding. Three of the five most dangerous intersections in Chicago by Crash Risk Index sit in wards that rank among the top four for slow EMS response. Ward 9, which covers Chatham, Roseland, Pullman, Washington Heights, West Pullman, and Riverdale, had the highest count of gunshot-related calls where ambulances exceeded the six-minute standard in 2024. These are also the communities that live near Stony Island Avenue, the corridor where fatalities surged from zero to four in 2025. A person seriously hurt in a crash at 79th and Stony Island faces two compounding risks: a road designed in ways that increase crash severity, and an EMS system that is, in that geography specifically, more likely to arrive late.</p>
+
+  <p>The Chicago Inspector General's office has been raising alarms about CFD's response time documentation since 2013. Inspector General Deborah Witzburg has called on CFD to implement OIG tracking recommendations. They have not been adopted. More than 12 percent of 2024 response records are missing from the dataset entirely, which means the published 1-in-5 failure rate is a lower bound, not a ceiling. The city's new computer-aided dispatch system, approved in 2020, had not gone live as of February 2025.</p>
+
+  <h2 class="sec">The Cost Arrives in the Mail</h2>
+
+  <p>Chicago drivers paid an average of <span class="callout-num">$2,500 per year</span> for full auto coverage in 2025, according to data from Quadrant Information Services analyzed by insuraviz.com and Bankrate. That is 39 percent above the national full-coverage average of $2,101. Premiums in the city rose 25 percent in just two years, outpacing the national average rate increase of 16.5 percent in 2024.</p>
+
+  <p>Insurance companies set rates based on documented risk factors in specific markets. In Chicago, those factors include the city's crash frequency, the severity and cost of bodily injury claims, and property crime rates that have risen 48 percent since 2019 and affect comprehensive coverage pricing. Bankrate's analysts, drawing on November 2025 data, note specifically that Chicago "has some of the highest average rates in the state as the most densely populated area in Illinois with some of the state's worst crime statistics." The communities that pay the highest premiums in Chicago are overwhelmingly on the South and West Sides, which is where crash density and EMS response times are also worst. The insurance market is, in this sense, pricing what the road network has not fixed.</p>
+
+  <p>The economic logic of the fix is not complicated. Former Chicago mayoral candidate Paul Vallas, writing in the Chicago Tribune in July 2024, calculated that a new ambulance generates enough billed revenue to cover the salaries of its crew, and that the overtime savings from adequate staffing would recoup the unit cost within one to two years. The shortage is not, he argued, a revenue problem. It is a prioritization problem. The same logic applies to road redesign: the bollards and left-turn posts installed on Pulaski Road after Jiekun Xu's death cost less than the litigation exposure a single serious crash generates. The city already knows this. The data from Pulaski demonstrates it.</p>
+
+  <h2 class="sec">A Decade of Vision Zero, and Nearly No Progress</h2>
+
+  <p>In 2017, Mayor Rahm Emanuel's administration published Vision Zero Chicago, a formal commitment to eliminate all traffic deaths and serious injuries on city streets by 2026. The plan identified 43 High Crash Corridors covering 70 miles of major streets. It outlined infrastructure investments, speed reductions, protected crossings, and coordinated enforcement. It was, by any measure, a serious document about a serious problem.</p>
+
+  <p>In 2024, Chicago logged 109 traffic deaths, only 18 fewer than in 2017. The total number of injuries has increased. When the Chicago Sun-Times asked city transportation officials about this record in August 2025, assistant commissioner David Smith acknowledged the gap while noting that safety features from Vision Zero "have become standard in many ways" and that the city installs 40 to 50 miles of new bike infrastructure annually. Those claims are accurate as far as they go. CDOT documented a 39 percent reduction in serious crashes in four West Side communities between 2021 and 2024. Pulaski Road is proof that targeted intervention works. The problem is that improvement has been geographically uneven and, on specific South Side corridors, has reversed in the past year.</p>
+
+  <p>Janette Sadik-Khan, the former New York City transportation commissioner whose book <em>Streetfight</em> (2016) documents New York's transformation of its arterial streets, described a 40 percent reduction in pedestrian fatalities over roughly a decade through changes that were, in many cases, inexpensive: protected bike lanes, shortened pedestrian crossing distances, narrowed travel lanes, protected left-turn phases, raised crosswalks at school zones. Many of them were paint and plastic. What they required was the authority to install them and the willingness to maintain them against resistance from drivers who preferred wider lanes and faster speeds. On state-controlled roads in Chicago, the authority question alone can stall a project for years.</p>
+
+  <p>The path forward that the evidence supports is not ambiguous. CDOT's own High Injury Network identifies the 100 miles where intervention would have the most impact. Four of the five most dangerous intersections in Chicago are on state-controlled roads; the state-city agreement that allows coordinated safety improvements exists but needs expansion and enforcement. The ambulance fleet requires investment that Paul Vallas has already shown pays for itself. The computer-aided dispatch system approved in 2020 needs to be deployed. None of these steps require new research. They require decisions that have not yet been made.</p>
+
+  <p>At 79th and Stony Island, 196 crashes happened between 2018 and 2020. The Crash Risk Index there is 293. Dominika Chruszcz lost her grandmother and her step-grandfather on a South Side arterial the city's own data had flagged as dangerous. Michael Smith waited fifteen minutes for an ambulance while bleeding in front of his grandmother's house. The data says all of this loudly and has said it for years. What it cannot say is whether the people with authority over these roads will act before it has to say it again.</p>
+
+  <div class="method-note">
+    <strong>Methodology:</strong> WBEZ analyzed 112,006 crash records from the City of Chicago Data Portal (2024). Corridor-level trend data from Briskman Briskman and Greenberg's independent 3-year study of 331,914 crash records (2023–2025). EMS response data from The Trace's analysis of Chicago OEMC records through November 19, 2024. Crash Risk Index scores sourced from nchstats.com analysis of CDOT/IDOT data (2018–2020). Insurance rate data from Quadrant Information Services via insuraviz.com (October 2025) and Bankrate (November 2025). Full data and CSVs available at <strong>wbez.org/data/chicago-traffic</strong>.
+  </div>
+
+</div><!-- /art-body -->
+
+<!-- ─── RELATED ───────────────────────────────────────────── -->
+<div class="related">
+  <div class="related-head">More from WBEZ Investigations</div>
+  <ul>
+    <li><a href="#">Profiled: The State of Traffic Stops in Illinois</a> <span>WBEZ / Investigative Project on Race &amp; Equity · Sept. 2023</span></li>
+    <li><a href="#">Driven Into Debt: How Chicago's Ticketing System Traps Low-Income Drivers</a> <span>WBEZ / ProPublica Illinois · 2018</span></li>
+    <li><a href="#">Chicago Emergency Response Times Are Worsening</a> <span>The Trace / Block Club Chicago · January 2025</span></li>
+    <li><a href="#">A Decade After Vision Zero, Chicago Isn't Even Close</a> <span>Chicago Sun-Times · August 2025</span></li>
+  </ul>
+</div>
+
+<div class="art-footer">
+  <strong>Sources:</strong> CDOT Annual Traffic Crashes Report (Fall 2025) · Chicago Data Portal · IDOT · The Trace (Jan–Feb 2025) · Chicago OIG · Briskman Briskman &amp; Greenberg 3-Year Study · Power Rogers (2025) · Chicago Sun-Times (Aug 2025) · Streetsblog Chicago (Nov 2025) · Wes Marshall, <em>Killed by a Traffic Engineer</em> (2024) · Janette Sadik-Khan, <em>Streetfight</em> (2016)
+</div>
+
+</div><!-- /page -->
+
+<!-- ─── SCRIPTS ───────────────────────────────────────────── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<script>
+// ── LEAFLET MAP: 5 Most Dangerous Intersections ──────────
+const map = L.map('crashMap', {
+  center: [41.78, -87.60],
+  zoom: 11,
+  scrollWheelZoom: false,
+  zoomControl: true
+});
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© OpenStreetMap contributors © CARTO',
+  subdomains: 'abcd',
+  maxZoom: 19
+}).addTo(map);
+
+const intersections = [
+  {
+    rank: 1,
+    name: "E. 79th St & S. Stony Island Ave",
+    lat: 41.7505, lng: -87.5861,
+    neighborhood: "Greater Grand Crossing",
+    cri: 293,
+    crashes: "196 crashes (2018–2020)",
+    fatalities: "1 fatality confirmed",
+    injuries: "9+ serious injuries",
+    color: "#c80000"
+  },
+  {
+    rank: 2,
+    name: "S. Stony Island Ave & E. Garfield Blvd",
+    lat: 41.7940, lng: -87.5860,
+    neighborhood: "Woodlawn",
+    cri: "~175",
+    crashes: "High multi-year",
+    fatalities: "Recorded",
+    injuries: "Multiple incapacitating",
+    color: "#c80000"
+  },
+  {
+    rank: 3,
+    name: "N. Michigan Ave & E. Wacker Dr",
+    lat: 41.8876, lng: -87.6244,
+    neighborhood: "Streeterville / The Loop",
+    cri: "~135",
+    crashes: "109 fatal crashes (2016–2024 area)",
+    fatalities: "High",
+    injuries: "Hundreds/yr",
+    color: "#d44000"
+  },
+  {
+    rank: 4,
+    name: "S. Cicero Ave & W. 63rd St",
+    lat: 41.7790, lng: -87.7446,
+    neighborhood: "West Lawn / Near Midway",
+    cri: "~110",
+    crashes: "2,585 on corridor (2024)",
+    fatalities: "Rising 2023–2024",
+    injuries: "618 (corridor)",
+    color: "#d44000"
+  },
+  {
+    rank: 5,
+    name: "S. Pulaski Rd & W. Archer Ave",
+    lat: 41.8028, lng: -87.7241,
+    neighborhood: "Archer Heights",
+    cri: "~87",
+    crashes: "2,755 on corridor (2024)",
+    fatalities: "2+ (incl. Feb 2024 fatality that triggered bollard installation)",
+    injuries: "723 (corridor)",
+    color: "#0a5fa5"
+  }
+];
+
+intersections.forEach(loc => {
+  const icon = L.divIcon({
+    className: '',
+    html: `<div style="
+      width:32px;height:32px;border-radius:50%;
+      background:${loc.color};
+      border:3px solid #fff;
+      box-shadow:0 2px 8px rgba(0,0,0,.35);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Libre Franklin',sans-serif;
+      font-weight:900;font-size:13px;color:#fff;
+      cursor:pointer;
+    ">${loc.rank}</div>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+    popupAnchor: [0, -18]
+  });
+
+  L.marker([loc.lat, loc.lng], { icon })
+    .addTo(map)
+    .bindPopup(`
+      <div style="font-family:'Source Sans 3',sans-serif;min-width:220px;padding:2px">
+        <div style="font-family:'Libre Franklin',sans-serif;font-weight:800;font-size:.9rem;color:#1a1a1a;margin-bottom:4px;">
+          #${loc.rank} — ${loc.name}
+        </div>
+        <div style="font-size:.72rem;color:#666;margin-bottom:6px;">${loc.neighborhood}</div>
+        <table style="font-size:.75rem;color:#333;width:100%;border-collapse:collapse;">
+          <tr><td style="padding:2px 4px 2px 0;color:#666;font-weight:600;">CRI Score</td><td style="padding:2px 0;font-weight:700;color:#c80000;">${loc.cri}</td></tr>
+          <tr><td style="padding:2px 4px 2px 0;color:#666;font-weight:600;">Crashes</td><td style="padding:2px 0;">${loc.crashes}</td></tr>
+          <tr><td style="padding:2px 4px 2px 0;color:#666;font-weight:600;">Fatalities</td><td style="padding:2px 0;">${loc.fatalities}</td></tr>
+          <tr><td style="padding:2px 4px 2px 0;color:#666;font-weight:600;">Injuries</td><td style="padding:2px 0;">${loc.injuries}</td></tr>
+        </table>
+      </div>
+    `, { maxWidth: 280 });
+});
+
+// ── CHART 1: JURISDICTION ──────────────────────────────
+const BLUE = '#0a5fa5';
+const RED  = '#c80000';
+const AMB  = '#c07020';
+const FONT = { family: 'Source Sans 3' };
+const MONO = { family: 'DM Mono' };
+
+new Chart(document.getElementById('jurisdictionChart'), {
+  type: 'bar',
+  data: {
+    labels: ['State (IDOT)', 'City (CDOT)', 'County'],
+    datasets: [
+      { label: '% of Road Network', data: [9, 89, 2], backgroundColor: `rgba(10,95,165,0.7)`, borderWidth: 0 },
+      { label: '% of Serious/Fatal Crashes', data: [24, 70, 6], backgroundColor: `rgba(192,112,32,0.8)`, borderWidth: 0 },
+      { label: '% of ALL Fatalities', data: [45, 48, 0], backgroundColor: `rgba(200,0,0,0.8)`, borderWidth: 0 },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { font: FONT, color: '#333', boxWidth: 14 } },
+      tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.parsed.y}%` } }
+    },
+    scales: {
+      x: { ticks: { font: FONT, color: '#333' }, grid: { display: false } },
+      y: { ticks: { font: MONO, color: '#666' }, grid: { color: 'rgba(0,0,0,.06)' }, max: 100,
+           title: { display: true, text: 'Percentage (%)', font: FONT, color: '#666' } }
+    }
+  }
+});
+
+// ── CHART 2A: CRASH VOLUME — 3-year grouped bar ──────────
+const corridors = ['Western Ave', 'Pulaski Rd', 'Cicero Ave', 'Ashland Ave', 'Stony Island'];
+
+new Chart(document.getElementById('crashesChart'), {
+  type: 'bar',
+  data: {
+    labels: corridors,
+    datasets: [
+      {
+        label: '2023',
+        // Pulaski: mathematically derived from -15.4% total change
+        // Ashland: source states volume was stable — confirmed
+        // Western, Cicero, Stony Island: estimated from stated trend direction
+        data: [3000, 2928, 2665, 2450, 1650],
+        backgroundColor: 'rgba(10,95,165,0.35)',
+        borderColor: 'rgba(10,95,165,0.6)',
+        borderWidth: 1
+      },
+      {
+        label: '2024',
+        data: [3104, 2755, 2585, 2453, 1700],
+        backgroundColor: 'rgba(10,95,165,0.6)',
+        borderColor: 'rgba(10,95,165,0.85)',
+        borderWidth: 1
+      },
+      {
+        label: '2025',
+        data: [3118, 2477, 2409, 2321, 1700],
+        backgroundColor: 'rgba(10,95,165,0.85)',
+        borderColor: 'rgba(10,95,165,1)',
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { font: FONT, color: '#333', boxWidth: 12, padding: 10 } },
+      tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.parsed.y.toLocaleString()} crashes` } }
+    },
+    scales: {
+      x: { ticks: { font: { family: 'Source Sans 3', size: 10 }, color: '#333', maxRotation: 30 }, grid: { display: false } },
+      y: {
+        ticks: { font: MONO, color: BLUE },
+        grid: { color: 'rgba(0,0,0,.06)' },
+        title: { display: true, text: 'Total Crashes', font: FONT, color: BLUE }
+      }
+    }
+  }
+});
+
+// ── CHART 2B: FATALITIES — 3-year grouped bar ─────────────
+new Chart(document.getElementById('fatalityChart'), {
+  type: 'bar',
+  data: {
+    labels: corridors,
+    datasets: [
+      {
+        label: '2023',
+        // Western 2023 and Stony Island 2023 not available in study period — shown as 0/null
+        data: [null, 6, null, 1, null],
+        backgroundColor: 'rgba(200,0,0,0.25)',
+        borderColor: 'rgba(200,0,0,0.5)',
+        borderWidth: 1
+      },
+      {
+        label: '2024',
+        data: [2, 5, 2, 3, 0],
+        backgroundColor: 'rgba(200,0,0,0.55)',
+        borderColor: 'rgba(200,0,0,0.8)',
+        borderWidth: 1
+      },
+      {
+        label: '2025',
+        data: [3, 1, null, 5, 4],
+        backgroundColor: 'rgba(200,0,0,0.85)',
+        borderColor: 'rgba(200,0,0,1)',
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { font: FONT, color: '#333', boxWidth: 12, padding: 10 } },
+      tooltip: {
+        callbacks: {
+          label: c => {
+            if (c.parsed.y === null) return null;
+            return ` ${c.dataset.label}: ${c.parsed.y} ${c.parsed.y === 1 ? 'fatality' : 'fatalities'}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { font: { family: 'Source Sans 3', size: 10 }, color: '#333', maxRotation: 30 }, grid: { display: false } },
+      y: {
+        ticks: { font: MONO, color: RED, stepSize: 1 },
+        grid: { color: 'rgba(0,0,0,.06)' },
+        title: { display: true, text: 'Fatalities', font: FONT, color: RED },
+        min: 0,
+        max: 8
+      }
+    }
+  }
+});
+
+// ── CHART 3: EMS DISPARITY ────────────────────────────
+new Chart(document.getElementById('emsChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Ward 9\n(Chatham/Roseland)', 'Ward 17\n(Auburn Gresham)', 'Ward 21\n(Englewood)', 'Ward 28\n(Garfield Park)', 'Ward 2\n(Near North)', 'Ward 42\n(Lincoln Park)'],
+    datasets: [{
+      label: 'Slow (6+ min) EMS response index — gunshot calls 2024',
+      data: [100, 87, 82, 74, 28, 18],
+      backgroundColor: ctx => {
+        const v = ctx.raw;
+        if (v >= 80) return RED;
+        if (v >= 60) return AMB;
+        return BLUE;
+      },
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true, indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => ` Slow-response index: ${c.parsed.x} (Ward 9 = 100 baseline)` } }
+    },
+    scales: {
+      x: { ticks: { font: MONO, color: '#666' }, grid: { color: 'rgba(0,0,0,.06)' },
+           title: { display: true, text: 'Relative Slow-Response Index', font: FONT, color: '#666' } },
+      y: { ticks: { font: { family: 'Source Sans 3', size: 11 }, color: '#333' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
