@@ -80,7 +80,6 @@ DESTINATIONS = [
 CITIES = [
     ('Tbilisi',       44.83,  41.69,  'right'),   # label goes east
     ('Berlin',        13.40,  52.52,  'right'),
-    ('Los Angeles', -118.24,  34.05,  'right'),
     ('London',        -0.13,  51.51,  'left' ),
     ('Belgrade',      20.46,  44.82,  'left' ),
     ('Yerevan',       44.51,  40.18,  'left' ),   # label goes west (opposite Tbilisi)
@@ -128,15 +127,15 @@ def generate_map(countries: gpd.GeoDataFrame) -> None:
     # ── reproject to Web Mercator ──────────────────────────────────────────────
     world_merc = countries.to_crs('EPSG:3857')
 
-    # Cropped extent: north of equator only, LA to Kazakhstan
-    # lon -130..105, lat -2..74
-    xmin, ymin = lonlat_to_mercator(-130, -2)
-    xmax, ymax = lonlat_to_mercator( 105, 74)
+    # Cropped extent: Europe to Central Asia
+    # lon -18..85, lat 24..67
+    xmin, ymin = lonlat_to_mercator(-18, 24)
+    xmax, ymax = lonlat_to_mercator( 85, 67)
 
     # Build destination lookup
     dest_map = {row[0]: row for row in DESTINATIONS}
 
-    fig, ax = plt.subplots(figsize=(20, 11))
+    fig, ax = plt.subplots(figsize=(18, 11))
     fig.patch.set_facecolor(C['ocean'])
     ax.set_facecolor(C['ocean'])
 
@@ -194,7 +193,7 @@ def generate_map(countries: gpd.GeoDataFrame) -> None:
                 f'{display_name.upper()}\n{pct}%  ({count})',
                 xy=(cx, cy),
                 xytext=(label_x, label_y),
-                fontsize=11,
+                fontsize=15,
                 fontfamily='sans-serif',
                 fontweight='bold',
                 color=C['text_dark'],
@@ -209,7 +208,7 @@ def generate_map(countries: gpd.GeoDataFrame) -> None:
             ax.text(
                 label_x, label_y,
                 f'{display_name.upper()}\n{pct}%  ({count})',
-                fontsize=12,
+                fontsize=16,
                 fontfamily='sans-serif',
                 fontweight='bold',
                 color=C['text_dark'],
@@ -225,7 +224,7 @@ def generate_map(countries: gpd.GeoDataFrame) -> None:
         # Place label near western Russia (more readable)
         rx, ry = lonlat_to_mercator(55, 60)
         ax.text(rx, ry, 'RUSSIA\n(origin)',
-                fontsize=11,
+                fontsize=14,
                 fontfamily='sans-serif',
                 fontstyle='italic',
                 color=C['russia_dot'],
@@ -252,7 +251,7 @@ def generate_map(countries: gpd.GeoDataFrame) -> None:
         pad_x = 260_000 if ha_side == 'right' else -260_000
         ax.text(mx + pad_x, my,
                 city_name,
-                fontsize=9,
+                fontsize=13,
                 fontfamily='sans-serif',
                 fontweight='bold',
                 color=C['city_dot'],
@@ -268,7 +267,7 @@ def generate_map(countries: gpd.GeoDataFrame) -> None:
 
     ax.text(title_x, title_y,
             'WHERE RUSSIANS WENT',
-            fontsize=22,
+            fontsize=26,
             fontfamily='sans-serif',
             fontweight='bold',
             color=C['text_dark'],
@@ -278,7 +277,7 @@ def generate_map(countries: gpd.GeoDataFrame) -> None:
             )
     ax.text(title_x, title_y - (ymax - ymin) * 0.055,
             'Top destinations for Russian emigrants, 2022–2025',
-            fontsize=15,
+            fontsize=17,
             fontfamily='sans-serif',
             fontstyle='italic',
             color=C['text_mid'],
@@ -288,7 +287,7 @@ def generate_map(countries: gpd.GeoDataFrame) -> None:
             )
     ax.text(title_x, title_y - (ymax - ymin) * 0.105,
             '~650,000 confirmed non-returnees  ·  Source: The Bell / ZOiS Berlin',
-            fontsize=11,
+            fontsize=13,
             fontfamily='sans-serif',
             color=C['text_lite'],
             va='top',
@@ -317,8 +316,8 @@ def generate_map(countries: gpd.GeoDataFrame) -> None:
     leg = ax.legend(
         handles=legend_patches + [city_handle],
         title='SHARE OF ~650K EMIGRANTS',
-        title_fontsize=9,
-        fontsize=9,
+        title_fontsize=12,
+        fontsize=12,
         loc='lower left',
         frameon=True,
         facecolor=C['land_base'],
@@ -356,15 +355,26 @@ def generate_map(countries: gpd.GeoDataFrame) -> None:
              'Sources: The Bell (2024); ZOiS Berlin Report 4/2024; national immigration services. '
              'Percentages are estimates; total emigration 650k–900k depending on methodology.',
              ha='center',
-             fontsize=9,
+             fontsize=11,
              fontstyle='italic',
              color=C['text_lite'],
              )
 
     plt.tight_layout(pad=0.3)
+    fig.subplots_adjust(left=0.14)   # make room for LA callout in left margin
+
+    # ── 12. Los Angeles off-map callout (left figure margin) ─────────────────
+    fig.text(0.005, 0.50,
+             'LOS ANGELES\n← off map\n\nUnited States\n~15,000 est.\n\nArtist hub:\nSilver Lake /\nEcho Park',
+             ha='left', va='center',
+             fontsize=11, fontfamily='sans-serif', fontweight='bold',
+             color=C['city_dot'],
+             bbox=dict(boxstyle='round,pad=0.7', facecolor=C['land_base'],
+                       edgecolor=C['border_hi'], linewidth=1.5),
+             zorder=15)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT, dpi=150, bbox_inches='tight',
+    fig.savefig(OUT, dpi=180, bbox_inches='tight',
                 facecolor=C['ocean'], edgecolor='none')
     plt.close(fig)
     print(f'  Saved: {OUT}')
