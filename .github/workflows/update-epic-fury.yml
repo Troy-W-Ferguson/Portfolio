@@ -1,8 +1,9 @@
 name: Update Epic Fury Dashboard
 
 on:
-  schedule:
-    - cron: '0 0,6,12,18 * * *'
+  # AUTO-UPDATES PAUSED — uncomment the schedule block below to re-enable
+  # schedule:
+  #   - cron: '0 0,6,12,18 * * *'
   workflow_dispatch:
 
 concurrency:
